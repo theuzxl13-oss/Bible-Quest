@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Adventurer } from '../../components/Adventurer'
+import { PlayerCharacter } from '../../components/character/PlayerCharacter'
 import { ArtImage } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
 import { JourneyMap } from '../../components/map/JourneyMap'
@@ -27,7 +27,7 @@ export default function StoryMap() {
   const [walking, setWalking] = useState(false)
   const [justUnlocked, setJustUnlocked] = useState<string | null>(null)
   const [toast, setToast] = useState('')
-  const [chest, setChest] = useState<{ id: string; xp: number; opened: boolean } | null>(null)
+  const [chest, setChest] = useState<{ id: string; xp: number; opened: boolean; newItems: string[] } | null>(null)
   const [worldIntro, setWorldIntro] = useState<string | null>(null)
   const timers = useRef<number[]>([])
   const reduceMotion = settings.reduceMotion || (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
@@ -88,7 +88,7 @@ export default function StoryMap() {
     return () => window.clearTimeout(t)
   }, [toast])
 
-  const openChest = (id: string) => setChest({ id, xp: allChests().find((c) => c.id === id)?.xp ?? 0, opened: false })
+  const openChest = (id: string) => setChest({ id, xp: allChests().find((c) => c.id === id)?.xp ?? 0, opened: false, newItems: [] })
   const intro = WORLDS.find((w) => w.id === worldIntro)
   const introChars = intro
     ? [...new Set(sections.find((s) => s.world.id === intro.id)?.phases.flatMap((p) => p.experience.characters) ?? [])].slice(0, 6)
@@ -102,7 +102,7 @@ export default function StoryMap() {
         <div className="hero-shade" />
         <div className="container map-hero-inner">
           <div className="map-hero-char">
-            <Adventurer config={character} size={96} className="adv-idle" />
+            <PlayerCharacter size={96} />
           </div>
           <div className="map-hero-info">
             <p className="eyebrow">Modo História · A grande jornada bíblica</p>
@@ -146,7 +146,6 @@ export default function StoryMap() {
             <JourneyMap
               section={s}
               progress={progress}
-              character={character}
               avatarAt={s.phases.some((p) => p.id === avatarAt) ? avatarAt : null}
               walking={walking}
               justUnlocked={justUnlocked}
@@ -195,8 +194,8 @@ export default function StoryMap() {
                 className="btn btn-gold"
                 autoFocus
                 onClick={() => {
-                  const xp = claimChest(chest.id)
-                  setChest({ ...chest, xp: xp || chest.xp, opened: true })
+                  const r = claimChest(chest.id)
+                  setChest({ ...chest, xp: r.xp || chest.xp, opened: true, newItems: r.newItems })
                 }}
               >
                 Abrir baú

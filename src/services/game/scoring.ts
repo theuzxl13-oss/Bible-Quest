@@ -111,3 +111,6 @@ export function capPractice(requested: number, used: number, cap = PRACTICE_DAIL
 /** XP de um baú de recompensa (aberto uma única vez). */
 export const CHEST_XP = 40
 export const WORLD_CHEST_XP = 100
+
+/** Bônus da primeira conclusão de um desafio do mapa do Modo Quiz. */
+export const QUIZ_FIRST_CLEAR_BONUS = 30

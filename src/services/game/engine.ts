@@ -1,15 +1,17 @@
 import type { AnswerResult, FreeModeId, MatchRecord, Progress } from '../../types'
 import { ACHIEVEMENTS } from '../../data/achievements'
 import { levelFromXp } from './levels'
-import { capPractice, DAILY_BONUS, storyXp, type MatchSummary } from './scoring'
+import { capPractice, DAILY_BONUS, QUIZ_FIRST_CLEAR_BONUS, storyXp, type MatchSummary } from './scoring'
 import { updateStreak } from './streak'
 import { canClaimDaily } from './daily'
 import { recordAnswers } from './review'
+import { syncUnlockedItems } from './items'
 
 export interface MatchInput {
   mode: MatchRecord['mode']
   title: string
   freeMode?: FreeModeId
+  quizNodeId?: string
   bookId?: string
   experienceId?: string
   results: AnswerResult[]
@@ -27,6 +29,8 @@ export interface MatchOutcome {
   /** true quando o desafio diário já tinha sido recompensado hoje. */
   dailyAlreadyClaimed: boolean
   newAchievements: string[]
+  /** Itens de personalização desbloqueados por esta partida. */
+  newItems: string[]
   levelBefore: number
   levelAfter: number
   firstClear: boolean
@@ -83,6 +87,25 @@ export function applyMatch(progress: Progress, input: MatchInput, today: string,
     } else {
       dailyAlreadyClaimed = true
     }
+  } else if (input.mode === 'quiz' && input.quizNodeId) {
+    // Mapa do Modo Quiz: bônus só na primeira conclusão; repetições são prática.
+    const prev = next.quiz.nodes[input.quizNodeId] ?? { completed: false, bestStars: 0, bestScore: 0, attempts: 0 }
+    if (summary.passed && !prev.completed) xpGained = summary.score + QUIZ_FIRST_CLEAR_BONUS
+    else xpGained = addPractice(Math.round(summary.score * (summary.passed ? 0.5 : 0.25)))
+    firstClear = summary.passed && !prev.completed
+    next.quiz.nodes[input.quizNodeId] = {
+      completed: prev.completed || summary.passed,
+      bestStars: Math.max(prev.bestStars, summary.stars),
+      bestScore: Math.max(prev.bestScore, summary.score),
+      attempts: prev.attempts + 1,
+    }
+    if (input.freeMode) {
+      next.free.matches++
+      const m = next.free.byMode[input.freeMode] ?? { played: 0, best: 0 }
+      next.free.byMode[input.freeMode] = { played: m.played + 1, best: Math.max(m.best, summary.score) }
+      next.free.oneClueHits += input.results.filter((r) => r.correct && r.cluesUsed === 1).length
+      if (input.freeMode === 'contra-o-tempo') next.free.bestTimeAttack = Math.max(next.free.bestTimeAttack, summary.correct)
+    }
   } else if (input.mode === 'livre' && input.freeMode) {
     xpGained = addPractice(summary.score)
     next.free.matches++
@@ -124,6 +147,7 @@ export function applyMatch(progress: Progress, input: MatchInput, today: string,
     date: now.toISOString(),
     mode: input.mode,
     freeMode: input.freeMode,
+    quizNodeId: input.quizNodeId,
     bookId: input.bookId,
     experienceId: input.experienceId,
     title: input.title,
@@ -144,5 +168,6 @@ export function applyMatch(progress: Progress, input: MatchInput, today: string,
     }
   }
 
-  return { progress: next, record, xpGained, xpCapped, dailyAlreadyClaimed, newAchievements, levelBefore, levelAfter, firstClear }
+  const synced = syncUnlockedItems(next, now)
+  return { progress: synced.progress, record, xpGained, xpCapped, dailyAlreadyClaimed, newAchievements, newItems: synced.newItems, levelBefore, levelAfter, firstClear }
 }

@@ -60,7 +60,7 @@ export default function SettingsPage() {
         <p className="small muted">Atalhos de teclado nas perguntas: teclas 1 a 4 escolhem alternativas; Tab e Enter navegam e confirmam.</p>
         <div className="row-actions">
           <Link to="/boas-vindas" className="btn btn-outline">Rever apresentação</Link>
-          {profile && <Link to="/personagem" className="btn btn-outline">Editar aparência do personagem</Link>}
+          {profile && <Link to="/guarda-roupa" className="btn btn-outline">Personalizar personagem</Link>}
         </div>
       </section>
 

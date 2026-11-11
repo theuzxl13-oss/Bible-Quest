@@ -11,7 +11,7 @@ import { levelTitle } from '../services/game/levels'
 import { PASS_RATIO, PRACTICE_DAILY_CAP } from '../services/game/scoring'
 import { bookCompletion } from '../services/game/progression'
 import { allChests, chestState, phaseNumber } from '../services/game/journeyMap'
-import { Adventurer } from '../components/Adventurer'
+import { PlayerCharacter } from '../components/character/PlayerCharacter'
 import { ChestIcon } from '../components/map/Scenery'
 import { STAR_RULES } from '../services/game/scoring'
 import { useGame } from '../state/GameContext'
@@ -42,7 +42,7 @@ export default function Result() {
       <header className="result-head panel">
         {record.mode === 'historia' && profile?.character && (
           <div className={`result-hero-char ${record.passed ? 'is-happy' : ''}`} aria-hidden="true">
-            <Adventurer config={profile.character} size={88} />
+            <PlayerCharacter size={88} pose={record.passed ? 'celebrate' : 'idle'} />
           </div>
         )}
         <p className="eyebrow">{record.mode === 'historia' ? 'Modo História' : record.mode === 'livre' ? 'Modo Livre' : record.title}</p>

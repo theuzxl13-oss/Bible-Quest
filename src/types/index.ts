@@ -160,10 +160,36 @@ export interface Experience {
 
 export type AgeRange = 'ate12' | '13a17' | '18mais'
 
+export type HairStyle = 'curto' | 'longo' | 'cacheado' | 'coque' | 'tranca' | 'raspado' | 'ondulado'
+export type FaceStyle = 'suave' | 'barba' | 'sardas' | 'marcante'
+
 /**
- * Aparência do personagem do jogador: um aventureiro que acompanha a
- * jornada. Ele NÃO representa nenhum personagem bíblico.
+ * IDENTIDADE VISUAL ÚNICA DO PERSONAGEM DO JOGADOR (v0.4).
+ * Fica em Profile.character e é a única fonte usada por todas as telas.
+ * O personagem é um aventureiro que acompanha a jornada; NÃO representa
+ * nenhum personagem bíblico.
  */
+export interface CharacterAppearance {
+  version: 2
+  id: string
+  name: string
+  /** Personagem-base escolhido na criação (data/character/bases.ts). */
+  base: string
+  skin: number
+  face: FaceStyle
+  hairStyle: HairStyle
+  hairColor: number
+  equipped: {
+    tunica: string
+    manto: string | null
+    calcado: string
+    cinto: string | null
+    /** No máximo um acessório por posição (mão, cintura, cabeça, pescoço). */
+    acessorios: string[]
+  }
+}
+
+/** Formato da v0.3, mantido apenas para migração. */
 export interface CharacterConfig {
   name: string
   archetype: 'viajante' | 'escriba' | 'pastora' | 'exploradora'
@@ -184,7 +210,9 @@ export interface Profile {
   /** Sempre 'local' nesta versão. Futuro: 'supabase'. */
   storage: 'local'
   /** Personagem aventureiro. Ausente até a criação do personagem. */
-  character?: CharacterConfig
+  character?: CharacterAppearance
+  /** Aparência salva antes da última alteração (para "restaurar aparência anterior"). */
+  previousCharacter?: CharacterAppearance
 }
 
 export interface ExperienceProgress {
@@ -197,7 +225,8 @@ export interface ExperienceProgress {
 export interface MatchRecord {
   id: string
   date: string
-  mode: 'historia' | 'livre' | 'diario' | 'revisao' | 'demo-multiplayer'
+  mode: 'historia' | 'livre' | 'quiz' | 'diario' | 'revisao' | 'demo-multiplayer'
+  quizNodeId?: string
   freeMode?: FreeModeId
   bookId?: string
   experienceId?: string
@@ -250,6 +279,10 @@ export interface Progress {
   bestAnswerStreak: number
   currentAnswerStreak: number
   multiplayer: { demoMatches: number; demoWins: number }
+  /** Itens de personalização desbloqueados (id → data) e ainda não vistos na tela de recompensa. */
+  items: { unlocked: Record<string, string>; unseen: string[] }
+  /** Progressão própria do mapa do Modo Quiz. */
+  quiz: { nodes: Record<string, ExperienceProgress> }
   free: {
     matches: number
     byMode: Partial<Record<FreeModeId, { played: number; best: number }>>

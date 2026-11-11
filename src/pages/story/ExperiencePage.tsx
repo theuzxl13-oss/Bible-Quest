@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { Adventurer } from '../../components/Adventurer'
+import { PlayerCharacter } from '../../components/character/PlayerCharacter'
 import { ArtImage, ArtCredit } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
 import { Stars } from '../../components/ui'
@@ -70,7 +70,7 @@ export default function ExperiencePage() {
         <div className="phase-grid">
           <section className="panel phase-intro" aria-labelledby="pi-t">
             <div className="phase-guide">
-              {profile?.character && <Adventurer config={profile.character} size={64} portrait />}
+              <PlayerCharacter size={64} portrait />
               <div>
                 <p className="eyebrow">{profile?.character?.name ?? 'Você'} chega a um novo lugar</p>
                 <h2 id="pi-t">Introdução</h2>

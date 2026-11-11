@@ -12,7 +12,7 @@ import type { QuestionType } from '../types'
 import { levelProgress, levelTitle } from '../services/game/levels'
 import { bookCompletion, bookMedal, journeyCompletion, percent, testamentCompletion } from '../services/game/progression'
 import { useGame } from '../state/GameContext'
-import { Adventurer } from '../components/Adventurer'
+import { PlayerCharacter } from '../components/character/PlayerCharacter'
 
 const AGE_LABEL = { ate12: 'Até 12 anos', '13a17': '13 a 17 anos', '18mais': '18 anos ou mais' }
 
@@ -48,11 +48,11 @@ export default function ProfilePage() {
   return (
     <div className="container section stack-lg">
       <header className="profile-head panel">
-        {p.character ? <Adventurer config={p.character} size={84} className="adv-idle" /> : <Avatar id={p.avatar} size={84} />}
+        {p.character ? <PlayerCharacter size={84} /> : <Avatar id={p.avatar} size={84} />}
         <div className="profile-id">
           <p className="eyebrow">Perfil local · {AGE_LABEL[p.ageRange]}</p>
           <h1>{p.character?.name ?? p.nickname}</h1>
-          <p className="small muted">Jogador: {p.nickname} · <Link to="/personagem">Editar personagem</Link></p>
+          <p className="small muted">Jogador: {p.nickname} · <Link to="/guarda-roupa">Personalizar personagem</Link></p>
           <p>Nível {lp.level} · {levelTitle(lp.level)} · {progress.xp} XP</p>
           <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
         </div>

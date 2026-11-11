@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { Adventurer } from '../../components/Adventurer'
+import { PlayerCharacter } from '../../components/character/PlayerCharacter'
 import { ArtImage } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
 import { ReadAloud } from '../../components/ReadAloud'
@@ -97,7 +97,7 @@ export default function PhaseScene() {
         )}
         {profile?.character && (s.kind === 'intro' || s.kind === 'narrativa') && (
           <div className="scene-player" aria-hidden="true">
-            <Adventurer config={profile.character} size={92} className="adv-idle" />
+            <PlayerCharacter size={92} />
           </div>
         )}
 

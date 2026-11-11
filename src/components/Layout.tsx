@@ -3,7 +3,7 @@ import { useGame } from '../state/GameContext'
 import { Icon, type IconName } from './Icon'
 import { Avatar } from './ui'
 import { levelFromXp } from '../services/game/levels'
-import { Adventurer } from './Adventurer'
+import { PlayerCharacter } from './character/PlayerCharacter'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/painel', label: 'Painel', short: 'Início', icon: 'home' },
@@ -25,7 +25,7 @@ const SECONDARY: { to: string; label: string }[] = [
 ]
 
 /** Telas de jogo usam layout imersivo, sem barra inferior. */
-const IMMERSIVE = [/^\/personagem$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/livre\/(?!multiplayer)[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
+const IMMERSIVE = [/^\/$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/livre\/(?!multiplayer)[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
 
 export function Layout() {
   const { profile, progress } = useGame()
@@ -61,7 +61,7 @@ export function Layout() {
               <Link to="/perfil" className="topbar-profile" aria-label={`Perfil de ${profile.nickname}, nível ${levelFromXp(progress.xp)}`}>
                 <span className="topbar-level">Nv {levelFromXp(progress.xp)}</span>
                 {profile.character ? (
-                  <span className="topbar-portrait"><Adventurer config={profile.character} size={36} portrait /></span>
+                  <span className="topbar-portrait"><PlayerCharacter size={36} portrait pose="still" /></span>
                 ) : (
                   <Avatar id={profile.avatar} size={34} />
                 )}

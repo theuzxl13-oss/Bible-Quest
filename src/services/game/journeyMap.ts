@@ -3,6 +3,7 @@ import { WORLDS, type World } from '../../data/worlds'
 import { STORY_SEQUENCE, experiencesOf } from '../../data/story'
 import { isExperienceCompleted, isExperienceUnlocked } from './progression'
 import { CHEST_XP, WORLD_CHEST_XP } from './scoring'
+import { syncUnlockedItems } from './items'
 
 /*
  * MAPA DA JORNADA
@@ -88,13 +89,14 @@ export function avatarPhaseId(p: Progress): string {
 }
 
 /** Abre um baú uma única vez. Retorna o XP concedido (0 se não puder abrir). */
-export function openChest(p: Progress, chestId: string, now = new Date()): { progress: Progress; xp: number } {
+export function openChest(p: Progress, chestId: string, now = new Date()): { progress: Progress; xp: number; newItems: string[] } {
   const chest = allChests().find((c) => c.id === chestId)
-  if (!chest || chestState(chest, p) !== 'disponivel') return { progress: p, xp: 0 }
+  if (!chest || chestState(chest, p) !== 'disponivel') return { progress: p, xp: 0, newItems: [] }
   const next = structuredClone(p)
   next.chests[chest.id] = now.toISOString()
   next.xp += chest.xp
-  return { progress: next, xp: chest.xp }
+  const synced = syncUnlockedItems(next, now)
+  return { progress: synced.progress, xp: chest.xp, newItems: synced.newItems }
 }
 
 /** Dificuldade exibida da fase, pela média das perguntas. */

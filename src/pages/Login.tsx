@@ -3,7 +3,8 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import type { AgeRange } from '../types'
 import { ArtImage } from '../components/ArtImage'
 import { Icon } from '../components/Icon'
-import { AVATARS, Notice } from '../components/ui'
+import { Notice } from '../components/ui'
+import { StepBar } from './onboarding/StepBar'
 import { useGame } from '../state/GameContext'
 
 const AGES: { id: AgeRange; label: string }[] = [
@@ -17,7 +18,6 @@ export default function Login() {
   const navigate = useNavigate()
   const location = useLocation()
   const [nickname, setNickname] = useState('')
-  const [avatar, setAvatar] = useState('lamp')
   const [ageRange, setAgeRange] = useState<AgeRange | ''>('')
   const [error, setError] = useState('')
 
@@ -30,7 +30,7 @@ export default function Login() {
       return
     }
     try {
-      createProfile({ nickname, avatar, ageRange })
+      createProfile({ nickname, avatar: 'lamp', ageRange })
       const from = (location.state as { from?: string } | null)?.from
       navigate('/personagem', { replace: true, state: { from: from && from !== '/entrar' ? from : '/painel' } })
     } catch (err) {
@@ -44,7 +44,8 @@ export default function Login() {
       <div className="hero-shade" />
       <div className="container auth-grid">
         <form className="panel auth-form" onSubmit={submit} noValidate aria-describedby={error ? 'auth-error' : undefined}>
-          <p className="eyebrow">Cadastro demonstrativo</p>
+          <StepBar current={2} />
+          <p className="eyebrow">Identificação</p>
           <h1>Crie seu perfil local</h1>
           <p className="muted">
             Nesta versão não há conta online, e-mail ou senha. Pedimos apenas um apelido e a faixa etária, que ficam
@@ -52,7 +53,7 @@ export default function Login() {
           </p>
 
           <div className="field">
-            <label htmlFor="nick">Apelido</label>
+            <label htmlFor="nick">Nome ou apelido</label>
             <input
               id="nick"
               value={nickname}
@@ -81,18 +82,6 @@ export default function Login() {
             )}
           </fieldset>
 
-          <fieldset className="field">
-            <legend>Selo do perfil</legend>
-            <div className="avatar-grid">
-              {AVATARS.map((a) => (
-                <label key={a.id} className={`avatar-pick ${avatar === a.id ? 'is-on' : ''}`} title={a.label}>
-                  <input type="radio" name="avatar" value={a.id} checked={avatar === a.id} onChange={() => setAvatar(a.id)} />
-                  <Icon name={a.icon} size={24} />
-                  <span className="sr-only">{a.label}</span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
 
           {error && (
             <p id="auth-error" className="form-error" role="alert">
@@ -101,7 +90,7 @@ export default function Login() {
           )}
 
           <button type="submit" className="btn btn-gold btn-block btn-lg">
-            Começar <Icon name="arrowRight" />
+            Continuar <Icon name="arrowRight" />
           </button>
         </form>
 

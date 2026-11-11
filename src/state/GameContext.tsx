@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { AgeRange, CharacterConfig, Profile, Progress, Question, Settings } from '../types'
+import type { AgeRange, CharacterAppearance, Profile, Progress, Question, Settings } from '../types'
+import { equipItem } from '../services/game/items'
 import { sanitizeNickname } from '../services/auth'
 import { createLocalServices, type Services } from '../services'
 import { emptyProgress } from '../services/storage/repositories'
@@ -25,13 +26,17 @@ interface GameContextValue {
   markVisited(experienceId: string): { newCharacters: string[]; newPlaces: string[] }
   /** Posição do avatar no mapa (para animar o avanço). */
   setMapCursor(experienceId: string): void
-  /** Abre um baú (uma única vez). Retorna o XP ganho. */
-  claimChest(chestId: string): number
+  /** Abre um baú (uma única vez). Retorna o XP ganho e itens desbloqueados. */
+  claimChest(chestId: string): { xp: number; newItems: string[] }
   markWorldSeen(worldId: string): void
   createProfile(input: { nickname: string; avatar: string; ageRange: AgeRange }): Profile
   updateProfile(profile: Profile): void
-  /** Salva a aparência do personagem sem alterar o progresso. */
-  saveCharacter(config: CharacterConfig): void
+  /** Salva a aparência do personagem sem alterar o progresso (guarda a anterior). */
+  saveCharacter(appearance: CharacterAppearance): void
+  /** Equipa um item na aparência salva (ex.: na tela de recompensa). */
+  equipNow(itemId: string): void
+  /** Marca itens desbloqueados como já apresentados. */
+  acknowledgeItems(ids: string[]): void
   recordMatch(input: MatchInput): MatchOutcome
   updateSettings(patch: Partial<Settings>): void
   deleteAllData(): void
@@ -90,12 +95,12 @@ export function GameProvider({ children, services: injected }: { children: React
 
   const claimChest = useCallback(
     (chestId: string) => {
-      const { progress: next, xp } = openChest(services.progress.load(), chestId)
+      const { progress: next, xp, newItems } = openChest(services.progress.load(), chestId)
       if (xp > 0) {
         services.progress.save(next)
         setProgress(next)
       }
-      return xp
+      return { xp, newItems }
     },
     [services],
   )
@@ -135,11 +140,34 @@ export function GameProvider({ children, services: injected }: { children: React
   )
 
   const saveCharacter = useCallback(
-    (config: CharacterConfig) => {
+    (appearance: CharacterAppearance) => {
       const current = services.auth.current()
       if (!current) return
-      const name = sanitizeNickname(config.name) || current.nickname
-      setProfile(services.auth.update({ ...current, character: { ...config, name } }))
+      const name = sanitizeNickname(appearance.name) || current.nickname
+      const next = { ...appearance, name }
+      const changed = JSON.stringify(current.character) !== JSON.stringify(next)
+      setProfile(services.auth.update({ ...current, character: next, previousCharacter: changed && current.character ? current.character : current.previousCharacter }))
+    },
+    [services],
+  )
+
+  const equipNow = useCallback(
+    (itemId: string) => {
+      const current = services.auth.current()
+      if (!current?.character) return
+      saveCharacter(equipItem(current.character, itemId))
+    },
+    [services, saveCharacter],
+  )
+
+  const acknowledgeItems = useCallback(
+    (ids: string[]) => {
+      const p = services.progress.load()
+      const unseen = p.items.unseen.filter((id) => !ids.includes(id))
+      if (unseen.length === p.items.unseen.length) return
+      const next = { ...p, items: { ...p.items, unseen } }
+      services.progress.save(next)
+      setProgress(next)
     },
     [services],
   )
@@ -196,6 +224,8 @@ export function GameProvider({ children, services: injected }: { children: React
     createProfile,
     updateProfile,
     saveCharacter,
+    equipNow,
+    acknowledgeItems,
     recordMatch,
     updateSettings,
     deleteAllData,

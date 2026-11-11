@@ -2,8 +2,10 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { Layout } from './components/Layout'
 import { useGame } from './state/GameContext'
-import Home from './pages/Home'
-import Onboarding from './pages/Onboarding'
+import Welcome from './pages/onboarding/Welcome'
+import CharacterBase from './pages/onboarding/CharacterBase'
+import Wardrobe from './pages/onboarding/Wardrobe'
+import Arrival from './pages/onboarding/Arrival'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import StoryMap from './pages/story/StoryMap'
@@ -23,7 +25,6 @@ import ProfilePage from './pages/Profile'
 import SettingsPage from './pages/Settings'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
-import CharacterCreator from './pages/CharacterCreator'
 import Library from './pages/library/Library'
 import Timeline from './pages/library/Timeline'
 import { BookSheet, CharacterSheet, PlaceSheet } from './pages/library/LibraryDetail'
@@ -63,10 +64,13 @@ export default function App() {
       <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="boas-vindas" element={<Onboarding />} />
+          <Route index element={<Welcome />} />
+          <Route path="boas-vindas" element={<Welcome />} />
           <Route path="entrar" element={<Login />} />
-          <Route path="personagem" element={<RequireProfile character={false}><CharacterCreator /></RequireProfile>} />
+          <Route path="personagem" element={<RequireProfile character={false}><CharacterBase /></RequireProfile>} />
+          <Route path="personagem/personalizar" element={<RequireProfile character={false}><Wardrobe mode="criar" /></RequireProfile>} />
+          <Route path="chegada" element={p(<Arrival />)} />
+          <Route path="guarda-roupa" element={p(<Wardrobe mode="editar" />)} />
           <Route path="painel" element={p(<Dashboard />)} />
           <Route path="historia" element={p(<StoryMap />)} />
           <Route path="historia/livros" element={p(<BooksIndex />)} />

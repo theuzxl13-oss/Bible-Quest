@@ -10,11 +10,11 @@ import { levelProgress, levelTitle } from '../services/game/levels'
 import { continueExperience, journeyCompletion, percent } from '../services/game/progression'
 import { visibleStreak } from '../services/game/streak'
 import { useGame } from '../state/GameContext'
-import { Adventurer } from '../components/Adventurer'
+import { PlayerCharacter } from '../components/character/PlayerCharacter'
 import { weakTopics } from '../services/game/review'
 import { phaseNumber } from '../services/game/journeyMap'
 
-export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Livre', diario: 'Desafio diário', revisao: 'Revisão', 'demo-multiplayer': 'Multiplayer (demo)' } as const
+export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Quiz · treino', quiz: 'Modo Quiz', diario: 'Desafio diário', revisao: 'Revisão', 'demo-multiplayer': 'Multiplayer (demo)' } as const
 
 export default function Dashboard() {
   const { profile, progress, dailyContext, questionPool } = useGame()
@@ -34,7 +34,7 @@ export default function Dashboard() {
       <section className="player-hero panel" aria-labelledby="ph-name">
         <div className="player-hero-char" aria-hidden="true">
           <div className="creator-glow" />
-          <Adventurer config={character} size={120} className="adv-idle" />
+          <PlayerCharacter size={120} />
         </div>
         <div className="player-hero-info">
           <p className="eyebrow">Painel · {profile!.nickname}</p>

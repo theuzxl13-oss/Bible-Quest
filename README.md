@@ -345,6 +345,16 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.4.0 (em andamento) — 11/11/2026 — Personagem por itens e nova entrada
+
+- **Etapa 0:** auditoria e plano em `docs/PLANO-v0.4.md`.
+- **Entrada em 5 passos:** boas-vindas → identificação (nome ou apelido e faixa etária) → escolha do personagem (8 bases diversas) → personalização com prévia em corpo inteiro → chegada ao universo Bible Quest.
+- **Personagem único e centralizado:**
+  - Aparência (`CharacterAppearance`) com base, pele, rosto, estilo e cor de cabelo e itens equipados (túnica, manto, calçado, cinto e acessórios).
+  - Um só renderizador SVG por camadas (`Character`), usado em todas as telas via `PlayerCharacter`.
+- **Guarda-roupa** (`/guarda-roupa`): 36 itens de época; itens bloqueados mostram o requisito (nível, estrelas, conquista, livro concluído, baú, região do Quiz). Também é possível descartar alterações e restaurar a aparência anterior.
+- **Migração:** personagens da v0.3 são convertidos automaticamente e nenhum progresso é perdido.
+
 ### 0.3.0 — 11/11/2026 — A aventura
 
 - **Personagem do jogador:**

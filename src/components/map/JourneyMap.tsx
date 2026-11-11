@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import type { CharacterConfig, Progress } from '../../types'
+import type { Progress } from '../../types'
 import type { WorldSection } from '../../services/game/journeyMap'
 import { chestState, phaseState } from '../../services/game/journeyMap'
 import { ArtImage } from '../ArtImage'
-import { Adventurer } from '../Adventurer'
+import { PlayerCharacter } from '../character/PlayerCharacter'
 import { Icon } from '../Icon'
 import { ChestIcon, Decor } from './Scenery'
 
@@ -58,7 +58,6 @@ export function layoutSection(section: WorldSection) {
 interface Props {
   section: WorldSection
   progress: Progress
-  character?: CharacterConfig
   /** Fase onde o avatar está desenhado agora. */
   avatarAt: string | null
   walking: boolean
@@ -70,7 +69,7 @@ interface Props {
 
 const pct = (v: number, total: number) => `${(v / total) * 100}%`
 
-export function JourneyMap({ section, progress, character, avatarAt, walking, justUnlocked, onLocked, onChest }: Props) {
+export function JourneyMap({ section, progress, avatarAt, walking, justUnlocked, onLocked, onChest }: Props) {
   const { world } = section
   const { W, H, points, d, decor } = layoutSection(section)
   const pos = new Map(points.map((p) => [p.id, p]))
@@ -159,9 +158,9 @@ export function JourneyMap({ section, progress, character, avatarAt, walking, ju
             )
           })}
 
-          {avatarPoint && character && (
+          {avatarPoint && (
             <div className={`map-avatar ${walking ? 'is-walking' : ''}`} style={{ left: pct(avatarPoint.x, W), top: pct(avatarPoint.y, H) }} aria-hidden="true">
-              <Adventurer config={character} size={58} walking={walking} />
+              <PlayerCharacter size={58} pose={walking ? 'walk' : 'idle'} />
             </div>
           )}
         </div>

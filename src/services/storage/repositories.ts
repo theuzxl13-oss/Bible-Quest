@@ -1,4 +1,4 @@
-import type { Profile, Progress, Settings } from '../../types'
+import type { CharacterAppearance, CharacterConfig, Profile, Progress, Settings } from '../../types'
 import type { KeyValueStore } from './keyValueStore'
 
 /*
@@ -51,6 +51,8 @@ export function emptyProgress(): Progress {
     bestAnswerStreak: 0,
     currentAnswerStreak: 0,
     multiplayer: { demoMatches: 0, demoWins: 0 },
+    items: { unlocked: {}, unseen: [] },
+    quiz: { nodes: {} },
     free: { matches: 0, byMode: {}, oneClueHits: 0, bestTimeAttack: 0 },
     stats: { answered: 0, correct: 0, perfectExperiences: 0, byType: {} },
   }
@@ -143,6 +145,8 @@ export function migrateProgress(raw: LegacyProgress): Progress {
     bestAnswerStreak: raw.bestAnswerStreak ?? 0,
     currentAnswerStreak: raw.currentAnswerStreak ?? 0,
     multiplayer: { ...base.multiplayer, ...raw.multiplayer },
+    items: { unlocked: { ...raw.items?.unlocked }, unseen: Array.isArray(raw.items?.unseen) ? raw.items!.unseen : [] },
+    quiz: { nodes: { ...raw.quiz?.nodes } },
     free: { ...base.free, ...raw.free, byMode: { ...raw.free?.byMode } },
     stats: {
       answered: raw.stats?.answered ?? 0,
@@ -173,6 +177,34 @@ function readJson<T>(store: KeyValueStore, key: string): Partial<T> | null {
   }
 }
 
+const OLD_TUNIC_BY_COLOR = ['tunica-terra', 'tunica-azul', 'tunica-terra', 'tunica-terra', 'tunica-linho', 'tunica-linho']
+
+/**
+ * Converte o personagem da v0.3 (vestimenta única + acessório) para a
+ * aparência por itens da v0.4, preservando pele, cabelo e acessório.
+ */
+export function migrateCharacter(c: CharacterAppearance | CharacterConfig): CharacterAppearance {
+  if ((c as CharacterAppearance).version === 2) return c as CharacterAppearance
+  const old = c as CharacterConfig
+  const equipped: CharacterAppearance['equipped'] = { tunica: 'tunica-linho', manto: null, calcado: 'sandalias-simples', cinto: 'cinto-corda', acessorios: [] }
+  if (old.outfit === 'tunica') equipped.tunica = OLD_TUNIC_BY_COLOR[old.outfitColor] ?? 'tunica-linho'
+  if (old.outfit === 'manto') { equipped.tunica = 'tunica-linho'; equipped.manto = 'manto-marrom' }
+  if (old.outfit === 'viagem') { equipped.tunica = 'tunica-terra'; equipped.cinto = 'cinto-couro' }
+  if (old.outfit === 'escriba') equipped.tunica = 'tunica-linho'
+  if (old.accessory && old.accessory !== 'nenhum') equipped.acessorios = [old.accessory]
+  return {
+    version: 2,
+    id: `aventureiro-migrado-${old.name}`,
+    name: old.name,
+    base: old.archetype,
+    skin: old.skin ?? 1,
+    face: 'suave',
+    hairStyle: old.hair ?? 'curto',
+    hairColor: old.hairColor ?? 1,
+    equipped,
+  }
+}
+
 export class LocalProfileRepository implements ProfileRepository {
   constructor(private store: KeyValueStore) {}
   load(): Profile | null {
@@ -185,7 +217,8 @@ export class LocalProfileRepository implements ProfileRepository {
       ageRange: p.ageRange ?? '18mais',
       createdAt: p.createdAt ?? new Date().toISOString(),
       storage: 'local',
-      character: p.character && typeof p.character.name === 'string' ? p.character : undefined,
+      character: p.character && typeof p.character.name === 'string' ? migrateCharacter(p.character as CharacterAppearance | CharacterConfig) : undefined,
+      previousCharacter: p.previousCharacter ? migrateCharacter(p.previousCharacter) : undefined,
     }
   }
   save(profile: Profile) {

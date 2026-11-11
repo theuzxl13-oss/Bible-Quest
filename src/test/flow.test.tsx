@@ -7,7 +7,7 @@ import { GameProvider } from '../state/GameContext'
 import { createLocalServices } from '../services'
 import { MemoryStore } from '../services/storage/keyValueStore'
 import { getQuestion } from '../data/questions'
-import type { Question } from '../types'
+import type { CharacterAppearance, Question } from '../types'
 
 function setup(path = '/', store = new MemoryStore()) {
   const services = createLocalServices(store)
@@ -22,13 +22,16 @@ function setup(path = '/', store = new MemoryStore()) {
   return { user, services, store }
 }
 
-const CHAR = { name: 'Tobias', archetype: 'viajante', skin: 2, hair: 'cacheado', hairColor: 0, outfit: 'manto', outfitColor: 0, accessory: 'cajado' } as const
+const CHAR: CharacterAppearance = {
+  version: 2, id: 'teste', name: 'Tobias', base: 'viajante', skin: 2, face: 'suave', hairStyle: 'cacheado', hairColor: 0,
+  equipped: { tunica: 'tunica-linho', manto: 'manto-marrom', calcado: 'sandalias-simples', cinto: 'cinto-couro', acessorios: ['cajado'] },
+}
 
 function withProfile(ageRange: 'ate12' | '13a17' | '18mais' = '18mais') {
   const store = new MemoryStore()
   const s = createLocalServices(store)
   const p = s.auth.createLocalProfile({ nickname: 'Teo', avatar: 'lamp', ageRange })
-  s.auth.update({ ...p, character: { ...CHAR } })
+  s.auth.update({ ...p, character: structuredClone(CHAR) })
   return store
 }
 
@@ -100,21 +103,41 @@ async function playStoryChallenge(user: ReturnType<typeof userEvent.setup>) {
 describe('fluxos de ponta a ponta', () => {
   it('cadastro → criação do personagem → mapa → fase → cena → desafio → estrelas e XP → avatar avança', async () => {
     const { user, services } = setup('/entrar')
-    await user.type(screen.getByLabelText('Apelido'), 'Lia')
+    await user.type(screen.getByLabelText('Nome ou apelido'), 'Lia')
     await user.click(screen.getByLabelText('18 anos ou mais'))
-    await user.click(screen.getByRole('button', { name: /começar/i }))
+    await user.click(screen.getByRole('button', { name: /continuar/i }))
 
-    // personagem obrigatório antes da jornada
-    expect(await screen.findByRole('heading', { name: /crie seu aventureiro/i })).toBeInTheDocument()
+    // etapa 3: escolha do personagem-base
+    expect(await screen.findByRole('heading', { name: /quem vai percorrer a jornada/i })).toBeInTheDocument()
+    await user.click(screen.getByLabelText(/^Pastora/))
+    await user.click(screen.getByRole('button', { name: /personalizar/i }))
+
+    // etapa 4: personalização com prévia em tempo real
+    expect(await screen.findByRole('heading', { name: /personalize seu aventureiro/i })).toBeInTheDocument()
+    const preview = () => screen.getByRole('img', { name: /prévia de/i }).getAttribute('data-appearance')
+    expect(preview()).toContain('pastora')
     const nameInput = screen.getByLabelText('Nome do personagem')
     await user.clear(nameInput)
     await user.type(nameInput, 'Rute Viajante')
-    await user.click(screen.getByLabelText(/^Pastora/))
     await user.click(screen.getByLabelText('Longo'))
-    await user.click(screen.getByLabelText('Lamparina'))
-    await user.click(screen.getByRole('button', { name: /começar a jornada/i }))
+    await user.click(screen.getByRole('tab', { name: 'Túnicas' }))
+    await user.click(screen.getByRole('button', { name: /túnica de linho\./i }))
+    expect(preview()).toContain('tunica-linho')
+    await user.click(screen.getByRole('tab', { name: 'Mantos' }))
+    expect(screen.getByRole('button', { name: /manto marrom\. equipado; toque para retirar/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /manto azul-escuro\. bloqueado: alcance o nível 2/i })).toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: 'Acessórios' }))
+    await user.click(screen.getByRole('button', { name: /lamparina de barro \(na mão\)\. toque para equipar/i }))
+    expect(preview()).toContain('lamparina')
+    expect(preview()).not.toContain('cajado')
+    await user.click(screen.getByRole('button', { name: /finalizar personagem/i }))
     const saved = services.auth.current()!.character!
-    expect(saved).toMatchObject({ name: 'Rute Viajante', archetype: 'pastora', hair: 'longo', accessory: 'lamparina', outfit: 'manto' })
+    expect(saved).toMatchObject({ name: 'Rute Viajante', base: 'pastora', hairStyle: 'longo', equipped: { tunica: 'tunica-linho', manto: 'manto-marrom', acessorios: ['lamparina'] } })
+
+    // etapa 5: chegada e entrada no jogo
+    expect(await screen.findByRole('heading', { name: /rute viajante chega ao universo bible quest/i })).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: /entrar no jogo/i }))
+    await user.click((await screen.findAllByRole('link', { name: /modo história/i }))[0])
 
     // mapa: abertura do mundo, fase 1 atual, fase 2 bloqueada
     await user.click(await screen.findByRole('button', { name: /entrar no mundo/i }))
@@ -305,7 +328,7 @@ describe('fluxos de ponta a ponta', () => {
     const store = new MemoryStore()
     createLocalServices(store).auth.createLocalProfile({ nickname: 'Sem', avatar: 'lamp', ageRange: '18mais' })
     setup('/historia', store)
-    expect(await screen.findByRole('heading', { name: /crie seu aventureiro/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /quem vai percorrer a jornada/i })).toBeInTheDocument()
   })
 
   it('ranking não inventa jogadores e mostra só os recordes locais', async () => {
