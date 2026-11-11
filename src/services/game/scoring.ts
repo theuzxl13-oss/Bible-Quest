@@ -4,6 +4,11 @@ export const MAX_LIVES = 3
 export const PASS_RATIO = 0.6
 export const FIRST_CLEAR_BONUS = 50
 export const DAILY_BONUS = 30
+/**
+ * Limite diário de XP "de prática": Modo Livre e tentativas reprovadas no Modo
+ * História. Impede acumular XP sem limite repetindo o mesmo conteúdo.
+ */
+export const PRACTICE_DAILY_CAP = 300
 
 const BASE_POINTS: Record<Difficulty, number> = { 1: 10, 2: 15, 3: 20 }
 /** Bônus por constância dentro da partida: a partir do 3º acerto seguido. */
@@ -24,8 +29,8 @@ export interface MatchSummary {
 }
 
 /**
- * Calcula a pontuação de uma partida. A velocidade não influencia a pontuação:
- * o jogo recompensa acerto, dificuldade e constância.
+ * Pontuação padrão (Modo História, diário, várias modalidades livres).
+ * A velocidade não influencia: o jogo recompensa acerto, dificuldade e constância.
  * `total` é o número de perguntas da partida (pode ser maior que results.length
  * quando as vidas acabam antes do fim).
  */
@@ -40,7 +45,7 @@ export function summarizeMatch(results: AnswerResult[], total: number, lives = M
       correct++
       combo++
       bestCombo = Math.max(bestCombo, combo)
-      score += basePoints(r.difficulty) + (combo >= 3 ? STREAK_BONUS : 0)
+      score += (r.points ?? basePoints(r.difficulty)) + (combo >= 3 ? STREAK_BONUS : 0)
     } else {
       combo = 0
       livesLeft = Math.max(0, livesLeft - 1)
@@ -52,13 +57,40 @@ export function summarizeMatch(results: AnswerResult[], total: number, lives = M
   return { correct, total, score, stars, passed, livesLeft, bestCombo }
 }
 
+/** Quem sou eu?: quanto menos pistas, mais pontos. Com todas as pistas, vale o básico. */
+export function whoamiPoints(d: Difficulty, cluesShown: number, totalClues: number): number {
+  return basePoints(d) + 5 * Math.max(0, totalClues - cluesShown)
+}
+
+/** Contra o tempo: bônus de velocidade (só nesta modalidade). */
+export function timeAttackPoints(d: Difficulty, secondsTaken: number): number {
+  const bonus = secondsTaken <= 4 ? 10 : secondsTaken <= 8 ? 5 : 0
+  return basePoints(d) + bonus
+}
+
+export const TIME_ATTACK_SECONDS = 60
+export const TIME_ATTACK_MAX_ERRORS = 3
+
+export interface StoryXpInput {
+  summary: MatchSummary
+  alreadyCompleted: boolean
+  previousBestScore: number
+}
+
 /**
- * XP concedido por um capítulo. Primeira conclusão ganha bônus; repetir um
- * capítulo já concluído rende metade, para incentivar avanço sem punir revisão.
- * Mesmo sem passar, o jogador recebe um pouco de XP pelo que aprendeu.
+ * XP de uma experiência do Modo História:
+ * - primeira conclusão: pontos + bônus (uma única vez por experiência);
+ * - repetição de experiência concluída: apenas o quanto superar a melhor pontuação;
+ * - reprovação: 25% dos pontos, como XP de prática (sujeito ao limite diário).
+ * Retorna o XP de jornada e o XP de prática separadamente.
  */
-export function chapterXp(summary: MatchSummary, alreadyCompleted: boolean): number {
-  if (!summary.passed) return Math.round(summary.score * 0.25)
-  if (alreadyCompleted) return Math.round(summary.score * 0.5)
-  return summary.score + FIRST_CLEAR_BONUS
+export function storyXp({ summary, alreadyCompleted, previousBestScore }: StoryXpInput): { story: number; practice: number } {
+  if (!summary.passed) return { story: 0, practice: Math.round(summary.score * 0.25) }
+  if (!alreadyCompleted) return { story: summary.score + FIRST_CLEAR_BONUS, practice: 0 }
+  return { story: Math.max(0, summary.score - previousBestScore), practice: 0 }
+}
+
+/** Aplica o limite diário de XP de prática. */
+export function capPractice(requested: number, used: number, cap = PRACTICE_DAILY_CAP): number {
+  return Math.max(0, Math.min(requested, cap - used))
 }

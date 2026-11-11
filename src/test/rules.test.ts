@@ -1,13 +1,18 @@
 import { describe, expect, it } from 'vitest'
 import type { AnswerResult, Difficulty } from '../types'
-import { chapterXp, FIRST_CLEAR_BONUS, summarizeMatch } from '../services/game/scoring'
+import { capPractice, FIRST_CLEAR_BONUS, PRACTICE_DAILY_CAP, storyXp, summarizeMatch, timeAttackPoints, whoamiPoints } from '../services/game/scoring'
 import { levelFromXp, levelProgress, xpForLevel } from '../services/game/levels'
 import { updateStreak, visibleStreak } from '../services/game/streak'
-import { isChapterUnlocked, isJourneyUnlocked, journeyMedal, nextChapter } from '../services/game/unlock'
+import { bookCompletion, bookMedal, bookStatus, continueExperience, isExperienceUnlocked, journeyCompletion, nextExperience, testamentCompletion } from '../services/game/progression'
+import { STORY_SEQUENCE, experiencesOf } from '../data/story'
+import { getBook } from '../data/bible/canon'
+import { buildRound } from '../services/game/freeModes'
+import { QUESTIONS } from '../data/questions'
+import { canClaimDaily, LocalDailyService } from '../services/game/daily'
+import { seededRandom } from '../services/game/random'
 import { emptyProgress } from '../services/storage/repositories'
 import { checkAnswer } from '../services/game/answers'
 import { getQuestion } from '../data/questions'
-import { JOURNEYS } from '../data/journeys'
 import { dailyQuestions } from '../services/game/daily'
 import { daysBetween } from '../services/game/dates'
 
@@ -44,12 +49,32 @@ describe('pontuação', () => {
     expect(a).toEqual(b)
   })
 
-  it('XP: bônus na primeira conclusão, metade ao repetir, um quarto ao reprovar', () => {
+  it('XP do Modo História: bônus só na primeira conclusão, repetição só pela melhora, reprovação vira prática', () => {
     const pass = summarizeMatch([r(true), r(true), r(true), r(true), r(true)], 5)
-    expect(chapterXp(pass, false)).toBe(pass.score + FIRST_CLEAR_BONUS)
-    expect(chapterXp(pass, true)).toBe(Math.round(pass.score * 0.5))
+    expect(storyXp({ summary: pass, alreadyCompleted: false, previousBestScore: 0 })).toEqual({ story: pass.score + FIRST_CLEAR_BONUS, practice: 0 })
+    expect(storyXp({ summary: pass, alreadyCompleted: true, previousBestScore: pass.score })).toEqual({ story: 0, practice: 0 })
+    expect(storyXp({ summary: pass, alreadyCompleted: true, previousBestScore: pass.score - 15 })).toEqual({ story: 15, practice: 0 })
     const fail = summarizeMatch([r(true), r(false), r(false), r(false)], 5)
-    expect(chapterXp(fail, false)).toBe(Math.round(fail.score * 0.25))
+    expect(storyXp({ summary: fail, alreadyCompleted: false, previousBestScore: 0 })).toEqual({ story: 0, practice: Math.round(fail.score * 0.25) })
+  })
+
+  it('limite diário de XP de prática', () => {
+    expect(capPractice(100, 0)).toBe(100)
+    expect(capPractice(100, PRACTICE_DAILY_CAP - 30)).toBe(30)
+    expect(capPractice(100, PRACTICE_DAILY_CAP)).toBe(0)
+  })
+
+  it('Quem sou eu? vale mais com menos pistas; Contra o tempo premia rapidez', () => {
+    expect(whoamiPoints(1, 1, 3)).toBe(20)
+    expect(whoamiPoints(1, 3, 3)).toBe(10)
+    expect(timeAttackPoints(1, 3)).toBe(20)
+    expect(timeAttackPoints(1, 6)).toBe(15)
+    expect(timeAttackPoints(1, 12)).toBe(10)
+  })
+
+  it('pontos específicos por resposta entram na pontuação', () => {
+    const s = summarizeMatch([{ ...r(true), points: 25 }], 1)
+    expect(s.score).toBe(25)
   })
 })
 
@@ -91,41 +116,104 @@ describe('sequência diária', () => {
   })
 })
 
-describe('desbloqueio', () => {
-  it('somente o primeiro capítulo da primeira jornada começa liberado', () => {
+const done = { completed: true, bestStars: 3, bestScore: 50, attempts: 1 }
+
+describe('progressão do Modo História', () => {
+  it('começa em Gênesis com só a primeira experiência liberada', () => {
     const p = emptyProgress()
-    expect(isChapterUnlocked('criacao-1', p)).toBe(true)
-    expect(isChapterUnlocked('criacao-2', p)).toBe(false)
-    expect(isJourneyUnlocked('noe', p)).toBe(false)
-    expect(isChapterUnlocked('noe-1', p)).toBe(false)
-    expect(nextChapter(p)?.id).toBe('criacao-1')
+    expect(isExperienceUnlocked('gn-criacao', p)).toBe(true)
+    expect(isExperienceUnlocked('gn-homem-mulher', p)).toBe(false)
+    expect(isExperienceUnlocked('ex-salvo', p)).toBe(false)
+    expect(nextExperience(p)?.id).toBe('gn-criacao')
+    expect(bookStatus(getBook('genesis')!, p)).toBe('disponivel')
+    expect(bookStatus(getBook('exodo')!, p)).toBe('bloqueado')
+    expect(bookStatus(getBook('levitico')!, p)).toBe('em-preparacao')
   })
 
-  it('libera o capítulo seguinte e a próxima jornada ao concluir', () => {
+  it('libera a próxima experiência e o próximo livro na ordem', () => {
     const p = emptyProgress()
-    const done = { completed: true, bestStars: 3, bestScore: 50, attempts: 1 }
-    p.chapters['criacao-1'] = done
-    expect(isChapterUnlocked('criacao-2', p)).toBe(true)
-    for (const c of JOURNEYS[0].chapters) p.chapters[c.id] = done
-    expect(isJourneyUnlocked('noe', p)).toBe(true)
-    expect(isChapterUnlocked('noe-1', p)).toBe(true)
-    expect(isChapterUnlocked('noe-2', p)).toBe(false)
-    expect(journeyMedal('criacao', p)).toBe('ouro')
-    expect(nextChapter(p)?.id).toBe('noe-1')
+    p.experiences['gn-criacao'] = done
+    expect(isExperienceUnlocked('gn-homem-mulher', p)).toBe(true)
+    expect(isExperienceUnlocked('gn-eden', p)).toBe(false)
+    expect(bookStatus(getBook('genesis')!, p)).toBe('em-andamento')
+    for (const e of experiencesOf('genesis')) p.experiences[e.id] = done
+    expect(bookStatus(getBook('genesis')!, p)).toBe('concluido')
+    expect(isExperienceUnlocked('ex-salvo', p)).toBe(true)
+    expect(isExperienceUnlocked('ex-sarca', p)).toBe(false)
+    expect(nextExperience(p)?.id).toBe('ex-salvo')
+    expect(bookMedal('genesis', p)).toBe('ouro')
   })
 
-  it('capítulo tentado e reprovado não libera o próximo', () => {
+  it('reprovação não libera e experiências concluídas continuam acessíveis', () => {
     const p = emptyProgress()
-    p.chapters['criacao-1'] = { completed: false, bestStars: 0, bestScore: 10, attempts: 2 }
-    expect(isChapterUnlocked('criacao-2', p)).toBe(false)
+    p.experiences['gn-criacao'] = { completed: false, bestStars: 0, bestScore: 10, attempts: 2 }
+    expect(isExperienceUnlocked('gn-homem-mulher', p)).toBe(false)
+    // experiência concluída (ex.: migrada) continua acessível mesmo fora da ordem
+    p.experiences['gn-queda'] = done
+    expect(isExperienceUnlocked('gn-queda', p)).toBe(true)
+  })
+
+  it('porcentagens por livro, testamento e jornada (livros em preparação contam 0%)', () => {
+    const p = emptyProgress()
+    const gn = experiencesOf('genesis')
+    for (const e of gn.slice(0, Math.floor(gn.length / 2))) p.experiences[e.id] = done
+    const ratio = Math.floor(gn.length / 2) / gn.length
+    expect(bookCompletion('genesis', p).ratio).toBeCloseTo(ratio)
+    expect(testamentCompletion('AT', p)).toBeCloseTo(ratio / 39)
+    expect(testamentCompletion('NT', p)).toBe(0)
+    expect(journeyCompletion(p)).toBeCloseTo(ratio / 66)
+  })
+
+  it('continuar de onde parou: próxima pendente ou última aberta', () => {
+    const p = emptyProgress()
+    for (const e of STORY_SEQUENCE) p.experiences[e.id] = done
+    p.lastExperienceId = 'gn-babel'
+    expect(continueExperience(p)?.id).toBe('gn-babel')
+    delete p.experiences['ex-sarca']
+    expect(continueExperience(p)?.id).toBe('ex-sarca')
   })
 
   it('medalhas por estrelas', () => {
     const p = emptyProgress()
-    JOURNEYS[0].chapters.forEach((c, i) => (p.chapters[c.id] = { completed: true, bestStars: i === 0 ? 1 : 2, bestScore: 0, attempts: 1 }))
-    expect(journeyMedal('criacao', p)).toBe('bronze') // 7/12
-    JOURNEYS[0].chapters.forEach((c) => (p.chapters[c.id].bestStars = 2))
-    expect(journeyMedal('criacao', p)).toBe('prata')
+    experiencesOf('exodo').forEach((e, i) => (p.experiences[e.id] = { completed: true, bestStars: i === 0 ? 1 : 2, bestScore: 0, attempts: 1 }))
+    expect(bookMedal('exodo', p)).toBe('bronze') // 7/12
+    experiencesOf('exodo').forEach((e) => (p.experiences[e.id].bestStars = 2))
+    expect(bookMedal('exodo', p)).toBe('prata')
+  })
+})
+
+describe('Modo Livre: rodadas', () => {
+  it('perguntas aleatórias: 10 de vários livros, dificuldade crescente', () => {
+    const round = buildRound('aleatorias', QUESTIONS, seededRandom(1))
+    expect(round).toHaveLength(10)
+    expect(round.map((q) => q.difficulty)).toEqual([...round.map((q) => q.difficulty)].sort())
+    expect(new Set(round.map((q) => q.id)).size).toBe(10)
+  })
+
+  it('cada modalidade só usa o tipo certo de pergunta', () => {
+    expect(buildRound('verdadeiro-falso', QUESTIONS).every((q) => q.type === 'truefalse')).toBe(true)
+    expect(buildRound('complete', QUESTIONS).every((q) => q.type === 'complete')).toBe(true)
+    expect(buildRound('quem-sou-eu', QUESTIONS).every((q) => q.type === 'whoami')).toBe(true)
+    expect(buildRound('ordem', QUESTIONS).every((q) => q.type === 'order')).toBe(true)
+    expect(buildRound('livro', QUESTIONS).every((q) => q.type === 'book')).toBe(true)
+  })
+})
+
+describe('desafio diário: uma recompensa por dia', () => {
+  it('bloqueia no mesmo dia e se o relógio voltar', () => {
+    const p = emptyProgress()
+    expect(canClaimDaily(p, '2026-11-11')).toBe(true)
+    p.daily.lastCompletedDay = '2026-11-11'
+    expect(canClaimDaily(p, '2026-11-11')).toBe(false)
+    expect(canClaimDaily(p, '2026-11-10')).toBe(false)
+    expect(canClaimDaily(p, '2026-11-12')).toBe(true)
+  })
+
+  it('detecta relógio do aparelho anterior ao último registro', () => {
+    const p = emptyProgress()
+    p.daily.lastCompletedDay = '2026-11-11'
+    expect(new LocalDailyService(() => new Date(2026, 10, 9)).context(p).clockSuspicious).toBe(true)
+    expect(new LocalDailyService(() => new Date(2026, 10, 12)).context(p)).toEqual({ day: '2026-11-12', source: 'device', clockSuspicious: false })
   })
 })
 
@@ -145,8 +233,10 @@ describe('verificação de respostas', () => {
     expect(res.correct).toBe(false)
     expect(res.quality).toBeCloseTo((ord.items.length - 2) / ord.items.length)
     const mem = getQuestion('cr-11')!
-    expect(checkAnswer(mem, { kind: 'memory', mistakes: 2 }).correct).toBe(true)
-    expect(checkAnswer(mem, { kind: 'memory', mistakes: 3 }).correct).toBe(false)
+    // 4 pares: até 4 erros (memória perfeita pode precisar de 3)
+    expect(checkAnswer(mem, { kind: 'memory', mistakes: 3 }).correct).toBe(true)
+    expect(checkAnswer(mem, { kind: 'memory', mistakes: 4 }).correct).toBe(true)
+    expect(checkAnswer(mem, { kind: 'memory', mistakes: 5 }).correct).toBe(false)
   })
 })
 

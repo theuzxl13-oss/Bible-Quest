@@ -1,5 +1,5 @@
 -- Bible Quest — esquema proposto para Supabase (PostgreSQL)
--- STATUS: proposta para a próxima fase. Não está em uso na versão estática.
+-- STATUS: proposta para a próxima fase (atualizada na v0.2). Não está em uso na versão estática.
 -- Toda a segurança depende das políticas RLS abaixo, nunca do frontend.
 -- A chave service_role NUNCA deve ir para o cliente.
 
@@ -22,24 +22,29 @@ create table public.progress (
   streak_last_day date,
   daily_last_day date,
   daily_count integer not null default 0,
+  practice_day date,               -- limite diário de XP de prática (Modo Livre)
+  practice_xp integer not null default 0,
   updated_at timestamptz not null default now()
 );
 
-create table public.chapter_progress (
+-- Progresso do Modo História por experiência (ex.: 'gn-criacao').
+create table public.experience_progress (
   user_id uuid references public.profiles on delete cascade,
-  chapter_id text not null,
+  experience_id text not null,
   completed boolean not null default false,
   best_stars smallint not null default 0 check (best_stars between 0 and 3),
   best_score integer not null default 0,
   attempts integer not null default 0,
-  primary key (user_id, chapter_id)
+  primary key (user_id, experience_id)
 );
 
 create table public.match_history (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references public.profiles on delete cascade,
-  mode text not null check (mode in ('capitulo', 'diario', 'multiplayer')),
-  chapter_id text,
+  mode text not null check (mode in ('historia', 'livre', 'diario', 'multiplayer')),
+  free_mode text,                  -- modalidade do Modo Livre
+  book_id text,
+  experience_id text,
   correct smallint not null,
   total smallint not null,
   score integer not null,
@@ -54,11 +59,45 @@ create table public.user_achievements (
   primary key (user_id, achievement_id)
 );
 
+-- Desafio diário validado no servidor: o dia vem do servidor e a chave
+-- primária impede receber a recompensa duas vezes no mesmo dia.
+create table public.daily_challenges (
+  day date primary key,
+  question_ids text[] not null
+);
+
+create table public.daily_claims (
+  user_id uuid references public.profiles on delete cascade,
+  day date not null,
+  correct smallint not null,
+  total smallint not null,
+  xp integer not null,
+  claimed_at timestamptz not null default now(),
+  primary key (user_id, day)
+);
+
 -- Conteúdo (gerenciado pelo painel administrativo)
+create table public.books (
+  id text primary key,             -- ex.: 'genesis'
+  canon_id text not null default 'evangelico-66',
+  position smallint not null,      -- ordem na jornada
+  name text not null,
+  testament text not null check (testament in ('AT', 'NT'))
+);
+
+create table public.experiences (
+  id text primary key,
+  book_id text not null references public.books,
+  position smallint not null,
+  title text not null,
+  content jsonb not null,          -- introdução, narrativa, trechos, referências, aprendizado
+  published boolean not null default false
+);
+
 create table public.questions (
   id text primary key,
-  journey_id text not null,
-  chapter_id text not null,
+  book_id text not null references public.books,
+  experience_id text references public.experiences,  -- nulo = só Modo Livre
   type text not null,
   difficulty smallint not null check (difficulty between 1 and 3),
   category text not null,
@@ -128,7 +167,11 @@ create table public.moderation_log (
 -- ===================== RLS =====================
 alter table public.profiles enable row level security;
 alter table public.progress enable row level security;
-alter table public.chapter_progress enable row level security;
+alter table public.experience_progress enable row level security;
+alter table public.daily_challenges enable row level security;
+alter table public.daily_claims enable row level security;
+alter table public.books enable row level security;
+alter table public.experiences enable row level security;
 alter table public.match_history enable row level security;
 alter table public.user_achievements enable row level security;
 alter table public.questions enable row level security;
@@ -149,7 +192,13 @@ create policy "perfil proprio" on public.profiles for all using (id = auth.uid()
 
 -- Progresso: leitura do próprio. Escrita apenas pelo servidor (Edge Function), para evitar XP forjado.
 create policy "progresso leitura" on public.progress for select using (user_id = auth.uid());
-create policy "capitulos leitura" on public.chapter_progress for select using (user_id = auth.uid());
+create policy "experiencias leitura" on public.experience_progress for select using (user_id = auth.uid());
+create policy "diario leitura" on public.daily_claims for select using (user_id = auth.uid());
+create policy "desafio do dia" on public.daily_challenges for select using (day <= current_date);
+create policy "livros leitura" on public.books for select using (true);
+create policy "experiencias publicadas" on public.experiences for select using (published or public.is_staff());
+create policy "experiencias staff" on public.experiences for all using (public.is_staff('admin') or public.is_staff('revisor'))
+  with check (public.is_staff('admin') or public.is_staff('revisor'));
 create policy "historico leitura" on public.match_history for select using (user_id = auth.uid());
 create policy "conquistas leitura" on public.user_achievements for select using (user_id = auth.uid());
 

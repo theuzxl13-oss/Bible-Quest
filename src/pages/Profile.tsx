@@ -2,16 +2,18 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Avatar, AVATARS, LocalProfileNotice, ProgressBar, Stars } from '../components/ui'
-import { JOURNEYS } from '../data/journeys'
+import { BOOKS } from '../data/bible/canon'
+import { STORY_SEQUENCE, hasContent } from '../data/story'
+import { FREE_MODES } from '../services/game/freeModes'
+import { MODE_LABEL } from './Dashboard'
 import { QUESTION_TYPE_LABEL } from '../data/questions'
 import { ACHIEVEMENTS } from '../data/achievements'
 import type { QuestionType } from '../types'
 import { levelProgress, levelTitle } from '../services/game/levels'
-import { journeyCompletion, journeyMedal } from '../services/game/unlock'
+import { bookCompletion, bookMedal, journeyCompletion, percent, testamentCompletion } from '../services/game/progression'
 import { useGame } from '../state/GameContext'
 
 const AGE_LABEL = { ate12: 'Até 12 anos', '13a17': '13 a 17 anos', '18mais': '18 anos ou mais' }
-const MODE_LABEL = { capitulo: 'Capítulo', diario: 'Diário', 'demo-multiplayer': 'Multiplayer (demo)' }
 
 export function downloadText(filename: string, text: string) {
   const blob = new Blob([text], { type: 'application/json' })
@@ -33,8 +35,8 @@ export default function ProfilePage() {
   const p = profile!
   const lp = levelProgress(progress.xp)
   const accuracy = progress.stats.answered ? Math.round((progress.stats.correct / progress.stats.answered) * 100) : 0
-  const chaptersDone = Object.values(progress.chapters).filter((c) => c.completed).length
-  const totalChapters = JOURNEYS.reduce((s, j) => s + j.chapters.length, 0)
+  const expsDone = STORY_SEQUENCE.filter((e) => progress.experiences[e.id]?.completed).length
+  const storyBooks = BOOKS.filter((b) => hasContent(b.id))
 
   const save = () => {
     if (nick.trim().length < 2) return
@@ -84,7 +86,8 @@ export default function ProfilePage() {
       <section aria-labelledby="st">
         <h2 id="st" className="section-title">Estatísticas</h2>
         <dl className="stat-grid">
-          <div className="panel"><dt>Capítulos concluídos</dt><dd>{chaptersDone}/{totalChapters}</dd></div>
+          <div className="panel"><dt>Experiências concluídas</dt><dd>{expsDone}/{STORY_SEQUENCE.length}</dd></div>
+          <div className="panel"><dt>Partidas no Modo Livre</dt><dd>{progress.free.matches}</dd></div>
           <div className="panel"><dt>Perguntas respondidas</dt><dd>{progress.stats.answered}</dd></div>
           <div className="panel"><dt>Precisão</dt><dd>{accuracy}%</dd></div>
           <div className="panel"><dt>Melhor sequência</dt><dd>{progress.streak.best} dias</dd></div>
@@ -108,25 +111,46 @@ export default function ProfilePage() {
 
       <section aria-labelledby="pj">
         <div className="section-head">
-          <h2 id="pj" className="section-title">Progresso nas jornadas</h2>
+          <h2 id="pj" className="section-title">Modo História</h2>
           <Link to="/conquistas" className="link">Conquistas e medalhas</Link>
         </div>
+        <dl className="stat-grid">
+          <div className="panel"><dt>Jornada completa</dt><dd>{percent(journeyCompletion(progress))}</dd></div>
+          <div className="panel"><dt>Antigo Testamento</dt><dd>{percent(testamentCompletion('AT', progress))}</dd></div>
+          <div className="panel"><dt>Novo Testamento</dt><dd>{percent(testamentCompletion('NT', progress))}</dd></div>
+        </dl>
         <ul className="journey-progress">
-          {JOURNEYS.map((j) => {
-            const c = journeyCompletion(j.id, progress)
-            const m = journeyMedal(j.id, progress)
+          {storyBooks.map((b) => {
+            const c = bookCompletion(b.id, progress)
+            const m = bookMedal(b.id, progress)
             return (
-              <li key={j.id} className="panel">
+              <li key={b.id} className="panel">
                 <div className="jp-head">
-                  <strong>{j.title}</strong>
+                  <strong>{b.name}</strong>
                   {m && <span className={`medal medal-${m}`}><Icon name="laurel" size={14} /> {m}</span>}
                 </div>
-                <ProgressBar value={c.done} max={c.total} label={`Progresso em ${j.title}`} />
-                <span className="small muted">{c.done}/{c.total} capítulos · {c.stars}/{c.maxStars} estrelas</span>
+                <ProgressBar value={c.done} max={c.total} label={`Progresso em ${b.name}`} />
+                <span className="small muted">{c.done}/{c.total} experiências · {percent(c.ratio)} · {c.stars}/{c.maxStars} estrelas</span>
               </li>
             )
           })}
         </ul>
+      </section>
+
+      <section aria-labelledby="pl">
+        <h2 id="pl" className="section-title">Modo Livre</h2>
+        <div className="table-wrap">
+          <table className="simple-table">
+            <caption className="sr-only">Recordes por modalidade</caption>
+            <thead><tr><th scope="col">Modalidade</th><th scope="col">Partidas</th><th scope="col">Recorde</th></tr></thead>
+            <tbody>
+              {FREE_MODES.map((m) => {
+                const st = progress.free.byMode[m.id]
+                return <tr key={m.id}><td>{m.title}</td><td>{st?.played ?? 0}</td><td>{st ? `${st.best} pts` : '—'}</td></tr>
+              })}
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section aria-labelledby="hi">
@@ -139,10 +163,10 @@ export default function ProfilePage() {
               <li key={h.id} className="history-item">
                 <div>
                   <strong>{h.title}</strong>
-                  <span className="muted small"> · {MODE_LABEL[h.mode]} · {new Date(h.date).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</span>
+                  <span className="muted small"> · {MODE_LABEL[h.mode]}{h.freeMode ? ` · ${FREE_MODES.find((m) => m.id === h.freeMode)?.title}` : ''} · {new Date(h.date).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' })}</span>
                 </div>
                 <div className="history-right">
-                  {h.mode === 'capitulo' && <Stars value={h.stars} size={14} />}
+                  {h.mode === 'historia' && <Stars value={h.stars} size={14} />}
                   <span className="small">{h.correct}/{h.total}</span>
                   <span className={`small ${h.passed ? 'gold' : 'muted'}`}>+{h.xp} XP</span>
                 </div>

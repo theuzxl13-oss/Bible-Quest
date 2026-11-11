@@ -1,4 +1,3 @@
-import type { JourneyId } from '../../types'
 
 /*
  * CONTRATOS DO MULTIPLAYER
@@ -32,7 +31,8 @@ export interface Room {
   code: string
   visibility: RoomVisibility
   status: RoomStatus
-  journeyId: JourneyId | 'todas'
+  /** Tema: 'todas' ou o id de um livro bíblico. */
+  theme: string
   questionIds: string[]
   players: RoomPlayer[]
   createdAt: string
@@ -49,7 +49,7 @@ export type RoomEvent =
 
 export interface CreateRoomInput {
   hostNickname: string
-  journeyId: JourneyId | 'todas'
+  theme: string
   questionCount: number
 }
 

@@ -29,14 +29,14 @@ export class DemoMultiplayerService implements MultiplayerService {
     const seed = hashString(`${input.hostNickname}:${Date.now()}`)
     const rand = seededRandom(seed)
     const pool = QUESTIONS.filter(
-      (q) => (input.journeyId === 'todas' || q.journeyId === input.journeyId) && q.type !== 'memory' && q.type !== 'order',
+      (q) => (input.theme === 'todas' || q.bookId === input.theme) && q.type !== 'memory' && q.type !== 'order',
     )
     const room: Room = {
       id: `demo-${seed.toString(36)}`,
       code: generateRoomCode(rand),
       visibility: 'private',
       status: 'waiting',
-      journeyId: input.journeyId,
+      theme: input.theme,
       questionIds: shuffle(pool, rand)
         .slice(0, input.questionCount)
         .map((q) => q.id),

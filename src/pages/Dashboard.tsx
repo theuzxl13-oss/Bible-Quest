@@ -2,22 +2,27 @@ import { Link } from 'react-router-dom'
 import { ArtImage } from '../components/ArtImage'
 import { Icon } from '../components/Icon'
 import { LocalProfileNotice, ProgressBar, Stars } from '../components/ui'
-import { JOURNEYS, getJourney } from '../data/journeys'
-import { useGame } from '../state/GameContext'
+import { ACHIEVEMENTS } from '../data/achievements'
+import { getBook } from '../data/bible/canon'
+import { STORY_SEQUENCE } from '../data/story'
+import { FREE_MODES } from '../services/game/freeModes'
 import { levelProgress, levelTitle } from '../services/game/levels'
+import { continueExperience, journeyCompletion, percent } from '../services/game/progression'
 import { visibleStreak } from '../services/game/streak'
-import { dayKey } from '../services/game/dates'
-import { isJourneyUnlocked, journeyCompletion, nextChapter } from '../services/game/unlock'
+import { useGame } from '../state/GameContext'
+
+export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Livre', diario: 'Desafio diário', 'demo-multiplayer': 'Multiplayer (demo)' } as const
 
 export default function Dashboard() {
-  const { profile, progress } = useGame()
+  const { profile, progress, dailyContext } = useGame()
   const lp = levelProgress(progress.xp)
-  const today = dayKey()
+  const today = dailyContext().day
   const streak = visibleStreak(progress.streak, today)
   const dailyDone = progress.daily.lastCompletedDay === today
-  const next = nextChapter(progress)
-  const nextJourney = next ? getJourney(next.journeyId) : null
-  const accuracy = progress.stats.answered ? Math.round((progress.stats.correct / progress.stats.answered) * 100) : 0
+  const cont = continueExperience(progress)
+  const contBook = cont ? getBook(cont.bookId) : null
+  const doneExps = STORY_SEQUENCE.filter((e) => progress.experiences[e.id]?.completed).length
+  const achievements = Object.keys(progress.achievements).length
 
   return (
     <div className="container section stack-lg">
@@ -27,99 +32,99 @@ export default function Dashboard() {
           <h1>Olá, {profile!.nickname}</h1>
         </div>
         <div className="stat-pills">
-          <span className="pill" title="Sequência de dias">
-            <Icon name="flame" size={18} /> {streak} {streak === 1 ? 'dia' : 'dias'}
-          </span>
-          <span className="pill">
-            <Icon name="star" size={18} /> {progress.xp} XP
-          </span>
+          <span className="pill" title="Sequência de dias"><Icon name="flame" size={18} /> {streak} {streak === 1 ? 'dia' : 'dias'}</span>
+          <span className="pill"><Icon name="star" size={18} /> {progress.xp} XP</span>
+          <span className="pill"><Icon name="crown" size={18} /> Nível {lp.level}</span>
         </div>
       </header>
 
-      <div className="dash-grid">
-        <section className="panel level-card" aria-labelledby="lvl-title">
-          <p className="eyebrow">Nível {lp.level}</p>
-          <h2 id="lvl-title">{levelTitle(lp.level)}</h2>
-          <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
-          <p className="muted small">
-            {lp.current} / {lp.needed} XP para o nível {lp.level + 1}
-          </p>
-          <dl className="mini-stats">
-            <div><dt>Respostas</dt><dd>{progress.stats.answered}</dd></div>
-            <div><dt>Precisão</dt><dd>{accuracy}%</dd></div>
-            <div><dt>Melhor sequência</dt><dd>{progress.streak.best}</dd></div>
-          </dl>
-        </section>
+      {cont && contBook && (
+        <Link to={`/historia/${cont.bookId}/${cont.id}`} className="continue-banner">
+          <ArtImage art={cont.image} className="continue-banner-img" sizes="100vw" priority />
+          <div className="continue-banner-shade" />
+          <div className="continue-banner-body">
+            <p className="eyebrow">Continuar jornada · {contBook.name}</p>
+            <h2>{cont.title}</h2>
+            <p className="small">{cont.scope}</p>
+            <span className="btn btn-gold">Continuar de onde parei <Icon name="arrowRight" /></span>
+          </div>
+        </Link>
+      )}
 
-        {next && nextJourney ? (
-          <Link to={`/capitulo/${next.id}`} className="panel continue-card">
-            <ArtImage art={next.image} className="continue-img" sizes="(min-width: 900px) 40vw, 100vw" />
-            <div className="continue-body">
-              <p className="eyebrow">Continuar · {nextJourney.title}</p>
-              <h2>Capítulo {next.order}: {next.title}</h2>
-              <p className="muted">{next.scope}</p>
-              <span className="btn btn-gold">Abrir capítulo <Icon name="arrowRight" /></span>
+      <div className="modes-grid">
+        <Link to="/historia" className="mode-hero mode-hero-story">
+          <ArtImage art="abraham-journey" className="mode-hero-img" sizes="(min-width: 900px) 50vw, 100vw" decorative />
+          <div className="mode-hero-shade" />
+          <div className="mode-hero-body">
+            <span className="mode-hero-icon"><Icon name="map" size={26} /></span>
+            <p className="eyebrow">Modo História</p>
+            <h2>A grande jornada bíblica</h2>
+            <p>De Gênesis a Apocalipse, na ordem dos livros, com narrativa, referências, aprendizado e desafios.</p>
+            <ProgressBar value={Math.round(journeyCompletion(progress) * 1000)} max={1000} label="Conclusão da jornada completa" />
+            <span className="small">{percent(journeyCompletion(progress))} da Bíblia · {doneExps}/{STORY_SEQUENCE.length} experiências disponíveis</span>
+          </div>
+        </Link>
+        <Link to="/livre" className="mode-hero mode-hero-free">
+          <ArtImage art="moses-plague" className="mode-hero-img" sizes="(min-width: 900px) 50vw, 100vw" decorative />
+          <div className="mode-hero-shade" />
+          <div className="mode-hero-body">
+            <span className="mode-hero-icon"><Icon name="star" size={26} /></span>
+            <p className="eyebrow">Modo Livre</p>
+            <h2>Desafios bíblicos</h2>
+            <p>{FREE_MODES.length} modalidades para jogar quando quiser, incluindo Contra o tempo e salas com amigos.</p>
+            <div className="mode-chips">
+              {FREE_MODES.slice(0, 4).map((m) => <span key={m.id} className="tag">{m.title}</span>)}
+              <span className="tag">+{FREE_MODES.length - 4}</span>
             </div>
-          </Link>
-        ) : (
-          <section className="panel continue-card">
-            <div className="continue-body">
-              <p className="eyebrow">Jornadas concluídas</p>
-              <h2>Você completou todas as jornadas disponíveis</h2>
-              <p className="muted">Refaça capítulos para conquistar 3 estrelas e medalhas de ouro.</p>
-              <Link to="/mapa" className="btn btn-gold">Ver mapa</Link>
-            </div>
-          </section>
-        )}
+            <span className="small">{progress.free.matches} {progress.free.matches === 1 ? 'partida jogada' : 'partidas jogadas'}</span>
+          </div>
+        </Link>
+      </div>
 
+      <div className="dash-row">
         <Link to="/diario" className={`panel daily-card ${dailyDone ? 'is-done' : ''}`}>
           <Icon name="calendar" size={28} />
           <div>
             <p className="eyebrow">Desafio diário</p>
             <h2>{dailyDone ? 'Concluído hoje' : '5 perguntas de hoje'}</h2>
-            <p className="muted small">{dailyDone ? 'Volte amanhã para manter a sequência.' : 'Mantenha sua sequência e ganhe bônus de XP.'}</p>
+            <p className="muted small">{dailyDone ? 'Volte amanhã para manter a sequência.' : 'Bônus de XP uma vez por dia.'}</p>
           </div>
           <Icon name="arrowRight" />
         </Link>
-
-        <Link to="/multiplayer" className="panel daily-card">
-          <Icon name="users" size={28} />
+        <Link to="/ranking" className="panel daily-card">
+          <Icon name="trophy" size={28} />
           <div>
-            <p className="eyebrow">Multiplayer · demonstração</p>
-            <h2>Salas privadas</h2>
-            <p className="muted small">Veja como funcionarão as partidas com amigos.</p>
+            <p className="eyebrow">Ranking</p>
+            <h2>Classificação geral</h2>
+            <p className="muted small">Por XP, com dados de exemplo.</p>
+          </div>
+          <Icon name="arrowRight" />
+        </Link>
+        <Link to="/conquistas" className="panel daily-card">
+          <Icon name="laurel" size={28} />
+          <div>
+            <p className="eyebrow">Perfil e conquistas</p>
+            <h2>{achievements} de {ACHIEVEMENTS.length} conquistas</h2>
+            <p className="muted small">Nível {lp.level} · {levelTitle(lp.level)}</p>
           </div>
           <Icon name="arrowRight" />
         </Link>
       </div>
 
-      <section aria-labelledby="jr-title">
-        <div className="section-head">
-          <h2 id="jr-title" className="section-title">Suas jornadas</h2>
-          <Link to="/mapa" className="link">Ver mapa completo</Link>
+      <section className="panel level-card" aria-labelledby="lvl-title">
+        <div className="level-row">
+          <div>
+            <p className="eyebrow">Nível {lp.level}</p>
+            <h2 id="lvl-title">{levelTitle(lp.level)}</h2>
+          </div>
+          <dl className="mini-stats">
+            <div><dt>Respostas</dt><dd>{progress.stats.answered}</dd></div>
+            <div><dt>Precisão</dt><dd>{progress.stats.answered ? Math.round((progress.stats.correct / progress.stats.answered) * 100) : 0}%</dd></div>
+            <div><dt>Melhor sequência</dt><dd>{progress.streak.best}</dd></div>
+          </dl>
         </div>
-        <div className="journey-mini-grid">
-          {JOURNEYS.map((j) => {
-            const c = journeyCompletion(j.id, progress)
-            const unlocked = isJourneyUnlocked(j.id, progress)
-            return (
-              <Link key={j.id} to={unlocked ? `/jornada/${j.id}` : '/mapa'} className={`journey-mini ${unlocked ? '' : 'is-locked'}`}>
-                <ArtImage art={j.image} className="journey-mini-img" sizes="(min-width: 900px) 20vw, 50vw" />
-                <div className="journey-mini-body">
-                  <h3>{j.title}</h3>
-                  {unlocked ? (
-                    <>
-                      <ProgressBar value={c.done} max={c.total} label={`Progresso em ${j.title}`} />
-                      <span className="small muted">{c.done}/{c.total} capítulos</span>
-                    </>
-                  ) : (
-                    <span className="small muted"><Icon name="lock" size={14} /> Bloqueada</span>
-                  )}
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+        <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
+        <p className="muted small">{lp.current} / {lp.needed} XP para o nível {lp.level + 1}. O XP do Modo História, do Modo Livre e do diário somam no mesmo nível.</p>
       </section>
 
       <section aria-labelledby="hist-title">
@@ -128,17 +133,17 @@ export default function Dashboard() {
           <Link to="/perfil" className="link">Histórico completo</Link>
         </div>
         {progress.history.length === 0 ? (
-          <p className="muted">Nenhuma partida ainda. Que tal começar pelo primeiro capítulo?</p>
+          <p className="muted">Nenhuma partida ainda. Comece pela primeira experiência de Gênesis ou escolha uma modalidade livre.</p>
         ) : (
           <ul className="history">
-            {progress.history.slice(0, 4).map((h) => (
+            {progress.history.slice(0, 5).map((h) => (
               <li key={h.id} className="history-item">
                 <div>
                   <strong>{h.title}</strong>
-                  <span className="muted small"> · {new Date(h.date).toLocaleDateString('pt-BR')}</span>
+                  <span className="muted small"> · {MODE_LABEL[h.mode]} · {new Date(h.date).toLocaleDateString('pt-BR')}</span>
                 </div>
                 <div className="history-right">
-                  {h.mode === 'capitulo' && <Stars value={h.stars} size={14} />}
+                  {h.mode === 'historia' && <Stars value={h.stars} size={14} />}
                   <span className="small">{h.correct}/{h.total}</span>
                   <span className="small gold">+{h.xp} XP</span>
                 </div>

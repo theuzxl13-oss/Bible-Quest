@@ -1,9 +1,8 @@
 import { bank } from './helpers'
 
-export const NOE_QUESTIONS = bank('noe', [
-  // Capítulo 1 — Um homem justo
+export const NOE_QUESTIONS = bank('genesis', [
   {
-    id: 'no-01', chapterId: 'noe-1', type: 'whoami', difficulty: 1, category: 'personagens',
+    id: 'no-01', experienceId: 'gn-arca', type: 'whoami', difficulty: 1, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui filho de Lameque.', 'Achei graça aos olhos do Senhor.', 'Construí uma grande arca.'],
     options: ['Noé', 'Abraão', 'Moisés', 'Enoque'], answer: 0,
@@ -11,7 +10,7 @@ export const NOE_QUESTIONS = bank('noe', [
     reference: 'Gênesis 5:28–29; 6:8, 14',
   },
   {
-    id: 'no-02', chapterId: 'noe-1', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'no-02', experienceId: 'gn-corrupcao', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Noé, porém, achou ____ aos olhos do Senhor.',
     options: ['graça', 'força', 'descanso', 'alegria'], answer: 0,
@@ -19,50 +18,49 @@ export const NOE_QUESTIONS = bank('noe', [
     reference: 'Gênesis 6:8',
   },
   {
-    id: 'no-03', chapterId: 'noe-1', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'no-03', experienceId: 'gn-arca', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Quais eram os nomes dos filhos de Noé?',
     options: ['Sem, Cam e Jafé', 'Caim, Abel e Sete', 'Isaque, Ismael e Jacó', 'Rúben, Simeão e Levi'], answer: 0,
     explanation: 'Noé gerou três filhos: Sem, Cam e Jafé.',
     reference: 'Gênesis 6:10',
   },
   {
-    id: 'no-04', chapterId: 'noe-1', type: 'truefalse', difficulty: 1, category: 'personagens',
+    id: 'no-04', experienceId: 'gn-arca', type: 'truefalse', difficulty: 1, category: 'personagens',
     prompt: 'A Bíblia descreve Noé como alguém que andava com Deus.',
     answer: true,
     explanation: 'Noé era varão justo e reto em suas gerações; Noé andava com Deus.',
     reference: 'Gênesis 6:9',
   },
   {
-    id: 'no-05', chapterId: 'noe-1', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'no-05', experienceId: 'gn-arca', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'Como Gênesis descreve a terra antes do dilúvio?',
     options: ['Corrompida e cheia de violência', 'Em paz e prosperidade', 'Deserta e sem habitantes', 'Coberta de gelo'], answer: 0,
     explanation: 'A terra estava corrompida diante de Deus e cheia de violência.',
     reference: 'Gênesis 6:11',
   },
-  // Capítulo 2 — A construção da arca
   {
-    id: 'no-06', chapterId: 'noe-2', type: 'multiple', difficulty: 2, category: 'historia',
+    id: 'no-06', experienceId: 'gn-arca', type: 'multiple', difficulty: 2, category: 'historia',
     prompt: 'De que madeira a arca deveria ser feita?',
     options: ['Gofer', 'Cedro', 'Carvalho', 'Acácia'], answer: 0,
     explanation: 'A instrução foi fazer uma arca de madeira de gofer.',
     reference: 'Gênesis 6:14',
   },
   {
-    id: 'no-07', chapterId: 'noe-2', type: 'multiple', difficulty: 2, category: 'historia',
+    id: 'no-07', experienceId: 'gn-arca', type: 'multiple', difficulty: 2, category: 'historia',
     prompt: 'Quantos andares a arca deveria ter?',
     options: ['Três', 'Dois', 'Quatro', 'Um'], answer: 0,
     explanation: 'A arca teria andares baixo, segundo e terceiro.',
     reference: 'Gênesis 6:16',
   },
   {
-    id: 'no-08', chapterId: 'noe-2', type: 'truefalse', difficulty: 3, category: 'narrativa',
+    id: 'no-08', experienceId: 'gn-arca', type: 'truefalse', difficulty: 3, category: 'narrativa',
     prompt: 'Dos animais limpos entrou na arca apenas um casal de cada espécie.',
     answer: false,
     explanation: 'Dos animais limpos, Noé deveria tomar "sete e sete", macho e fêmea; dos não limpos, um casal.',
     reference: 'Gênesis 7:2',
   },
   {
-    id: 'no-09', chapterId: 'noe-2', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'no-09', experienceId: 'gn-arca', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Assim fez Noé; conforme a tudo o que Deus lhe mandou, assim o ____.',
     options: ['fez', 'disse', 'pensou', 'ouviu'], answer: 0,
@@ -70,7 +68,7 @@ export const NOE_QUESTIONS = bank('noe', [
     reference: 'Gênesis 6:22',
   },
   {
-    id: 'no-10', chapterId: 'noe-2', type: 'memory', difficulty: 3, category: 'historia',
+    id: 'no-10', experienceId: 'gn-arca', type: 'memory', difficulty: 3, category: 'historia',
     prompt: 'Associe cada medida da arca ao seu valor.',
     pairs: [
       { a: 'Comprimento', b: '300 côvados' },
@@ -82,36 +80,35 @@ export const NOE_QUESTIONS = bank('noe', [
     reference: 'Gênesis 6:15–16',
   },
   {
-    id: 'no-11', chapterId: 'noe-2', type: 'multiple', difficulty: 2, category: 'historia',
+    id: 'no-11', experienceId: 'gn-arca', type: 'multiple', difficulty: 2, category: 'historia',
     prompt: 'Com o que a arca foi revestida por dentro e por fora?',
     options: ['Betume', 'Ouro', 'Bronze', 'Argila'], answer: 0,
     explanation: 'A arca seria betumada por dentro e por fora.',
     reference: 'Gênesis 6:14',
   },
-  // Capítulo 3 — O dilúvio
   {
-    id: 'no-12', chapterId: 'noe-3', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'no-12', experienceId: 'gn-diluvio', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'Por quantos dias e noites choveu sobre a terra?',
     options: ['40', '7', '12', '100'], answer: 0,
     explanation: 'Houve chuva sobre a terra quarenta dias e quarenta noites.',
     reference: 'Gênesis 7:12',
   },
   {
-    id: 'no-13', chapterId: 'noe-3', type: 'multiple', difficulty: 3, category: 'cronologia',
+    id: 'no-13', experienceId: 'gn-diluvio', type: 'multiple', difficulty: 3, category: 'cronologia',
     prompt: 'Qual era a idade de Noé quando as águas do dilúvio vieram sobre a terra?',
     options: ['600 anos', '120 anos', '950 anos', '500 anos'], answer: 0,
     explanation: 'Noé tinha seiscentos anos quando o dilúvio veio.',
     reference: 'Gênesis 7:6',
   },
   {
-    id: 'no-14', chapterId: 'noe-3', type: 'multiple', difficulty: 1, category: 'geografia',
+    id: 'no-14', experienceId: 'gn-diluvio', type: 'multiple', difficulty: 1, category: 'geografia',
     prompt: 'Onde a arca repousou quando as águas baixaram?',
     options: ['Sobre os montes de Ararate', 'No monte Sinai', 'No monte Moriá', 'No monte das Oliveiras'], answer: 0,
     explanation: 'A arca repousou sobre os montes de Ararate, região ao norte da Mesopotâmia.',
     reference: 'Gênesis 8:4',
   },
   {
-    id: 'no-15', chapterId: 'noe-3', type: 'order', difficulty: 3, category: 'cronologia',
+    id: 'no-15', experienceId: 'gn-diluvio', type: 'order', difficulty: 3, category: 'cronologia',
     prompt: 'Organize as aves que Noé enviou para fora da arca.',
     items: [
       'Noé solta um corvo',
@@ -123,30 +120,29 @@ export const NOE_QUESTIONS = bank('noe', [
     reference: 'Gênesis 8:7–12',
   },
   {
-    id: 'no-16', chapterId: 'noe-3', type: 'truefalse', difficulty: 1, category: 'narrativa',
+    id: 'no-16', experienceId: 'gn-diluvio', type: 'truefalse', difficulty: 1, category: 'narrativa',
     prompt: 'A pomba voltou à arca trazendo um ramo de figueira.',
     answer: false,
     explanation: 'A pomba trouxe no bico uma folha de oliveira.',
     reference: 'Gênesis 8:11',
   },
   {
-    id: 'no-17', chapterId: 'noe-3', type: 'whoami', difficulty: 3, category: 'narrativa',
+    id: 'no-17', experienceId: 'gn-diluvio', type: 'whoami', difficulty: 3, category: 'narrativa',
     prompt: 'Quem sou eu?',
     clues: ['Fui a primeira ave solta da arca.', 'Saí e fiquei indo e voltando até as águas secarem.'],
     options: ['O corvo', 'A pomba', 'A águia', 'O pardal'], answer: 0,
     explanation: 'Antes da pomba, Noé soltou um corvo.',
     reference: 'Gênesis 8:7',
   },
-  // Capítulo 4 — O arco e a aliança
   {
-    id: 'no-18', chapterId: 'noe-4', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'no-18', experienceId: 'gn-alianca-noe', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'Qual foi o sinal da aliança de Deus depois do dilúvio?',
     options: ['O arco nas nuvens', 'Uma estrela no céu', 'Uma coluna de fogo', 'Uma pedra no monte'], answer: 0,
     explanation: 'O arco nas nuvens foi dado como sinal da aliança com a terra.',
     reference: 'Gênesis 9:13',
   },
   {
-    id: 'no-19', chapterId: 'noe-4', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'no-19', experienceId: 'gn-alianca-noe', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'O meu ____ tenho posto na nuvem; este será por sinal do concerto entre mim e a terra.',
     options: ['arco', 'sinal', 'trono', 'selo'], answer: 0,
@@ -154,28 +150,28 @@ export const NOE_QUESTIONS = bank('noe', [
     reference: 'Gênesis 9:13',
   },
   {
-    id: 'no-20', chapterId: 'noe-4', type: 'truefalse', difficulty: 2, category: 'narrativa',
+    id: 'no-20', experienceId: 'gn-alianca-noe', type: 'truefalse', difficulty: 2, category: 'narrativa',
     prompt: 'A aliança depois do dilúvio foi feita apenas com a família de Noé, sem incluir os animais.',
     answer: false,
     explanation: 'A aliança incluía Noé, sua descendência e todo ser vivente que saiu da arca.',
     reference: 'Gênesis 9:9–10',
   },
   {
-    id: 'no-21', chapterId: 'noe-4', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'no-21', experienceId: 'gn-alianca-noe', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'O que Noé fez ao sair da arca?',
     options: ['Edificou um altar ao Senhor', 'Construiu uma cidade', 'Partiu para Ur dos Caldeus', 'Plantou um jardim no Éden'], answer: 0,
     explanation: 'Noé edificou um altar e ofereceu holocaustos.',
     reference: 'Gênesis 8:20',
   },
   {
-    id: 'no-22', chapterId: 'noe-4', type: 'book', difficulty: 3, category: 'livros',
+    id: 'no-22', experienceId: 'gn-alianca-noe', type: 'book', difficulty: 3, category: 'livros',
     prompt: 'Em qual destes livros Jesus compara a sua vinda aos "dias de Noé"?',
     options: ['Mateus', 'Romanos', 'Atos', 'Apocalipse'], answer: 0,
     explanation: 'Em Mateus 24, Jesus usa os dias de Noé como exemplo de vigilância. Há passagem semelhante em Lucas 17.',
     reference: 'Mateus 24:37–39',
   },
   {
-    id: 'no-23', chapterId: 'noe-4', type: 'order', difficulty: 2, category: 'cronologia',
+    id: 'no-23', experienceId: 'gn-alianca-noe', type: 'order', difficulty: 2, category: 'cronologia',
     prompt: 'Organize os acontecimentos da história de Noé.',
     items: [
       'Deus ordena a construção da arca',

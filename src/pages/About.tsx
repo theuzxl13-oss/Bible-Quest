@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom'
 import { ArtImage } from '../components/ArtImage'
 import { PageHeader } from '../components/ui'
 import { ART, commonsUrl } from '../data/images'
-import { JOURNEYS } from '../data/journeys'
+import { STORY_SEQUENCE } from '../data/story'
+import { FREE_MODES } from '../services/game/freeModes'
+import { PRACTICE_DAILY_CAP } from '../services/game/scoring'
 import { QUESTIONS, QUESTION_TYPE_LABEL } from '../data/questions'
 
 export default function About() {
@@ -18,15 +20,23 @@ export default function About() {
 
       <section className="stack">
         <h2>Como jogar</h2>
+        <h3>Modo História</h3>
         <ol className="steps">
-          <li>Escolha uma jornada no mapa. A primeira, A Criação do Mundo, já está liberada.</li>
-          <li>Abra um capítulo e leia a introdução, o texto bíblico e o contexto histórico.</li>
-          <li>Responda ao desafio: você tem 3 tentativas e precisa acertar ao menos 60% para concluir.</li>
-          <li>Cada resposta traz uma explicação e a referência bíblica para você conferir.</li>
-          <li>Ganhe XP e estrelas, suba de nível, mantenha sua sequência diária e libere novos capítulos.</li>
+          <li>Abra o mapa da jornada. Ela começa em Gênesis e segue a ordem dos 66 livros até Apocalipse.</li>
+          <li>Cada experiência tem 7 etapas: introdução, narrativa, referências bíblicas, aprendizado, desafio, resultado e recompensa.</li>
+          <li>No desafio você tem 3 tentativas e precisa acertar ao menos 60% para concluir e liberar a próxima experiência.</li>
+          <li>Experiências concluídas podem ser revisitadas a qualquer momento, sem perder o progresso.</li>
         </ol>
+        <h3>Modo Livre</h3>
+        <p>Escolha qualquer modalidade, quando quiser: {FREE_MODES.map((m) => m.title).join(', ')}. Há também o desafio diário e salas multiplayer em demonstração.</p>
+        <h3>Evolução compartilhada</h3>
         <p>
-          Esta versão traz {JOURNEYS.length} jornadas, {JOURNEYS.reduce((s, j) => s + j.chapters.length, 0)} capítulos e {QUESTIONS.length} perguntas
+          XP, níveis, medalhas, conquistas, histórico e sequência diária são os mesmos nos dois modos. Para evitar
+          acúmulo infinito: repetir uma experiência concluída só rende XP se você superar sua melhor pontuação; o Modo
+          Livre tem um limite de {PRACTICE_DAILY_CAP} XP por dia; e a recompensa do desafio diário vale uma vez por dia.
+        </p>
+        <p>
+          Hoje estão disponíveis {STORY_SEQUENCE.length} experiências (Gênesis e Êxodo) e {QUESTIONS.length} perguntas
           nas modalidades: {Object.values(QUESTION_TYPE_LABEL).join(', ')}.
         </p>
       </section>
@@ -75,7 +85,7 @@ export default function About() {
 
       <section className="stack">
         <h2>Kzann Tech</h2>
-        <p>Bible Quest é desenvolvido pela Kzann Tech. Versão 0.1, a primeira versão pública para avaliação.</p>
+        <p>Bible Quest é desenvolvido pela Kzann Tech. Versão 0.2: Modo História e Modo Livre.</p>
         <p className="small">
           <Link to="/admin">Prévia do painel administrativo (protótipo, sem autenticação real)</Link>
         </p>

@@ -1,24 +1,29 @@
-import type { Question, QuestionType } from '../../types'
+import type { FreeModeId, Question, QuestionType } from '../../types'
 import { ABRAAO_QUESTIONS } from './abraao'
 import { CRIACAO_QUESTIONS } from './criacao'
+import { GENESIS_EXTRA_QUESTIONS } from './genesis-extra'
+import { GERAL_QUESTIONS } from './geral'
 import { JOSE_QUESTIONS } from './jose'
 import { MOISES_QUESTIONS } from './moises'
 import { NOE_QUESTIONS } from './noe'
 
+/** Banco completo: perguntas das experiências do Modo História e perguntas gerais do Modo Livre. */
 export const QUESTIONS: Question[] = [
   ...CRIACAO_QUESTIONS,
+  ...GENESIS_EXTRA_QUESTIONS,
   ...NOE_QUESTIONS,
   ...ABRAAO_QUESTIONS,
   ...JOSE_QUESTIONS,
   ...MOISES_QUESTIONS,
+  ...GERAL_QUESTIONS,
 ]
 
-export function questionsForChapter(chapterId: string): Question[] {
-  return QUESTIONS.filter((q) => q.chapterId === chapterId)
+export function questionsForExperience(experienceId: string, pool: Question[] = QUESTIONS): Question[] {
+  return pool.filter((q) => q.experienceId === experienceId)
 }
 
-export function getQuestion(id: string): Question | undefined {
-  return QUESTIONS.find((q) => q.id === id)
+export function getQuestion(id: string, pool: Question[] = QUESTIONS): Question | undefined {
+  return pool.find((q) => q.id === id)
 }
 
 export const QUESTION_TYPE_LABEL: Record<QuestionType, string> = {
@@ -32,3 +37,14 @@ export const QUESTION_TYPE_LABEL: Record<QuestionType, string> = {
 }
 
 export const DIFFICULTY_LABEL = { 1: 'Fácil', 2: 'Médio', 3: 'Difícil' } as const
+
+/** Tipos de pergunta aceitos por cada modalidade do Modo Livre. */
+export const FREE_MODE_TYPES: Record<FreeModeId, QuestionType[]> = {
+  aleatorias: ['multiple', 'book', 'whoami', 'complete'],
+  'verdadeiro-falso': ['truefalse'],
+  complete: ['complete'],
+  'quem-sou-eu': ['whoami'],
+  'contra-o-tempo': ['multiple', 'book', 'whoami', 'complete', 'truefalse'],
+  ordem: ['order'],
+  livro: ['book'],
+}

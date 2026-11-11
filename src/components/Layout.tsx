@@ -4,23 +4,24 @@ import { Icon, type IconName } from './Icon'
 import { Avatar } from './ui'
 import { levelFromXp } from '../services/game/levels'
 
-const NAV: { to: string; label: string; icon: IconName }[] = [
-  { to: '/painel', label: 'Painel', icon: 'home' },
-  { to: '/mapa', label: 'Jornada', icon: 'map' },
-  { to: '/diario', label: 'Diário', icon: 'calendar' },
-  { to: '/ranking', label: 'Ranking', icon: 'trophy' },
-  { to: '/perfil', label: 'Perfil', icon: 'user' },
+const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
+  { to: '/painel', label: 'Painel', short: 'Início', icon: 'home' },
+  { to: '/historia', label: 'Modo História', short: 'História', icon: 'map' },
+  { to: '/livre', label: 'Modo Livre', short: 'Livre', icon: 'star' },
+  { to: '/diario', label: 'Diário', short: 'Diário', icon: 'calendar' },
+  { to: '/perfil', label: 'Perfil', short: 'Perfil', icon: 'user' },
 ]
 
 const SECONDARY: { to: string; label: string }[] = [
-  { to: '/multiplayer', label: 'Multiplayer' },
+  { to: '/ranking', label: 'Ranking' },
+  { to: '/livre/multiplayer', label: 'Multiplayer' },
   { to: '/conquistas', label: 'Conquistas' },
   { to: '/configuracoes', label: 'Configurações' },
   { to: '/sobre', label: 'Sobre' },
 ]
 
 /** Telas de jogo usam layout imersivo, sem barra inferior. */
-const IMMERSIVE = [/^\/desafio\//, /^\/diario$/, /^\/boas-vindas$/]
+const IMMERSIVE = [/\/desafio$/, /^\/livre\/(?!multiplayer)[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
 
 export function Layout() {
   const { profile, progress } = useGame()
@@ -44,11 +45,11 @@ export function Layout() {
           {profile && (
             <nav className="topnav" aria-label="Navegação principal">
               {NAV.map((n) => (
-                <NavLink key={n.to} to={n.to} className="topnav-link">
+                <NavLink key={n.to} to={n.to} className="topnav-link" end={n.to === '/livre' ? false : undefined}>
                   {n.label}
                 </NavLink>
               ))}
-              <NavLink to="/multiplayer" className="topnav-link">Multiplayer</NavLink>
+              <NavLink to="/ranking" className="topnav-link">Ranking</NavLink>
             </nav>
           )}
           <div className="topbar-actions">
@@ -84,7 +85,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.1 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.2 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>
@@ -95,7 +96,7 @@ export function Layout() {
           {NAV.map((n) => (
             <NavLink key={n.to} to={n.to} className="tabbar-link">
               <Icon name={n.icon} size={22} />
-              <span>{n.label}</span>
+              <span>{n.short}</span>
             </NavLink>
           ))}
         </nav>

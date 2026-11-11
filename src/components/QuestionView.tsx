@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { MemoryQuestion, MultipleChoiceQuestion, OrderQuestion, Question, TrueFalseQuestion } from '../types'
-import type { AnswerResponse } from '../services/game/answers'
+import { memoryMistakesAllowed, type AnswerResponse } from '../services/game/answers'
 import { shuffle, shuffleNotIdentity } from '../services/game/random'
 import { QUESTION_TYPE_LABEL, DIFFICULTY_LABEL } from '../data/questions'
 import { Icon } from './Icon'
@@ -10,9 +10,11 @@ interface Props {
   /** Resposta já dada (modo revisão/feedback). */
   answered: AnswerResponse | null
   onAnswer: (r: AnswerResponse) => void
+  /** "Quem sou eu?" com pistas reveladas uma a uma. */
+  progressiveClues?: boolean
 }
 
-export function QuestionView({ question, answered, onAnswer }: Props) {
+export function QuestionView({ question, answered, onAnswer, progressiveClues }: Props) {
   return (
     <section className="question" aria-labelledby={`q-${question.id}`}>
       <div className="question-meta">
@@ -29,7 +31,7 @@ export function QuestionView({ question, answered, onAnswer }: Props) {
       ) : question.type === 'memory' ? (
         <MemoryGame key={question.id} q={question} answered={answered} onAnswer={onAnswer} />
       ) : (
-        <Choice key={question.id} q={question} answered={answered} onAnswer={onAnswer} />
+        <Choice key={question.id} q={question} answered={answered} onAnswer={onAnswer} progressive={progressiveClues} />
       )}
     </section>
   )
@@ -55,22 +57,33 @@ function useNumberKeys(count: number, enabled: boolean, onPick: (i: number) => v
   }, [count, enabled])
 }
 
-function Choice({ q, answered, onAnswer }: { q: MultipleChoiceQuestion; answered: AnswerResponse | null; onAnswer: (r: AnswerResponse) => void }) {
+function Choice({ q, answered, onAnswer, progressive }: { q: MultipleChoiceQuestion; answered: AnswerResponse | null; onAnswer: (r: AnswerResponse) => void; progressive?: boolean }) {
   const options = useMemo(() => shuffle(q.options), [q])
   const correct = q.options[q.answer]
   const chosen = answered?.kind === 'choice' ? answered.option : null
-  useNumberKeys(options.length, !answered, (i) => onAnswer({ kind: 'choice', option: options[i] }))
+  const totalClues = q.clues?.length ?? 0
+  const [shown, setShown] = useState(progressive ? 1 : totalClues)
+  const visibleClues = answered ? totalClues : shown
+  const pick = (option: string) => onAnswer({ kind: 'choice', option, cluesUsed: q.clues ? shown : undefined })
+  useNumberKeys(options.length, !answered, (i) => pick(options[i]))
 
   return (
     <>
       {q.clues && (
-        <ol className="clues" aria-label="Pistas">
-          {q.clues.map((c, i) => (
-            <li key={i}>
-              <span className="clue-n">Pista {i + 1}</span> {c}
-            </li>
-          ))}
-        </ol>
+        <>
+          <ol className="clues" aria-label="Pistas" aria-live="polite">
+            {q.clues.slice(0, visibleClues).map((c, i) => (
+              <li key={i}>
+                <span className="clue-n">Pista {i + 1}</span> {c}
+              </li>
+            ))}
+          </ol>
+          {progressive && !answered && shown < totalClues && (
+            <button type="button" className="btn btn-outline btn-sm clue-more" onClick={() => setShown(shown + 1)}>
+              Mostrar próxima pista ({totalClues - shown} restante{totalClues - shown > 1 ? 's' : ''}, −5 pts)
+            </button>
+          )}
+        </>
       )}
       {q.verse && (
         <blockquote className="verse-gap">
@@ -96,7 +109,7 @@ function Choice({ q, answered, onAnswer }: { q: MultipleChoiceQuestion; answered
               type="button"
               className={`option ${state}`}
               disabled={Boolean(answered)}
-              onClick={() => onAnswer({ kind: 'choice', option: opt })}
+              onClick={() => pick(opt)}
               aria-describedby={answered && opt === correct ? 'feedback' : undefined}
             >
               <span className="option-key" aria-hidden="true">{i + 1}</span>
@@ -251,7 +264,7 @@ function MemoryGame({ q, answered, onAnswer }: { q: MemoryQuestion; answered: An
   return (
     <>
       <p className="hint">
-        Vire duas cartas por vez e encontre os pares. Até 2 erros ainda contam como acerto. Erros: <strong>{mistakes}</strong>
+        Vire duas cartas por vez e encontre os pares. Até {memoryMistakesAllowed(q.pairs.length)} erros ainda contam como acerto. Erros: <strong>{mistakes}</strong>
       </p>
       <div className="memory-grid">
         {cards.map((c, i) => {

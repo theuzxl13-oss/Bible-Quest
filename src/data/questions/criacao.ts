@@ -1,16 +1,15 @@
 import { bank } from './helpers'
 
-export const CRIACAO_QUESTIONS = bank('criacao', [
-  // Capítulo 1 — No princípio
+export const CRIACAO_QUESTIONS = bank('genesis', [
   {
-    id: 'cr-01', chapterId: 'criacao-1', type: 'book', difficulty: 1, category: 'livros',
+    id: 'cr-01', experienceId: 'gn-criacao', type: 'book', difficulty: 1, category: 'livros',
     prompt: 'Qual livro abre a Bíblia com o relato da criação?',
     options: ['Gênesis', 'Êxodo', 'Salmos', 'Mateus'], answer: 0,
     explanation: 'Gênesis, que significa "origem", é o primeiro livro da Bíblia e começa com a criação.',
     reference: 'Gênesis 1:1',
   },
   {
-    id: 'cr-02', chapterId: 'criacao-1', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'cr-02', experienceId: 'gn-criacao', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'No princípio, criou Deus os céus e a ____.',
     options: ['terra', 'luz', 'água', 'vida'], answer: 0,
@@ -18,36 +17,35 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 1:1',
   },
   {
-    id: 'cr-03', chapterId: 'criacao-1', type: 'truefalse', difficulty: 1, category: 'narrativa',
+    id: 'cr-03', experienceId: 'gn-criacao', type: 'truefalse', difficulty: 1, category: 'narrativa',
     prompt: 'Segundo Gênesis 1, a luz foi criada no primeiro dia.',
     answer: true,
     explanation: 'Deus disse "Haja luz", separou a luz das trevas, e foi o primeiro dia.',
     reference: 'Gênesis 1:3–5',
   },
   {
-    id: 'cr-04', chapterId: 'criacao-1', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'cr-04', experienceId: 'gn-criacao', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'A que Deus deu o nome de "Dia"?',
     options: ['À luz', 'Ao sol', 'Ao firmamento', 'À terra seca'], answer: 0,
     explanation: 'Deus chamou à luz Dia e às trevas chamou Noite.',
     reference: 'Gênesis 1:5',
   },
   {
-    id: 'cr-05', chapterId: 'criacao-1', type: 'book', difficulty: 2, category: 'livros',
+    id: 'cr-05', experienceId: 'gn-criacao', type: 'book', difficulty: 2, category: 'livros',
     prompt: 'Em qual livro está escrito "No princípio era o Verbo"?',
     options: ['João', 'Gênesis', 'Salmos', 'Isaías'], answer: 0,
     explanation: 'O Evangelho de João começa com uma clara referência a Gênesis 1.',
     reference: 'João 1:1',
   },
-  // Capítulo 2 — Os dias da criação
   {
-    id: 'cr-06', chapterId: 'criacao-2', type: 'multiple', difficulty: 2, category: 'cronologia',
+    id: 'cr-06', experienceId: 'gn-criacao', type: 'multiple', difficulty: 2, category: 'cronologia',
     prompt: 'Em qual dia foram feitos o sol, a lua e as estrelas?',
     options: ['No quarto dia', 'No primeiro dia', 'No segundo dia', 'No sexto dia'], answer: 0,
     explanation: 'Os luminares maiores e menores e as estrelas aparecem no quarto dia.',
     reference: 'Gênesis 1:14–19',
   },
   {
-    id: 'cr-07', chapterId: 'criacao-2', type: 'order', difficulty: 3, category: 'cronologia',
+    id: 'cr-07', experienceId: 'gn-criacao', type: 'order', difficulty: 3, category: 'cronologia',
     prompt: 'Organize o que foi criado na ordem apresentada em Gênesis 1.',
     items: [
       'A luz',
@@ -61,14 +59,14 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 1:3–31',
   },
   {
-    id: 'cr-08', chapterId: 'criacao-2', type: 'truefalse', difficulty: 2, category: 'cronologia',
+    id: 'cr-08', experienceId: 'gn-criacao', type: 'truefalse', difficulty: 2, category: 'cronologia',
     prompt: 'Os animais terrestres foram criados no mesmo dia que o ser humano.',
     answer: true,
     explanation: 'Os animais da terra e o ser humano aparecem no sexto dia.',
     reference: 'Gênesis 1:24–31',
   },
   {
-    id: 'cr-09', chapterId: 'criacao-2', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'cr-09', experienceId: 'gn-criacao', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'E viu Deus tudo quanto tinha feito, e eis que era muito ____.',
     options: ['bom', 'belo', 'grande', 'antigo'], answer: 0,
@@ -76,14 +74,14 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 1:31',
   },
   {
-    id: 'cr-10', chapterId: 'criacao-2', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'cr-10', experienceId: 'gn-criacao', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'O que Deus fez no sétimo dia?',
     options: ['Descansou de toda a sua obra', 'Criou o ser humano', 'Separou as águas', 'Criou os luminares'], answer: 0,
     explanation: 'No sétimo dia Deus descansou, abençoou e santificou esse dia.',
     reference: 'Gênesis 2:2–3',
   },
   {
-    id: 'cr-11', chapterId: 'criacao-2', type: 'memory', difficulty: 2, category: 'cronologia',
+    id: 'cr-11', experienceId: 'gn-criacao', type: 'memory', difficulty: 2, category: 'cronologia',
     prompt: 'Associe cada dia ao que foi criado nele.',
     pairs: [
       { a: 'Primeiro dia', b: 'A luz' },
@@ -94,16 +92,15 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     explanation: 'Os quatro primeiros dias formam os ambientes e os luminares que governam o tempo.',
     reference: 'Gênesis 1:3–19',
   },
-  // Capítulo 3 — O jardim do Éden
   {
-    id: 'cr-12', chapterId: 'criacao-3', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'cr-12', experienceId: 'gn-homem-mulher', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'Do que o primeiro homem foi formado?',
     options: ['Do pó da terra', 'De uma rocha', 'Das águas do mar', 'De uma árvore'], answer: 0,
     explanation: 'O Senhor Deus formou o homem do pó da terra e soprou em suas narinas o fôlego da vida.',
     reference: 'Gênesis 2:7',
   },
   {
-    id: 'cr-13', chapterId: 'criacao-3', type: 'whoami', difficulty: 1, category: 'personagens',
+    id: 'cr-13', experienceId: 'gn-homem-mulher', type: 'whoami', difficulty: 1, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui formado do pó da terra.', 'Dei nome aos animais.', 'Morei no jardim do Éden.'],
     options: ['Adão', 'Noé', 'Abel', 'Sete'], answer: 0,
@@ -111,21 +108,21 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 2:7, 19–20',
   },
   {
-    id: 'cr-14', chapterId: 'criacao-3', type: 'truefalse', difficulty: 2, category: 'narrativa',
+    id: 'cr-14', experienceId: 'gn-homem-mulher', type: 'truefalse', difficulty: 2, category: 'narrativa',
     prompt: 'Segundo Gênesis 2, a mulher foi formada antes de Adão dar nome aos animais.',
     answer: false,
     explanation: 'Adão deu nome aos animais e, como não achou ajudadora idônea, depois a mulher foi formada.',
     reference: 'Gênesis 2:19–22',
   },
   {
-    id: 'cr-15', chapterId: 'criacao-3', type: 'multiple', difficulty: 2, category: 'geografia',
+    id: 'cr-15', experienceId: 'gn-eden', type: 'multiple', difficulty: 2, category: 'geografia',
     prompt: 'Qual destes rios é citado em ligação com o Éden?',
     options: ['Eufrates', 'Nilo', 'Jordão', 'Tibre'], answer: 0,
     explanation: 'Gênesis cita quatro rios: Pisom, Giom, Hidequel (Tigre) e Eufrates.',
     reference: 'Gênesis 2:10–14',
   },
   {
-    id: 'cr-16', chapterId: 'criacao-3', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'cr-16', experienceId: 'gn-homem-mulher', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'E criou Deus o homem à sua ____; à imagem de Deus o criou.',
     options: ['imagem', 'vontade', 'palavra', 'glória'], answer: 0,
@@ -133,29 +130,28 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 1:27',
   },
   {
-    id: 'cr-17', chapterId: 'criacao-3', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'cr-17', experienceId: 'gn-eden', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'Com que propósito o homem foi colocado no jardim do Éden?',
     options: ['Para o lavrar e o guardar', 'Para construir uma cidade', 'Para governar o Egito', 'Para pescar no rio'], answer: 0,
     explanation: 'O homem recebe a tarefa de cultivar e cuidar do jardim.',
     reference: 'Gênesis 2:15',
   },
-  // Capítulo 4 — A queda e a promessa
   {
-    id: 'cr-18', chapterId: 'criacao-4', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'cr-18', experienceId: 'gn-eden', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'De qual árvore Deus ordenou que o homem não comesse?',
     options: ['Da árvore da ciência do bem e do mal', 'Da árvore da vida', 'Da oliveira', 'Da figueira'], answer: 0,
     explanation: 'A ordem dizia respeito à árvore da ciência do bem e do mal.',
     reference: 'Gênesis 2:16–17',
   },
   {
-    id: 'cr-19', chapterId: 'criacao-4', type: 'truefalse', difficulty: 2, category: 'narrativa',
+    id: 'cr-19', experienceId: 'gn-queda', type: 'truefalse', difficulty: 2, category: 'narrativa',
     prompt: 'A serpente é descrita como o mais astuto dos animais do campo.',
     answer: true,
     explanation: 'Gênesis 3 começa apresentando a serpente como mais astuta que todas as alimárias do campo.',
     reference: 'Gênesis 3:1',
   },
   {
-    id: 'cr-20', chapterId: 'criacao-4', type: 'whoami', difficulty: 1, category: 'personagens',
+    id: 'cr-20', experienceId: 'gn-queda', type: 'whoami', difficulty: 1, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui formada a partir de uma costela de Adão.', 'Conversei com a serpente no jardim.', 'Fui chamada mãe de todos os viventes.'],
     options: ['Eva', 'Sara', 'Raquel', 'Miriã'], answer: 0,
@@ -163,7 +159,7 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 2:22; 3:20',
   },
   {
-    id: 'cr-21', chapterId: 'criacao-4', type: 'order', difficulty: 2, category: 'cronologia',
+    id: 'cr-21', experienceId: 'gn-queda', type: 'order', difficulty: 2, category: 'cronologia',
     prompt: 'Organize os acontecimentos de Gênesis 3.',
     items: [
       'A serpente questiona a ordem de Deus',
@@ -175,14 +171,14 @@ export const CRIACAO_QUESTIONS = bank('criacao', [
     reference: 'Gênesis 3:1–24',
   },
   {
-    id: 'cr-22', chapterId: 'criacao-4', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'cr-22', experienceId: 'gn-queda', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'O que passou a guardar o caminho da árvore da vida?',
     options: ['Querubins e uma espada inflamada', 'Um leão', 'Um muro de pedra', 'Um rio caudaloso'], answer: 0,
     explanation: 'Querubins e uma espada inflamada foram postos ao oriente do jardim.',
     reference: 'Gênesis 3:24',
   },
   {
-    id: 'cr-23', chapterId: 'criacao-4', type: 'book', difficulty: 3, category: 'livros',
+    id: 'cr-23', experienceId: 'gn-queda', type: 'book', difficulty: 3, category: 'livros',
     prompt: 'Em qual carta Paulo escreve que "assim como todos morrem em Adão, assim também todos serão vivificados em Cristo"?',
     options: ['1 Coríntios', 'Filipenses', 'Gálatas', 'Hebreus'], answer: 0,
     explanation: 'Paulo relaciona Adão e Cristo no capítulo sobre a ressurreição.',

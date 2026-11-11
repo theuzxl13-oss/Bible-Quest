@@ -1,23 +1,22 @@
 import { bank } from './helpers'
 
-export const ABRAAO_QUESTIONS = bank('abraao', [
-  // Capítulo 1 — O chamado
+export const ABRAAO_QUESTIONS = bank('genesis', [
   {
-    id: 'ab-01', chapterId: 'abraao-1', type: 'multiple', difficulty: 1, category: 'geografia',
+    id: 'ab-01', experienceId: 'gn-chamado-abraao', type: 'multiple', difficulty: 1, category: 'geografia',
     prompt: 'De qual cidade partiu a família de Abrão?',
     options: ['Ur dos Caldeus', 'Babilônia', 'Nínive', 'Jericó'], answer: 0,
     explanation: 'Terá saiu de Ur dos Caldeus com Abrão, Ló e Sarai rumo a Canaã, e pararam em Harã.',
     reference: 'Gênesis 11:31',
   },
   {
-    id: 'ab-02', chapterId: 'abraao-1', type: 'multiple', difficulty: 2, category: 'cronologia',
+    id: 'ab-02', experienceId: 'gn-chamado-abraao', type: 'multiple', difficulty: 2, category: 'cronologia',
     prompt: 'Quantos anos Abrão tinha quando saiu de Harã?',
     options: ['75', '40', '100', '120'], answer: 0,
     explanation: 'Abrão era da idade de setenta e cinco anos quando saiu de Harã.',
     reference: 'Gênesis 12:4',
   },
   {
-    id: 'ab-03', chapterId: 'abraao-1', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'ab-03', experienceId: 'gn-chamado-abraao', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Sai-te da tua ____, e da tua parentela, e da casa de teu pai, para a terra que eu te mostrarei.',
     options: ['terra', 'casa', 'cidade', 'tenda'], answer: 0,
@@ -25,14 +24,14 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     reference: 'Gênesis 12:1',
   },
   {
-    id: 'ab-04', chapterId: 'abraao-1', type: 'truefalse', difficulty: 1, category: 'personagens',
+    id: 'ab-04', experienceId: 'gn-chamado-abraao', type: 'truefalse', difficulty: 1, category: 'personagens',
     prompt: 'Ló, sobrinho de Abrão, foi com ele quando ele saiu de Harã.',
     answer: true,
     explanation: 'O texto diz que Abrão partiu como o Senhor lhe tinha dito, e foi Ló com ele.',
     reference: 'Gênesis 12:4–5',
   },
   {
-    id: 'ab-05', chapterId: 'abraao-1', type: 'memory', difficulty: 3, category: 'geografia',
+    id: 'ab-05', experienceId: 'gn-chamado-abraao', type: 'memory', difficulty: 3, category: 'geografia',
     prompt: 'Associe cada lugar ao seu papel na jornada de Abrão.',
     pairs: [
       { a: 'Ur dos Caldeus', b: 'Ponto de partida da família' },
@@ -43,16 +42,15 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     explanation: 'A rota seguia o Crescente Fértil, da Mesopotâmia até Canaã.',
     reference: 'Gênesis 11:31–12:7',
   },
-  // Capítulo 2 — Ló e a promessa das estrelas
   {
-    id: 'ab-06', chapterId: 'abraao-2', type: 'multiple', difficulty: 1, category: 'geografia',
+    id: 'ab-06', experienceId: 'gn-abraao-lo', type: 'multiple', difficulty: 1, category: 'geografia',
     prompt: 'Que região Ló escolheu para habitar?',
     options: ['A campina do Jordão', 'O monte Moriá', 'A terra do Egito', 'A cidade de Harã'], answer: 0,
     explanation: 'Ló escolheu a campina do Jordão, que era bem regada, e armou tendas até Sodoma.',
     reference: 'Gênesis 13:10–12',
   },
   {
-    id: 'ab-07', chapterId: 'abraao-2', type: 'whoami', difficulty: 3, category: 'personagens',
+    id: 'ab-07', experienceId: 'gn-abraao-lo', type: 'whoami', difficulty: 3, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui rei de Salém.', 'Fui sacerdote do Deus Altíssimo.', 'Trouxe pão e vinho a Abrão.'],
     options: ['Melquisedeque', 'Faraó', 'Abimeleque', 'Ló'], answer: 0,
@@ -60,7 +58,7 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     reference: 'Gênesis 14:18–20',
   },
   {
-    id: 'ab-08', chapterId: 'abraao-2', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'ab-08', experienceId: 'gn-abraao-lo', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'E creu ele no Senhor, e foi-lhe imputado isto por ____.',
     options: ['justiça', 'graça', 'herança', 'honra'], answer: 0,
@@ -68,36 +66,35 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     reference: 'Gênesis 15:6',
   },
   {
-    id: 'ab-09', chapterId: 'abraao-2', type: 'truefalse', difficulty: 1, category: 'narrativa',
+    id: 'ab-09', experienceId: 'gn-abraao-lo', type: 'truefalse', difficulty: 1, category: 'narrativa',
     prompt: 'Deus convidou Abrão a contar as estrelas para mostrar como seria a sua descendência.',
     answer: true,
     explanation: 'Abrão é levado para fora e ouve: "Assim será a tua semente".',
     reference: 'Gênesis 15:5',
   },
   {
-    id: 'ab-10', chapterId: 'abraao-2', type: 'book', difficulty: 3, category: 'livros',
+    id: 'ab-10', experienceId: 'gn-abraao-lo', type: 'book', difficulty: 3, category: 'livros',
     prompt: 'Em qual destas cartas Paulo cita que Abraão creu em Deus e isso lhe foi imputado como justiça?',
     options: ['Romanos', 'Filipenses', 'Tito', 'Colossenses'], answer: 0,
     explanation: 'Paulo cita Gênesis 15:6 em Romanos 4. A mesma passagem aparece em Gálatas 3:6 e Tiago 2:23.',
     reference: 'Romanos 4:3',
   },
   {
-    id: 'ab-11', chapterId: 'abraao-2', type: 'multiple', difficulty: 2, category: 'geografia',
+    id: 'ab-11', experienceId: 'gn-abraao-lo', type: 'multiple', difficulty: 2, category: 'geografia',
     prompt: 'Abrão passou a habitar junto aos carvalhais de Manre, perto de qual cidade?',
     options: ['Hebrom', 'Jerusalém', 'Betel', 'Berseba'], answer: 0,
     explanation: 'Abrão mudou suas tendas para os carvalhais de Manre, em Hebrom, e ali edificou um altar.',
     reference: 'Gênesis 13:18',
   },
-  // Capítulo 3 — Isaque, o filho da promessa
   {
-    id: 'ab-12', chapterId: 'abraao-3', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'ab-12', experienceId: 'gn-isaque', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Qual foi o novo nome dado a Abrão?',
     options: ['Abraão', 'Israel', 'Isaque', 'Ismael'], answer: 0,
     explanation: 'Abrão passou a se chamar Abraão, porque seria posto por "pai da multidão de nações".',
     reference: 'Gênesis 17:5',
   },
   {
-    id: 'ab-13', chapterId: 'abraao-3', type: 'whoami', difficulty: 1, category: 'personagens',
+    id: 'ab-13', experienceId: 'gn-isaque', type: 'whoami', difficulty: 1, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui esposa de Abraão.', 'Meu nome foi mudado por Deus.', 'Ri ao ouvir que teria um filho na velhice.'],
     options: ['Sara', 'Rebeca', 'Raquel', 'Lia'], answer: 0,
@@ -105,14 +102,14 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     reference: 'Gênesis 17:15; 18:12',
   },
   {
-    id: 'ab-14', chapterId: 'abraao-3', type: 'multiple', difficulty: 2, category: 'cronologia',
+    id: 'ab-14', experienceId: 'gn-isaque', type: 'multiple', difficulty: 2, category: 'cronologia',
     prompt: 'Quantos anos Abraão tinha quando Isaque nasceu?',
     options: ['100', '75', '90', '120'], answer: 0,
     explanation: 'Abraão tinha cem anos quando lhe nasceu Isaque.',
     reference: 'Gênesis 21:5',
   },
   {
-    id: 'ab-15', chapterId: 'abraao-3', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'ab-15', experienceId: 'gn-isaque', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Haveria coisa alguma ____ ao Senhor?',
     options: ['difícil', 'oculta', 'distante', 'estranha'], answer: 0,
@@ -120,43 +117,42 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     reference: 'Gênesis 18:14',
   },
   {
-    id: 'ab-16', chapterId: 'abraao-3', type: 'truefalse', difficulty: 2, category: 'personagens',
+    id: 'ab-16', experienceId: 'gn-isaque', type: 'truefalse', difficulty: 2, category: 'personagens',
     prompt: 'Ismael era filho de Abrão com Agar.',
     answer: true,
     explanation: 'Agar, serva egípcia de Sarai, deu a Abrão um filho chamado Ismael.',
     reference: 'Gênesis 16:15',
   },
   {
-    id: 'ab-17', chapterId: 'abraao-3', type: 'multiple', difficulty: 2, category: 'geografia',
+    id: 'ab-17', experienceId: 'gn-isaque', type: 'multiple', difficulty: 2, category: 'geografia',
     prompt: 'Onde Abraão recebeu a visita dos três homens?',
     options: ['Junto aos carvalhais de Manre', 'Em Ur dos Caldeus', 'No Egito', 'Dentro de Sodoma'], answer: 0,
     explanation: 'Abraão estava assentado à porta da tenda, no calor do dia, junto aos carvalhais de Manre.',
     reference: 'Gênesis 18:1–2',
   },
-  // Capítulo 4 — A prova no monte Moriá
   {
-    id: 'ab-18', chapterId: 'abraao-4', type: 'multiple', difficulty: 1, category: 'geografia',
+    id: 'ab-18', experienceId: 'gn-moria', type: 'multiple', difficulty: 1, category: 'geografia',
     prompt: 'Para qual terra Abraão foi enviado com Isaque?',
     options: ['Moriá', 'Sinai', 'Ararate', 'Gósen'], answer: 0,
     explanation: 'Abraão recebeu a ordem de ir à terra de Moriá.',
     reference: 'Gênesis 22:2',
   },
   {
-    id: 'ab-19', chapterId: 'abraao-4', type: 'truefalse', difficulty: 1, category: 'narrativa',
+    id: 'ab-19', experienceId: 'gn-moria', type: 'truefalse', difficulty: 1, category: 'narrativa',
     prompt: 'Isaque carregou a lenha do holocausto na subida do monte.',
     answer: true,
     explanation: 'Abraão pôs a lenha sobre Isaque e tomou o fogo e o cutelo.',
     reference: 'Gênesis 22:6',
   },
   {
-    id: 'ab-20', chapterId: 'abraao-4', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'ab-20', experienceId: 'gn-moria', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'O que Abraão encontrou preso pelos chifres em um mato?',
     options: ['Um carneiro', 'Um cordeiro', 'Um bode', 'Um bezerro'], answer: 0,
     explanation: 'Abraão ofereceu o carneiro em lugar de seu filho.',
     reference: 'Gênesis 22:13',
   },
   {
-    id: 'ab-21', chapterId: 'abraao-4', type: 'order', difficulty: 3, category: 'cronologia',
+    id: 'ab-21', experienceId: 'gn-moria', type: 'order', difficulty: 3, category: 'cronologia',
     prompt: 'Organize os acontecimentos da vida de Abraão.',
     items: [
       'A família sai de Ur dos Caldeus',
@@ -170,7 +166,7 @@ export const ABRAAO_QUESTIONS = bank('abraao', [
     reference: 'Gênesis 11:31–22:19',
   },
   {
-    id: 'ab-22', chapterId: 'abraao-4', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'ab-22', experienceId: 'gn-moria', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Deus proverá para si o ____ para o holocausto, meu filho.',
     options: ['cordeiro', 'altar', 'fogo', 'carneiro'], answer: 0,

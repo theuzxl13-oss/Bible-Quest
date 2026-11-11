@@ -1,16 +1,15 @@
 import { bank } from './helpers'
 
-export const JOSE_QUESTIONS = bank('jose', [
-  // Capítulo 1 — Os sonhos e a túnica
+export const JOSE_QUESTIONS = bank('genesis', [
   {
-    id: 'jo-01', chapterId: 'jose-1', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'jo-01', experienceId: 'gn-jose-sonhos', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Quem era o pai de José?',
     options: ['Jacó', 'Isaque', 'Abraão', 'Labão'], answer: 0,
     explanation: 'José era filho de Jacó, também chamado Israel, e de Raquel.',
     reference: 'Gênesis 37:2–3',
   },
   {
-    id: 'jo-02', chapterId: 'jose-1', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'jo-02', experienceId: 'gn-jose-sonhos', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'E Israel amava a José mais do que a todos os seus filhos, porque era filho da sua velhice; e fez-lhe uma ____ de várias cores.',
     options: ['túnica', 'tenda', 'coroa', 'bolsa'], answer: 0,
@@ -18,14 +17,14 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 37:3',
   },
   {
-    id: 'jo-03', chapterId: 'jose-1', type: 'truefalse', difficulty: 2, category: 'narrativa',
+    id: 'jo-03', experienceId: 'gn-jose-sonhos', type: 'truefalse', difficulty: 2, category: 'narrativa',
     prompt: 'José foi vendido aos mercadores por vinte moedas de prata.',
     answer: true,
     explanation: 'Os irmãos venderam José aos ismaelitas por vinte moedas de prata.',
     reference: 'Gênesis 37:28',
   },
   {
-    id: 'jo-04', chapterId: 'jose-1', type: 'whoami', difficulty: 3, category: 'personagens',
+    id: 'jo-04', experienceId: 'gn-jose-sonhos', type: 'whoami', difficulty: 3, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui o primogênito de Jacó.', 'Convenci meus irmãos a lançarem José numa cova em vez de matá-lo.', 'Pretendia devolvê-lo ao pai.'],
     options: ['Rúben', 'Judá', 'Benjamim', 'Levi'], answer: 0,
@@ -33,22 +32,21 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 37:21–22',
   },
   {
-    id: 'jo-05', chapterId: 'jose-1', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'jo-05', experienceId: 'gn-jose-sonhos', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'No primeiro sonho de José, o que se inclinava diante do seu feixe?',
     options: ['Os feixes dos irmãos', 'As estrelas do céu', 'As árvores do campo', 'Os animais do rebanho'], answer: 0,
     explanation: 'No sonho, os feixes dos irmãos rodeavam e se inclinavam diante do feixe de José.',
     reference: 'Gênesis 37:7',
   },
-  // Capítulo 2 — Escravo e prisioneiro
   {
-    id: 'jo-06', chapterId: 'jose-2', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'jo-06', experienceId: 'gn-jose-egito', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Na casa de quem José serviu ao chegar ao Egito?',
     options: ['Potifar', 'Faraó', 'Labão', 'Melquisedeque'], answer: 0,
     explanation: 'Potifar, oficial de Faraó e capitão da guarda, comprou José.',
     reference: 'Gênesis 39:1',
   },
   {
-    id: 'jo-07', chapterId: 'jose-2', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'jo-07', experienceId: 'gn-jose-egito', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'E o Senhor estava com José, e foi varão ____.',
     options: ['próspero', 'valente', 'sábio', 'famoso'], answer: 0,
@@ -56,14 +54,14 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 39:2',
   },
   {
-    id: 'jo-08', chapterId: 'jose-2', type: 'truefalse', difficulty: 2, category: 'narrativa',
+    id: 'jo-08', experienceId: 'gn-jose-egito', type: 'truefalse', difficulty: 2, category: 'narrativa',
     prompt: 'O copeiro lembrou-se de José logo que foi restaurado ao seu cargo.',
     answer: false,
     explanation: 'O copeiro se esqueceu de José, e só se lembrou dele dois anos depois.',
     reference: 'Gênesis 40:23; 41:1, 9',
   },
   {
-    id: 'jo-09', chapterId: 'jose-2', type: 'memory', difficulty: 2, category: 'personagens',
+    id: 'jo-09', experienceId: 'gn-jose-egito', type: 'memory', difficulty: 2, category: 'personagens',
     prompt: 'Associe cada personagem ao que aconteceu com ele.',
     pairs: [
       { a: 'Copeiro-mor', b: 'Restaurado ao seu cargo' },
@@ -75,15 +73,14 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 39:1; 40:20–22',
   },
   {
-    id: 'jo-10', chapterId: 'jose-2', type: 'multiple', difficulty: 3, category: 'narrativa',
+    id: 'jo-10', experienceId: 'gn-jose-egito', type: 'multiple', difficulty: 3, category: 'narrativa',
     prompt: 'Segundo José, o que significavam os três ramos no sonho do copeiro?',
     options: ['Três dias', 'Três anos', 'Três reis', 'Três irmãos'], answer: 0,
     explanation: 'Os três ramos eram três dias; depois deles, o copeiro voltaria ao seu posto.',
     reference: 'Gênesis 40:12–13',
   },
-  // Capítulo 3 — Os sonhos do Faraó
   {
-    id: 'jo-11', chapterId: 'jose-3', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'jo-11', experienceId: 'gn-jose-farao', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'O que os sonhos do Faraó anunciavam?',
     options: [
       'Sete anos de fartura seguidos de sete anos de fome',
@@ -96,7 +93,7 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 41:29–30',
   },
   {
-    id: 'jo-12', chapterId: 'jose-3', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'jo-12', experienceId: 'gn-jose-farao', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Isso não está em mim; Deus dará resposta de ____ a Faraó.',
     options: ['paz', 'vida', 'honra', 'glória'], answer: 0,
@@ -104,21 +101,21 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 41:16',
   },
   {
-    id: 'jo-13', chapterId: 'jose-3', type: 'multiple', difficulty: 3, category: 'cronologia',
+    id: 'jo-13', experienceId: 'gn-jose-farao', type: 'multiple', difficulty: 3, category: 'cronologia',
     prompt: 'Que idade José tinha quando se apresentou diante do Faraó?',
     options: ['30 anos', '17 anos', '40 anos', '25 anos'], answer: 0,
     explanation: 'José tinha trinta anos quando esteve diante de Faraó, rei do Egito.',
     reference: 'Gênesis 41:46',
   },
   {
-    id: 'jo-14', chapterId: 'jose-3', type: 'truefalse', difficulty: 2, category: 'personagens',
+    id: 'jo-14', experienceId: 'gn-jose-farao', type: 'truefalse', difficulty: 2, category: 'personagens',
     prompt: 'Os filhos de José nascidos no Egito chamavam-se Manassés e Efraim.',
     answer: true,
     explanation: 'Os dois filhos nasceram antes dos anos de fome.',
     reference: 'Gênesis 41:50–52',
   },
   {
-    id: 'jo-15', chapterId: 'jose-3', type: 'order', difficulty: 2, category: 'cronologia',
+    id: 'jo-15', experienceId: 'gn-jose-farao', type: 'order', difficulty: 2, category: 'cronologia',
     prompt: 'Organize a trajetória de José até o governo do Egito.',
     items: [
       'José é vendido pelos irmãos',
@@ -131,15 +128,14 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 37–41',
   },
   {
-    id: 'jo-16', chapterId: 'jose-3', type: 'book', difficulty: 3, category: 'livros',
+    id: 'jo-16', experienceId: 'gn-jose-farao', type: 'book', difficulty: 3, category: 'livros',
     prompt: 'Em qual livro do Novo Testamento Estêvão resume a história de José em seu discurso?',
     options: ['Atos dos Apóstolos', 'Gálatas', 'Marcos', 'Apocalipse'], answer: 0,
     explanation: 'No discurso de Estêvão, José é lembrado como alguém com quem Deus estava.',
     reference: 'Atos 7:9–14',
   },
-  // Capítulo 4 — Reencontro e perdão
   {
-    id: 'jo-17', chapterId: 'jose-4', type: 'whoami', difficulty: 2, category: 'personagens',
+    id: 'jo-17', experienceId: 'gn-jose-perdao', type: 'whoami', difficulty: 2, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui o filho mais novo de Jacó.', 'Minha mãe era Raquel, como a de José.', 'O copo de prata foi encontrado no meu saco.'],
     options: ['Benjamim', 'Rúben', 'Judá', 'Simeão'], answer: 0,
@@ -147,14 +143,14 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 35:18; 44:12',
   },
   {
-    id: 'jo-18', chapterId: 'jose-4', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'jo-18', experienceId: 'gn-jose-perdao', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'Por que os irmãos de José desceram ao Egito?',
     options: ['Para comprar trigo durante a fome', 'Para procurar José', 'Para fazer guerra', 'Para servir ao Faraó'], answer: 0,
     explanation: 'Jacó soube que havia mantimento no Egito e enviou os filhos para comprar.',
     reference: 'Gênesis 42:1–3',
   },
   {
-    id: 'jo-19', chapterId: 'jose-4', type: 'complete', difficulty: 1, category: 'versiculos',
+    id: 'jo-19', experienceId: 'gn-jose-perdao', type: 'complete', difficulty: 1, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Vós bem intentastes mal contra mim, porém Deus o tornou em ____.',
     options: ['bem', 'glória', 'vitória', 'honra'], answer: 0,
@@ -162,14 +158,14 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 50:20',
   },
   {
-    id: 'jo-20', chapterId: 'jose-4', type: 'truefalse', difficulty: 1, category: 'geografia',
+    id: 'jo-20', experienceId: 'gn-jose-perdao', type: 'truefalse', difficulty: 1, category: 'geografia',
     prompt: 'A família de Jacó foi habitar na terra de Gósen, no Egito.',
     answer: true,
     explanation: 'Faraó permitiu que a família habitasse na terra de Gósen.',
     reference: 'Gênesis 47:6',
   },
   {
-    id: 'jo-21', chapterId: 'jose-4', type: 'whoami', difficulty: 3, category: 'personagens',
+    id: 'jo-21', experienceId: 'gn-jose-perdao', type: 'whoami', difficulty: 3, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Sou filho de Jacó e de Lia.', 'Ofereci-me para ficar como escravo no lugar de Benjamim.'],
     options: ['Judá', 'Rúben', 'José', 'Dã'], answer: 0,
@@ -177,7 +173,7 @@ export const JOSE_QUESTIONS = bank('jose', [
     reference: 'Gênesis 29:35; 44:33',
   },
   {
-    id: 'jo-22', chapterId: 'jose-4', type: 'multiple', difficulty: 3, category: 'cronologia',
+    id: 'jo-22', experienceId: 'gn-jose-perdao', type: 'multiple', difficulty: 3, category: 'cronologia',
     prompt: 'Com quantos anos José morreu?',
     options: ['110', '120', '147', '175'], answer: 0,
     explanation: 'José morreu com cento e dez anos e foi embalsamado no Egito.',

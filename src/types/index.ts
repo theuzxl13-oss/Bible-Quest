@@ -2,7 +2,47 @@
 // Estes contratos são os mesmos que serão usados quando o armazenamento local
 // for substituído pelo Supabase (ver src/services e docs/supabase/schema.sql).
 
-export type JourneyId = 'criacao' | 'noe' | 'abraao' | 'jose' | 'moises'
+/** Testamento no cânon. */
+export type Testament = 'AT' | 'NT'
+
+export type BookGroup =
+  | 'pentateuco'
+  | 'historicos'
+  | 'poeticos'
+  | 'profetas-maiores'
+  | 'profetas-menores'
+  | 'evangelhos'
+  | 'atos'
+  | 'cartas-paulinas'
+  | 'cartas-gerais'
+  | 'profecia'
+
+export interface BookMeta {
+  /** Identificador estável, ex.: "genesis", "1-samuel". */
+  id: string
+  name: string
+  abbrev: string
+  testament: Testament
+  group: BookGroup
+  chapters: number
+}
+
+/** Um cânon é uma lista ordenada de livros. Outros cânones podem ser adicionados depois. */
+export interface Canon {
+  id: string
+  name: string
+  books: BookMeta[]
+}
+
+/** Modalidades do Modo Livre. */
+export type FreeModeId =
+  | 'aleatorias'
+  | 'verdadeiro-falso'
+  | 'complete'
+  | 'quem-sou-eu'
+  | 'contra-o-tempo'
+  | 'ordem'
+  | 'livro'
 
 export type Difficulty = 1 | 2 | 3
 
@@ -26,8 +66,10 @@ export type QuestionType =
 
 interface QuestionBase {
   id: string
-  journeyId: JourneyId
-  chapterId: string
+  /** Livro bíblico ao qual a pergunta se refere. */
+  bookId: string
+  /** Experiência do Modo História. Ausente = pergunta só do Modo Livre. */
+  experienceId?: string
   type: QuestionType
   difficulty: Difficulty
   category: QuestionCategory
@@ -78,32 +120,28 @@ export interface ScripturePassage {
   text: string
 }
 
-export interface Chapter {
+/**
+ * Uma experiência do Modo História: um acontecimento ou passagem, não
+ * necessariamente um capítulo bíblico.
+ */
+export interface Experience {
   id: string
-  journeyId: JourneyId
+  bookId: string
   order: number
   title: string
-  /** Passagem bíblica que o capítulo cobre. */
+  /** Passagem coberta, ex.: "Gênesis 1:1–2:3". */
   scope: string
   image: string
-  /** Narrativa dramatizada (texto da equipe, não é texto bíblico). */
+  /** 1. Introdução: contexto do acontecimento (texto da equipe). */
+  intro: string[]
+  /** 2. Narrativa dramatizada (texto da equipe, não é texto bíblico). */
   narrative: string[]
-  /** Explicação histórica e bíblica. */
-  context: string[]
-  /** Trechos curtos da Almeida (domínio público). */
+  /** 3. Trechos curtos da Almeida RC 1911 (domínio público). */
   passages: ScripturePassage[]
-}
-
-export interface Journey {
-  id: JourneyId
-  order: number
-  title: string
-  subtitle: string
-  books: string
-  era: string
-  image: string
-  summary: string
-  chapters: Chapter[]
+  /** 3. Referências para leitura completa. */
+  references: string[]
+  /** 4. Aprendizado: significado e ensinamentos. */
+  learning: string[]
 }
 
 export type AgeRange = 'ate12' | '13a17' | '18mais'
@@ -118,7 +156,7 @@ export interface Profile {
   storage: 'local'
 }
 
-export interface ChapterProgress {
+export interface ExperienceProgress {
   completed: boolean
   bestStars: number
   bestScore: number
@@ -128,9 +166,10 @@ export interface ChapterProgress {
 export interface MatchRecord {
   id: string
   date: string
-  mode: 'capitulo' | 'diario' | 'demo-multiplayer'
-  journeyId?: JourneyId
-  chapterId?: string
+  mode: 'historia' | 'livre' | 'diario' | 'demo-multiplayer'
+  freeMode?: FreeModeId
+  bookId?: string
+  experienceId?: string
   title: string
   correct: number
   total: number
@@ -140,17 +179,34 @@ export interface MatchRecord {
   passed: boolean
 }
 
+export interface DailyLogEntry {
+  day: string
+  correct: number
+  total: number
+  xp: number
+}
+
 export interface Progress {
   xp: number
-  chapters: Record<string, ChapterProgress>
+  experiences: Record<string, ExperienceProgress>
+  /** Última experiência aberta, para "continuar de onde parou". */
+  lastExperienceId: string | null
   achievements: Record<string, string>
   history: MatchRecord[]
   streak: { current: number; best: number; lastDay: string | null }
-  daily: { lastCompletedDay: string | null; completedCount: number }
+  daily: { lastCompletedDay: string | null; completedCount: number; log: DailyLogEntry[] }
+  /** XP de prática acumulado no dia (Modo Livre e tentativas reprovadas), sujeito a limite diário. */
+  practice: { day: string | null; xp: number }
+  free: {
+    matches: number
+    byMode: Partial<Record<FreeModeId, { played: number; best: number }>>
+    oneClueHits: number
+    bestTimeAttack: number
+  }
   stats: {
     answered: number
     correct: number
-    perfectChapters: number
+    perfectExperiences: number
     byType: Partial<Record<QuestionType, { answered: number; correct: number }>>
   }
 }
@@ -173,4 +229,8 @@ export interface AnswerResult {
   difficulty: Difficulty
   /** Fração de acerto (memória/ordem podem ter acerto parcial para exibição). */
   quality: number
+  /** Pontos específicos da modalidade (ex.: menos pistas, rapidez). Padrão: pela dificuldade. */
+  points?: number
+  /** Pistas usadas em "Quem sou eu?". */
+  cluesUsed?: number
 }

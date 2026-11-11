@@ -1,15 +1,24 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { AgeRange, Profile, Progress, Settings } from '../types'
+import type { AgeRange, Profile, Progress, Question, Settings } from '../types'
 import { createLocalServices, type Services } from '../services'
 import { emptyProgress } from '../services/storage/repositories'
 import { applyMatch, type MatchInput, type MatchOutcome } from '../services/game/engine'
-import { dayKey } from '../services/game/dates'
+import type { DailyContext } from '../services/game/daily'
+import type { CustomContent } from '../services/content'
+import { QUESTIONS } from '../data/questions'
 
 interface GameContextValue {
   profile: Profile | null
   progress: Progress
   settings: Settings
   lastOutcome: MatchOutcome | null
+  /** Banco de perguntas do Modo Livre (oficial + local, se habilitado no painel). */
+  questionPool: Question[]
+  customContent: CustomContent
+  saveCustomContent(content: CustomContent): void
+  dailyContext(): DailyContext
+  /** Registra a última experiência aberta (continuar de onde parou). */
+  markVisited(experienceId: string): void
   createProfile(input: { nickname: string; avatar: string; ageRange: AgeRange }): Profile
   updateProfile(profile: Profile): void
   recordMatch(input: MatchInput): MatchOutcome
@@ -26,6 +35,33 @@ export function GameProvider({ children, services: injected }: { children: React
   const [progress, setProgress] = useState<Progress>(() => services.progress.load())
   const [settings, setSettings] = useState<Settings>(() => services.settings.load())
   const [lastOutcome, setLastOutcome] = useState<MatchOutcome | null>(null)
+  const [customContent, setCustomContent] = useState<CustomContent>(() => services.content.load())
+
+  const questionPool = useMemo(
+    () => (customContent.includeInFreeMode ? [...QUESTIONS, ...customContent.questions] : QUESTIONS),
+    [customContent],
+  )
+
+  const saveCustomContent = useCallback(
+    (c: CustomContent) => {
+      services.content.save(c)
+      setCustomContent(c)
+    },
+    [services],
+  )
+
+  const dailyContext = useCallback(() => services.daily.context(services.progress.load()), [services])
+
+  const markVisited = useCallback(
+    (experienceId: string) => {
+      const p = services.progress.load()
+      if (p.lastExperienceId === experienceId) return
+      const next = { ...p, lastExperienceId: experienceId }
+      services.progress.save(next)
+      setProgress(next)
+    },
+    [services],
+  )
 
   useEffect(() => {
     const root = document.documentElement
@@ -52,7 +88,8 @@ export function GameProvider({ children, services: injected }: { children: React
 
   const recordMatch = useCallback(
     (input: MatchInput) => {
-      const outcome = applyMatch(services.progress.load(), input, dayKey())
+      const current = services.progress.load()
+      const outcome = applyMatch(current, input, services.daily.context(current).day)
       services.progress.save(outcome.progress)
       setProgress(outcome.progress)
       setLastOutcome(outcome)
@@ -90,6 +127,11 @@ export function GameProvider({ children, services: injected }: { children: React
     progress,
     settings,
     lastOutcome,
+    questionPool,
+    customContent,
+    saveCustomContent,
+    dailyContext,
+    markVisited,
     createProfile,
     updateProfile,
     recordMatch,

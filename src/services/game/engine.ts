@@ -1,14 +1,16 @@
-import type { AnswerResult, JourneyId, MatchRecord, Progress } from '../../types'
+import type { AnswerResult, FreeModeId, MatchRecord, Progress } from '../../types'
 import { ACHIEVEMENTS } from '../../data/achievements'
 import { levelFromXp } from './levels'
-import { chapterXp, DAILY_BONUS, type MatchSummary } from './scoring'
+import { capPractice, DAILY_BONUS, storyXp, type MatchSummary } from './scoring'
 import { updateStreak } from './streak'
+import { canClaimDaily } from './daily'
 
 export interface MatchInput {
   mode: MatchRecord['mode']
   title: string
-  journeyId?: JourneyId
-  chapterId?: string
+  freeMode?: FreeModeId
+  bookId?: string
+  experienceId?: string
   results: AnswerResult[]
   summary: MatchSummary
 }
@@ -17,6 +19,10 @@ export interface MatchOutcome {
   progress: Progress
   record: MatchRecord
   xpGained: number
+  /** XP que não foi concedido por causa do limite diário de prática. */
+  xpCapped: number
+  /** true quando o desafio diário já tinha sido recompensado hoje. */
+  dailyAlreadyClaimed: boolean
   newAchievements: string[]
   levelBefore: number
   levelAfter: number
@@ -24,40 +30,65 @@ export interface MatchOutcome {
 }
 
 const HISTORY_LIMIT = 50
+const DAILY_LOG_LIMIT = 60
 
 function newRecordId(now: Date): string {
   return `m-${now.getTime().toString(36)}-${Math.random().toString(36).slice(2, 7)}`
 }
 
-/** Aplica o resultado de uma partida ao progresso. Função pura (exceto id/data). */
+/**
+ * Aplica o resultado de qualquer partida (Modo História, Modo Livre, diário
+ * ou multiplayer demonstrativo) ao progresso ÚNICO do jogador.
+ * Função pura, exceto pelo id e pela data do registro.
+ */
 export function applyMatch(progress: Progress, input: MatchInput, today: string, now = new Date()): MatchOutcome {
   const { summary } = input
   const next: Progress = structuredClone(progress)
-  let xpGained = 0
-  let firstClear = false
+  if (next.practice.day !== today) next.practice = { day: today, xp: 0 }
 
-  if (input.mode === 'capitulo' && input.chapterId) {
-    const prev = next.chapters[input.chapterId] ?? { completed: false, bestStars: 0, bestScore: 0, attempts: 0 }
-    xpGained = chapterXp(summary, prev.completed)
+  let xpGained = 0
+  let xpCapped = 0
+  let firstClear = false
+  let dailyAlreadyClaimed = false
+
+  const addPractice = (requested: number) => {
+    const granted = capPractice(requested, next.practice.xp)
+    next.practice.xp += granted
+    xpCapped += requested - granted
+    return granted
+  }
+
+  if (input.mode === 'historia' && input.experienceId) {
+    const prev = next.experiences[input.experienceId] ?? { completed: false, bestStars: 0, bestScore: 0, attempts: 0 }
+    const xp = storyXp({ summary, alreadyCompleted: prev.completed, previousBestScore: prev.bestScore })
+    xpGained = xp.story + addPractice(xp.practice)
     firstClear = summary.passed && !prev.completed
-    next.chapters[input.chapterId] = {
+    next.experiences[input.experienceId] = {
       completed: prev.completed || summary.passed,
       bestStars: Math.max(prev.bestStars, summary.stars),
       bestScore: Math.max(prev.bestScore, summary.score),
       attempts: prev.attempts + 1,
     }
-    if (summary.passed && summary.correct === summary.total) next.stats.perfectChapters++
+    next.lastExperienceId = input.experienceId
+    if (summary.passed && summary.correct === summary.total) next.stats.perfectExperiences++
   } else if (input.mode === 'diario') {
-    const alreadyToday = next.daily.lastCompletedDay === today
-    xpGained = alreadyToday ? 0 : summary.score + DAILY_BONUS
-    if (!alreadyToday) {
-      next.daily = { lastCompletedDay: today, completedCount: next.daily.completedCount + 1 }
+    if (canClaimDaily(next, today)) {
+      xpGained = summary.score + DAILY_BONUS
+      next.daily.lastCompletedDay = today
+      next.daily.completedCount++
+      next.daily.log = [{ day: today, correct: summary.correct, total: summary.total, xp: xpGained }, ...next.daily.log].slice(0, DAILY_LOG_LIMIT)
+    } else {
+      dailyAlreadyClaimed = true
     }
-  } else {
-    // Partida demonstrativa de multiplayer: não concede XP para não misturar
-    // resultados simulados com o progresso real.
-    xpGained = 0
+  } else if (input.mode === 'livre' && input.freeMode) {
+    xpGained = addPractice(summary.score)
+    next.free.matches++
+    const m = next.free.byMode[input.freeMode] ?? { played: 0, best: 0 }
+    next.free.byMode[input.freeMode] = { played: m.played + 1, best: Math.max(m.best, summary.score) }
+    next.free.oneClueHits += input.results.filter((r) => r.correct && r.cluesUsed === 1).length
+    if (input.freeMode === 'contra-o-tempo') next.free.bestTimeAttack = Math.max(next.free.bestTimeAttack, summary.correct)
   }
+  // 'demo-multiplayer': resultados simulados não concedem XP nem contam sequência.
 
   for (const r of input.results) {
     next.stats.answered++
@@ -70,14 +101,15 @@ export function applyMatch(progress: Progress, input: MatchInput, today: string,
   next.xp += xpGained
   const levelAfter = levelFromXp(next.xp)
 
-  if (input.mode !== 'demo-multiplayer') next.streak = updateStreak(next.streak, today)
+  if (input.mode !== 'demo-multiplayer' && input.results.length > 0) next.streak = updateStreak(next.streak, today)
 
   const record: MatchRecord = {
     id: newRecordId(now),
     date: now.toISOString(),
     mode: input.mode,
-    journeyId: input.journeyId,
-    chapterId: input.chapterId,
+    freeMode: input.freeMode,
+    bookId: input.bookId,
+    experienceId: input.experienceId,
     title: input.title,
     correct: summary.correct,
     total: summary.total,
@@ -96,5 +128,5 @@ export function applyMatch(progress: Progress, input: MatchInput, today: string,
     }
   }
 
-  return { progress: next, record, xpGained, newAchievements, levelBefore, levelAfter, firstClear }
+  return { progress: next, record, xpGained, xpCapped, dailyAlreadyClaimed, newAchievements, levelBefore, levelAfter, firstClear }
 }

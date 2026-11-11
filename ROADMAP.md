@@ -1,13 +1,29 @@
 # Bible Quest — Roadmap
 
-## Fase 1 — Versão estática (concluída, 0.1)
+## Fase 1 — Versão estática (concluída)
 
-- 5 jornadas, 20 capítulos e 113 perguntas em 7 modalidades.
-- XP, níveis, estrelas, medalhas, conquistas, sequência diária, desafio diário e histórico.
-- Perfil local, acessibilidade e publicação no GitHub Pages.
-- Ranking e multiplayer em modo demonstração; protótipo administrativo.
+- **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
+- **0.2:** dois modos de jogo.
+  - **Modo História:** cânon de 66 livros; Gênesis com 19 experiências e Êxodo com 4.
+  - **Modo Livre:** 7 modalidades, desafio diário e multiplayer de demonstração.
+  - **Progressão:** única entre os modos, com limites contra acúmulo de XP.
+  - **Painel administrativo:** editor local de conteúdo.
 
 ## Fase 2 — Conteúdo e qualidade
+
+**Continuação do Modo História na ordem dos livros.** Cada livro novo entra em `src/data/story/<livro>.ts` e é liberado automaticamente depois do anterior. Próximos livros e temas sugeridos:
+
+- **Levítico:** o tabernáculo e os sacrifícios, o Dia da Expiação.
+- **Números:** os espias, a serpente de bronze.
+- **Deuteronômio:** a renovação da aliança, a morte de Moisés.
+- **Livros históricos:** Josué, Juízes, Rute, 1 e 2 Samuel, Reis.
+- **Livros poéticos:** Jó, Salmos, Provérbios, Eclesiastes.
+- **Profetas.**
+- **Novo Testamento:** Evangelhos, Atos, cartas e Apocalipse.
+
+**Critério de qualidade:** cada livro só é publicado com revisão teológica e textual; o jogo não preenche livros com conteúdo superficial.
+
+**Painel administrativo:** o JSON exportado pelo painel (perguntas e rascunhos de experiências) serve como formato de entrada para a revisão.
 
 - Revisão teológica e textual completa dos trechos da Almeida 1911 contra a fonte.
 - Revisão das perguntas por especialistas (campo `reviewed_by`).
@@ -35,16 +51,17 @@
    - `SupabaseAuthService` (`AuthService`);
    - `SupabaseProgressRepository` (`ProgressRepository`);
    - preferências continuam locais ou passam para a tabela.
-4. **Edge Function `submit-match`.**
+4. **Edge Function `claim-daily`:** obtém o dia no servidor e grava em `daily_claims`, cuja chave única impede duas recompensas no mesmo dia. Implementa o contrato `DailyService`.
+5. **Edge Function `submit-match`.**
    - Valida as respostas e calcula XP e conquistas no servidor.
    - Reutiliza as regras puras de `src/services/game`.
    - Impede que o cliente forje XP.
-5. **Migração do progresso local** para a conta, mediante confirmação do jogador.
-6. **Ranking global** pela view `leaderboard`, que exclui menores de 13 e apelidos ocultos. Ranking semanal e por jornada.
+6. **Migração do progresso local** para a conta, mediante confirmação do jogador.
+7. **Ranking global** pela view `leaderboard`, que exclui menores de 13 e apelidos ocultos. Ranking semanal e por jornada.
 
 ## Fase 4 — Multiplayer real
 
-- `SupabaseMultiplayerService` implementando `MultiplayerService`.
+- `SupabaseMultiplayerService` implementando `MultiplayerService`. A interface atual já tem salas, código, cronômetro por pergunta, placar, vencedor e ranking da partida.
 - RPC `create_room` e `join_room(code)`: gera códigos no servidor e limita a 8 jogadores.
 - Realtime: canal `room:<id>` com presença e broadcast do estado.
 - Respostas sincronizadas e validadas por Edge Function (`room_answers`).
