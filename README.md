@@ -4,8 +4,9 @@
 
 O jogador percorre cinco jornadas do Gênesis e do Êxodo. Em cada capítulo, lê uma introdução narrativa, trechos bíblicos e o contexto histórico, e depois responde a um desafio. Os acertos e a constância rendem XP, níveis, medalhas e conquistas, e cada capítulo concluído libera o seguinte.
 
-- Publicação (GitHub Pages): https://theuzxl13-oss.github.io/Bible-Quest/
-- Repositório: https://github.com/theuzxl13-oss/Bible-Quest
+- **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
+- **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
+- **Status:** versão 0.1 publicada no GitHub Pages em 11/11/2026, verificada no endereço público em celular e computador.
 
 ## Tecnologias
 
@@ -146,11 +147,13 @@ O workflow `.github/workflows/deploy.yml` roda em pushes para `main`, `master` e
 
 O build usa `base: './'` e `HashRouter`, então funciona em qualquer subdiretório (como `/Bible-Quest/`) sem configuração extra.
 
-**Configuração necessária (uma vez), no GitHub:**
+**Configuração do GitHub (já feita):**
 
-1. Em **Settings → Pages → Build and deployment → Source**, escolha **GitHub Actions**. Hoje o site é publicado a partir de uma branch, e isso precisa ser trocado.
-2. Em **Settings → Environments → github-pages → Deployment branches**, permita a branch que vai publicar. Por padrão, só a branch padrão pode publicar.
-3. Em **Settings → Actions → General**, mantenha as Actions habilitadas. As permissões `pages: write` e `id-token: write` já estão declaradas no workflow.
+1. Em **Settings → Pages → Build and deployment → Source**, está selecionado **GitHub Actions**.
+2. Em **Settings → Environments → github-pages → Deployment branches**, estão permitidas as branches `claude/dazzling-johnson-mig8ai` e `claude/loving-carson-8mrbjo`. Para publicar a partir de outra branch, adicione-a nessa lista; sem isso, a etapa de publicação falha em poucos segundos e sem log.
+3. As permissões `pages: write` e `id-token: write` já estão declaradas no workflow.
+
+Cada push nessas branches publica automaticamente. Para publicar manualmente, use **Actions → Build e publicação no GitHub Pages → Run workflow**.
 
 ## Variáveis de ambiente futuras
 
@@ -172,6 +175,20 @@ São 46 testes automatizados, nas seguintes áreas:
 - **Motor** (`engine.test.ts`): aplicação de partidas, bônus de primeira conclusão, repetição, reprovação, diário uma vez por dia, multiplayer demonstrativo sem XP e imutabilidade do progresso.
 - **Serviços** (`services.test.ts`): persistência local, tolerância a dados corrompidos, saneamento do apelido, multiplayer de demonstração e configuração do Supabase.
 - **Fluxos** (`flow.test.tsx`): o caminho de ponta a ponta (cadastro → capítulo → desafio → resultado → próximo capítulo); erros que consomem tentativas; bloqueio por URL; redirecionamento sem perfil; avisos de demonstração; acessibilidade; e página 404.
+
+## Histórico de atualizações
+
+Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.1.0 — 11/11/2026
+
+- Primeira versão jogável: 5 jornadas, 20 capítulos e 113 perguntas em 7 modalidades.
+- XP, níveis, estrelas, tentativas, medalhas, 14 conquistas, sequência diária, desafio diário, histórico e desbloqueio progressivo.
+- Perfil local com exportação e exclusão de dados; camada de serviços pronta para trocar por Supabase.
+- Ranking e multiplayer em modo demonstração; protótipo administrativo somente leitura.
+- Acessibilidade: tamanho de texto, alto contraste, redução de animações, leitura em voz alta e atalhos de teclado.
+- 22 obras de arte em domínio público, otimizadas em WebP.
+- 46 testes automatizados; publicação automática no GitHub Pages via GitHub Actions.
 
 ---
 
