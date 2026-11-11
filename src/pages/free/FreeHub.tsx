@@ -16,11 +16,12 @@ export default function FreeHub() {
     <div className="free">
       <section className="free-hero">
         <div className="container">
-          <p className="eyebrow">Modo Livre</p>
-          <h1 className="display-sm">Desafios bíblicos</h1>
+          <Link to="/quiz" className="back-link"><Icon name="arrowLeft" size={16} /> Mapa do Modo Quiz</Link>
+          <p className="eyebrow">Modo Quiz · Treino livre</p>
+          <h1 className="display-sm">Treino livre</h1>
           <p className="page-header-lead">
-            Escolha uma modalidade e jogue quando quiser, sem seguir a ordem da jornada. O XP vai para o mesmo perfil do
-            Modo História.
+            Escolha qualquer modalidade, dificuldade e quantidade de perguntas, fora do mapa. O XP de treino vai para o
+            mesmo perfil, com limite diário.
           </p>
           <div className="free-stats">
             <div className="free-stat"><span>{progress.free.matches}</span><small>partidas</small></div>
@@ -43,7 +44,7 @@ export default function FreeHub() {
               <span className="link">{dailyDone ? 'Ver detalhes' : 'Jogar agora'} <Icon name="arrowRight" size={16} /></span>
             </div>
           </Link>
-          <Link to="/livre/multiplayer" className="special-card">
+          <Link to="/quiz/multiplayer" className="special-card">
             <ArtImage art="place-petra" className="special-img" sizes="(min-width: 900px) 40vw, 100vw" decorative />
             <div className="special-body">
               <p className="eyebrow">Multiplayer <DemoTag>Demonstração</DemoTag></p>
@@ -64,7 +65,7 @@ export default function FreeHub() {
               const n = freeModePool(m.id, questionPool).length
               return (
                 <li key={m.id}>
-                  <Link to={`/livre/${m.id}`} className="mode-card">
+                  <Link to={`/quiz/treino/${m.id}`} className="mode-card">
                     <ArtImage art={m.image} className="mode-img" sizes="(min-width: 900px) 25vw, 50vw" decorative />
                     <div className="mode-body">
                       <span className="mode-icon"><Icon name={m.icon} size={22} /></span>
@@ -82,7 +83,7 @@ export default function FreeHub() {
         </section>
 
         <p className="small muted">
-          Limite diário: até {PRACTICE_DAILY_CAP} XP por dia no Modo Livre (somado às tentativas reprovadas do Modo
+          Limite diário: até {PRACTICE_DAILY_CAP} XP por dia de treino (somado às tentativas reprovadas do Modo
           História). Depois do limite você continua jogando e registrando recordes, mas sem XP extra. Assim, ninguém
           acumula XP infinito repetindo as mesmas perguntas.
         </p>

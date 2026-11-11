@@ -4,28 +4,31 @@ import { Icon, type IconName } from './Icon'
 import { Avatar } from './ui'
 import { levelFromXp } from '../services/game/levels'
 import { PlayerCharacter } from './character/PlayerCharacter'
+import { ItemReward } from './character/ItemReward'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
-  { to: '/painel', label: 'Painel', short: 'Início', icon: 'home' },
+  { to: '/painel', label: 'Início', short: 'Início', icon: 'home' },
   { to: '/historia', label: 'Modo História', short: 'História', icon: 'map' },
-  { to: '/livre', label: 'Modo Livre', short: 'Livre', icon: 'star' },
+  { to: '/quiz', label: 'Modo Quiz', short: 'Quiz', icon: 'shield' },
   { to: '/biblioteca', label: 'Biblioteca', short: 'Biblioteca', icon: 'book' },
   { to: '/perfil', label: 'Perfil', short: 'Perfil', icon: 'user' },
 ]
 
 const SECONDARY: { to: string; label: string }[] = [
+  { to: '/estatisticas', label: 'Estatísticas' },
+  { to: '/guarda-roupa', label: 'Guarda-roupa' },
   { to: '/ranking', label: 'Ranking' },
   { to: '/diario', label: 'Desafio diário' },
   { to: '/revisao', label: 'Revisão' },
   { to: '/linha-do-tempo', label: 'Linha do tempo' },
-  { to: '/livre/multiplayer', label: 'Multiplayer' },
+  { to: '/quiz/multiplayer', label: 'Multiplayer' },
   { to: '/conquistas', label: 'Conquistas' },
   { to: '/configuracoes', label: 'Configurações' },
   { to: '/sobre', label: 'Sobre' },
 ]
 
 /** Telas de jogo usam layout imersivo, sem barra inferior. */
-const IMMERSIVE = [/^\/$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/livre\/(?!multiplayer)[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
+const IMMERSIVE = [/^\/$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/quiz\/treino\/[^/]+$/, /^\/quiz\/desafio\/[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
 
 export function Layout() {
   const { profile, progress } = useGame()
@@ -49,7 +52,7 @@ export function Layout() {
           {profile && (
             <nav className="topnav" aria-label="Navegação principal">
               {NAV.map((n) => (
-                <NavLink key={n.to} to={n.to} className="topnav-link" end={n.to === '/livre' ? false : undefined}>
+                <NavLink key={n.to} to={n.to} className="topnav-link" end={n.to === '/painel' ? true : undefined}>
                   {n.label}
                 </NavLink>
               ))}
@@ -78,6 +81,7 @@ export function Layout() {
 
       <main id="conteudo" tabIndex={-1}>
         <Outlet />
+        {profile && <ItemReward />}
       </main>
 
       {!immersive && (
@@ -93,7 +97,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.3 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.4 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>

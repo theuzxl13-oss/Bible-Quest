@@ -1,5 +1,9 @@
 import type { AnswerResult, Progress, Question, QuestionRecord } from '../../types'
 import { STORY_SEQUENCE } from '../../data/story'
+import { CHARACTERS } from '../../data/library/characters'
+import { questionMentions } from '../../data/themes'
+
+const WEAK_RATIO = 0.7
 
 /*
  * REVISÃO INTELIGENTE
@@ -73,4 +77,39 @@ export function reviewQuestions(p: Progress, pool: Question[], max = 8, experien
 
 export function pendingErrors(p: Progress): number {
   return Object.values(p.review).filter((r) => r.lastWrong).length
+}
+
+export interface CharacterStat {
+  characterId: string
+  name: string
+  seen: number
+  wrong: number
+  ratio: number
+}
+
+/**
+ * Personagens bíblicos com desempenho abaixo de 70%: considera as perguntas
+ * respondidas que mencionam o personagem (com pelo menos 3 respostas).
+ */
+export function weakCharacters(p: Progress, pool: Question[]): CharacterStat[] {
+  const out: CharacterStat[] = []
+  for (const c of CHARACTERS) {
+    let seen = 0
+    let wrong = 0
+    for (const [id, r] of Object.entries(p.review)) {
+      const q = pool.find((x) => x.id === id)
+      if (!q || !questionMentions(q, c.id)) continue
+      seen += r.seen
+      wrong += r.wrong
+    }
+    if (seen >= 3 && (seen - wrong) / seen < WEAK_RATIO) out.push({ characterId: c.id, name: c.name, seen, wrong, ratio: (seen - wrong) / seen })
+  }
+  return out.sort((a, b) => a.ratio - b.ratio)
+}
+
+/** Perguntas sobre um personagem, priorizando as erradas. */
+export function characterReviewQuestions(p: Progress, pool: Question[], characterId: string, max = 8): Question[] {
+  const qs = pool.filter((q) => questionMentions(q, characterId))
+  const wrongFirst = [...qs].sort((a, b) => Number(Boolean(p.review[b.id]?.lastWrong)) - Number(Boolean(p.review[a.id]?.lastWrong)))
+  return wrongFirst.slice(0, max)
 }

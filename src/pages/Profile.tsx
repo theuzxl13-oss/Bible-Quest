@@ -89,7 +89,7 @@ export default function ProfilePage() {
         <h2 id="st" className="section-title">Estatísticas</h2>
         <dl className="stat-grid">
           <div className="panel"><dt>Experiências concluídas</dt><dd>{expsDone}/{STORY_SEQUENCE.length}</dd></div>
-          <div className="panel"><dt>Partidas no Modo Livre</dt><dd>{progress.free.matches}</dd></div>
+          <div className="panel"><dt>Partidas no Modo Quiz</dt><dd>{progress.free.matches}</dd></div>
           <div className="panel"><dt>Perguntas respondidas</dt><dd>{progress.stats.answered}</dd></div>
           <div className="panel"><dt>Precisão</dt><dd>{accuracy}%</dd></div>
           <div className="panel"><dt>Melhor sequência</dt><dd>{progress.streak.best} dias</dd></div>
@@ -140,7 +140,7 @@ export default function ProfilePage() {
       </section>
 
       <section aria-labelledby="pl">
-        <h2 id="pl" className="section-title">Modo Livre</h2>
+        <h2 id="pl" className="section-title">Modo Quiz</h2>
         <div className="table-wrap">
           <table className="simple-table">
             <caption className="sr-only">Recordes por modalidade</caption>

@@ -10,13 +10,26 @@ import { STORY_SEQUENCE } from '../../data/story'
 import { bookCompletion, percent } from '../../services/game/progression'
 import { phaseNumber } from '../../services/game/journeyMap'
 import { useGame } from '../../state/GameContext'
+import { DATING_LABEL, TIMELINE } from '../../data/timeline'
+import { THEMES } from '../../data/themes'
+import { filteredPool } from '../../services/game/freeModes'
+import { getExperience } from '../../data/story'
 
-type Tab = 'personagens' | 'livros' | 'lugares'
+type Tab = 'personagens' | 'livros' | 'lugares' | 'acontecimentos' | 'temas'
 const TABS: { id: Tab; label: string }[] = [
   { id: 'personagens', label: 'Personagens' },
   { id: 'livros', label: 'Livros' },
   { id: 'lugares', label: 'Lugares' },
+  { id: 'acontecimentos', label: 'Acontecimentos' },
+  { id: 'temas', label: 'Temas' },
 ]
+
+/** Fases do Modo História ligadas a um tema. */
+export function themeExperiences(themeId: string) {
+  const t = THEMES.find((x) => x.id === themeId)
+  if (!t) return []
+  return STORY_SEQUENCE.filter((e) => t.experiences?.includes(e.id) || (t.prefix && e.id.startsWith(t.prefix)) || t.books?.includes(e.bookId))
+}
 
 /** Primeira fase em que um personagem ou lugar aparece. */
 export function firstPhaseWith(kind: 'characters' | 'places', id: string) {
@@ -26,13 +39,13 @@ export function firstPhaseWith(kind: 'characters' | 'places', id: string) {
 export default function Library() {
   const [params, setParams] = useSearchParams()
   const tab = (TABS.find((t) => t.id === params.get('aba'))?.id ?? 'personagens') as Tab
-  const { progress } = useGame()
+  const { progress, questionPool } = useGame()
   const metChars = CHARACTERS.filter((c) => progress.library.characters[c.id]).length
   const metPlaces = PLACES.filter((p) => progress.library.places[p.id]).length
 
   return (
     <div className="container section stack-lg">
-      <PageHeader eyebrow="Biblioteca Bíblica" title="Personagens, livros e lugares">
+      <PageHeader eyebrow="Biblioteca Bíblica" title="Personagens, livros, lugares, acontecimentos e temas">
         As fichas de personagens e lugares são desbloqueadas quando você os encontra na jornada. Os livros podem ser
         consultados a qualquer momento. <Link to="/linha-do-tempo">Ver a linha do tempo</Link>.
       </PageHeader>
@@ -100,6 +113,55 @@ export default function Library() {
               </section>
             ))}
           </div>
+        )}
+
+        {tab === 'acontecimentos' && (
+          <ol className="lib-events">
+            {TIMELINE.map((ev) => {
+              const exp = getExperience(ev.experienceId)
+              const open = !exp || Boolean(progress.experiences[exp.id]?.completed)
+              return (
+                <li key={ev.id} className={`panel lib-event ${open ? '' : 'is-locked'}`}>
+                  <p className="eyebrow">{ev.era} · {DATING_LABEL[ev.dating.kind]}</p>
+                  <h3>{open ? ev.title : <><Icon name="lock" size={16} /> {ev.title}</>}</h3>
+                  {open ? (
+                    <>
+                      <p className="small">{ev.description}</p>
+                      <p className="small muted">{ev.dating.label} · {ev.references.join('; ')}</p>
+                      {exp && <Link to={`/historia/${exp.bookId}/${exp.id}/historia`} className="link small">Rever a fase {phaseNumber(exp.id)}: {exp.title}</Link>}
+                    </>
+                  ) : (
+                    <p className="small muted">Conclua a fase {phaseNumber(exp!.id)} ({exp!.title}) para ler este acontecimento.</p>
+                  )}
+                </li>
+              )
+            })}
+          </ol>
+        )}
+
+        {tab === 'temas' && (
+          <ul className="lib-themes">
+            {THEMES.map((t) => {
+              const exps = themeExperiences(t.id)
+              const done = exps.filter((e) => progress.experiences[e.id]?.completed).length
+              const qs = filteredPool('tema', questionPool, { themeId: t.id }).length
+              return (
+                <li key={t.id} className="panel stack-sm">
+                  <h3>{t.label}</h3>
+                  {exps.length > 0 ? (
+                    <>
+                      <ProgressBar value={done} max={exps.length} label={`Fases concluídas do tema ${t.label}`} />
+                      <p className="small muted">{done} de {exps.length} fases do Modo História: {exps.map((e) => e.title).join(', ')}.</p>
+                    </>
+                  ) : (
+                    <p className="small muted">As fases deste tema ainda estão em preparação no Modo História.</p>
+                  )}
+                  <p className="small">{qs} {qs === 1 ? 'pergunta' : 'perguntas'} no banco{qs >= 5 ? ' · disponível no treino por tema do Modo Quiz' : ''}.</p>
+                  {qs >= 5 && <Link to="/quiz/treino/tema" className="link small">Treinar por tema</Link>}
+                </li>
+              )
+            })}
+          </ul>
         )}
 
         {tab === 'lugares' && (

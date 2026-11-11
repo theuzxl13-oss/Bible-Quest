@@ -4,7 +4,7 @@ import { Icon } from '../components/Icon'
 import { QuizRunner } from '../components/QuizRunner'
 import { PageHeader, ProgressBar } from '../components/ui'
 import { getBook } from '../data/bible/canon'
-import { masteredTopics, pendingErrors, reviewQuestions, topicStats, weakTopics } from '../services/game/review'
+import { characterReviewQuestions, masteredTopics, pendingErrors, reviewQuestions, topicStats, weakCharacters, weakTopics } from '../services/game/review'
 import { phaseNumber } from '../services/game/journeyMap'
 import { useGame } from '../state/GameContext'
 import type { Question } from '../types'
@@ -17,6 +17,7 @@ export default function Review() {
   const mastered = masteredTopics(progress, questionPool)
   const all = topicStats(progress, questionPool)
   const pending = pendingErrors(progress)
+  const weakChars = weakCharacters(progress, questionPool)
   const recent = useMemo(() => [...progress.history].filter((h) => h.mode !== 'demo-multiplayer').slice(0, 10).reverse(), [progress.history])
   const lastErrors = useMemo(
     () =>
@@ -58,7 +59,7 @@ export default function Review() {
       {Object.keys(progress.review).length === 0 ? (
         <div className="panel center stack">
           <Icon name="scroll" size={32} />
-          <p>Ainda não há respostas registradas. Jogue uma fase ou uma modalidade do Modo Livre e volte aqui.</p>
+          <p>Ainda não há respostas registradas. Jogue uma fase ou uma modalidade do Modo Quiz e volte aqui.</p>
           <Link to="/historia" className="btn btn-gold">Ir para a jornada</Link>
         </div>
       ) : (
@@ -106,6 +107,27 @@ export default function Review() {
             )}
           </section>
 
+          <section aria-labelledby="wchars">
+            <h2 id="wchars" className="section-title">Personagens para revisar</h2>
+            {weakChars.length === 0 ? <p className="muted">Nenhum personagem com menos de 70% de acertos (mínimo de 3 respostas).</p> : (
+              <ul className="topic-list">
+                {weakChars.map((c) => (
+                  <li key={c.characterId} className="panel topic">
+                    <div>
+                      <strong>{c.name}</strong>
+                      <p className="small muted">{Math.round(c.ratio * 100)}% de acertos em {c.seen} respostas</p>
+                      <ProgressBar value={Math.round(c.ratio * 100)} max={100} label={`Acertos sobre ${c.name}`} />
+                    </div>
+                    <div className="row-actions">
+                      <button type="button" className="btn btn-gold btn-sm" onClick={() => start(`Revisão: ${c.name}`, characterReviewQuestions(progress, questionPool, c.characterId))}>Revisar</button>
+                      {progress.library.characters[c.characterId] && <Link to={`/biblioteca/personagem/${c.characterId}`} className="btn btn-outline btn-sm">Ver ficha</Link>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
           <div className="review-top">
             <section className="panel" aria-labelledby="dom">
               <h2 id="dom">Assuntos dominados</h2>
@@ -119,7 +141,7 @@ export default function Review() {
               <ul className="bars">
                 {byBook.map((b) => (
                   <li key={b.bookId}>
-                    <span className="bar-label">{getBook(b.bookId)?.name} · {b.seen} respostas</span>
+                    <span className="bar-label">{getBook(b.bookId)?.name} · {b.seen} respostas{b.ratio < 0.7 ? ' · precisa de revisão' : ''}</span>
                     <span className="bar-track"><span className="bar-fill" style={{ width: `${b.ratio * 100}%` }} /></span>
                     <span className="bar-n">{Math.round(b.ratio * 100)}%</span>
                   </li>

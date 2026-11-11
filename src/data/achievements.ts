@@ -35,10 +35,10 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: 'tres-estrelas', area: 'historia', title: 'Brilho de estrelas', description: 'Conquiste 3 estrelas em 5 fases.', icon: 'star', check: (p) => Object.values(p.experiences).filter((e) => e.bestStars === 3).length >= 5 },
   { id: 'primeiro-bau', area: 'historia', title: 'Tesouro no caminho', description: 'Abra seu primeiro baú de recompensa no mapa.', icon: 'crown', check: (p) => Object.keys(p.chests).length >= 1 },
   { id: 'colecionador', area: 'historia', title: 'Colecionador de histórias', description: 'Desbloqueie 10 fichas de personagens na Biblioteca.', icon: 'users', check: (p) => Object.keys(p.library.characters).length >= 10 },
-  // Modo Livre
-  { id: 'livre-1', area: 'livre', title: 'Desafiante', description: 'Jogue sua primeira partida no Modo Livre.', icon: 'star', check: (p) => p.free.matches >= 1 },
-  { id: 'livre-10', area: 'livre', title: 'Competidor', description: 'Jogue 10 partidas no Modo Livre.', icon: 'laurel', check: (p) => p.free.matches >= 10 },
-  { id: 'todas-modalidades', area: 'livre', title: 'Explorador de modalidades', description: 'Jogue todas as 7 modalidades do Modo Livre.', icon: 'compass', check: (p) => Object.keys(p.free.byMode).length >= 7 },
+  // Modo Quiz
+  { id: 'livre-1', area: 'livre', title: 'Desafiante', description: 'Jogue sua primeira partida no Modo Quiz.', icon: 'star', check: (p) => p.free.matches >= 1 },
+  { id: 'livre-10', area: 'livre', title: 'Competidor', description: 'Jogue 10 partidas no Modo Quiz.', icon: 'laurel', check: (p) => p.free.matches >= 10 },
+  { id: 'todas-modalidades', area: 'livre', title: 'Explorador de modalidades', description: 'Jogue todas as 7 modalidades do Modo Quiz.', icon: 'compass', check: (p) => Object.keys(p.free.byMode).length >= 7 },
   { id: 'detetive', area: 'livre', title: 'Detetive bíblico', description: 'Acerte um "Quem sou eu?" com apenas uma pista.', icon: 'user', check: (p) => p.free.oneClueHits >= 1 },
   { id: 'relampago', area: 'livre', title: 'Relâmpago', description: 'Acerte 10 perguntas numa rodada de Contra o tempo.', icon: 'clock', check: (p) => p.free.bestTimeAttack >= 10 },
   { id: 'desafiante', area: 'livre', title: 'Desafiante', description: 'Vença uma partida multiplayer (por enquanto, em modo demonstração).', icon: 'trophy', check: (p) => p.multiplayer.demoWins >= 1 },
@@ -54,4 +54,4 @@ export const ACHIEVEMENTS: AchievementDef[] = [
   { id: 'versiculos', area: 'constancia', title: 'Palavra guardada', description: 'Acerte 10 perguntas de "Complete o versículo".', icon: 'laurel', check: (p) => (p.stats.byType.complete?.correct ?? 0) >= 10 },
 ]
 
-export const ACHIEVEMENT_AREA_LABEL = { historia: 'Modo História', livre: 'Modo Livre', constancia: 'Constância e conhecimento' } as const
+export const ACHIEVEMENT_AREA_LABEL = { historia: 'Modo História', livre: 'Modo Quiz', constancia: 'Constância e conhecimento' } as const

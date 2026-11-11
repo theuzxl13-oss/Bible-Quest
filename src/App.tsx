@@ -29,6 +29,9 @@ import Library from './pages/library/Library'
 import Timeline from './pages/library/Timeline'
 import { BookSheet, CharacterSheet, PlaceSheet } from './pages/library/LibraryDetail'
 import Review from './pages/Review'
+import QuizMap from './pages/quiz/QuizMap'
+import QuizChallenge from './pages/quiz/QuizChallenge'
+import Statistics from './pages/Statistics'
 
 const Admin = lazy(() => import('./admin/AdminApp'))
 
@@ -41,10 +44,22 @@ function RequireProfile({ children, character = true }: { children: React.ReactN
   return <>{children}</>
 }
 
+/** Endereços antigos do Modo Livre (v0.2–v0.3) levam ao treino livre do Modo Quiz. */
+function LegacyFree() {
+  const { '*': rest } = useParams()
+  if (rest === 'multiplayer') return <Navigate to="/quiz/multiplayer" replace />
+  return <Navigate to={rest ? `/quiz/treino/${rest}` : '/quiz/treino'} replace />
+}
+
 /** Remonta a tela ao trocar de modalidade, para não herdar o estado da anterior. */
 function FreePlayRoute() {
   const { modeId } = useParams()
   return <FreePlay key={modeId} />
+}
+
+function QuizChallengeRoute() {
+  const { nodeId } = useParams()
+  return <QuizChallenge key={nodeId} />
 }
 
 function ScrollToTop() {
@@ -78,9 +93,13 @@ export default function App() {
           <Route path="historia/:bookId/:experienceId" element={p(<ExperiencePage />)} />
           <Route path="historia/:bookId/:experienceId/historia" element={p(<PhaseScene />)} />
           <Route path="historia/:bookId/:experienceId/desafio" element={p(<StoryChallenge />)} />
-          <Route path="livre" element={p(<FreeHub />)} />
-          <Route path="livre/multiplayer" element={p(<Multiplayer />)} />
-          <Route path="livre/:modeId" element={p(<FreePlayRoute />)} />
+          <Route path="quiz" element={p(<QuizMap />)} />
+          <Route path="quiz/desafio/:nodeId" element={p(<QuizChallengeRoute />)} />
+          <Route path="quiz/treino" element={p(<FreeHub />)} />
+          <Route path="quiz/treino/:modeId" element={p(<FreePlayRoute />)} />
+          <Route path="quiz/multiplayer" element={p(<Multiplayer />)} />
+          <Route path="livre/*" element={<LegacyFree />} />
+          <Route path="estatisticas" element={p(<Statistics />)} />
           {/* Endereços da versão 0.1 */}
           <Route path="mapa" element={<Navigate to="/historia" replace />} />
           <Route path="jornada/*" element={<Navigate to="/historia/genesis" replace />} />

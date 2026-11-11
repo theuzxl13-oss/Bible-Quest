@@ -27,7 +27,7 @@ export default function About() {
           <li>No desafio você tem 3 tentativas e precisa acertar ao menos 60% para concluir e liberar a próxima experiência.</li>
           <li>Experiências concluídas podem ser revisitadas a qualquer momento, sem perder o progresso.</li>
         </ol>
-        <h3>Modo Livre</h3>
+        <h3>Modo Quiz</h3>
         <p>Escolha qualquer modalidade, quando quiser: {FREE_MODES.map((m) => m.title).join(', ')}. Há também o desafio diário e salas multiplayer em demonstração.</p>
         <h3>Evolução compartilhada</h3>
         <p>

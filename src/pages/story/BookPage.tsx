@@ -50,10 +50,10 @@ export default function BookPage() {
         {exps.length === 0 ? (
           <div className="panel stack center">
             <h2>Em preparação</h2>
-            <p className="muted">As experiências de {book.name} ainda estão sendo escritas e revisadas. Enquanto isso, você pode praticar no Modo Livre.</p>
+            <p className="muted">As experiências de {book.name} ainda estão sendo escritas e revisadas. Enquanto isso, você pode praticar no Modo Quiz.</p>
             <div className="row-actions" style={{ justifyContent: 'center' }}>
               <Link to="/historia" className="btn btn-outline">Voltar ao mapa</Link>
-              <Link to="/livre" className="btn btn-gold">Ir para o Modo Livre</Link>
+              <Link to="/quiz/treino" className="btn btn-gold">Ir para o Modo Quiz</Link>
             </div>
           </div>
         ) : (

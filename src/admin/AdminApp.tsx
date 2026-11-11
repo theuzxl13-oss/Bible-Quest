@@ -282,7 +282,7 @@ function QuestionsAdmin() {
         </div>
         <label className="toggle-row">
           <span>
-            <span className="toggle-label">Usar perguntas locais no Modo Livre deste aparelho</span>
+            <span className="toggle-label">Usar perguntas locais no Modo Quiz deste aparelho</span>
             <span className="small muted" style={{ display: 'block' }}>Elas aparecem como conteúdo não revisado apenas aqui.</span>
           </span>
           <input type="checkbox" role="switch" className="switch" checked={customContent.includeInFreeMode} onChange={(e) => save({ includeInFreeMode: e.target.checked })} />
@@ -397,7 +397,7 @@ function RewardsAdmin() {
     ['Primeira conclusão de experiência', `pontos + ${FIRST_CLEAR_BONUS} XP`],
     ['Repetir experiência concluída', 'só a diferença acima da melhor pontuação'],
     ['Experiência reprovada', '25% dos pontos, como XP de prática'],
-    ['Modo Livre', `pontos, como XP de prática (limite de ${PRACTICE_DAILY_CAP} XP de prática por dia)`],
+    ['Modo Quiz', `pontos, como XP de prática (limite de ${PRACTICE_DAILY_CAP} XP de prática por dia)`],
     ['Quem sou eu?', '+5 por pista não usada'],
     ['Contra o tempo', '+10 se responder em até 4 s, +5 em até 8 s'],
     ['Desafio diário', `pontos + ${DAILY_BONUS} XP, uma vez por dia`],
@@ -467,7 +467,7 @@ function StatsAdmin() {
   const story = QUESTIONS.filter((q) => q.experienceId).length
   return (
     <div className="stack">
-      <p className="small muted">{QUESTIONS.length} perguntas: {story} ligadas a experiências do Modo História e {QUESTIONS.length - story} só do Modo Livre. {STORY_SEQUENCE.length} experiências publicadas.</p>
+      <p className="small muted">{QUESTIONS.length} perguntas: {story} ligadas a experiências do Modo História e {QUESTIONS.length - story} só do Modo Quiz. {STORY_SEQUENCE.length} experiências publicadas.</p>
       <div className="stat-columns">
         <BarList title="Perguntas por livro" rows={byBook} />
         <BarList title="Perguntas por modalidade" rows={byType} />

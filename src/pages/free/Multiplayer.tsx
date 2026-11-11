@@ -140,8 +140,8 @@ export default function Multiplayer() {
 
       <div className="container section stack-lg">
         <header className="page-header">
-          <Link to="/livre" className="back-link"><Icon name="arrowLeft" size={16} /> Modo Livre</Link>
-          <p className="eyebrow">Modo Livre · Multiplayer</p>
+          <Link to="/quiz" className="back-link"><Icon name="arrowLeft" size={16} /> Mapa do Modo Quiz</Link>
+          <p className="eyebrow">Modo Quiz · Multiplayer</p>
           <h1>Salas privadas</h1>
         </header>
 
@@ -309,7 +309,7 @@ export default function Multiplayer() {
             <p className="small muted">Partida demonstrativa: não conta para XP nem para o ranking geral.</p>
             <div className="row-actions">
               <button type="button" className="btn btn-outline" onClick={reset}>Nova sala</button>
-              <Link to="/livre" className="btn btn-gold">Voltar ao Modo Livre</Link>
+              <Link to="/quiz" className="btn btn-gold">Voltar ao mapa do Quiz</Link>
             </div>
           </section>
         )}

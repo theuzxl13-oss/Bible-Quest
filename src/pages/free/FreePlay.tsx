@@ -26,6 +26,11 @@ export const EXPERT_SECONDS_PER_QUESTION = 20
 
 const COUNTS = [5, 10, 15]
 
+/** Regras de uma rodada: o nível Especialista sempre tem cronômetro. */
+export function roundRules(modeId: FreeModeId, level: FreeLevel | 'todas', questions: number): QuizRules {
+  return level === 'especialista' ? { lives: 0, timeLimit: questions * EXPERT_SECONDS_PER_QUESTION, speedBonus: true } : BASE_RULES[modeId]
+}
+
 export default function FreePlay() {
   const { modeId } = useParams()
   const mode = getFreeMode(modeId)
@@ -45,10 +50,7 @@ export default function FreePlay() {
   if (!mode) return <NotFound />
 
   if (round && questions.length > 0) {
-    const expert = round.opts.level === 'especialista'
-    const rules: QuizRules = expert
-      ? { lives: 0, timeLimit: questions.length * EXPERT_SECONDS_PER_QUESTION, speedBonus: true }
-      : BASE_RULES[mode.id]
+    const rules = roundRules(mode.id, round.opts.level ?? 'todas', questions.length)
     const sub = mode.id === 'personagem' ? characters.find((c) => c.id === round.opts.characterId)?.name : mode.id === 'tema' ? themes.find((t) => t.id === round.opts.themeId)?.label : undefined
     return (
       <QuizRunner
@@ -57,8 +59,8 @@ export default function FreePlay() {
         title={sub ? `${mode.title}: ${sub}` : mode.title}
         mode="livre"
         freeMode={mode.id}
-        exitTo="/livre"
-        replayTo={`/livre/${mode.id}`}
+        exitTo="/quiz/treino"
+        replayTo={`/quiz/treino/${mode.id}`}
         rules={rules}
       />
     )
@@ -67,10 +69,10 @@ export default function FreePlay() {
   const minNeeded = 5
   return (
     <div className="container section narrow stack">
-      <Link to="/livre" className="back-link"><Icon name="arrowLeft" size={16} /> Modo Livre</Link>
+      <Link to="/quiz/treino" className="back-link"><Icon name="arrowLeft" size={16} /> Treino livre</Link>
       <div className="panel mode-intro stack">
         <span className="mode-icon mode-icon-lg"><Icon name={mode.icon} size={30} /></span>
-        <p className="eyebrow">Modo Livre</p>
+        <p className="eyebrow">Modo Quiz · Treino livre</p>
         <h1>{mode.title}</h1>
         <p>{mode.rules}</p>
 

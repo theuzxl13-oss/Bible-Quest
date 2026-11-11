@@ -15,6 +15,7 @@ import { PlayerCharacter } from '../components/character/PlayerCharacter'
 import { ChestIcon } from '../components/map/Scenery'
 import { STAR_RULES } from '../services/game/scoring'
 import { useGame } from '../state/GameContext'
+import { QUIZ_NODES, getQuizNode } from '../data/quiz/regions'
 
 export default function Result() {
   const { lastOutcome, progress, questionPool, profile } = useGame()
@@ -36,19 +37,24 @@ export default function Result() {
   if (record.mode === 'revisao') headline = 'Revisão concluída'
   if (record.mode === 'diario') headline = 'Desafio diário concluído'
   if (record.mode === 'livre' && free) headline = free.title
+  const quizNode = record.mode === 'quiz' ? getQuizNode(record.quizNodeId) : undefined
+  const nextQuiz = quizNode ? QUIZ_NODES[QUIZ_NODES.findIndex((n) => n.id === quizNode.id) + 1] : undefined
+  if (record.mode === 'quiz') headline = record.passed ? (firstClear ? 'Desafio concluído!' : 'Desafio superado de novo!') : 'Ainda não foi desta vez'
+  const starred = record.mode === 'historia' || record.mode === 'quiz'
 
   return (
     <div className="container section stack-lg result">
       <header className="result-head panel">
-        {record.mode === 'historia' && profile?.character && (
+        {starred && profile?.character && (
           <div className={`result-hero-char ${record.passed ? 'is-happy' : ''}`} aria-hidden="true">
             <PlayerCharacter size={88} pose={record.passed ? 'celebrate' : 'idle'} />
           </div>
         )}
-        <p className="eyebrow">{record.mode === 'historia' ? 'Modo História' : record.mode === 'livre' ? 'Modo Livre' : record.title}</p>
+        <p className="eyebrow">{record.mode === 'historia' ? 'Modo História' : record.mode === 'quiz' ? 'Modo Quiz · mapa de desafios' : record.mode === 'livre' ? 'Modo Quiz · Treino livre' : record.title}</p>
         <h1>{headline}</h1>
         {record.mode === 'historia' && <p className="muted">{exp ? `Fase ${phaseNumber(exp.id)} · ${exp.title}` : record.title}</p>}
-        {record.mode === 'historia' && (
+        {record.mode === 'quiz' && <p className="muted">{record.title}</p>}
+        {starred && (
           <div className="stars-anim">
             <Stars value={record.stars} size={40} />
           </div>
@@ -59,7 +65,7 @@ export default function Result() {
           <div><dt>Aproveitamento</dt><dd>{pct}%</dd></div>
           <div><dt>Pontos</dt><dd>{record.score}</dd></div>
         </dl>
-        {record.mode === 'historia' && (
+        {starred && (
           <p className="small muted">1 estrela ao concluir (≥ {Math.round(PASS_RATIO * 100)}%), 2 com ≥ {Math.round(STAR_RULES.two * 100)}% e 3 com ≥ {Math.round(STAR_RULES.three * 100)}%.</p>
         )}
         <div className="rewards" aria-label="Recompensas">
@@ -67,9 +73,13 @@ export default function Result() {
           <ul>
             <li className="reward-xp"><Icon name="star" /> <strong>+{xpGained} XP</strong></li>
             {chestReady && <li><ChestIcon size={28} /> Um baú de recompensa foi liberado no mapa!</li>}
+            {record.mode === 'quiz' && firstClear && nextQuiz && <li><Icon name="shield" /> Próximo desafio liberado: {nextQuiz.title}</li>}
             {firstClear && nextExp && <li><Icon name="map" /> Próxima fase liberada: {nextExp.title}</li>}
           </ul>
         </div>
+        {record.mode === 'quiz' && !record.passed && (
+          <p className="muted">É preciso acertar pelo menos {Math.round(PASS_RATIO * 100)}% para concluir o desafio. Tente de novo ou treine a modalidade no treino livre.</p>
+        )}
         {record.mode === 'historia' && !record.passed && (
           <p className="muted">É preciso acertar pelo menos {Math.round(PASS_RATIO * 100)}% sem perder todas as tentativas. Releia a experiência e tente de novo.</p>
         )}
@@ -101,8 +111,9 @@ export default function Result() {
           {record.mode === 'historia' && (
             <Link to="/historia" className="btn btn-gold">Continuar a jornada <Icon name="arrowRight" /></Link>
           )}
+          {record.mode === 'quiz' && <Link to="/quiz" className="btn btn-gold">Voltar ao mapa do Quiz <Icon name="arrowRight" /></Link>}
           {record.mode === 'revisao' && <Link to="/revisao" className="btn btn-gold">Voltar à revisão</Link>}
-          {record.mode === 'livre' && <Link to="/livre" className="btn btn-gold">Outras modalidades</Link>}
+          {record.mode === 'livre' && <Link to="/quiz/treino" className="btn btn-gold">Outras modalidades</Link>}
           {record.mode === 'diario' && <Link to="/painel" className="btn btn-gold">Voltar ao painel</Link>}
         </div>
       </header>

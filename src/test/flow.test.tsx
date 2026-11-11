@@ -12,14 +12,14 @@ import type { CharacterAppearance, Question } from '../types'
 function setup(path = '/', store = new MemoryStore()) {
   const services = createLocalServices(store)
   const user = userEvent.setup()
-  render(
+  const { unmount } = render(
     <MemoryRouter initialEntries={[path]}>
       <GameProvider services={services}>
         <App />
       </GameProvider>
     </MemoryRouter>,
   )
-  return { user, services, store }
+  return { user, services, store, unmount }
 }
 
 const CHAR: CharacterAppearance = {
@@ -245,15 +245,15 @@ describe('fluxos de ponta a ponta', () => {
     expect(screen.queryByRole('heading', { name: 'A torre de Babel' })).not.toBeInTheDocument()
   })
 
-  it('livro em preparação mostra aviso e leva ao Modo Livre', async () => {
+  it('livro em preparação mostra aviso e leva ao Modo Quiz', async () => {
     setup('/historia/apocalipse', withProfile())
     expect(await screen.findByRole('heading', { name: 'Em preparação' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /ir para o modo livre/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /ir para o modo quiz/i })).toBeInTheDocument()
   })
 
-  it('Modo Livre: verdadeiro ou falso de ponta a ponta, XP no mesmo perfil', async () => {
+  it('treino livre (endereço antigo /livre): verdadeiro ou falso de ponta a ponta, XP no mesmo perfil', async () => {
     const { user, services } = setup('/livre', withProfile())
-    expect(await screen.findByRole('heading', { name: 'Desafios bíblicos' })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: 'Treino livre' })).toBeInTheDocument()
     for (const t of ['Perguntas aleatórias', 'Verdadeiro ou falso', 'Complete o versículo', 'Quem sou eu?', 'Contra o tempo', 'Ordem dos acontecimentos', 'Identifique o livro', 'Desafios por personagem', 'Desafios por tema', 'Desafios por dificuldade']) {
       expect(screen.getByRole('heading', { name: t })).toBeInTheDocument()
     }
@@ -378,6 +378,78 @@ describe('fluxos de ponta a ponta', () => {
     const content = services.content.load()
     expect(content.questions).toHaveLength(1)
     expect(content.includeInFreeMode).toBe(true)
+  })
+
+  it('Home em cena: personagem em corpo inteiro, nível, progresso e os dois modos', async () => {
+    setup('/painel', withProfile())
+    expect(await screen.findByRole('heading', { name: 'Tobias', level: 1 })).toBeInTheDocument()
+    expect(screen.getByText('Explore as Escrituras, conheça os acontecimentos bíblicos e percorra uma jornada pelos livros da Bíblia.')).toBeInTheDocument()
+    expect(screen.getByText('Teste seus conhecimentos, enfrente desafios bíblicos e descubra até onde você consegue chegar.')).toBeInTheDocument()
+    expect(screen.getByRole('progressbar', { name: 'Progresso geral' })).toBeInTheDocument()
+    for (const name of ['Personalizar', 'Conquistas', 'Biblioteca', 'Estatísticas']) {
+      expect(screen.getAllByRole('link', { name: new RegExp(name) }).length).toBeGreaterThan(0)
+    }
+    expect(document.querySelector('.home-char .character')).not.toHaveClass('is-portrait')
+  })
+
+  it('mapa do Modo Quiz: desafio concluído libera o próximo, com bônus da primeira vez', async () => {
+    const { user, services } = setup('/quiz', withProfile())
+    expect(await screen.findByRole('heading', { name: 'Vale dos Iniciantes' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /vale dos iniciantes, desafio 2: perguntas aleatórias\. bloqueado/i })).toBeInTheDocument()
+    await user.click(screen.getByRole('link', { name: /vale dos iniciantes, desafio 1: verdadeiro ou falso\. disponível/i }))
+    await user.click(await screen.findByRole('button', { name: /começar desafio/i }))
+    for (let i = 0; i < 6; i++) {
+      await answerCorrectly(user, currentQuestion())
+      await user.click(screen.getByRole('button', { name: /próxima pergunta|ver resultado/i }))
+    }
+    expect(await screen.findByRole('heading', { name: 'Desafio concluído!' })).toBeInTheDocument()
+    expect(screen.getByText(/próximo desafio liberado: perguntas aleatórias/i)).toBeInTheDocument()
+    const p = services.progress.load()
+    expect(p.quiz.nodes['vale-1']).toMatchObject({ completed: true, bestStars: 3 })
+    expect(p.history[0]).toMatchObject({ mode: 'quiz', quizNodeId: 'vale-1', xp: p.history[0].score + 30 })
+    // o mapa de desafios é independente do Modo História
+    expect(Object.keys(p.experiences)).toHaveLength(0)
+    await user.click(screen.getByRole('link', { name: /voltar ao mapa do quiz/i }))
+    expect(await screen.findByRole('link', { name: /vale dos iniciantes, desafio 2: perguntas aleatórias\. disponível/i })).toBeInTheDocument()
+  })
+
+  it('desafio bloqueado do Quiz não abre por URL', async () => {
+    setup('/quiz/desafio/torre-6', withProfile())
+    expect(await screen.findByText(/este desafio ainda está bloqueado/i)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: /começar desafio/i })).not.toBeInTheDocument()
+  })
+
+  it('tela de recompensa: item desbloqueado pode ser equipado e aparece no personagem', async () => {
+    const store = withProfile()
+    const s = createLocalServices(store)
+    const p = s.progress.load()
+    s.progress.save({ ...p, xp: 5000, items: { unlocked: { 'manto-azul': '2026-11-11T00:00:00.000Z' }, unseen: ['manto-azul'] } })
+    const { user, services } = setup('/painel', store)
+    const dialog = await screen.findByRole('dialog', { name: 'Manto azul-escuro' })
+    expect(within(dialog).getByText(/motivo: alcance o nível 2/i)).toBeInTheDocument()
+    await user.click(within(dialog).getByRole('button', { name: 'Equipar' }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+    expect(services.auth.current()!.character!.equipped.manto).toBe('manto-azul')
+    expect(services.progress.load().items.unseen).toEqual([])
+    expect(document.querySelector('.home-char .character')!.getAttribute('data-appearance')).toContain('|manto-azul|')
+  })
+
+  it('a mesma aparência aparece em todas as telas, inclusive depois de recarregar', async () => {
+    const store = withProfile()
+    const expected = (() => {
+      const { unmount } = setup('/painel', store)
+      const a = document.querySelector('.home-char .character')!.getAttribute('data-appearance')!
+      unmount()
+      return a
+    })()
+    expect(expected).toBe('viajante|2|suave|cacheado|0|tunica-linho|manto-marrom|sandalias-simples|cinto-couro|cajado')
+    for (const path of ['/painel', '/historia', '/quiz', '/quiz/desafio/vale-1', '/historia/genesis/gn-criacao', '/perfil', '/guarda-roupa']) {
+      const { unmount } = setup(path, store) // nova montagem = recarregar a página
+      await waitFor(() => expect(document.querySelectorAll('.character[data-appearance]').length).toBeGreaterThan(0))
+      const shown = new Set(Array.from(document.querySelectorAll('.character[data-appearance]:not(.item-preview .character)')).map((e) => e.getAttribute('data-appearance')))
+      expect([...shown], path).toEqual([expected])
+      unmount()
+    }
   })
 
   it('página inexistente mostra mensagem amigável', async () => {

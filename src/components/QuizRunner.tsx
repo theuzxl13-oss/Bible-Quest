@@ -29,6 +29,8 @@ interface Props {
   title: string
   mode: MatchRecord['mode']
   freeMode?: FreeModeId
+  /** Desafio do mapa do Modo Quiz. */
+  quizNodeId?: string
   bookId?: string
   experienceId?: string
   exitTo: string
@@ -37,7 +39,7 @@ interface Props {
   replayTo?: string
 }
 
-export function QuizRunner({ questions, title, mode, freeMode, bookId, experienceId, exitTo, rules, replayTo }: Props) {
+export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookId, experienceId, exitTo, rules, replayTo }: Props) {
   const navigate = useNavigate()
   const { recordMatch, settings } = useGame()
   const [index, setIndex] = useState(0)
@@ -64,13 +66,13 @@ export function QuizRunner({ questions, title, mode, freeMode, bookId, experienc
       // No Contra o tempo, o total é o número de perguntas efetivamente respondidas.
       const total = rules.timeLimit ? Math.max(1, all.length) : questions.length
       const summary = summarizeMatch(all, total, rules.lives > 0 ? rules.lives : Number.POSITIVE_INFINITY)
-      recordMatch({ mode, title, freeMode, bookId, experienceId, results: all, summary })
+      recordMatch({ mode, title, freeMode, quizNodeId, bookId, experienceId, results: all, summary })
       navigate('/resultado', {
         replace: true,
         state: { questionIds: all.map((r) => r.questionId), replayTo, exitTo },
       })
     },
-    [rules, questions.length, recordMatch, mode, title, freeMode, bookId, experienceId, navigate, replayTo, exitTo],
+    [rules, questions.length, recordMatch, mode, title, freeMode, quizNodeId, bookId, experienceId, navigate, replayTo, exitTo],
   )
 
   // relógio: cronômetro informativo ou contagem regressiva

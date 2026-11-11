@@ -7,14 +7,15 @@ import { levelFromXp, levelTitle } from '../services/game/levels'
 import { dayKey } from '../services/game/dates'
 import { visibleStreak } from '../services/game/streak'
 import { useGame } from '../state/GameContext'
+import { quizCompletion } from '../services/game/quizMap'
 
 type Tab = 'geral' | 'historia' | 'livre' | 'diario' | 'multiplayer'
 const TABS: { id: Tab; label: string }[] = [
   { id: 'geral', label: 'XP geral' },
   { id: 'historia', label: 'Modo História' },
-  { id: 'livre', label: 'Modo Livre' },
+  { id: 'livre', label: 'Modo Quiz' },
   { id: 'diario', label: 'Desafio diário' },
-  { id: 'multiplayer', label: 'Multiplayer' },
+  { id: 'multiplayer', label: 'Multiplayer (futuro)' },
 ]
 
 /**
@@ -34,7 +35,7 @@ export default function Ranking() {
   const rows: Record<Tab, [string, string][]> = {
     geral: [['XP total', `${progress.xp}`], ['Nível', `${level} · ${levelTitle(level)}`], ['Respostas certas', `${progress.stats.correct} de ${progress.stats.answered}`], ['Maior sequência de acertos', `${progress.bestAnswerStreak}`]],
     historia: [['Fases concluídas', `${done} de ${STORY_SEQUENCE.length}`], ['Estrelas', `${stars} de ${STORY_SEQUENCE.length * 3}`], ['Fases com 3 estrelas', `${Object.values(progress.experiences).filter((e) => e.bestStars === 3).length}`], ['Baús abertos', `${Object.keys(progress.chests).length}`]],
-    livre: [['Partidas', `${progress.free.matches}`], ...FREE_MODES.filter((m) => progress.free.byMode[m.id]).map((m) => [`Recorde · ${m.title}`, `${progress.free.byMode[m.id]!.best} pts`] as [string, string]), ['Acertos no Contra o tempo (recorde)', `${progress.free.bestTimeAttack}`]],
+    livre: [['Desafios do mapa concluídos', `${quizCompletion(progress).done} de ${quizCompletion(progress).total}`], ['Estrelas no mapa do Quiz', `${quizCompletion(progress).stars} de ${quizCompletion(progress).maxStars}`], ['Partidas', `${progress.free.matches}`], ...FREE_MODES.filter((m) => progress.free.byMode[m.id]).map((m) => [`Recorde · ${m.title}`, `${progress.free.byMode[m.id]!.best} pts`] as [string, string]), ['Acertos no Contra o tempo (recorde)', `${progress.free.bestTimeAttack}`]],
     diario: [['Desafios concluídos', `${progress.daily.completedCount}`], ['Sequência atual', `${visibleStreak(progress.streak, dayKey())} dias`], ['Melhor sequência', `${progress.streak.best} dias`], ['Último desafio', progress.daily.lastCompletedDay ?? '—']],
     multiplayer: [['Partidas de demonstração', `${progress.multiplayer.demoMatches}`], ['Vitórias em demonstração', `${progress.multiplayer.demoWins}`]],
   }

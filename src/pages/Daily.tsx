@@ -49,7 +49,7 @@ export default function Daily() {
             ) : (
               <>
                 <button type="button" className="btn btn-outline btn-lg" onClick={() => setPlaying(true)}>Treinar novamente (sem recompensa)</button>
-                <Link to="/livre" className="btn btn-gold btn-lg">Ir para o Modo Livre</Link>
+                <Link to="/quiz/treino" className="btn btn-gold btn-lg">Ir para o Modo Quiz</Link>
               </>
             )}
           </div>

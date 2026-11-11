@@ -2,10 +2,10 @@
 
 **Uma jornada pelas Escrituras.** Jogo bíblico educativo, cinematográfico e para todas as idades, desenvolvido pela **Kzann Tech**.
 
-O jogador cria seu **aventureiro** (um personagem próprio, que não representa ninguém da Bíblia) e o acompanha por um **mapa de fases** que atravessa as Escrituras. O jogo tem **dois modos** que compartilham a mesma evolução (XP, níveis, estrelas, medalhas, conquistas, histórico e sequência diária):
+O jogador cria seu **personagem** (próprio, que não representa ninguém da Bíblia), veste-o com roupas de época e o acompanha por dois mapas: a jornada pelas Escrituras e o mapa de desafios. O jogo tem **dois modos** que compartilham a mesma evolução (XP, níveis, estrelas, medalhas, conquistas, histórico e sequência diária):
 
 - **Modo História — A grande jornada bíblica:** um caminho de fases pela ordem dos livros, de Gênesis a Apocalipse, organizado em 10 mundos.
-- **Modo Livre — Desafios bíblicos:** dez modalidades com quatro níveis de dificuldade, mais o desafio diário e salas multiplayer (em demonstração).
+- **Modo Quiz — Desafios bíblicos:** um mapa próprio com 4 regiões e 24 desafios, além do treino livre com dez modalidades e quatro níveis de dificuldade, do desafio diário e de salas multiplayer (em demonstração).
 
 Também há a **Biblioteca Bíblica** (personagens, livros, lugares e linha do tempo) e a **Revisão inteligente**, que aprende com os erros.
 
@@ -13,20 +13,41 @@ Links e status:
 
 - **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
 - **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
-- **Status:** versão 0.3 (aventura: personagem, mapa de fases, biblioteca e revisão). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
+- **Status:** versão 0.4 (personagem por itens, nova entrada, Home em cena e mapa do Modo Quiz). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
 
 ## Como jogar
 
 ### Começando
 
-1. Crie um perfil local (apelido e faixa etária).
-2. Crie seu aventureiro:
-   - estilo (Viajante, Escriba, Pastora, Exploradora);
-   - tom de pele, cabelo e cor do cabelo;
-   - vestimenta e cor;
-   - acessório.
+A entrada tem 5 passos:
 
-   A aparência pode ser alterada depois em Perfil ou Configurações, sem perder o progresso.
+1. **Boas-vindas:** "Uma jornada pelas Escrituras." e o botão **Começar jornada**.
+2. **Identificação:** nome ou apelido e faixa etária (até 12, 13 a 17, 18 ou mais). Não pedimos data de nascimento, endereço nem telefone.
+3. **Escolha do personagem:** 8 personagens diversos (Viajante, Pastora, Escriba, Exploradora, Mensageiro, Guardiã, Peregrino e Contadora de histórias).
+4. **Personalização:** prévia em corpo inteiro, atualizada na hora. Você escolhe:
+   - nome, tom de pele, rosto;
+   - 7 estilos e 6 cores de cabelo;
+   - túnica, manto, sandálias, cinto e acessórios, todos inspirados nos tempos bíblicos.
+
+   O passo termina em **Finalizar personagem**.
+5. **Chegada:** o personagem entra caminhando no universo Bible Quest.
+
+**Home.** É uma cena de jogo com:
+
+- o personagem em corpo inteiro;
+- nome, nível e barra de XP;
+- progresso geral;
+- os botões Personalizar, Modo História, Modo Quiz, Conquistas, Biblioteca e Estatísticas.
+
+**Personagem único.** A aparência é uma só entidade, salva no perfil e desenhada pelo mesmo componente em todas as telas: Home, topo, mapas, fases, cenas, desafios e resultados.
+
+**Guarda-roupa** (`Personalizar`):
+
+- 36 itens, dos quais 12 estão disponíveis desde o início.
+- Os demais são conquistados jogando: nível, estrelas, conquistas, livro concluído, baús do mapa e regiões do Modo Quiz. Nunca com dinheiro.
+- Itens bloqueados mostram o requisito.
+- É possível equipar e retirar itens (túnica e calçado são obrigatórios), descartar as alterações ou restaurar a aparência anterior.
+- Ao desbloquear um item, a **tela de recompensa** mostra o nome, a prévia no seu personagem e o motivo, com as opções **Equipar** ou **Guardar para depois**.
 
 ### Modo História
 
@@ -42,9 +63,24 @@ A jornada segue **Testamento → Livro → Mundo → Fase**, usando o cânon eva
 - **Resultado.** Mostra pontos, acertos, erros, aproveitamento, XP, estrelas e recompensas, com os botões "Continuar a jornada" e "Revisar conteúdo".
 - **Biblioteca.** Personagens e lugares de cada fase entram na Biblioteca quando você chega à fase.
 
-### Modo Livre
+### Modo Quiz
 
-Independente da jornada. Escolha uma modalidade e, quando fizer sentido, a dificuldade (**Iniciante, Intermediário, Avançado ou Especialista**) e a quantidade de perguntas (5, 10 ou 15):
+**Mapa de desafios** (`#/quiz`), independente do Modo História, com identidade própria: trilha de pedras, estandartes e desafios em forma de escudo. São 4 regiões com 6 desafios cada:
+
+1. Vale dos Iniciantes.
+2. Planície do Saber.
+3. Montanhas dos Sábios.
+4. Torre dos Especialistas.
+
+Como funciona:
+
+- Cada desafio combina modalidade, dificuldade e quantidade de perguntas, e tem uma tela de introdução com as instruções.
+- Os desafios abrem em sequência; uma região abre quando a anterior está completa. Desafios bloqueados não abrem por URL.
+- As estrelas seguem a mesma regra da história: 1 ao concluir (60%), 2 com 70% e 3 com 90%.
+- A primeira conclusão rende os pontos da partida mais 30 XP; repetir conta como treino, com limite diário.
+- Concluir uma região libera um item do guarda-roupa.
+
+**Treino livre** (`#/quiz/treino`). Escolha uma modalidade e, quando fizer sentido, a dificuldade (**Iniciante, Intermediário, Avançado ou Especialista**) e a quantidade de perguntas (5, 10 ou 15):
 
 | Modalidade | Como funciona |
 | --- | --- |
@@ -59,7 +95,7 @@ Independente da jornada. Escolha uma modalidade e, quando fizer sentido, a dific
 | Desafios por tema | Criação, alianças, famílias, libertação, juízo e recomeço, sabedoria, vida de Jesus, igreja |
 | Desafios por dificuldade | Do Iniciante ao Especialista; no Especialista, só perguntas difíceis e 20 segundos por pergunta |
 
-Também fazem parte do Modo Livre:
+Também fazem parte do Modo Quiz:
 
 - **Desafio diário:** 5 perguntas por dia, iguais para todos os jogadores. A recompensa especial (pontos + 30 XP) vale **uma vez por dia**. A tela mostra os desafios realizados e a sequência de dias.
 - **Multiplayer:** salas privadas em **modo demonstração** (veja abaixo).
@@ -90,10 +126,10 @@ Você pode revisar as perguntas erradas de uma fase ou fazer uma revisão geral.
 
 ### Evolução compartilhada e regras contra acúmulo infinito
 
-- O XP do Modo História, do Modo Livre, das revisões, dos baús e do diário soma no mesmo nível. Há também medalhas por livro, 26 conquistas, histórico das últimas 50 partidas, estatísticas por modalidade e recordes por categoria.
+- O XP do Modo História, do Modo Quiz, das revisões, dos baús e do diário soma no mesmo nível. Há também medalhas por livro, 26 conquistas, histórico das últimas 50 partidas, estatísticas por modalidade e recordes por categoria.
 - **Primeira conclusão** de uma experiência: pontos + 50 XP de bônus.
 - **Repetir uma experiência concluída:** só rende XP se você superar sua melhor pontuação (e apenas a diferença).
-- **Limite diário de XP de prática: 300 XP.** Vale para o Modo Livre e para tentativas reprovadas no Modo História. Depois do limite você continua jogando e registrando recordes, sem XP extra.
+- **Limite diário de XP de prática: 300 XP.** Vale para o Modo Quiz e para tentativas reprovadas no Modo História. Depois do limite você continua jogando e registrando recordes, sem XP extra.
 - **Desafio diário:** a recompensa vale uma vez por dia. Se o relógio do aparelho voltar no tempo, a recompensa fica bloqueada.
 - **Baús:** são finitos e cada um abre só uma vez.
 - **Pontuação:**
@@ -140,31 +176,37 @@ src/
     bible/canon.ts        Cânon de 66 livros (preparado para outros cânones)
     story/                Fases do Modo História, um arquivo por livro (genesis.ts, exodo.ts)
     library/              Biblioteca: personagens bíblicos, lugares e fichas dos 66 livros
+    character/            Itens do personagem (items.ts, com requisitos de desbloqueio) e personagens-base (bases.ts)
+    quiz/regions.ts       Regiões e desafios do mapa do Modo Quiz
     worlds.ts             Os 10 mundos do mapa (livros, cores e cenário)
     timeline.ts           Linha do tempo com o tipo de datação de cada evento
-    themes.ts             Temas e busca por personagem para o Modo Livre
-    questions/            Banco de perguntas por livro + perguntas gerais do Modo Livre
+    themes.ts             Temas e busca por personagem para o Modo Quiz
+    questions/            Banco de perguntas por livro + perguntas gerais do Modo Quiz
     achievements.ts       Conquistas
     images.ts             Catálogo e créditos das obras
   services/
     game/                 Regras puras: journeyMap (mundos, fases, baús, avatar), library (fichas), review
                           (revisão inteligente), progression (desbloqueio e porcentagens), scoring (pontos, estrelas, XP e limites),
                           engine (aplica partidas ao progresso único), daily (desafio diário e serviço de data),
-                          freeModes (modalidades), answers, levels, streak
+                          freeModes (modalidades), quizMap (mapa do Quiz), items (desbloqueio e equipamento),
+                          answers, levels, streak
     storage/              Armazenamento local e repositórios, com migração do progresso da v0.1
     content.ts            Conteúdo criado no painel administrativo (local) e validação
     multiplayer/          Contratos, serviço de demonstração e ponto de troca para Supabase Realtime
     supabase/             Leitura de configuração pública (sem chaves no código)
     auth.ts               Contrato de autenticação e perfil local
   state/GameContext.tsx   Estado global e ações
-  components/             Layout, Adventurer (personagem em SVG por camadas), map/ (mapa e cenário), ícones,
+  components/             Layout, character/ (Character: personagem em SVG por camadas; PlayerCharacter; ItemReward),
+                          map/ (mapa e cenário), ícones,
                           imagens, QuestionView (8 tipos de exercício), QuizRunner
   pages/
     story/                Mapa de fases, tela da fase, cena narrativa, desafio, livro, todos os livros
     library/              Biblioteca, fichas e linha do tempo
-    CharacterCreator.tsx  Criação e edição do personagem
+    onboarding/           Boas-vindas, escolha do personagem, personalização/guarda-roupa e chegada
+    quiz/                 Mapa do Modo Quiz e tela de desafio
+    Statistics.tsx        Estatísticas
     Review.tsx            Revisão inteligente
-    free/                 Central do Modo Livre, partida por modalidade, multiplayer
+    free/                 Treino livre do Modo Quiz, partida por modalidade, multiplayer
     ...                   Início, apresentação, cadastro, painel, diário, resultado, ranking, conquistas, perfil,
                           configurações, sobre
   admin/                  Painel administrativo (carregado sob demanda) e editores de conteúdo
@@ -183,11 +225,16 @@ A progressão, o mapa, as porcentagens e as medalhas passam a considerar o novo 
 
 ## Funcionalidades implementadas
 
-- **Painel:**
-  - Continuar jornada.
-  - Entradas grandes para o Modo História e o Modo Livre.
-  - Atalhos para desafio diário, ranking, perfil e conquistas.
-  - Nível, estatísticas e partidas recentes.
+- **Entrada em 5 passos e personagem por itens**, com guarda-roupa, tela de recompensa e migração automática dos personagens da v0.3.
+- **Home em cena:**
+  - Personagem em corpo inteiro, nível, XP e progresso geral.
+  - Modo História e Modo Quiz com seus textos.
+  - Atalhos para Personalizar, Conquistas, Biblioteca, Estatísticas, desafio diário, revisão e rankings.
+  - Partidas recentes.
+- **Modo Quiz:** mapa de 4 regiões e 24 desafios, independente do Modo História, mais o treino livre. Os endereços antigos `#/livre/...` redirecionam para `#/quiz/treino/...`.
+- **Biblioteca:** além de personagens, livros e lugares, tem abas de **Acontecimentos** (liberados ao concluir a fase) e **Temas**.
+- **Revisão:** assuntos, **personagens para revisar** e livros com baixo desempenho.
+- **Estatísticas** (`#/estatisticas`): geral, Modo História, Modo Quiz por região e modalidade, tipos de pergunta, diário.
 - **Modo História:**
   - Mapa dos 66 livros com status e porcentagens.
   - Página do livro com o caminho das experiências.
@@ -196,11 +243,11 @@ A progressão, o mapa, as porcentagens e as medalhas passam a considerar o novo 
     - **Gênesis:** 19 experiências (criação, homem e mulher, Éden, queda, Caim e Abel, corrupção da humanidade, arca, dilúvio, aliança com Noé, Babel, chamado de Abraão, Abraão e Ló, Isaque, Moriá, Jacó e Esaú, e quatro experiências de José).
     - **Êxodo:** 4 experiências.
     - **Outros 64 livros:** aparecem como "em preparação".
-- **Modo Livre:**
-  - 7 modalidades, cada uma com regras próprias.
+- **Treino livre do Modo Quiz:**
+  - 10 modalidades, cada uma com regras próprias.
   - Recordes por modalidade.
   - Limite diário de XP de prática.
-- **Perguntas:** 178 no total, em 7 tipos (incluindo ordenação e memória), todas com resposta, explicação, referência, dificuldade e categoria.
+- **Perguntas:** 197 no total, em 8 tipos (incluindo ordenação, memória e "Relacione"), todas com resposta, explicação, referência, dificuldade e categoria.
   - 144 estão ligadas a experiências.
   - 34 são de toda a Bíblia (Salmos, Provérbios, Daniel, Jonas, Evangelhos, Atos, cartas, Apocalipse e outros).
 - **Desafio diário:**
@@ -209,13 +256,13 @@ A progressão, o mapa, as porcentagens e as medalhas passam a considerar o novo 
   - Registro dos desafios feitos e sequência de dias.
 - **Perfil local:**
   - Estatísticas dos dois modos e progresso por livro e testamento.
-  - Recordes do Modo Livre e histórico.
+  - Recordes do Modo Quiz e histórico.
   - Exportação e exclusão de dados (LGPD).
 - **Migração automática** do progresso salvo na versão 0.1 (capítulos viram experiências; XP, histórico e conquistas são preservados).
 - **Painel administrativo** (`#/admin`), com 8 seções:
   - Livros.
   - Experiências: rascunhos locais com editor.
-  - Perguntas: criar, editar, excluir, importar e exportar JSON, e usar no Modo Livre deste aparelho.
+  - Perguntas: criar, editar, excluir, importar e exportar JSON, e usar no Modo Quiz deste aparelho.
   - Desafios diários: prévia dos próximos 7 dias.
   - Medalhas e recompensas.
   - Usuários.
@@ -232,7 +279,7 @@ A progressão, o mapa, as porcentagens e as medalhas passam a considerar o novo 
 | Recurso | Situação na versão estática | Depende de backend para |
 | --- | --- | --- |
 | Perfil e progresso | Funciona, salvo só neste navegador | Conta, login seguro e sincronização entre aparelhos (Supabase Auth + PostgreSQL) |
-| Rankings | Seus recordes reais por categoria (XP geral, Modo História, Modo Livre, Desafio diário, Multiplayer). Nenhum jogador é inventado | Comparação com outros jogadores |
+| Rankings | Seus recordes reais por categoria (XP geral, Modo História, Modo Quiz, Desafio diário, Multiplayer futuro). Nenhum jogador é inventado | Comparação com outros jogadores |
 | Multiplayer | Demonstração: sala local com participantes fictícios identificados, cronômetro por pergunta, placar, vencedor e ranking da partida | Entrar por código, convidar amigos, sincronizar respostas em tempo real (Supabase Realtime + Edge Function de validação) |
 | Desafio diário | Funciona, com a data do aparelho e proteção contra retrocesso do relógio | Data e recompensa validadas no servidor |
 | Painel administrativo | Edição local (este navegador) com exportação e importação em JSON; conteúdo oficial somente leitura | Publicar conteúdo para todos, usuários, denúncias e moderação, com autenticação, papéis, RLS e auditoria |
@@ -295,7 +342,16 @@ Nunca coloque a `service_role` key, senhas ou tokens no frontend.
 
 ## Testes
 
-São 93 testes automatizados (Vitest e Testing Library), em seis arquivos:
+São 108 testes automatizados (Vitest e Testing Library), em sete arquivos:
+
+- **Personagem e Modo Quiz** (`personagem.test.ts`):
+  - Os personagens-base usam só itens iniciais, e os itens bloqueados exigem progresso real.
+  - Um item desbloqueado é registrado uma vez e vai para a tela de recompensa.
+  - Regras de equipar e retirar.
+  - Migração da aparência v0.3 sem perda de XP.
+  - Progressão das regiões do Quiz e item da região.
+  - Cada desafio tem perguntas suficientes.
+  - O bônus de primeira conclusão vale só uma vez.
 
 - **Conteúdo** (`content.test.ts`):
   - O cânon tem 66 livros, e cada um tem ficha e pertence a exatamente um mundo.
@@ -311,7 +367,7 @@ São 93 testes automatizados (Vitest e Testing Library), em seis arquivos:
   - O baú abre uma única vez.
   - Desbloqueio da Biblioteca.
   - Revisão inteligente: assuntos fracos e dominados, perguntas recomendadas e XP de prática.
-  - Modo Livre por personagem, tema e dificuldade.
+  - Treino livre por personagem, tema e dificuldade.
   - Exercício "Relacione".
   - Migração da v0.2.
 - **Regras**, **Motor** e **Serviços**: pontuação, progressão, diário, limites de XP, persistência e conteúdo do painel administrativo.
@@ -324,9 +380,24 @@ São 93 testes automatizados (Vitest e Testing Library), em seis arquivos:
   - Personagem obrigatório antes da jornada.
   - Ranking sem jogadores inventados.
   - Especialista com cronômetro.
-  - Modo Livre, diário, multiplayer, acessibilidade, painel administrativo e página 404.
+  - Treino livre, diário, multiplayer, acessibilidade, painel administrativo e página 404.
+  - **v0.4:**
+    - A Home em cena mostra os dois textos dos modos.
+    - Um desafio do Quiz concluído libera o próximo (com bônus) sem tocar no Modo História, e um desafio bloqueado não abre por URL.
+    - Na tela de recompensa, "Equipar" veste o item no personagem.
+    - **A mesma aparência (atributo `data-appearance`) aparece em todas as telas, mesmo ao montar o app de novo.**
 
-Além dos testes automatizados, cada versão é auditada no navegador (Playwright), em celular (Pixel 7) e computador:
+Além dos testes automatizados, cada versão é auditada no navegador (Playwright), em celular (Pixel 7) e computador.
+
+Na v0.4, a auditoria percorre o cenário de consistência do personagem:
+
+1. Escolha da Exploradora, cabelo ondulado, túnica de linho (bege), manto marrom, sandálias claras, cinto e bolsa.
+2. Finalizar personagem → chegada → Home → mapa da história → fase → cena → desafio → resultado → tela de recompensa → mapa do Quiz → desafio → resultado.
+3. Recarregar a página.
+
+Em cada etapa, a aparência desenhada é comparada com a salva. As telas novas também são auditadas.
+
+Nas versões anteriores, a auditoria cobriu:
 
 - criação do personagem;
 - mapa e avanço do avatar;
@@ -345,8 +416,20 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
-### 0.4.0 (em andamento) — 11/11/2026 — Personagem por itens e nova entrada
+### 0.4.0 — 11/11/2026 — Personagem, mapas e progressão
 
+- **Etapas 2 a 5:**
+  - **Home em cena** com o personagem em corpo inteiro, nível, XP, progresso geral e os textos dos dois modos.
+  - **Modo Quiz** (antigo Modo Livre):
+    - Mapa próprio com 4 regiões e 24 desafios, trilha de pedras, estandartes e escudos.
+    - Tela de introdução de cada desafio, com bônus de primeira conclusão.
+    - O antigo hub virou "Treino livre"; endereços `#/livre` redirecionam.
+  - **Tela de recompensa de item** (Equipar / Guardar para depois / Guardar todos), em Home, resultado e mapas.
+  - **Estatísticas** (`#/estatisticas`).
+  - Biblioteca com **Acontecimentos** e **Temas**.
+  - Revisão com **personagens para revisar** e livros com baixo desempenho.
+  - Ranking com o mapa do Quiz e aba "Multiplayer (futuro)".
+- **Etapa 6:** 15 testes novos (108 no total) e auditoria de consistência da aparência no navegador, inclusive após recarregar.
 - **Etapa 0:** auditoria e plano em `docs/PLANO-v0.4.md`.
 - **Entrada em 5 passos:** boas-vindas → identificação (nome ou apelido e faixa etária) → escolha do personagem (8 bases diversas) → personalização com prévia em corpo inteiro → chegada ao universo Bible Quest.
 - **Personagem único e centralizado:**

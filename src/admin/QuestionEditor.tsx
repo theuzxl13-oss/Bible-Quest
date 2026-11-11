@@ -102,7 +102,7 @@ export function QuestionEditor({ initial, onSave, onCancel }: { initial?: Questi
         </label>
         <label className="field"><span>Experiência (opcional)</span>
           <select value={d.experienceId} onChange={(e) => set('experienceId', e.target.value)}>
-            <option value="">Nenhuma (só Modo Livre)</option>
+            <option value="">Nenhuma (só Modo Quiz)</option>
             {STORY_SEQUENCE.filter((x) => x.bookId === d.bookId).map((x) => <option key={x.id} value={x.id}>{x.title}</option>)}
           </select>
         </label>
