@@ -47,7 +47,7 @@ export default function Result() {
       <header className="result-head panel">
         {starred && profile?.character && (
           <div className={`result-hero-char ${record.passed ? 'is-happy' : ''}`} aria-hidden="true">
-            <PlayerCharacter size={88} pose={record.passed ? 'celebrate' : 'idle'} />
+            <PlayerCharacter live size={132} pose={record.passed ? 'celebrate' : 'idle'} />
           </div>
         )}
         <p className="eyebrow">{record.mode === 'historia' ? 'Modo História' : record.mode === 'quiz' ? 'Modo Quiz · mapa de desafios' : record.mode === 'livre' ? 'Modo Quiz · Treino livre' : record.title}</p>

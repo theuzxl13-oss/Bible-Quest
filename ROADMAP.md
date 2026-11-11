@@ -3,6 +3,7 @@
 ## Fase 1 — Versão estática (concluída)
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
+- **0.5:** personagem 3D (Three.js) com rotação 360°, zoom, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável.
 - **0.4:** personagem por itens com guarda-roupa e tela de recompensa, entrada em 5 passos, Home em cena, Modo Quiz com mapa próprio (4 regiões, 24 desafios), estatísticas, Biblioteca com acontecimentos e temas.
 - **0.3:** aventura, com personagem do jogador, mapa de fases com avatar e baús, Gênesis em 20 fases, Biblioteca Bíblica, linha do tempo, revisão inteligente e Modo Livre com 10 modalidades.
 - **0.2:** dois modos de jogo.
@@ -43,6 +44,8 @@
 - Mapas históricos ilustrados (rotas de Abraão e do Êxodo).
 - Mais itens de vestuário de época e novas regiões do Modo Quiz conforme o banco de perguntas crescer.
 - Animações extras do personagem (gestos por tipo de resposta).
+- Personagem 3D: rostos com mais variações (formato de olhos, nariz e boca), simulação simples de tecido no manto, roupas com costuras e mais estilos de cabelo.
+- Avaliar modelos GLB de artistas contratados (com licença de redistribuição) se for necessário um acabamento de nível profissional acima do modelo procedural.
 - PWA com funcionamento offline (service worker) e testes E2E com Playwright no CI.
 
 ## Fase 3 — Integração com Supabase

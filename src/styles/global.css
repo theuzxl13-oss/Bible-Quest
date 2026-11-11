@@ -1116,3 +1116,26 @@ a.lib-card:hover { border-color: var(--gold); }
 .lib-event p { margin: 0 0 4px; }
 .lib-event.is-locked { opacity: 0.75; }
 @media (min-width: 760px) { .lib-themes { grid-template-columns: repeat(2, 1fr); } }
+
+/* ===== v0.5 · Personagem 3D ===== */
+.char3d { display: block; position: relative; flex-shrink: 0; }
+.char3d .char3d-canvas, .char3d img { display: block; width: 100%; height: 100%; }
+.char3d.is-loading { background: radial-gradient(40% 30% at 50% 22%, rgba(236, 201, 110, 0.18), transparent 70%), radial-gradient(28% 46% at 50% 62%, rgba(236, 201, 110, 0.1), transparent 70%); animation: char-shimmer 1.4s ease-in-out infinite; border-radius: 12px; }
+@keyframes char-shimmer { 50% { opacity: 0.55; } }
+.char3d.has-controls { cursor: grab; }
+.char3d.has-controls:active { cursor: grabbing; }
+.char3d.is-portrait img { object-fit: cover; }
+.topbar-portrait .char3d { border-radius: 50%; overflow: hidden; }
+.view-controls { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 6px; }
+.view-controls .chip { min-height: 36px; padding: 4px 12px; }
+.wardrobe-stage { display: grid; place-items: center; }
+.swatch-original { background: linear-gradient(135deg, #efe3c4 0 45%, #8b5e34 45% 55%, #3e5c76 55%); }
+.dye-field { margin-bottom: 12px; }
+.item-reward-stage { height: auto; min-height: 200px; }
+@media (max-width: 759px) {
+  .wardrobe-preview { position: sticky; top: 58px; z-index: 5; padding: 8px; }
+  .wardrobe-preview .char3d.is-live { width: 170px !important; height: 227px !important; }
+  .wardrobe-preview .equipped-list, .wardrobe-preview .creator-name + .small { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .char3d.is-loading { animation: none; } }
+.ach-hero { display: grid; place-items: center; margin-bottom: -12px; }

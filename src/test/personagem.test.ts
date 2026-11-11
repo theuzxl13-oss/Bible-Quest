@@ -127,3 +127,31 @@ describe('mapa do Modo Quiz', () => {
     expect(second.firstClear).toBe(false)
   })
 })
+
+describe('aparência 3D (v0.5)', () => {
+  it('perfis antigos ganham corpo e barba deduzidos, sem mudar o que já existia', async () => {
+    const { bodyOf, beardOf, appearanceKey, resolveLook, DYES } = await import('../data/character/look')
+    const pastora = newAppearance('pastora', 'Ana')
+    expect(bodyOf(pastora)).toBe('feminino')
+    expect(beardOf(pastora)).toBe('nenhuma')
+    const escriba = newAppearance('escriba', 'Levi')
+    expect(escriba.face).toBe('barba')
+    expect(bodyOf(escriba)).toBe('masculino')
+    expect(beardOf(escriba)).toBe('curta')
+    // barba nunca aparece na estrutura feminina
+    expect(beardOf({ ...escriba, body: 'feminino', beard: 'cheia' })).toBe('nenhuma')
+    // o tingimento muda a cor usada pelos dois renderizadores e entra na identidade visual
+    const dyed = { ...pastora, dyes: { tunica: 4 } }
+    expect(resolveLook(dyed).tunic.color).toBe(DYES[4].color)
+    expect(resolveLook(pastora).tunic.color).toBe(getItem('tunica-linho')!.color)
+    expect(appearanceKey(dyed)).not.toBe(appearanceKey(pastora))
+    expect(appearanceKey(pastora)).toMatch(/\|feminino\|nenhuma\|-\/-$/)
+  })
+
+  it('sem WebGL (ou com a opção 2D) o personagem é desenhado em 2D', async () => {
+    const { resolveQuality } = await import('../character3d/quality')
+    expect(resolveQuality('auto')).toBe('2d')
+    expect(resolveQuality('alta')).toBe('2d')
+    expect(resolveQuality('2d')).toBe('2d')
+  })
+})

@@ -13,7 +13,7 @@ Links e status:
 
 - **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
 - **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
-- **Status:** versão 0.4 (personagem por itens, nova entrada, Home em cena e mapa do Modo Quiz). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
+- **Status:** versão 0.5 (personagem 3D personalizável, com rotação 360° e qualidade gráfica ajustável). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
 
 ## Como jogar
 
@@ -38,6 +38,33 @@ A entrada tem 5 passos:
 - nome, nível e barra de XP;
 - progresso geral;
 - os botões Personalizar, Modo História, Modo Quiz, Conquistas, Biblioteca e Estatísticas.
+
+**Personagem 3D.** O personagem é tridimensional (Three.js), com:
+
+- rosto esculpido, olhos que piscam e expressões;
+- cabelo em mechas, barba;
+- mãos e pés com dedos;
+- roupas com dobras e textura de tecido;
+- iluminação de três pontos e sombras.
+
+Na personalização é possível:
+
+- **girar 360°** (arrastando ou com o botão "Girar 360°");
+- **aproximar e afastar**;
+- ver de **frente, de lado e de costas**.
+
+Também é possível escolher a **estrutura do corpo**, a **barba** (curta ou cheia) e o **tingimento** da túnica e do manto, com 8 corantes naturais da Antiguidade.
+
+O personagem se anima em espera (respiração), caminhada, comemoração, descoberta e saudação.
+
+Em **Configurações → Qualidade gráfica do personagem** você escolhe:
+
+- **Automática.**
+- **Alta.**
+- **Leve:** sem sombras, para aparelhos mais simples.
+- **2D:** o desenho anterior, usado também quando o aparelho não tem WebGL.
+
+Detalhes técnicos em [`docs/AUDITORIA-v0.5.md`](docs/AUDITORIA-v0.5.md).
 
 **Personagem único.** A aparência é uma só entidade, salva no perfil e desenhada pelo mesmo componente em todas as telas: Home, topo, mapas, fases, cenas, desafios e resultados.
 
@@ -139,6 +166,7 @@ Você pode revisar as perguntas erradas de uma fase ou fazer uma revisão geral.
 ## Tecnologias
 
 - React 19, TypeScript 7 e Vite 8 (com `@vitejs/plugin-react` 6)
+- Three.js 0.187, para o personagem 3D, num pacote separado carregado só quando o personagem aparece (cerca de 165 KB comprimido)
 - React Router 7 com `HashRouter`, para que links diretos funcionem no GitHub Pages e num futuro WebView Android
 - CSS moderno, sem framework, com tokens de cor, layout responsivo e modos de acessibilidade
 - Vitest 5 e Testing Library para testes de regras e fluxos
@@ -176,7 +204,8 @@ src/
     bible/canon.ts        Cânon de 66 livros (preparado para outros cânones)
     story/                Fases do Modo História, um arquivo por livro (genesis.ts, exodo.ts)
     library/              Biblioteca: personagens bíblicos, lugares e fichas dos 66 livros
-    character/            Itens do personagem (items.ts, com requisitos de desbloqueio) e personagens-base (bases.ts)
+    character/            Itens do personagem (items.ts, com requisitos de desbloqueio), personagens-base (bases.ts) e
+                          look.ts (aparência resolvida, tingimentos e identidade visual)
     quiz/regions.ts       Regiões e desafios do mapa do Modo Quiz
     worlds.ts             Os 10 mundos do mapa (livros, cores e cenário)
     timeline.ts           Linha do tempo com o tipo de datação de cada evento
@@ -195,6 +224,10 @@ src/
     multiplayer/          Contratos, serviço de demonstração e ponto de troca para Supabase Realtime
     supabase/             Leitura de configuração pública (sem chaves no código)
     auth.ts               Contrato de autenticação e perfil local
+  character3d/            Personagem 3D: anatomy (cabeça esculpida, rosto, mãos, pés), hair (cabelos e barba),
+                          clothing (túnica, mangas, manto, cintos, calçados), accessories, textures (procedurais),
+                          rig (esqueleto, materiais e animações), stage (luzes e câmera), runtime (visualizador e
+                          miniaturas, carregado sob demanda), quality (qualidade gráfica)
   state/GameContext.tsx   Estado global e ações
   components/             Layout, character/ (Character: personagem em SVG por camadas; PlayerCharacter; ItemReward),
                           map/ (mapa e cenário), ícones,
@@ -225,6 +258,7 @@ A progressão, o mapa, as porcentagens e as medalhas passam a considerar o novo 
 
 ## Funcionalidades implementadas
 
+- **Personagem 3D** com rotação 360°, zoom, vistas, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável, com alternativa 2D.
 - **Entrada em 5 passos e personagem por itens**, com guarda-roupa, tela de recompensa e migração automática dos personagens da v0.3.
 - **Home em cena:**
   - Personagem em corpo inteiro, nível, XP e progresso geral.
@@ -342,7 +376,13 @@ Nunca coloque a `service_role` key, senhas ou tokens no frontend.
 
 ## Testes
 
-São 108 testes automatizados (Vitest e Testing Library), em sete arquivos:
+São 111 testes automatizados (Vitest e Testing Library), em sete arquivos. O ambiente de teste não tem WebGL, então os testes de tela usam o personagem 2D; o 3D é verificado no navegador.
+
+- **v0.5:**
+  - Corpo e barba deduzidos para perfis antigos.
+  - O tingimento muda a cor e a identidade visual.
+  - Sem WebGL, o personagem cai para 2D.
+  - No guarda-roupa, corpo, barba e tingimento são salvos.
 
 - **Personagem e Modo Quiz** (`personagem.test.ts`):
   - Os personagens-base usam só itens iniciais, e os itens bloqueados exigem progresso real.
@@ -389,6 +429,8 @@ São 108 testes automatizados (Vitest e Testing Library), em sete arquivos:
 
 Além dos testes automatizados, cada versão é auditada no navegador (Playwright), em celular (Pixel 7) e computador.
 
+Na v0.5 a auditoria roda com WebGL (SwiftShader) e verifica também o personagem 3D: a prévia é um canvas WebGL, as vistas de frente, lado e costas, e o giro com o mouse.
+
 Na v0.4, a auditoria percorre o cenário de consistência do personagem:
 
 1. Escolha da Exploradora, cabelo ondulado, túnica de linho (bege), manto marrom, sandálias claras, cinto e bolsa.
@@ -415,6 +457,32 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.5.0 — 11/11/2026 — Personagem 3D
+
+- **Etapa 1:** auditoria e decisão técnica em `docs/AUDITORIA-v0.5.md` (Three.js puro, modelo construído no código, sem arquivos de terceiros).
+- **Etapa 2 — personagem 3D:**
+  - Cabeça esculpida com nariz, lábios, maçãs do rosto e queixo; olhos com íris, pálpebras que piscam e cílios.
+  - Sobrancelhas, orelhas e três expressões.
+  - 7 estilos de cabelo com volume e mechas (cachos, coque, trança e cortina de fios); barba curta ou cheia.
+  - Mãos com cinco dedos e pés com dedos.
+  - Túnica com dobras e trama, mangas largas, mantos (com capuz e xale), cintos, sandálias e botas.
+  - Todos os acessórios do jogo em 3D.
+  - Iluminação de três pontos e sombras.
+  - Animações: espera, caminhada, comemoração, descoberta, saudação e piscar.
+- **Etapa 3 — integração:**
+  - Ao vivo na Home, no guarda-roupa (rotação 360°, zoom e vistas), na chegada (entra caminhando e acena), na recompensa e no resultado.
+  - Como imagem do mesmo modelo nos mapas, no topo, nos cartões, nas fases, nas conquistas e no perfil.
+- **Novas opções:**
+  - Estrutura do corpo, barba e 8 tingimentos naturais para túnica e manto.
+  - Qualidade gráfica (Automática, Alta, Leve e 2D).
+- **Desempenho:**
+  - Three.js num pacote separado, carregado só quando o personagem aparece.
+  - Um renderizador compartilhado e cache para as miniaturas.
+  - Cache de geometrias.
+  - A animação pausa fora da tela.
+- **Compatibilidade:** perfis antigos continuam iguais (corpo e barba são deduzidos da base e do rosto).
+- 3 testes novos (111 no total); auditoria no navegador com WebGL.
 
 ### 0.4.0 — 11/11/2026 — Personagem, mapas e progressão
 

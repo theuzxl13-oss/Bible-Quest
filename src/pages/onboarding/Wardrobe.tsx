@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
-import type { CharacterAppearance, FaceStyle, HairStyle } from '../../types'
-import { Character } from '../../components/character/Character'
+import type { BeardStyle, BodyBuild, CharacterAppearance, FaceStyle, HairStyle } from '../../types'
+import { Character, type CharacterViewApi } from '../../components/character/Character'
+import { DYES, beardOf, bodyOf } from '../../data/character/look'
 import { Icon } from '../../components/Icon'
 import { BASES, HAIR_COLORS, HAIR_COLOR_LABEL, SKIN_TONES, newAppearance } from '../../data/character/bases'
 import { ITEMS, PLACE_LABEL, SLOT_LABEL, type CharacterItem, type ItemSlot } from '../../data/character/items'
@@ -32,8 +33,37 @@ const FACES: { id: FaceStyle; label: string }[] = [
   { id: 'suave', label: 'Suave' },
   { id: 'marcante', label: 'Sobrancelhas marcantes' },
   { id: 'sardas', label: 'Sardas' },
-  { id: 'barba', label: 'Barba' },
 ]
+const BODIES: { id: BodyBuild; label: string }[] = [
+  { id: 'masculino', label: 'Masculino' },
+  { id: 'feminino', label: 'Feminino' },
+]
+const BEARDS: { id: BeardStyle; label: string }[] = [
+  { id: 'nenhuma', label: 'Sem barba' },
+  { id: 'curta', label: 'Curta' },
+  { id: 'cheia', label: 'Cheia' },
+]
+
+function DyePicker({ slot, draft, onChange }: { slot: 'tunica' | 'manto'; draft: CharacterAppearance; onChange: (v: number | undefined) => void }) {
+  const cur = draft.dyes?.[slot]
+  return (
+    <fieldset className="field dye-field">
+      <legend>Tingimento {slot === 'tunica' ? 'da túnica' : 'do manto'}</legend>
+      <div className="swatches">
+        <label className={`swatch swatch-original ${cur === undefined ? 'is-on' : ''}`} title="Cor original do item">
+          <input type="radio" name={`dye-${slot}`} checked={cur === undefined} onChange={() => onChange(undefined)} />
+          <span className="sr-only">Cor original</span>
+        </label>
+        {DYES.map((d, i) => (
+          <label key={d.label} className={`swatch ${cur === i ? 'is-on' : ''}`} style={{ background: d.color }} title={d.label}>
+            <input type="radio" name={`dye-${slot}`} checked={cur === i} onChange={() => onChange(i)} />
+            <span className="sr-only">{d.label}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  )
+}
 
 /**
  * Etapa 4 (criação) e guarda-roupa (edição). A prévia em corpo inteiro usa o
@@ -52,6 +82,8 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
   const [error, setError] = useState('')
   const changed = useMemo(() => JSON.stringify(draft) !== JSON.stringify(saved), [draft, saved])
   const [created, setCreated] = useState(false)
+  const viewer = useRef<CharacterViewApi>(null)
+  const [spin, setSpin] = useState(false)
 
   // Só segue para a chegada depois que o personagem salvo estiver no estado.
   useEffect(() => {
@@ -104,8 +136,16 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
         <div className="wardrobe-grid">
           <div className="wardrobe-preview panel">
             <div className="creator-glow" aria-hidden="true" />
-            <div key={flash} className={flash ? 'wardrobe-pop' : ''}>
-              <Character appearance={draft} size={210} pose="idle" title={`Prévia de ${draft.name || 'seu personagem'}`} />
+            <div className={flash ? 'wardrobe-stage' : 'wardrobe-stage'}>
+              <Character ref={viewer} live controls autoRotate={spin} appearance={draft} size={300} pose="idle" title={`Prévia de ${draft.name || 'seu personagem'}. Arraste para girar.`} />
+            </div>
+            <div className="view-controls" role="group" aria-label="Visualização do personagem">
+              <button type="button" className="chip" onClick={() => viewer.current?.setView('frente')}>Frente</button>
+              <button type="button" className="chip" onClick={() => viewer.current?.setView('lado')}>Lado</button>
+              <button type="button" className="chip" onClick={() => viewer.current?.setView('costas')}>Costas</button>
+              <button type="button" className={`chip ${spin ? 'is-on' : ''}`} aria-pressed={spin} onClick={() => { setSpin(!spin); viewer.current?.setAutoRotate(!spin) }}>Girar 360°</button>
+              <button type="button" className="chip" aria-label="Aproximar" onClick={() => viewer.current?.zoom(0.8)}>+</button>
+              <button type="button" className="chip" aria-label="Afastar" onClick={() => viewer.current?.zoom(1.25)}>−</button>
             </div>
             <p className="creator-name">{draft.name || 'Sem nome'}</p>
             <p className="small muted">{BASES.find((b) => b.id === draft.base)?.label}</p>
@@ -133,6 +173,16 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                     <input id="char-name" value={draft.name} maxLength={20} onChange={(e) => update({ ...draft, name: e.target.value })} placeholder="Ex.: Tobias, Lia, Ana..." />
                   </div>
                   <fieldset className="field">
+                    <legend>Corpo</legend>
+                    <div className="chips">
+                      {BODIES.map((b) => (
+                        <label key={b.id} className={`chip ${bodyOf(draft) === b.id ? 'is-on' : ''}`}>
+                          <input type="radio" name="body" checked={bodyOf(draft) === b.id} onChange={() => update({ ...draft, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard })} /> {b.label}
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <fieldset className="field">
                     <legend>Tom de pele</legend>
                     <div className="swatches">
                       {SKIN_TONES.map((c, i) => (
@@ -148,11 +198,23 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                     <div className="chips">
                       {FACES.map((f) => (
                         <label key={f.id} className={`chip ${draft.face === f.id ? 'is-on' : ''}`}>
-                          <input type="radio" name="face" checked={draft.face === f.id} onChange={() => update({ ...draft, face: f.id })} /> {f.label}
+                          <input type="radio" name="face" checked={draft.face === f.id || (f.id === 'suave' && draft.face === 'barba')} onChange={() => update({ ...draft, face: f.id, beard: beardOf(draft) })} /> {f.label}
                         </label>
                       ))}
                     </div>
                   </fieldset>
+                  {bodyOf(draft) === 'masculino' && (
+                    <fieldset className="field">
+                      <legend>Barba</legend>
+                      <div className="chips">
+                        {BEARDS.map((b) => (
+                          <label key={b.id} className={`chip ${beardOf(draft) === b.id ? 'is-on' : ''}`}>
+                            <input type="radio" name="beard" checked={beardOf(draft) === b.id} onChange={() => update({ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face })} /> {b.label}
+                          </label>
+                        ))}
+                      </div>
+                    </fieldset>
+                  )}
                   <fieldset className="field">
                     <legend>Estilo do cabelo</legend>
                     <div className="chips">
@@ -177,6 +239,9 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                 </div>
               ) : (
                 <>
+                  {(tab === 'tunica' || (tab === 'manto' && draft.equipped.manto)) && (
+                    <DyePicker slot={tab} draft={draft} onChange={(v) => update({ ...draft, dyes: { ...draft.dyes, [tab]: v } })} />
+                  )}
                   {(tab === 'manto' || tab === 'cinto') && (
                     <button type="button" className={`chip none-chip ${draft.equipped[tab] === null ? 'is-on' : ''}`} onClick={() => update({ ...draft, equipped: { ...draft.equipped, [tab]: null } })}>
                       Sem {tab === 'manto' ? 'manto' : 'cinto'}

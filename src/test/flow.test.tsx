@@ -442,7 +442,7 @@ describe('fluxos de ponta a ponta', () => {
       unmount()
       return a
     })()
-    expect(expected).toBe('viajante|2|suave|cacheado|0|tunica-linho|manto-marrom|sandalias-simples|cinto-couro|cajado')
+    expect(expected).toBe('viajante|2|suave|cacheado|0|tunica-linho|manto-marrom|sandalias-simples|cinto-couro|cajado|masculino|nenhuma|-/-')
     for (const path of ['/painel', '/historia', '/quiz', '/quiz/desafio/vale-1', '/historia/genesis/gn-criacao', '/perfil', '/guarda-roupa']) {
       const { unmount } = setup(path, store) // nova montagem = recarregar a página
       await waitFor(() => expect(document.querySelectorAll('.character[data-appearance]').length).toBeGreaterThan(0))
@@ -450,6 +450,22 @@ describe('fluxos de ponta a ponta', () => {
       expect([...shown], path).toEqual([expected])
       unmount()
     }
+  })
+
+  it('guarda-roupa: corpo, barba e tingimento são salvos e aparecem no personagem', async () => {
+    const store = withProfile()
+    const { user, services } = setup('/guarda-roupa', store)
+    await user.click(await screen.findByLabelText('Cheia'))
+    await user.click(screen.getByRole('tab', { name: 'Túnicas' }))
+    await user.click(screen.getByLabelText('Índigo'))
+    await user.click(screen.getByRole('button', { name: 'Salvar aparência' }))
+    const c = services.auth.current()!.character!
+    expect(c).toMatchObject({ beard: 'cheia', dyes: { tunica: 4 } })
+    expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/\|masculino\|cheia\|4\/-$/)
+    // estrutura feminina remove a barba
+    await user.click(screen.getByRole('tab', { name: 'Cabelo e rosto' }))
+    await user.click(screen.getByLabelText('Feminino'))
+    expect(screen.queryByText('Barba')).not.toBeInTheDocument()
   })
 
   it('página inexistente mostra mensagem amigável', async () => {

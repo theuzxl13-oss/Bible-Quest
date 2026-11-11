@@ -5,6 +5,7 @@ import { BOOKS } from '../data/bible/canon'
 import { hasContent } from '../data/story'
 import { bookMedal } from '../services/game/progression'
 import { useGame } from '../state/GameContext'
+import { PlayerCharacter } from '../components/character/PlayerCharacter'
 
 const MEDAL = { ouro: 'Ouro', prata: 'Prata', bronze: 'Bronze' } as const
 const AREAS = ['historia', 'livre', 'constancia'] as const
@@ -15,6 +16,9 @@ export default function Achievements() {
   const books = BOOKS.filter((b) => hasContent(b.id))
   return (
     <div className="container section stack-lg">
+      <div className="ach-hero">
+        <PlayerCharacter size={110} pose={unlocked > 0 ? 'celebrate' : 'idle'} />
+      </div>
       <PageHeader eyebrow="Conquistas e medalhas" title={`${unlocked} de ${ACHIEVEMENTS.length} conquistas`}>
         Conquistas premiam conhecimento e constância nos dois modos. Medalhas de livro dependem das estrelas: bronze ao
         concluir, prata com 2/3 das estrelas e ouro com todas.

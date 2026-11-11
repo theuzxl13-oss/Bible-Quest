@@ -164,6 +164,7 @@ export const DEFAULT_SETTINGS: Settings = {
   showTimer: false,
   readAloud: true,
   onboardingDone: false,
+  graphics: 'auto',
 }
 
 function readJson<T>(store: KeyValueStore, key: string): Partial<T> | null {

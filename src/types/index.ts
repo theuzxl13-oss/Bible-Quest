@@ -162,6 +162,9 @@ export type AgeRange = 'ate12' | '13a17' | '18mais'
 
 export type HairStyle = 'curto' | 'longo' | 'cacheado' | 'coque' | 'tranca' | 'raspado' | 'ondulado'
 export type FaceStyle = 'suave' | 'barba' | 'sardas' | 'marcante'
+/** Estrutura corporal do personagem 3D. */
+export type BodyBuild = 'masculino' | 'feminino'
+export type BeardStyle = 'nenhuma' | 'curta' | 'cheia'
 
 /**
  * IDENTIDADE VISUAL ÚNICA DO PERSONAGEM DO JOGADOR (v0.4).
@@ -179,6 +182,12 @@ export interface CharacterAppearance {
   face: FaceStyle
   hairStyle: HairStyle
   hairColor: number
+  /** v0.5. Ausente em perfis antigos: deduzido da base (ver resolveAppearance). */
+  body?: BodyBuild
+  /** v0.5. Ausente: 'curta' quando face === 'barba', senão 'nenhuma'. */
+  beard?: BeardStyle
+  /** v0.5. Tingimento escolhido (índice em DYES) para a túnica e o manto; ausente = cor original do item. */
+  dyes?: { tunica?: number; manto?: number }
   equipped: {
     tunica: string
     manto: string | null
@@ -306,6 +315,8 @@ export interface Settings {
   showTimer: boolean
   readAloud: boolean
   onboardingDone: boolean
+  /** Qualidade gráfica do personagem: automática, alta, leve (3D simplificado) ou 2D. */
+  graphics: 'auto' | 'alta' | 'leve' | '2d'
 }
 
 export interface AnswerResult {

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import { ArtImage } from '../../components/ArtImage'
 import { PlayerCharacter, usePlayerCharacter } from '../../components/character/PlayerCharacter'
@@ -7,6 +8,11 @@ import { StepBar } from './StepBar'
 /** Etapa 5 — a primeira aparição do aventureiro no universo do jogo. */
 export default function Arrival() {
   const appearance = usePlayerCharacter()
+  const [pose, setPose] = useState<'walk' | 'wave'>('walk')
+  useEffect(() => {
+    const t = window.setTimeout(() => setPose('wave'), 2300)
+    return () => window.clearTimeout(t)
+  }, [])
   if (!appearance) return <Navigate to="/personagem" replace />
   return (
     <section className="arrival">
@@ -19,7 +25,7 @@ export default function Arrival() {
       <div className="container arrival-body">
         <StepBar current={5} />
         <div className="arrival-walker">
-          <PlayerCharacter size={190} pose="walk" className="arrival-walk" title={`${appearance.name}, seu personagem`} />
+          <PlayerCharacter live size={200} pose={pose} className="arrival-walk" title={`${appearance.name}, seu personagem`} />
         </div>
         <div className="arrival-text">
           <p className="eyebrow">Uma grande aventura começa</p>

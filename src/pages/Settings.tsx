@@ -2,6 +2,15 @@ import { Link } from 'react-router-dom'
 import type { FontScale } from '../types'
 import { Notice, PageHeader } from '../components/ui'
 import { useGame } from '../state/GameContext'
+import { QUALITY_LABEL, resolveQuality } from '../character3d/quality'
+import type { Settings } from '../types'
+
+const GRAPHICS: { id: Settings['graphics']; label: string; help: string }[] = [
+  { id: 'auto', label: 'Automática', help: 'Escolhe conforme a capacidade do aparelho.' },
+  { id: 'alta', label: 'Alta', help: 'Personagem 3D com sombras, tecidos e iluminação completos.' },
+  { id: 'leve', label: 'Leve', help: 'Personagem 3D sem sombras projetadas, para aparelhos mais simples.' },
+  { id: '2d', label: '2D', help: 'Personagem desenhado em 2D, sem 3D. Ideal para aparelhos muito antigos.' },
+]
 
 const FONTS: { id: FontScale; label: string }[] = [
   { id: 'normal', label: 'Normal' },
@@ -57,6 +66,18 @@ export default function SettingsPage() {
       <section className="panel stack" aria-labelledby="jogo">
         <h2 id="jogo">Jogo</h2>
         <Toggle id="timer" label="Mostrar cronômetro" help="Apenas informativo: o tempo nunca altera a pontuação." checked={settings.showTimer} onChange={(v) => updateSettings({ showTimer: v })} />
+        <fieldset className="field">
+          <legend>Qualidade gráfica do personagem</legend>
+          <div className="chips">
+            {GRAPHICS.map((g) => (
+              <label key={g.id} className={`chip ${settings.graphics === g.id ? 'is-on' : ''}`} title={g.help}>
+                <input type="radio" name="graphics" checked={settings.graphics === g.id} onChange={() => updateSettings({ graphics: g.id })} />
+                {g.label}
+              </label>
+            ))}
+          </div>
+          <small className="muted">{GRAPHICS.find((g) => g.id === settings.graphics)?.help} Em uso agora: {QUALITY_LABEL[resolveQuality(settings.graphics)]}.</small>
+        </fieldset>
         <p className="small muted">Atalhos de teclado nas perguntas: teclas 1 a 4 escolhem alternativas; Tab e Enter navegam e confirmam.</p>
         <div className="row-actions">
           <Link to="/boas-vindas" className="btn btn-outline">Rever apresentação</Link>
