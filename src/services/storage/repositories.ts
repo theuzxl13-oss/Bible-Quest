@@ -43,6 +43,14 @@ export function emptyProgress(): Progress {
     streak: { current: 0, best: 0, lastDay: null },
     daily: { lastCompletedDay: null, completedCount: 0, log: [] },
     practice: { day: null, xp: 0 },
+    chests: {},
+    library: { characters: {}, places: {} },
+    worldsSeen: [],
+    mapCursor: null,
+    review: {},
+    bestAnswerStreak: 0,
+    currentAnswerStreak: 0,
+    multiplayer: { demoMatches: 0, demoWins: 0 },
     free: { matches: 0, byMode: {}, oneClueHits: 0, bestTimeAttack: 0 },
     stats: { answered: 0, correct: 0, perfectExperiences: 0, byType: {} },
   }
@@ -76,6 +84,12 @@ export const LEGACY_CHAPTER_MAP: Record<string, string> = {
   'moises-4': 'ex-mar-sinai',
 }
 
+/** Fases da v0.2 que foram unidas a outras na v0.3. */
+export const MERGED_EXPERIENCE_MAP: Record<string, string> = {
+  'gn-moria': 'gn-isaque',
+  'gn-jose-farao': 'gn-jose-egito',
+}
+
 type LegacyProgress = Partial<Progress> & {
   chapters?: Record<string, Progress['experiences'][string]>
   stats?: Partial<Progress['stats']> & { perfectChapters?: number }
@@ -83,7 +97,15 @@ type LegacyProgress = Partial<Progress> & {
 
 export function migrateProgress(raw: LegacyProgress): Progress {
   const base = emptyProgress()
-  const experiences: Progress['experiences'] = { ...(raw.experiences ?? {}) }
+  const experiences: Progress['experiences'] = {}
+  // fases unidas na v0.3 somam no destino
+  for (const [id, ep] of Object.entries(raw.experiences ?? {})) {
+    const target = MERGED_EXPERIENCE_MAP[id] ?? id
+    const prev = experiences[target]
+    experiences[target] = prev
+      ? { completed: prev.completed && ep.completed, bestStars: Math.min(prev.bestStars, ep.bestStars), bestScore: Math.max(prev.bestScore, ep.bestScore), attempts: prev.attempts + ep.attempts }
+      : { ...ep }
+  }
   for (const [old, cp] of Object.entries(raw.chapters ?? {})) {
     const id = LEGACY_CHAPTER_MAP[old]
     if (!id) continue
@@ -107,12 +129,20 @@ export function migrateProgress(raw: LegacyProgress): Progress {
   return {
     xp: typeof raw.xp === 'number' && raw.xp >= 0 ? raw.xp : 0,
     experiences,
-    lastExperienceId: raw.lastExperienceId ?? null,
+    lastExperienceId: raw.lastExperienceId ? (MERGED_EXPERIENCE_MAP[raw.lastExperienceId] ?? raw.lastExperienceId) : null,
     achievements: raw.achievements ?? {},
     history,
     streak: { ...base.streak, ...raw.streak },
     daily: { ...base.daily, ...raw.daily, log: Array.isArray(raw.daily?.log) ? raw.daily!.log : [] },
     practice: { ...base.practice, ...raw.practice },
+    chests: raw.chests ?? {},
+    library: { characters: { ...raw.library?.characters }, places: { ...raw.library?.places } },
+    worldsSeen: Array.isArray(raw.worldsSeen) ? raw.worldsSeen : [],
+    mapCursor: raw.mapCursor ? (MERGED_EXPERIENCE_MAP[raw.mapCursor] ?? raw.mapCursor) : null,
+    review: raw.review ?? {},
+    bestAnswerStreak: raw.bestAnswerStreak ?? 0,
+    currentAnswerStreak: raw.currentAnswerStreak ?? 0,
+    multiplayer: { ...base.multiplayer, ...raw.multiplayer },
     free: { ...base.free, ...raw.free, byMode: { ...raw.free?.byMode } },
     stats: {
       answered: raw.stats?.answered ?? 0,
@@ -155,6 +185,7 @@ export class LocalProfileRepository implements ProfileRepository {
       ageRange: p.ageRange ?? '18mais',
       createdAt: p.createdAt ?? new Date().toISOString(),
       storage: 'local',
+      character: p.character && typeof p.character.name === 'string' ? p.character : undefined,
     }
   }
   save(profile: Profile) {

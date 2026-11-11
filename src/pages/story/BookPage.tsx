@@ -5,6 +5,7 @@ import { ProgressBar, Stars } from '../../components/ui'
 import { BOOKS, GROUP_INFO, TESTAMENT_LABEL, getBook } from '../../data/bible/canon'
 import { experiencesOf } from '../../data/story'
 import { questionsForExperience } from '../../data/questions'
+import { phaseNumber } from '../../services/game/journeyMap'
 import { BOOK_STATUS_LABEL, bookCompletion, bookMedal, bookStatus, isExperienceUnlocked, percent } from '../../services/game/progression'
 import { useGame } from '../../state/GameContext'
 import NotFound from '../NotFound'
@@ -28,7 +29,7 @@ export default function BookPage() {
         <ArtImage art={image} className="hero-bg" priority />
         <div className="hero-shade" />
         <div className="container hero-content">
-          <Link to="/historia" className="back-link"><Icon name="arrowLeft" size={16} /> Mapa da jornada</Link>
+          <Link to="/historia/livros" className="back-link"><Icon name="arrowLeft" size={16} /> Todos os livros</Link>
           <p className="eyebrow">{TESTAMENT_LABEL[book.testament]} · {GROUP_INFO[book.group].label} · {book.chapters} capítulos</p>
           <h1 className="display-sm">{book.name}</h1>
           <div className="route-status">
@@ -38,7 +39,7 @@ export default function BookPage() {
           {c.total > 0 && (
             <div className="hero-meter">
               <ProgressBar value={c.done} max={c.total} label={`Conclusão de ${book.name}`} />
-              <span className="small">{c.done}/{c.total} experiências · {percent(c.ratio)} · {c.stars}/{c.maxStars} estrelas</span>
+              <span className="small">{c.done}/{c.total} fases · {percent(c.ratio)} · {c.stars}/{c.maxStars} estrelas</span>
             </div>
           )}
           <ArtCredit art={image} />
@@ -57,7 +58,7 @@ export default function BookPage() {
           </div>
         ) : (
           <>
-            <h2 className="section-title">Experiências</h2>
+            <h2 className="section-title">Fases</h2>
             <ol className="exp-path">
               {exps.map((e) => {
                 const open = isExperienceUnlocked(e.id, progress)
@@ -71,14 +72,14 @@ export default function BookPage() {
                     <article className="chapter-card">
                       <ArtImage art={e.image} className="chapter-img" sizes="(min-width: 900px) 200px, 30vw" />
                       <div className="chapter-body">
-                        <p className="eyebrow">Experiência {e.order} · {e.scope}</p>
+                        <p className="eyebrow">Fase {phaseNumber(e.id)} · {e.scope}</p>
                         <h3>{e.title}</h3>
-                        <p className="small muted">{n} perguntas no banco · desafio de até {Math.min(n, 7)}</p>
+                        <p className="small muted">{n} perguntas</p>
                         {ep?.completed && <Stars value={ep.bestStars} />}
                       </div>
                       <div className="chapter-action">
                         {open ? (
-                          <Link to={`/historia/${book.id}/${e.id}`} className={`btn ${ep?.completed ? 'btn-outline' : 'btn-gold'}`} aria-label={`${ep?.completed ? 'Revisitar' : 'Começar'} experiência ${e.order}: ${e.title}`}>
+                          <Link to={`/historia/${book.id}/${e.id}`} className={`btn ${ep?.completed ? 'btn-outline' : 'btn-gold'}`} aria-label={`${ep?.completed ? 'Revisitar' : 'Começar'} fase ${phaseNumber(e.id)}: ${e.title}`}>
                             {ep?.completed ? 'Revisitar' : 'Começar'}
                           </Link>
                         ) : (

@@ -34,11 +34,19 @@ export const GENESIS_EXTRA_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 2:8',
   },
   {
-    id: 'ed-02', experienceId: 'gn-eden', type: 'truefalse', difficulty: 1, category: 'narrativa',
-    prompt: 'A árvore da vida estava no meio do jardim.',
-    answer: true,
-    explanation: 'Gênesis 2:9 coloca a árvore da vida no meio do jardim, ao lado da árvore da ciência do bem e do mal.',
+    id: 'ed-02', experienceId: 'gn-eden', type: 'complete', difficulty: 1, category: 'versiculos',
+    prompt: 'Complete o versículo.',
+    verse: 'E o Senhor Deus fez brotar da terra toda árvore agradável à vista e boa para comida, e a árvore da ____ no meio do jardim, e a árvore da ciência do bem e do mal.',
+    options: ['vida', 'sabedoria', 'luz', 'paz'], answer: 0,
+    explanation: 'Gênesis 2:9 menciona duas árvores especiais no jardim.',
     reference: 'Gênesis 2:9',
+  },
+  {
+    id: 'ed-04', experienceId: 'gn-eden', type: 'truefalse', difficulty: 2, category: 'geografia',
+    prompt: 'Segundo Gênesis 2, um rio saía do Éden para regar o jardim.',
+    answer: true,
+    explanation: 'O rio saía do Éden, regava o jardim e dali se dividia em quatro braços.',
+    reference: 'Gênesis 2:10',
   },
   {
     id: 'ed-03', experienceId: 'gn-eden', type: 'multiple', difficulty: 2, category: 'geografia',
@@ -225,14 +233,14 @@ export const GENESIS_EXTRA_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 28:19',
   },
   {
-    id: 'je-06', experienceId: 'gn-jaco-esau', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'je-06', experienceId: 'gn-jaco-familia', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Que novo nome Jacó recebeu depois de lutar até o romper da alva?',
     options: ['Israel', 'Abraão', 'Edom', 'Judá'], answer: 0,
     explanation: 'O novo nome Israel passou a designar também o povo descendente de Jacó.',
     reference: 'Gênesis 32:28',
   },
   {
-    id: 'je-07', experienceId: 'gn-jaco-esau', type: 'order', difficulty: 3, category: 'cronologia',
+    id: 'je-07', experienceId: 'gn-jaco-familia', type: 'order', difficulty: 3, category: 'cronologia',
     prompt: 'Organize os acontecimentos da vida de Jacó.',
     items: [
       'Esaú vende a primogenitura',
@@ -246,7 +254,7 @@ export const GENESIS_EXTRA_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 25–33',
   },
   {
-    id: 'je-08', experienceId: 'gn-jaco-esau', type: 'memory', difficulty: 2, category: 'personagens',
+    id: 'je-08', experienceId: 'gn-jaco-familia', type: 'memory', difficulty: 2, category: 'personagens',
     prompt: 'Associe cada personagem à sua descrição.',
     pairs: [
       { a: 'Esaú', b: 'Homem do campo, perito na caça' },

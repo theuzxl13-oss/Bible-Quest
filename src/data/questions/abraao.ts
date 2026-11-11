@@ -58,7 +58,7 @@ export const ABRAAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 14:18–20',
   },
   {
-    id: 'ab-08', experienceId: 'gn-abraao-lo', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'ab-08', experienceId: 'gn-promessa', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'E creu ele no Senhor, e foi-lhe imputado isto por ____.',
     options: ['justiça', 'graça', 'herança', 'honra'], answer: 0,
@@ -66,14 +66,14 @@ export const ABRAAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 15:6',
   },
   {
-    id: 'ab-09', experienceId: 'gn-abraao-lo', type: 'truefalse', difficulty: 1, category: 'narrativa',
+    id: 'ab-09', experienceId: 'gn-promessa', type: 'truefalse', difficulty: 1, category: 'narrativa',
     prompt: 'Deus convidou Abrão a contar as estrelas para mostrar como seria a sua descendência.',
     answer: true,
     explanation: 'Abrão é levado para fora e ouve: "Assim será a tua semente".',
     reference: 'Gênesis 15:5',
   },
   {
-    id: 'ab-10', experienceId: 'gn-abraao-lo', type: 'book', difficulty: 3, category: 'livros',
+    id: 'ab-10', experienceId: 'gn-promessa', type: 'book', difficulty: 3, category: 'livros',
     prompt: 'Em qual destas cartas Paulo cita que Abraão creu em Deus e isso lhe foi imputado como justiça?',
     options: ['Romanos', 'Filipenses', 'Tito', 'Colossenses'], answer: 0,
     explanation: 'Paulo cita Gênesis 15:6 em Romanos 4. A mesma passagem aparece em Gálatas 3:6 e Tiago 2:23.',
@@ -87,7 +87,7 @@ export const ABRAAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 13:18',
   },
   {
-    id: 'ab-12', experienceId: 'gn-isaque', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'ab-12', experienceId: 'gn-promessa', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Qual foi o novo nome dado a Abrão?',
     options: ['Abraão', 'Israel', 'Isaque', 'Ismael'], answer: 0,
     explanation: 'Abrão passou a se chamar Abraão, porque seria posto por "pai da multidão de nações".',
@@ -117,7 +117,7 @@ export const ABRAAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 18:14',
   },
   {
-    id: 'ab-16', experienceId: 'gn-isaque', type: 'truefalse', difficulty: 2, category: 'personagens',
+    id: 'ab-16', experienceId: 'gn-promessa', type: 'truefalse', difficulty: 2, category: 'personagens',
     prompt: 'Ismael era filho de Abrão com Agar.',
     answer: true,
     explanation: 'Agar, serva egípcia de Sarai, deu a Abrão um filho chamado Ismael.',
@@ -131,28 +131,28 @@ export const ABRAAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 18:1–2',
   },
   {
-    id: 'ab-18', experienceId: 'gn-moria', type: 'multiple', difficulty: 1, category: 'geografia',
+    id: 'ab-18', experienceId: 'gn-isaque', type: 'multiple', difficulty: 1, category: 'geografia',
     prompt: 'Para qual terra Abraão foi enviado com Isaque?',
     options: ['Moriá', 'Sinai', 'Ararate', 'Gósen'], answer: 0,
     explanation: 'Abraão recebeu a ordem de ir à terra de Moriá.',
     reference: 'Gênesis 22:2',
   },
   {
-    id: 'ab-19', experienceId: 'gn-moria', type: 'truefalse', difficulty: 1, category: 'narrativa',
+    id: 'ab-19', experienceId: 'gn-isaque', type: 'truefalse', difficulty: 1, category: 'narrativa',
     prompt: 'Isaque carregou a lenha do holocausto na subida do monte.',
     answer: true,
     explanation: 'Abraão pôs a lenha sobre Isaque e tomou o fogo e o cutelo.',
     reference: 'Gênesis 22:6',
   },
   {
-    id: 'ab-20', experienceId: 'gn-moria', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'ab-20', experienceId: 'gn-isaque', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'O que Abraão encontrou preso pelos chifres em um mato?',
     options: ['Um carneiro', 'Um cordeiro', 'Um bode', 'Um bezerro'], answer: 0,
     explanation: 'Abraão ofereceu o carneiro em lugar de seu filho.',
     reference: 'Gênesis 22:13',
   },
   {
-    id: 'ab-21', experienceId: 'gn-moria', type: 'order', difficulty: 3, category: 'cronologia',
+    id: 'ab-21', experienceId: 'gn-isaque', type: 'order', difficulty: 3, category: 'cronologia',
     prompt: 'Organize os acontecimentos da vida de Abraão.',
     items: [
       'A família sai de Ur dos Caldeus',
@@ -166,7 +166,7 @@ export const ABRAAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 11:31–22:19',
   },
   {
-    id: 'ab-22', experienceId: 'gn-moria', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'ab-22', experienceId: 'gn-isaque', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Deus proverá para si o ____ para o holocausto, meu filho.',
     options: ['cordeiro', 'altar', 'fogo', 'carneiro'], answer: 0,

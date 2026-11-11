@@ -47,6 +47,8 @@ export function ExperienceEditor({ initial, onSave, onCancel }: { initial?: Expe
       }),
       references: paras(references),
       learning: paras(learning),
+      characters: initial?.characters ?? [],
+      places: initial?.places ?? [],
     }
     const errs = validateExperience(e)
     setErrors(errs)

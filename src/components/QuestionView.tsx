@@ -1,8 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { MemoryQuestion, MultipleChoiceQuestion, OrderQuestion, Question, TrueFalseQuestion } from '../types'
-import { memoryMistakesAllowed, type AnswerResponse } from '../services/game/answers'
+import { MATCH_MISTAKES_ALLOWED, memoryMistakesAllowed, type AnswerResponse } from '../services/game/answers'
 import { shuffle, shuffleNotIdentity } from '../services/game/random'
 import { QUESTION_TYPE_LABEL, DIFFICULTY_LABEL } from '../data/questions'
+import { ArtImage } from './ArtImage'
+import { ART } from '../data/images'
 import { Icon } from './Icon'
 
 interface Props {
@@ -21,6 +23,12 @@ export function QuestionView({ question, answered, onAnswer, progressiveClues }:
         <span className="tag">{QUESTION_TYPE_LABEL[question.type]}</span>
         <span className={`tag tag-diff-${question.difficulty}`}>{DIFFICULTY_LABEL[question.difficulty]}</span>
       </div>
+      {question.image && ART[question.image] && (
+        <figure className="question-figure">
+          <ArtImage art={question.image} className="question-img" sizes="(min-width: 760px) 700px, 100vw" />
+          <figcaption className="art-credit">{ART[question.image].title} — {ART[question.image].artist}, {ART[question.image].year}. Domínio público.</figcaption>
+        </figure>
+      )}
       <h2 id={`q-${question.id}`} className="question-prompt">
         {question.prompt}
       </h2>
@@ -30,8 +38,10 @@ export function QuestionView({ question, answered, onAnswer, progressiveClues }:
         <OrderItems key={question.id} q={question} answered={answered} onAnswer={onAnswer} />
       ) : question.type === 'memory' ? (
         <MemoryGame key={question.id} q={question} answered={answered} onAnswer={onAnswer} />
+      ) : question.type === 'match' ? (
+        <MatchExercise key={question.id} q={question} answered={answered} onAnswer={onAnswer} />
       ) : (
-        <Choice key={question.id} q={question} answered={answered} onAnswer={onAnswer} progressive={progressiveClues} />
+        <Choice key={question.id} q={question as MultipleChoiceQuestion} answered={answered} onAnswer={onAnswer} progressive={progressiveClues} />
       )}
     </section>
   )
@@ -283,6 +293,75 @@ function MemoryGame({ q, answered, onAnswer }: { q: MemoryQuestion; answered: An
             </button>
           )
         })}
+      </div>
+      <p className="sr-only" aria-live="polite">{live}</p>
+    </>
+  )
+}
+
+/** Relacione: duas colunas visíveis; escolha um item da esquerda e depois o par da direita. */
+function MatchExercise({ q, answered, onAnswer }: { q: MemoryQuestion; answered: AnswerResponse | null; onAnswer: (r: AnswerResponse) => void }) {
+  const left = useMemo(() => shuffle(q.pairs.map((p, i) => ({ i, text: p.a }))), [q])
+  const right = useMemo(() => shuffle(q.pairs.map((p, i) => ({ i, text: p.b }))), [q])
+  const [selected, setSelected] = useState<number | null>(null)
+  const [matched, setMatched] = useState<number[]>([])
+  const [wrongFlash, setWrongFlash] = useState<number | null>(null)
+  const [mistakes, setMistakes] = useState(0)
+  const [live, setLive] = useState('')
+  const done = matched.length === q.pairs.length
+
+  useEffect(() => {
+    if (done && !answered) onAnswer({ kind: 'match', mistakes })
+  }, [done, answered, mistakes, onAnswer])
+
+  const chooseRight = (i: number, text: string) => {
+    if (selected === null || answered) return
+    if (selected === i) {
+      setMatched((m) => [...m, i])
+      setLive(`Correto: ${q.pairs[i].a} — ${text}.`)
+    } else {
+      setMistakes((m) => m + 1)
+      setWrongFlash(i)
+      window.setTimeout(() => setWrongFlash(null), 600)
+      setLive(`Não combina: ${q.pairs[selected].a} — ${text}.`)
+    }
+    setSelected(null)
+  }
+
+  return (
+    <>
+      <p className="hint">Toque em um item da esquerda e depois no par correspondente da direita. Até {MATCH_MISTAKES_ALLOWED} erro ainda conta como acerto. Erros: <strong>{mistakes}</strong></p>
+      <div className="match-grid">
+        <ul className="match-col" aria-label="Itens">
+          {left.map((l) => (
+            <li key={l.i}>
+              <button
+                type="button"
+                className={`match-item ${selected === l.i ? 'is-selected' : ''} ${matched.includes(l.i) || answered ? 'is-matched' : ''}`}
+                disabled={matched.includes(l.i) || Boolean(answered)}
+                aria-pressed={selected === l.i}
+                onClick={() => setSelected(l.i)}
+              >
+                {l.text}
+              </button>
+            </li>
+          ))}
+        </ul>
+        <ul className="match-col" aria-label="Correspondências">
+          {right.map((r) => (
+            <li key={r.i}>
+              <button
+                type="button"
+                className={`match-item ${matched.includes(r.i) || answered ? 'is-matched' : ''} ${wrongFlash === r.i ? 'is-wrong' : ''}`}
+                disabled={matched.includes(r.i) || Boolean(answered) || selected === null}
+                onClick={() => chooseRight(r.i, r.text)}
+              >
+                {r.text}
+                {(matched.includes(r.i) || answered) && <span className="match-pair small">{q.pairs[r.i].a}</span>}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
       <p className="sr-only" aria-live="polite">{live}</p>
     </>

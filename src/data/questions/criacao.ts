@@ -31,7 +31,7 @@ export const CRIACAO_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 1:5',
   },
   {
-    id: 'cr-05', experienceId: 'gn-criacao', type: 'book', difficulty: 2, category: 'livros',
+    id: 'cr-05', type: 'book', difficulty: 2, category: 'livros',
     prompt: 'Em qual livro está escrito "No princípio era o Verbo"?',
     options: ['João', 'Gênesis', 'Salmos', 'Isaías'], answer: 0,
     explanation: 'O Evangelho de João começa com uma clara referência a Gênesis 1.',

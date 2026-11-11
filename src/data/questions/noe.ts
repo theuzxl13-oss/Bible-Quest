@@ -2,7 +2,7 @@ import { bank } from './helpers'
 
 export const NOE_QUESTIONS = bank('genesis', [
   {
-    id: 'no-01', experienceId: 'gn-arca', type: 'whoami', difficulty: 1, category: 'personagens',
+    id: 'no-01', experienceId: 'gn-noe', type: 'whoami', difficulty: 1, category: 'personagens',
     prompt: 'Quem sou eu?',
     clues: ['Fui filho de Lameque.', 'Achei graça aos olhos do Senhor.', 'Construí uma grande arca.'],
     options: ['Noé', 'Abraão', 'Moisés', 'Enoque'], answer: 0,
@@ -18,21 +18,21 @@ export const NOE_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 6:8',
   },
   {
-    id: 'no-03', experienceId: 'gn-arca', type: 'multiple', difficulty: 1, category: 'personagens',
+    id: 'no-03', experienceId: 'gn-noe', type: 'multiple', difficulty: 1, category: 'personagens',
     prompt: 'Quais eram os nomes dos filhos de Noé?',
     options: ['Sem, Cam e Jafé', 'Caim, Abel e Sete', 'Isaque, Ismael e Jacó', 'Rúben, Simeão e Levi'], answer: 0,
     explanation: 'Noé gerou três filhos: Sem, Cam e Jafé.',
     reference: 'Gênesis 6:10',
   },
   {
-    id: 'no-04', experienceId: 'gn-arca', type: 'truefalse', difficulty: 1, category: 'personagens',
+    id: 'no-04', experienceId: 'gn-noe', type: 'truefalse', difficulty: 1, category: 'personagens',
     prompt: 'A Bíblia descreve Noé como alguém que andava com Deus.',
     answer: true,
     explanation: 'Noé era varão justo e reto em suas gerações; Noé andava com Deus.',
     reference: 'Gênesis 6:9',
   },
   {
-    id: 'no-05', experienceId: 'gn-arca', type: 'multiple', difficulty: 2, category: 'narrativa',
+    id: 'no-05', experienceId: 'gn-noe', type: 'multiple', difficulty: 2, category: 'narrativa',
     prompt: 'Como Gênesis descreve a terra antes do dilúvio?',
     options: ['Corrompida e cheia de violência', 'Em paz e prosperidade', 'Deserta e sem habitantes', 'Coberta de gelo'], answer: 0,
     explanation: 'A terra estava corrompida diante de Deus e cheia de violência.',

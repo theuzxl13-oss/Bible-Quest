@@ -1,110 +1,122 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { Adventurer } from '../../components/Adventurer'
 import { ArtImage, ArtCredit } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
-import { ReadAloud } from '../../components/ReadAloud'
 import { Stars } from '../../components/ui'
 import { getBook } from '../../data/bible/canon'
-import { BIBLE_SOURCE_NOTE, getExperience } from '../../data/story'
+import { getCharacter } from '../../data/library/characters'
+import { getPlace } from '../../data/library/places'
+import { getExperience } from '../../data/story'
 import { questionsForExperience } from '../../data/questions'
+import { phaseDifficulty, phaseNumber } from '../../services/game/journeyMap'
 import { isExperienceUnlocked } from '../../services/game/progression'
-import { STORY_CHALLENGE_SIZE } from './StoryChallenge'
+import { worldOfBook } from '../../data/worlds'
 import { useGame } from '../../state/GameContext'
 import NotFound from '../NotFound'
 
-const STEPS = ['Introdução', 'Narrativa', 'Referências', 'Aprendizado', 'Desafio', 'Resultado', 'Recompensa']
-
+/** Tela de entrada da fase. */
 export default function ExperiencePage() {
   const { bookId, experienceId } = useParams()
   const exp = getExperience(experienceId)
-  const { progress, markVisited } = useGame()
+  const { progress, profile, markVisited } = useGame()
   const unlocked = exp ? isExperienceUnlocked(exp.id, progress) : false
+  const [news, setNews] = useState<string[]>([])
+  const visited = useRef<string | null>(null)
 
   useEffect(() => {
-    if (exp && unlocked) markVisited(exp.id)
+    if (!exp || !unlocked || visited.current === exp.id) return
+    visited.current = exp.id
+    const r = markVisited(exp.id)
+    const names = [...r.newCharacters.map((id) => getCharacter(id)?.name), ...r.newPlaces.map((id) => getPlace(id)?.name)].filter(Boolean) as string[]
+    if (names.length) setNews(names)
   }, [exp, unlocked, markVisited])
 
   if (!exp || exp.bookId !== bookId) return <NotFound />
-  if (!unlocked) return <Navigate to={`/historia/${exp.bookId}`} replace />
+  if (!unlocked) return <Navigate to="/historia" replace />
   const book = getBook(exp.bookId)!
-  const count = Math.min(questionsForExperience(exp.id).length, STORY_CHALLENGE_SIZE)
+  const world = worldOfBook(exp.bookId)
+  const qs = questionsForExperience(exp.id)
+  const diff = phaseDifficulty(qs.reduce((s, q) => s + q.difficulty, 0) / Math.max(1, qs.length))
   const ep = progress.experiences[exp.id]
+  const n = phaseNumber(exp.id)
 
   return (
-    <article>
-      <section className="hero hero-mid">
+    <article className="phase">
+      <section className="hero hero-mid phase-hero">
         <ArtImage art={exp.image} className="hero-bg" priority />
         <div className="hero-shade" />
         <div className="container hero-content">
-          <Link to={`/historia/${book.id}`} className="back-link"><Icon name="arrowLeft" size={16} /> {book.name}</Link>
-          <p className="eyebrow">{book.name} · Experiência {exp.order} · {exp.scope}</p>
+          <Link to="/historia" className="back-link"><Icon name="arrowLeft" size={16} /> Mapa da jornada</Link>
+          <p className="eyebrow">{world ? `Mundo ${world.number} · ` : ''}{book.name} · Fase {n}</p>
           <h1 className="display-sm">{exp.title}</h1>
-          {ep?.completed && <p className="small"><Stars value={ep.bestStars} size={16} /> Concluída · melhor pontuação {ep.bestScore}</p>}
+          <div className="phase-badges">
+            <span className="tag"><Icon name="book" size={14} /> {exp.scope}</span>
+            <span className={`tag tag-diff-${diff.level}`}>{diff.label}</span>
+            <span className="tag">{qs.length} perguntas</span>
+            {ep?.completed && <span className="tag tag-done"><Stars value={ep.bestStars} size={13} /> Concluída</span>}
+          </div>
           <ArtCredit art={exp.image} />
         </div>
       </section>
 
-      <div className="container section reading">
-        <ol className="steps-bar" aria-label="Etapas da experiência">
-          {STEPS.map((s, i) => (
-            <li key={s} className={i < 4 ? 'is-here' : ''}><span>{i + 1}</span>{s}</li>
-          ))}
-        </ol>
+      <div className="container section phase-body">
+        {news.length > 0 && (
+          <p className="notice notice-info library-news" role="status">
+            <Icon name="book" /> <span><strong>Nova ficha na Biblioteca:</strong> {news.join(', ')}. <Link to="/biblioteca">Abrir Biblioteca</Link></span>
+          </p>
+        )}
 
-        <section className="reading-block" aria-labelledby="intro">
-          <div className="reading-head">
-            <h2 id="intro"><span className="step-n">1</span> Introdução</h2>
-            <ReadAloud text={exp.intro.join(' ')} />
-          </div>
-          {exp.intro.map((p, i) => <p key={i}>{p}</p>)}
-        </section>
+        <div className="phase-grid">
+          <section className="panel phase-intro" aria-labelledby="pi-t">
+            <div className="phase-guide">
+              {profile?.character && <Adventurer config={profile.character} size={64} portrait />}
+              <div>
+                <p className="eyebrow">{profile?.character?.name ?? 'Você'} chega a um novo lugar</p>
+                <h2 id="pi-t">Introdução</h2>
+              </div>
+            </div>
+            <p className="lead">{exp.intro[0]}</p>
+            <p className="small muted">Na fase você acompanha a narrativa, lê os trechos bíblicos e o aprendizado, e depois responde a {qs.length} perguntas sobre a passagem.</p>
+            <div className="row-actions">
+              <Link to={`/historia/${book.id}/${exp.id}/historia`} className="btn btn-gold btn-lg">
+                Iniciar fase <Icon name="play" size={18} />
+              </Link>
+              {ep?.completed && (
+                <Link to={`/historia/${book.id}/${exp.id}/desafio`} className="btn btn-outline">Ir direto ao desafio</Link>
+              )}
+            </div>
+            {ep?.completed && <p className="small muted">Revisitar é livre. XP extra só se você superar sua melhor pontuação ({ep.bestScore}).</p>}
+          </section>
 
-        <section className="reading-block" aria-labelledby="narr">
-          <div className="reading-head">
-            <h2 id="narr"><span className="step-n">2</span> Narrativa</h2>
-            <span className="tag tag-narrative" title="Texto criado pela equipe para ambientação">Narrativa dramatizada</span>
-            <ReadAloud text={exp.narrative.join(' ')} />
-          </div>
-          {exp.narrative.map((p, i) => <p key={i} className="narrative">{p}</p>)}
-          <p className="small muted">Ambientação escrita pela equipe. Não é texto bíblico e não atribui falas aos personagens.</p>
-        </section>
-
-        <section className="reading-block scripture" aria-labelledby="scr">
-          <div className="reading-head">
-            <h2 id="scr"><span className="step-n">3</span> Referências bíblicas</h2>
-            <span className="tag tag-scripture">Almeida RC 1911</span>
-            <ReadAloud text={exp.passages.map((p) => `${p.reference}. ${p.text}`).join(' ')} />
-          </div>
-          {exp.passages.map((p) => (
-            <blockquote key={p.reference} className="passage">
-              <p>{p.text}</p>
-              <cite>{p.reference}</cite>
-            </blockquote>
-          ))}
-          <p className="refs-title">Para ler na sua Bíblia:</p>
-          <ul className="refs-list">
-            {exp.references.map((r) => <li key={r}>{r}</li>)}
-          </ul>
-          <p className="small muted">{BIBLE_SOURCE_NOTE}</p>
-        </section>
-
-        <section className="reading-block" aria-labelledby="learn">
-          <div className="reading-head">
-            <h2 id="learn"><span className="step-n">4</span> Aprendizado</h2>
-            <ReadAloud text={exp.learning.join(' ')} />
-          </div>
-          {exp.learning.map((p, i) => <p key={i}>{p}</p>)}
-        </section>
-
-        <div className="start-box panel">
-          <div>
-            <h2><span className="step-n">5</span> Desafio</h2>
-            <p className="muted">{count} perguntas · 3 tentativas · acerte pelo menos 60% para concluir e liberar a próxima experiência</p>
-            {ep?.completed && <p className="small muted">Ao repetir, você só ganha XP se superar sua melhor pontuação ({ep.bestScore}).</p>}
-          </div>
-          <Link to={`/historia/${book.id}/${exp.id}/desafio`} className="btn btn-gold btn-lg">
-            Iniciar desafio <Icon name="play" size={18} />
-          </Link>
+          <aside className="panel phase-cast" aria-labelledby="pc-t">
+            <h2 id="pc-t">Personagens desta fase</h2>
+            {exp.characters.length === 0 ? (
+              <p className="muted small">Esta passagem não destaca personagens humanos.</p>
+            ) : (
+              <ul className="cast-list">
+                {exp.characters.map((id) => {
+                  const c = getCharacter(id)
+                  if (!c) return null
+                  return (
+                    <li key={id}>
+                      <Link to={`/biblioteca/personagem/${id}`} className="cast-item">
+                        <span className="portrait"><ArtImage art={c.image} focus={c.focus} className="portrait-img" sizes="56px" decorative /></span>
+                        <span><strong>{c.name}</strong><span className="small muted"> · {c.role}</span></span>
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
+            <p className="small muted">As imagens são pinturas relacionadas à história, não retratos dos personagens.</p>
+            {exp.places.length > 0 && (
+              <>
+                <h3>Lugares</h3>
+                <p className="small">{exp.places.map((id) => getPlace(id)?.name).filter(Boolean).join(' · ')}</p>
+              </>
+            )}
+          </aside>
         </div>
       </div>
     </article>

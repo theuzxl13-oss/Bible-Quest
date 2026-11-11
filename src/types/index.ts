@@ -43,6 +43,12 @@ export type FreeModeId =
   | 'contra-o-tempo'
   | 'ordem'
   | 'livro'
+  | 'personagem'
+  | 'tema'
+  | 'dificuldade'
+
+/** Níveis de dificuldade escolhidos pelo jogador no Modo Livre. */
+export type FreeLevel = 'iniciante' | 'intermediario' | 'avancado' | 'especialista'
 
 export type Difficulty = 1 | 2 | 3
 
@@ -63,6 +69,7 @@ export type QuestionType =
   | 'book'
   | 'order'
   | 'memory'
+  | 'match'
 
 interface QuestionBase {
   id: string
@@ -79,6 +86,8 @@ interface QuestionBase {
   explanation: string
   /** Referência bíblica verificável, ex.: "Gênesis 1:1". */
   reference: string
+  /** Obra de arte exibida com a pergunta (chave de ART). */
+  image?: string
 }
 
 export interface MultipleChoiceQuestion extends QuestionBase {
@@ -104,7 +113,8 @@ export interface OrderQuestion extends QuestionBase {
 }
 
 export interface MemoryQuestion extends QuestionBase {
-  type: 'memory'
+  /** memory: cartas viradas; match: relacionar colunas visíveis. */
+  type: 'memory' | 'match'
   /** Pares que o jogador precisa associar. */
   pairs: { a: string; b: string }[]
 }
@@ -142,9 +152,28 @@ export interface Experience {
   references: string[]
   /** 4. Aprendizado: significado e ensinamentos. */
   learning: string[]
+  /** Personagens bíblicos que aparecem na fase (ids da Biblioteca). */
+  characters: string[]
+  /** Lugares relacionados (ids da Biblioteca). */
+  places: string[]
 }
 
 export type AgeRange = 'ate12' | '13a17' | '18mais'
+
+/**
+ * Aparência do personagem do jogador: um aventureiro que acompanha a
+ * jornada. Ele NÃO representa nenhum personagem bíblico.
+ */
+export interface CharacterConfig {
+  name: string
+  archetype: 'viajante' | 'escriba' | 'pastora' | 'exploradora'
+  skin: number
+  hair: 'curto' | 'longo' | 'cacheado' | 'coque' | 'tranca' | 'raspado'
+  hairColor: number
+  outfit: 'tunica' | 'manto' | 'viagem' | 'escriba'
+  outfitColor: number
+  accessory: 'cajado' | 'bolsa' | 'pergaminho' | 'lamparina' | 'nenhum'
+}
 
 export interface Profile {
   id: string
@@ -154,6 +183,8 @@ export interface Profile {
   createdAt: string
   /** Sempre 'local' nesta versão. Futuro: 'supabase'. */
   storage: 'local'
+  /** Personagem aventureiro. Ausente até a criação do personagem. */
+  character?: CharacterConfig
 }
 
 export interface ExperienceProgress {
@@ -166,7 +197,7 @@ export interface ExperienceProgress {
 export interface MatchRecord {
   id: string
   date: string
-  mode: 'historia' | 'livre' | 'diario' | 'demo-multiplayer'
+  mode: 'historia' | 'livre' | 'diario' | 'revisao' | 'demo-multiplayer'
   freeMode?: FreeModeId
   bookId?: string
   experienceId?: string
@@ -177,6 +208,14 @@ export interface MatchRecord {
   xp: number
   stars: number
   passed: boolean
+}
+
+export interface QuestionRecord {
+  seen: number
+  wrong: number
+  /** true se a última resposta a esta pergunta foi errada. */
+  lastWrong: boolean
+  lastSeen: string
 }
 
 export interface DailyLogEntry {
@@ -197,6 +236,20 @@ export interface Progress {
   daily: { lastCompletedDay: string | null; completedCount: number; log: DailyLogEntry[] }
   /** XP de prática acumulado no dia (Modo Livre e tentativas reprovadas), sujeito a limite diário. */
   practice: { day: string | null; xp: number }
+  /** Baús de recompensa já abertos (id → data). */
+  chests: Record<string, string>
+  /** Fichas desbloqueadas na Biblioteca (id → data). */
+  library: { characters: Record<string, string>; places: Record<string, string> }
+  /** Mundos cuja abertura já foi exibida. */
+  worldsSeen: string[]
+  /** Última fase em que o avatar foi mostrado no mapa (para animar o avanço). */
+  mapCursor: string | null
+  /** Revisão inteligente: histórico por pergunta. */
+  review: Record<string, QuestionRecord>
+  /** Maior sequência de acertos seguidos em qualquer modo. */
+  bestAnswerStreak: number
+  currentAnswerStreak: number
+  multiplayer: { demoMatches: number; demoWins: number }
   free: {
     matches: number
     byMode: Partial<Record<FreeModeId, { played: number; best: number }>>

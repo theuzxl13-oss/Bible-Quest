@@ -22,9 +22,13 @@ function setup(path = '/', store = new MemoryStore()) {
   return { user, services, store }
 }
 
+const CHAR = { name: 'Tobias', archetype: 'viajante', skin: 2, hair: 'cacheado', hairColor: 0, outfit: 'manto', outfitColor: 0, accessory: 'cajado' } as const
+
 function withProfile(ageRange: 'ate12' | '13a17' | '18mais' = '18mais') {
   const store = new MemoryStore()
-  createLocalServices(store).auth.createLocalProfile({ nickname: 'Teo', avatar: 'lamp', ageRange })
+  const s = createLocalServices(store)
+  const p = s.auth.createLocalProfile({ nickname: 'Teo', avatar: 'lamp', ageRange })
+  s.auth.update({ ...p, character: { ...CHAR } })
   return store
 }
 
@@ -94,62 +98,128 @@ async function playStoryChallenge(user: ReturnType<typeof userEvent.setup>) {
 }
 
 describe('fluxos de ponta a ponta', () => {
-  it('cadastro → painel com os dois modos → Modo História começa em Gênesis → desafio → XP → próxima experiência', async () => {
+  it('cadastro → criação do personagem → mapa → fase → cena → desafio → estrelas e XP → avatar avança', async () => {
     const { user, services } = setup('/entrar')
     await user.type(screen.getByLabelText('Apelido'), 'Lia')
     await user.click(screen.getByLabelText('18 anos ou mais'))
     await user.click(screen.getByRole('button', { name: /começar/i }))
 
-    expect(await screen.findByRole('heading', { name: /olá, lia/i })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'A grande jornada bíblica' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Desafios bíblicos' })).toBeInTheDocument()
+    // personagem obrigatório antes da jornada
+    expect(await screen.findByRole('heading', { name: /crie seu aventureiro/i })).toBeInTheDocument()
+    const nameInput = screen.getByLabelText('Nome do personagem')
+    await user.clear(nameInput)
+    await user.type(nameInput, 'Rute Viajante')
+    await user.click(screen.getByLabelText(/^Pastora/))
+    await user.click(screen.getByLabelText('Longo'))
+    await user.click(screen.getByLabelText('Lamparina'))
+    await user.click(screen.getByRole('button', { name: /começar a jornada/i }))
+    const saved = services.auth.current()!.character!
+    expect(saved).toMatchObject({ name: 'Rute Viajante', archetype: 'pastora', hair: 'longo', accessory: 'lamparina', outfit: 'manto' })
 
-    await user.click(screen.getByRole('link', { name: /a grande jornada bíblica/i }))
-    expect(await screen.findByRole('heading', { name: 'Antigo Testamento' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { name: 'Novo Testamento' })).toBeInTheDocument()
-    expect(screen.getByLabelText(/Apocalipse: Em preparação/)).toBeInTheDocument()
-    expect(screen.getByLabelText(/Êxodo: Bloqueado/)).toBeInTheDocument()
+    // mapa: abertura do mundo, fase 1 atual, fase 2 bloqueada
+    await user.click(await screen.findByRole('button', { name: /entrar no mundo/i }))
+    expect(screen.getByRole('heading', { name: 'Rute Viajante' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /fase 1: a criação do mundo\. fase atual/i })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /fase 2: .*bloqueada/i }))
+    expect(await screen.findByText(/conclua a fase 1/i)).toBeInTheDocument()
 
-    await user.click(screen.getByRole('link', { name: /Gênesis: Disponível/ }))
-    await user.click(await screen.findByRole('link', { name: /começar experiência 1: a criação do mundo/i }))
-    for (const h of ['Introdução', 'Narrativa', 'Referências bíblicas', 'Aprendizado', 'Desafio']) {
-      expect(screen.getByRole('heading', { name: new RegExp(h) })).toBeInTheDocument()
+    // tela da fase: personagens, referência, quantidade e dificuldade
+    await user.click(screen.getByRole('link', { name: /fase 1: a criação do mundo/i }))
+    expect(await screen.findByRole('heading', { name: 'A criação do mundo' })).toBeInTheDocument()
+    expect(screen.getByText('10 perguntas')).toBeInTheDocument()
+    expect(screen.getByText('Gênesis 1:1–2:3')).toBeInTheDocument()
+
+    // cena narrativa
+    await user.click(screen.getByRole('link', { name: /iniciar fase/i }))
+    expect(await screen.findByRole('heading', { name: 'Introdução' })).toBeInTheDocument()
+    for (let i = 0; i < 10; i++) {
+      const next = screen.queryByRole('button', { name: /^continuar/i })
+      if (!next) break
+      await user.click(next)
     }
-    expect(screen.getByText('Narrativa dramatizada')).toBeInTheDocument()
-    expect(services.progress.load().lastExperienceId).toBe('gn-criacao')
+    expect(screen.getByRole('heading', { name: 'Aprendizado' })).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /começar o desafio \(10 perguntas\)/i }))
 
-    await user.click(screen.getByRole('link', { name: /iniciar desafio/i }))
     await playStoryChallenge(user)
-
-    expect(await screen.findByRole('heading', { name: /experiência concluída/i })).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { name: /fase concluída/i })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: '3 de 3 estrelas' })).toBeInTheDocument()
+    expect(screen.getByText('100%')).toBeInTheDocument()
     const p = services.progress.load()
-    expect(p.experiences['gn-criacao'].completed).toBe(true)
-    expect(p.xp).toBeGreaterThan(50)
+    expect(p.experiences['gn-criacao']).toMatchObject({ completed: true, bestStars: 3 })
+    expect(p.xp).toBeGreaterThan(100)
 
-    await user.click(screen.getByRole('link', { name: /próxima experiência/i }))
-    expect(await screen.findByRole('heading', { name: 'A criação do homem e da mulher' })).toBeInTheDocument()
+    // continuar a jornada: avatar vai para a fase 2, agora liberada
+    await user.click(screen.getByRole('link', { name: /continuar a jornada/i }))
+    expect(await screen.findByRole('link', { name: /fase 1: a criação do mundo\. concluída, 3 de 3 estrelas/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /fase 2: a criação do homem e da mulher\. fase atual/i })).toBeInTheDocument()
+    await waitFor(() => expect(services.progress.load().mapCursor).toBe('gn-homem-mulher'), { timeout: 4000 })
   })
 
-  it('erros consomem tentativas e não concluem a experiência', async () => {
-    const { user, services } = setup('/historia/genesis/gn-criacao/desafio', withProfile())
-    for (let i = 0; i < 3; i++) {
+  it('abaixo de 60% a fase não é concluída e não libera a próxima', async () => {
+    const { user, services } = setup('/historia/genesis/gn-noe/desafio', (() => {
+      const store = withProfile()
+      const s = createLocalServices(store)
+      const p = s.progress.load()
+      for (const id of ['gn-criacao', 'gn-homem-mulher', 'gn-eden', 'gn-queda', 'gn-caim-abel', 'gn-corrupcao']) p.experiences[id] = { completed: true, bestStars: 3, bestScore: 50, attempts: 1 }
+      s.progress.save(p)
+      return store
+    })())
+    for (let i = 0; i < 6; i++) {
       const q = currentQuestion()
       if (q.type === 'truefalse') await user.click(screen.getByRole('button', { name: q.answer ? 'Falso' : 'Verdadeiro' }))
       else if ('options' in q) await user.click(within(screen.getByRole('group', { name: 'Alternativas' })).getByRole('button', { name: q.options.find((_, idx) => idx !== q.answer)! }))
-      else if (q.type === 'order') await user.click(screen.getByRole('button', { name: 'Confirmar ordem' }))
-      else throw new Error('tipo')
+      else throw new Error('tipo ' + q.type)
       expect(await screen.findByText(/não foi desta vez/i)).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: /próxima pergunta|ver resultado/i }))
     }
     expect(await screen.findByRole('heading', { name: /ainda não foi desta vez/i })).toBeInTheDocument()
-    expect(services.progress.load().experiences['gn-criacao'].completed).toBe(false)
+    expect(services.progress.load().experiences['gn-noe'].completed).toBe(false)
   })
 
-  it('experiências e livros bloqueados não abrem por URL', async () => {
+  it('entrar numa fase desbloqueia as fichas da Biblioteca', async () => {
+    const { services } = setup('/historia/genesis/gn-criacao', withProfile())
+    expect(await screen.findByText(/nova ficha na biblioteca/i)).toBeInTheDocument()
+    expect(services.progress.load().library.places.eden).toBeTruthy()
+  })
+
+  it('baú do mapa abre uma vez e concede XP', async () => {
+    const store = withProfile()
+    const s = createLocalServices(store)
+    const p = s.progress.load()
+    for (const e of ['gn-criacao', 'gn-homem-mulher', 'gn-eden', 'gn-queda', 'gn-caim-abel']) p.experiences[e] = { completed: true, bestStars: 2, bestScore: 50, attempts: 1 }
+    p.worldsSeen = ['mundo-genesis']
+    p.mapCursor = 'gn-corrupcao'
+    s.progress.save(p)
+    const { user, services } = setup('/historia', store)
+    await user.click(await screen.findByRole('button', { name: /abrir baú de recompensa \(\+40 xp\)/i }))
+    await user.click(screen.getByRole('button', { name: 'Abrir baú' }))
+    expect(await screen.findByRole('heading', { name: '+40 XP' })).toBeInTheDocument()
+    expect(services.progress.load().xp).toBe(40)
+    await user.click(screen.getByRole('button', { name: 'Continuar' }))
+    expect(screen.getByRole('button', { name: 'Baú já aberto' })).toBeInTheDocument()
+  })
+
+  it('revisão inteligente recomenda e treina as perguntas erradas', async () => {
+    const store = withProfile()
+    const s = createLocalServices(store)
+    const p = s.progress.load()
+    p.review = { 'no-01': { seen: 2, wrong: 2, lastWrong: true, lastSeen: '2026-11-10T00:00:00Z' }, 'no-03': { seen: 1, wrong: 1, lastWrong: true, lastSeen: '2026-11-10T00:00:00Z' }, 'no-04': { seen: 1, wrong: 0, lastWrong: false, lastSeen: '2026-11-10T00:00:00Z' } }
+    s.progress.save(p)
+    const { user, services } = setup('/revisao', store)
+    expect(await screen.findByText(/fase 7 · noé, um homem justo/i)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Revisar 2 perguntas' }))
+    for (let i = 0; i < 2; i++) {
+      await answerCorrectly(user, currentQuestion())
+      await user.click(screen.getByRole('button', { name: /próxima pergunta|ver resultado/i }))
+    }
+    expect(await screen.findByRole('heading', { name: 'Revisão concluída' })).toBeInTheDocument()
+    expect(services.progress.load().review['no-01'].lastWrong).toBe(false)
+  })
+
+  it('fases bloqueadas não abrem por URL', async () => {
     setup('/historia/genesis/gn-babel', withProfile())
-    expect(await screen.findByRole('heading', { name: 'Gênesis' })).toBeInTheDocument()
-    expect(screen.getAllByText(/conclua a anterior/i).length).toBeGreaterThan(0)
+    expect(await screen.findByRole('navigation', { name: 'Mundos da jornada' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'A torre de Babel' })).not.toBeInTheDocument()
   })
 
   it('livro em preparação mostra aviso e leva ao Modo Livre', async () => {
@@ -161,7 +231,7 @@ describe('fluxos de ponta a ponta', () => {
   it('Modo Livre: verdadeiro ou falso de ponta a ponta, XP no mesmo perfil', async () => {
     const { user, services } = setup('/livre', withProfile())
     expect(await screen.findByRole('heading', { name: 'Desafios bíblicos' })).toBeInTheDocument()
-    for (const t of ['Perguntas aleatórias', 'Verdadeiro ou falso', 'Complete o versículo', 'Quem sou eu?', 'Contra o tempo', 'Ordem dos acontecimentos', 'Identifique o livro']) {
+    for (const t of ['Perguntas aleatórias', 'Verdadeiro ou falso', 'Complete o versículo', 'Quem sou eu?', 'Contra o tempo', 'Ordem dos acontecimentos', 'Identifique o livro', 'Desafios por personagem', 'Desafios por tema', 'Desafios por dificuldade']) {
       expect(screen.getByRole('heading', { name: t })).toBeInTheDocument()
     }
     await user.click(screen.getByRole('link', { name: /verdadeiro ou falso/i }))
@@ -228,13 +298,31 @@ describe('fluxos de ponta a ponta', () => {
 
   it('endereços antigos redirecionam para o Modo História', async () => {
     setup('/mapa', withProfile())
-    expect(await screen.findByRole('heading', { name: 'A grande jornada bíblica' })).toBeInTheDocument()
+    expect(await screen.findByRole('navigation', { name: 'Mundos da jornada' })).toBeInTheDocument()
   })
 
-  it('ranking identifica dados de exemplo', async () => {
-    setup('/ranking', withProfile())
-    expect(await screen.findByText('Ranking de demonstração')).toBeInTheDocument()
-    expect(screen.getAllByText('Exemplo').length).toBeGreaterThan(3)
+  it('sem perfil com personagem, a jornada pede a criação do personagem', async () => {
+    const store = new MemoryStore()
+    createLocalServices(store).auth.createLocalProfile({ nickname: 'Sem', avatar: 'lamp', ageRange: '18mais' })
+    setup('/historia', store)
+    expect(await screen.findByRole('heading', { name: /crie seu aventureiro/i })).toBeInTheDocument()
+  })
+
+  it('ranking não inventa jogadores e mostra só os recordes locais', async () => {
+    const { user } = setup('/ranking', withProfile())
+    expect(await screen.findByText('Ranking online indisponível')).toBeInTheDocument()
+    expect(screen.queryByText(/Exemplo/)).not.toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: 'Modo História' }))
+    expect(screen.getByText('Fases concluídas')).toBeInTheDocument()
+  })
+
+  it('Modo Livre por dificuldade: Especialista só com perguntas difíceis e cronômetro', async () => {
+    const { user } = setup('/livre/dificuldade', withProfile())
+    await user.click(await screen.findByLabelText('Especialista'))
+    await user.click(screen.getByLabelText('5'))
+    await user.click(screen.getByRole('button', { name: /começar/i }))
+    expect(screen.getByLabelText('100 segundos restantes')).toBeInTheDocument()
+    expect(currentQuestion().difficulty).toBe(3)
   })
 
   it('telas protegidas redirecionam para o cadastro sem perfil', async () => {

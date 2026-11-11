@@ -58,7 +58,10 @@ export default function SettingsPage() {
         <h2 id="jogo">Jogo</h2>
         <Toggle id="timer" label="Mostrar cronômetro" help="Apenas informativo: o tempo nunca altera a pontuação." checked={settings.showTimer} onChange={(v) => updateSettings({ showTimer: v })} />
         <p className="small muted">Atalhos de teclado nas perguntas: teclas 1 a 4 escolhem alternativas; Tab e Enter navegam e confirmam.</p>
-        <Link to="/boas-vindas" className="btn btn-outline">Rever apresentação</Link>
+        <div className="row-actions">
+          <Link to="/boas-vindas" className="btn btn-outline">Rever apresentação</Link>
+          {profile && <Link to="/personagem" className="btn btn-outline">Editar aparência do personagem</Link>}
+        </div>
       </section>
 
       <section className="panel stack" aria-labelledby="priv">

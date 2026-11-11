@@ -9,11 +9,15 @@ import { correctOptionText } from '../services/game/answers'
 import { getFreeMode } from '../services/game/freeModes'
 import { levelTitle } from '../services/game/levels'
 import { PASS_RATIO, PRACTICE_DAILY_CAP } from '../services/game/scoring'
-import { bookCompletion, isExperienceUnlocked } from '../services/game/progression'
+import { bookCompletion } from '../services/game/progression'
+import { allChests, chestState, phaseNumber } from '../services/game/journeyMap'
+import { Adventurer } from '../components/Adventurer'
+import { ChestIcon } from '../components/map/Scenery'
+import { STAR_RULES } from '../services/game/scoring'
 import { useGame } from '../state/GameContext'
 
 export default function Result() {
-  const { lastOutcome, progress, questionPool } = useGame()
+  const { lastOutcome, progress, questionPool, profile } = useGame()
   const location = useLocation()
   if (!lastOutcome) return <Navigate to="/painel" replace />
   const { record, xpGained, xpCapped, dailyAlreadyClaimed, newAchievements, levelBefore, levelAfter, firstClear } = lastOutcome
@@ -22,37 +26,57 @@ export default function Result() {
   const book = getBook(record.bookId)
   const seqIdx = exp ? STORY_SEQUENCE.findIndex((e) => e.id === exp.id) : -1
   const nextExp = seqIdx >= 0 ? STORY_SEQUENCE[seqIdx + 1] : undefined
-  const canGoNext = nextExp && isExperienceUnlocked(nextExp.id, progress)
   const bookJustDone = exp && book && firstClear && bookCompletion(book.id, progress).done === bookCompletion(book.id, progress).total
   const free = getFreeMode(record.freeMode)
   const pct = Math.round((record.correct / Math.max(1, record.total)) * 100)
 
+  const chestReady = record.mode === 'historia' ? allChests().find((c) => c.afterExperienceId === record.experienceId && chestState(c, progress) === 'disponivel') : undefined
   let headline = 'Partida concluída'
-  if (record.mode === 'historia') headline = record.passed ? (firstClear ? 'Experiência concluída!' : 'Experiência revisada!') : 'Ainda não foi desta vez'
+  if (record.mode === 'historia') headline = record.passed ? (firstClear ? 'Fase concluída!' : 'Fase revisada!') : 'Ainda não foi desta vez'
+  if (record.mode === 'revisao') headline = 'Revisão concluída'
   if (record.mode === 'diario') headline = 'Desafio diário concluído'
   if (record.mode === 'livre' && free) headline = free.title
 
   return (
     <div className="container section stack-lg result">
       <header className="result-head panel">
+        {record.mode === 'historia' && profile?.character && (
+          <div className={`result-hero-char ${record.passed ? 'is-happy' : ''}`} aria-hidden="true">
+            <Adventurer config={profile.character} size={88} />
+          </div>
+        )}
         <p className="eyebrow">{record.mode === 'historia' ? 'Modo História' : record.mode === 'livre' ? 'Modo Livre' : record.title}</p>
         <h1>{headline}</h1>
-        {record.mode === 'historia' && <p className="muted">{record.title}</p>}
-        {record.mode === 'historia' && <Stars value={record.stars} size={36} />}
+        {record.mode === 'historia' && <p className="muted">{exp ? `Fase ${phaseNumber(exp.id)} · ${exp.title}` : record.title}</p>}
+        {record.mode === 'historia' && (
+          <div className="stars-anim">
+            <Stars value={record.stars} size={40} />
+          </div>
+        )}
         <dl className="result-stats">
           <div><dt>Acertos</dt><dd>{record.correct}/{record.total}</dd></div>
           <div><dt>Erros</dt><dd>{record.total - record.correct}</dd></div>
+          <div><dt>Aproveitamento</dt><dd>{pct}%</dd></div>
           <div><dt>Pontos</dt><dd>{record.score}</dd></div>
-          <div><dt>XP ganho</dt><dd className="gold">+{xpGained}</dd></div>
         </dl>
-        <p className="small muted">Aproveitamento de {pct}%.</p>
+        {record.mode === 'historia' && (
+          <p className="small muted">1 estrela ao concluir (≥ {Math.round(PASS_RATIO * 100)}%), 2 com ≥ {Math.round(STAR_RULES.two * 100)}% e 3 com ≥ {Math.round(STAR_RULES.three * 100)}%.</p>
+        )}
+        <div className="rewards" aria-label="Recompensas">
+          <p className="eyebrow">Recompensas</p>
+          <ul>
+            <li className="reward-xp"><Icon name="star" /> <strong>+{xpGained} XP</strong></li>
+            {chestReady && <li><ChestIcon size={28} /> Um baú de recompensa foi liberado no mapa!</li>}
+            {firstClear && nextExp && <li><Icon name="map" /> Próxima fase liberada: {nextExp.title}</li>}
+          </ul>
+        </div>
         {record.mode === 'historia' && !record.passed && (
           <p className="muted">É preciso acertar pelo menos {Math.round(PASS_RATIO * 100)}% sem perder todas as tentativas. Releia a experiência e tente de novo.</p>
         )}
         {record.mode === 'historia' && record.passed && !firstClear && xpGained === 0 && (
           <p className="small muted">Experiência já concluída: XP só é concedido quando você supera sua melhor pontuação.</p>
         )}
-        {firstClear && <p className="gold">Bônus de primeira conclusão incluído. {nextExp ? 'Próxima experiência liberada.' : ''}</p>}
+        {firstClear && <p className="gold small">Inclui o bônus de primeira conclusão.</p>}
         {bookJustDone && <p className="level-up" role="status"><Icon name="book" /> Você concluiu o livro de {book!.name}!</p>}
         {xpCapped > 0 && <p className="small muted">Limite diário de XP de prática atingido ({PRACTICE_DAILY_CAP} XP). {xpCapped} XP não foram somados hoje.</p>}
         {dailyAlreadyClaimed && <p className="small muted">A recompensa do desafio diário já foi recebida hoje. Esta partida conta apenas como treino.</p>}
@@ -71,12 +95,13 @@ export default function Result() {
         )}
         <div className="row-actions">
           {state.replayTo && <Link to={state.replayTo} className="btn btn-outline">Jogar novamente</Link>}
-          {record.mode === 'historia' && canGoNext && nextExp && (
-            <Link to={`/historia/${nextExp.bookId}/${nextExp.id}`} className="btn btn-gold">Próxima experiência <Icon name="arrowRight" /></Link>
+          {record.mode === 'historia' && exp && (
+            <Link to={`/historia/${exp.bookId}/${exp.id}/historia`} className="btn btn-outline">Revisar conteúdo</Link>
           )}
-          {record.mode === 'historia' && !canGoNext && book && (
-            <Link to={`/historia/${book.id}`} className="btn btn-gold">Voltar a {book.name}</Link>
+          {record.mode === 'historia' && (
+            <Link to="/historia" className="btn btn-gold">Continuar a jornada <Icon name="arrowRight" /></Link>
           )}
+          {record.mode === 'revisao' && <Link to="/revisao" className="btn btn-gold">Voltar à revisão</Link>}
           {record.mode === 'livre' && <Link to="/livre" className="btn btn-gold">Outras modalidades</Link>}
           {record.mode === 'diario' && <Link to="/painel" className="btn btn-gold">Voltar ao painel</Link>}
         </div>

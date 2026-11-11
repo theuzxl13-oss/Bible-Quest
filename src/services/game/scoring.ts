@@ -2,6 +2,19 @@ import type { AnswerResult, Difficulty } from '../../types'
 
 export const MAX_LIVES = 3
 export const PASS_RATIO = 0.6
+/**
+ * Estrelas por fase (configurável):
+ * 1 estrela = fase concluída (aproveitamento >= PASS_RATIO);
+ * 2 estrelas = aproveitamento >= 70%; 3 estrelas = aproveitamento >= 90%.
+ */
+export const STAR_RULES = { two: 0.7, three: 0.9 }
+
+export function starsFor(ratio: number, passed: boolean): number {
+  if (!passed) return 0
+  if (ratio >= STAR_RULES.three) return 3
+  if (ratio >= STAR_RULES.two) return 2
+  return 1
+}
 export const FIRST_CLEAR_BONUS = 50
 export const DAILY_BONUS = 30
 /**
@@ -53,7 +66,7 @@ export function summarizeMatch(results: AnswerResult[], total: number, lives = M
   }
   const ratio = total > 0 ? correct / total : 0
   const passed = livesLeft > 0 && ratio >= PASS_RATIO
-  const stars = !passed ? 0 : ratio === 1 ? 3 : ratio >= 0.8 ? 2 : 1
+  const stars = starsFor(ratio, passed)
   return { correct, total, score, stars, passed, livesLeft, bestCombo }
 }
 
@@ -94,3 +107,7 @@ export function storyXp({ summary, alreadyCompleted, previousBestScore }: StoryX
 export function capPractice(requested: number, used: number, cap = PRACTICE_DAILY_CAP): number {
   return Math.max(0, Math.min(requested, cap - used))
 }
+
+/** XP de um baú de recompensa (aberto uma única vez). */
+export const CHEST_XP = 40
+export const WORLD_CHEST_XP = 100

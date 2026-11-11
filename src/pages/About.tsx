@@ -85,7 +85,7 @@ export default function About() {
 
       <section className="stack">
         <h2>Kzann Tech</h2>
-        <p>Bible Quest é desenvolvido pela Kzann Tech. Versão 0.2: Modo História e Modo Livre.</p>
+        <p>Bible Quest é desenvolvido pela Kzann Tech. Versão 0.3: a aventura, com personagem, mapa de fases e Biblioteca Bíblica.</p>
         <p className="small">
           <Link to="/admin">Prévia do painel administrativo (protótipo, sem autenticação real)</Link>
         </p>

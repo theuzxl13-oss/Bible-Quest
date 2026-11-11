@@ -7,6 +7,8 @@ import Onboarding from './pages/Onboarding'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import StoryMap from './pages/story/StoryMap'
+import BooksIndex from './pages/story/BooksIndex'
+import PhaseScene from './pages/story/PhaseScene'
 import BookPage from './pages/story/BookPage'
 import ExperiencePage from './pages/story/ExperiencePage'
 import StoryChallenge from './pages/story/StoryChallenge'
@@ -21,13 +23,20 @@ import ProfilePage from './pages/Profile'
 import SettingsPage from './pages/Settings'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
+import CharacterCreator from './pages/CharacterCreator'
+import Library from './pages/library/Library'
+import Timeline from './pages/library/Timeline'
+import { BookSheet, CharacterSheet, PlaceSheet } from './pages/library/LibraryDetail'
+import Review from './pages/Review'
 
 const Admin = lazy(() => import('./admin/AdminApp'))
 
-function RequireProfile({ children }: { children: React.ReactNode }) {
+function RequireProfile({ children, character = true }: { children: React.ReactNode; character?: boolean }) {
   const { profile } = useGame()
   const location = useLocation()
   if (!profile) return <Navigate to="/entrar" replace state={{ from: location.pathname }} />
+  // A jornada só começa depois de criar o personagem.
+  if (character && !profile.character) return <Navigate to="/personagem" replace state={{ from: location.pathname }} />
   return <>{children}</>
 }
 
@@ -57,10 +66,13 @@ export default function App() {
           <Route index element={<Home />} />
           <Route path="boas-vindas" element={<Onboarding />} />
           <Route path="entrar" element={<Login />} />
+          <Route path="personagem" element={<RequireProfile character={false}><CharacterCreator /></RequireProfile>} />
           <Route path="painel" element={p(<Dashboard />)} />
           <Route path="historia" element={p(<StoryMap />)} />
+          <Route path="historia/livros" element={p(<BooksIndex />)} />
           <Route path="historia/:bookId" element={p(<BookPage />)} />
           <Route path="historia/:bookId/:experienceId" element={p(<ExperiencePage />)} />
+          <Route path="historia/:bookId/:experienceId/historia" element={p(<PhaseScene />)} />
           <Route path="historia/:bookId/:experienceId/desafio" element={p(<StoryChallenge />)} />
           <Route path="livre" element={p(<FreeHub />)} />
           <Route path="livre/multiplayer" element={p(<Multiplayer />)} />
@@ -73,6 +85,12 @@ export default function App() {
           <Route path="diario" element={p(<Daily />)} />
           <Route path="resultado" element={p(<Result />)} />
           <Route path="ranking" element={p(<Ranking />)} />
+          <Route path="biblioteca" element={p(<Library />)} />
+          <Route path="biblioteca/personagem/:id" element={p(<CharacterSheet />)} />
+          <Route path="biblioteca/livro/:id" element={p(<BookSheet />)} />
+          <Route path="biblioteca/lugar/:id" element={p(<PlaceSheet />)} />
+          <Route path="linha-do-tempo" element={p(<Timeline />)} />
+          <Route path="revisao" element={p(<Review />)} />
           <Route path="conquistas" element={p(<Achievements />)} />
           <Route path="perfil" element={p(<ProfilePage />)} />
           <Route path="multiplayer" element={<Navigate to="/livre/multiplayer" replace />} />

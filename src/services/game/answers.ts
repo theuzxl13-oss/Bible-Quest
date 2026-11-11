@@ -5,6 +5,7 @@ export type AnswerResponse =
   | { kind: 'bool'; value: boolean }
   | { kind: 'order'; items: string[] }
   | { kind: 'memory'; mistakes: number }
+  | { kind: 'match'; mistakes: number }
 
 /**
  * Erros tolerados no desafio de memória: um por par. Simulações mostram que,
@@ -12,6 +13,9 @@ export type AnswerResponse =
  * cartas são descobertas às cegas); o limite antigo de 2 reprovava 13% das
  * partidas perfeitas.
  */
+/** Erros tolerados em "Relacione" (as duas colunas ficam visíveis). */
+export const MATCH_MISTAKES_ALLOWED = 1
+
 export function memoryMistakesAllowed(pairs: number): number {
   return pairs
 }
@@ -41,6 +45,14 @@ export function checkAnswer(q: Question, r: AnswerResponse): AnswerResult {
         const hits = r.items.filter((it, i) => it === q.items[i]).length
         quality = hits / q.items.length
         correct = hits === q.items.length
+      }
+      break
+    }
+    case 'match': {
+      // Relacione: as colunas ficam visíveis, então tolera-se no máximo 1 erro.
+      if (r.kind === 'match') {
+        correct = r.mistakes <= MATCH_MISTAKES_ALLOWED
+        quality = Math.max(0, 1 - r.mistakes / q.pairs.length)
       }
       break
     }

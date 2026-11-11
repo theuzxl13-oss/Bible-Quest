@@ -10,11 +10,16 @@ import { levelProgress, levelTitle } from '../services/game/levels'
 import { continueExperience, journeyCompletion, percent } from '../services/game/progression'
 import { visibleStreak } from '../services/game/streak'
 import { useGame } from '../state/GameContext'
+import { Adventurer } from '../components/Adventurer'
+import { weakTopics } from '../services/game/review'
+import { phaseNumber } from '../services/game/journeyMap'
 
-export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Livre', diario: 'Desafio diário', 'demo-multiplayer': 'Multiplayer (demo)' } as const
+export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Livre', diario: 'Desafio diário', revisao: 'Revisão', 'demo-multiplayer': 'Multiplayer (demo)' } as const
 
 export default function Dashboard() {
-  const { profile, progress, dailyContext } = useGame()
+  const { profile, progress, dailyContext, questionPool } = useGame()
+  const weak = weakTopics(progress, questionPool)
+  const character = profile!.character!
   const lp = levelProgress(progress.xp)
   const today = dailyContext().day
   const streak = visibleStreak(progress.streak, today)
@@ -26,28 +31,51 @@ export default function Dashboard() {
 
   return (
     <div className="container section stack-lg">
-      <header className="dash-head">
-        <div>
-          <p className="eyebrow">Painel</p>
-          <h1>Olá, {profile!.nickname}</h1>
+      <section className="player-hero panel" aria-labelledby="ph-name">
+        <div className="player-hero-char" aria-hidden="true">
+          <div className="creator-glow" />
+          <Adventurer config={character} size={120} className="adv-idle" />
         </div>
-        <div className="stat-pills">
-          <span className="pill" title="Sequência de dias"><Icon name="flame" size={18} /> {streak} {streak === 1 ? 'dia' : 'dias'}</span>
-          <span className="pill"><Icon name="star" size={18} /> {progress.xp} XP</span>
-          <span className="pill"><Icon name="crown" size={18} /> Nível {lp.level}</span>
+        <div className="player-hero-info">
+          <p className="eyebrow">Painel · {profile!.nickname}</p>
+          <h1 id="ph-name">{character.name}</h1>
+          <p className="small">Nível {lp.level} · {levelTitle(lp.level)} · {progress.xp} XP</p>
+          <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
+          <p className="small muted">{lp.current} / {lp.needed} XP para o nível {lp.level + 1}</p>
+          <div className="stat-pills">
+            <span className="pill" title="Sequência de dias"><Icon name="flame" size={18} /> {streak} {streak === 1 ? 'dia' : 'dias'}</span>
+            <span className="pill"><Icon name="star" size={18} /> {Object.values(progress.experiences).reduce((s2, e) => s2 + e.bestStars, 0)} estrelas</span>
+            <span className="pill"><Icon name="laurel" size={18} /> {achievements} conquistas</span>
+          </div>
         </div>
-      </header>
+        {cont && contBook && (
+          <Link to={`/historia/${cont.bookId}/${cont.id}`} className="btn btn-gold btn-lg player-hero-cta">
+            Continuar jornada <Icon name="arrowRight" />
+          </Link>
+        )}
+      </section>
 
       {cont && contBook && (
-        <Link to={`/historia/${cont.bookId}/${cont.id}`} className="continue-banner">
+        <Link to="/historia" className="continue-banner">
           <ArtImage art={cont.image} className="continue-banner-img" sizes="100vw" priority />
           <div className="continue-banner-shade" />
           <div className="continue-banner-body">
-            <p className="eyebrow">Continuar jornada · {contBook.name}</p>
+            <p className="eyebrow">Próxima parada · {contBook.name} · Fase {phaseNumber(cont.id)}</p>
             <h2>{cont.title}</h2>
             <p className="small">{cont.scope}</p>
-            <span className="btn btn-gold">Continuar de onde parei <Icon name="arrowRight" /></span>
+            <span className="btn btn-gold">Abrir o mapa da jornada <Icon name="map" /></span>
           </div>
+        </Link>
+      )}
+
+      {weak.length > 0 && (
+        <Link to="/revisao" className="panel review-hint">
+          <Icon name="book" size={24} />
+          <div>
+            <p className="eyebrow">Revisão sugerida</p>
+            <p><strong>{weak[0].title}</strong> · {Math.round(weak[0].ratio * 100)}% de acertos{weak.length > 1 ? ` e mais ${weak.length - 1} assunto(s)` : ''}</p>
+          </div>
+          <Icon name="arrowRight" />
         </Link>
       )}
 
@@ -103,29 +131,32 @@ export default function Dashboard() {
         <Link to="/conquistas" className="panel daily-card">
           <Icon name="laurel" size={28} />
           <div>
-            <p className="eyebrow">Perfil e conquistas</p>
-            <h2>{achievements} de {ACHIEVEMENTS.length} conquistas</h2>
-            <p className="muted small">Nível {lp.level} · {levelTitle(lp.level)}</p>
+            <p className="eyebrow">Conquistas</p>
+            <h2>{achievements} de {ACHIEVEMENTS.length}</h2>
+            <p className="muted small">Medalhas, estrelas e marcos.</p>
+          </div>
+          <Icon name="arrowRight" />
+        </Link>
+        <Link to="/biblioteca" className="panel daily-card">
+          <Icon name="book" size={28} />
+          <div>
+            <p className="eyebrow">Biblioteca Bíblica</p>
+            <h2>{Object.keys(progress.library.characters).length} personagens</h2>
+            <p className="muted small">Personagens, livros, lugares e linha do tempo.</p>
+          </div>
+          <Icon name="arrowRight" />
+        </Link>
+        <Link to="/revisao" className="panel daily-card">
+          <Icon name="scroll" size={28} />
+          <div>
+            <p className="eyebrow">Revisão inteligente</p>
+            <h2>{weak.length ? `${weak.length} assunto(s) para revisar` : 'Seu desempenho'}</h2>
+            <p className="muted small">Erros, assuntos dominados e evolução.</p>
           </div>
           <Icon name="arrowRight" />
         </Link>
       </div>
 
-      <section className="panel level-card" aria-labelledby="lvl-title">
-        <div className="level-row">
-          <div>
-            <p className="eyebrow">Nível {lp.level}</p>
-            <h2 id="lvl-title">{levelTitle(lp.level)}</h2>
-          </div>
-          <dl className="mini-stats">
-            <div><dt>Respostas</dt><dd>{progress.stats.answered}</dd></div>
-            <div><dt>Precisão</dt><dd>{progress.stats.answered ? Math.round((progress.stats.correct / progress.stats.answered) * 100) : 0}%</dd></div>
-            <div><dt>Melhor sequência</dt><dd>{progress.streak.best}</dd></div>
-          </dl>
-        </div>
-        <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
-        <p className="muted small">{lp.current} / {lp.needed} XP para o nível {lp.level + 1}. O XP do Modo História, do Modo Livre e do diário somam no mesmo nível.</p>
-      </section>
 
       <section aria-labelledby="hist-title">
         <div className="section-head">

@@ -1,11 +1,15 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
-import type { AgeRange, Profile, Progress, Question, Settings } from '../types'
+import type { AgeRange, CharacterConfig, Profile, Progress, Question, Settings } from '../types'
+import { sanitizeNickname } from '../services/auth'
 import { createLocalServices, type Services } from '../services'
 import { emptyProgress } from '../services/storage/repositories'
 import { applyMatch, type MatchInput, type MatchOutcome } from '../services/game/engine'
 import type { DailyContext } from '../services/game/daily'
 import type { CustomContent } from '../services/content'
 import { QUESTIONS } from '../data/questions'
+import { getExperience } from '../data/story'
+import { openChest } from '../services/game/journeyMap'
+import { unlockForExperience } from '../services/game/library'
 
 interface GameContextValue {
   profile: Profile | null
@@ -17,10 +21,17 @@ interface GameContextValue {
   customContent: CustomContent
   saveCustomContent(content: CustomContent): void
   dailyContext(): DailyContext
-  /** Registra a última experiência aberta (continuar de onde parou). */
-  markVisited(experienceId: string): void
+  /** Registra a última fase aberta e desbloqueia na Biblioteca seus personagens e lugares. */
+  markVisited(experienceId: string): { newCharacters: string[]; newPlaces: string[] }
+  /** Posição do avatar no mapa (para animar o avanço). */
+  setMapCursor(experienceId: string): void
+  /** Abre um baú (uma única vez). Retorna o XP ganho. */
+  claimChest(chestId: string): number
+  markWorldSeen(worldId: string): void
   createProfile(input: { nickname: string; avatar: string; ageRange: AgeRange }): Profile
   updateProfile(profile: Profile): void
+  /** Salva a aparência do personagem sem alterar o progresso. */
+  saveCharacter(config: CharacterConfig): void
   recordMatch(input: MatchInput): MatchOutcome
   updateSettings(patch: Partial<Settings>): void
   deleteAllData(): void
@@ -55,8 +66,45 @@ export function GameProvider({ children, services: injected }: { children: React
   const markVisited = useCallback(
     (experienceId: string) => {
       const p = services.progress.load()
-      if (p.lastExperienceId === experienceId) return
-      const next = { ...p, lastExperienceId: experienceId }
+      const exp = getExperience(experienceId)
+      const unlocked = exp ? unlockForExperience(p, exp) : { progress: p, newCharacters: [], newPlaces: [] }
+      if (p.lastExperienceId === experienceId && unlocked.progress === p) return { newCharacters: [], newPlaces: [] }
+      const next = { ...unlocked.progress, lastExperienceId: experienceId }
+      services.progress.save(next)
+      setProgress(next)
+      return { newCharacters: unlocked.newCharacters, newPlaces: unlocked.newPlaces }
+    },
+    [services],
+  )
+
+  const setMapCursor = useCallback(
+    (experienceId: string) => {
+      const p = services.progress.load()
+      if (p.mapCursor === experienceId) return
+      const next = { ...p, mapCursor: experienceId }
+      services.progress.save(next)
+      setProgress(next)
+    },
+    [services],
+  )
+
+  const claimChest = useCallback(
+    (chestId: string) => {
+      const { progress: next, xp } = openChest(services.progress.load(), chestId)
+      if (xp > 0) {
+        services.progress.save(next)
+        setProgress(next)
+      }
+      return xp
+    },
+    [services],
+  )
+
+  const markWorldSeen = useCallback(
+    (worldId: string) => {
+      const p = services.progress.load()
+      if (p.worldsSeen.includes(worldId)) return
+      const next = { ...p, worldsSeen: [...p.worldsSeen, worldId] }
       services.progress.save(next)
       setProgress(next)
     },
@@ -82,6 +130,16 @@ export function GameProvider({ children, services: injected }: { children: React
   const updateProfile = useCallback(
     (p: Profile) => {
       setProfile(services.auth.update(p))
+    },
+    [services],
+  )
+
+  const saveCharacter = useCallback(
+    (config: CharacterConfig) => {
+      const current = services.auth.current()
+      if (!current) return
+      const name = sanitizeNickname(config.name) || current.nickname
+      setProfile(services.auth.update({ ...current, character: { ...config, name } }))
     },
     [services],
   )
@@ -132,8 +190,12 @@ export function GameProvider({ children, services: injected }: { children: React
     saveCustomContent,
     dailyContext,
     markVisited,
+    setMapCursor,
+    claimChest,
+    markWorldSeen,
     createProfile,
     updateProfile,
+    saveCharacter,
     recordMatch,
     updateSettings,
     deleteAllData,

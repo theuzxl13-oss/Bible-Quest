@@ -1,49 +1,70 @@
-import { Avatar, Notice, PageHeader } from '../components/ui'
-import { DEMO_RANKING } from '../data/demoRanking'
-import { levelFromXp } from '../services/game/levels'
-import { visibleStreak } from '../services/game/streak'
+import { useSearchParams } from 'react-router-dom'
+import { Icon } from '../components/Icon'
+import { Notice, PageHeader } from '../components/ui'
+import { STORY_SEQUENCE } from '../data/story'
+import { FREE_MODES } from '../services/game/freeModes'
+import { levelFromXp, levelTitle } from '../services/game/levels'
 import { dayKey } from '../services/game/dates'
+import { visibleStreak } from '../services/game/streak'
 import { useGame } from '../state/GameContext'
 
+type Tab = 'geral' | 'historia' | 'livre' | 'diario' | 'multiplayer'
+const TABS: { id: Tab; label: string }[] = [
+  { id: 'geral', label: 'XP geral' },
+  { id: 'historia', label: 'Modo História' },
+  { id: 'livre', label: 'Modo Livre' },
+  { id: 'diario', label: 'Desafio diário' },
+  { id: 'multiplayer', label: 'Multiplayer' },
+]
+
+/**
+ * Rankings. Sem servidor não existe classificação entre jogadores; a tela
+ * mostra somente os recordes reais deste aparelho e informa que o ranking
+ * online está indisponível. Nenhum jogador ou posição é inventado.
+ */
 export default function Ranking() {
-  const { profile, progress } = useGame()
-  const me = { nickname: profile!.nickname, xp: progress.xp, streak: visibleStreak(progress.streak, dayKey()), example: false as const }
-  const rows = [...DEMO_RANKING, me].sort((a, b) => b.xp - a.xp)
+  const [params, setParams] = useSearchParams()
+  const tab = (TABS.find((t) => t.id === params.get('aba'))?.id ?? 'geral') as Tab
+  const { progress, profile } = useGame()
+  const name = profile?.character?.name ?? profile?.nickname
+  const stars = Object.values(progress.experiences).reduce((s, e) => s + e.bestStars, 0)
+  const done = STORY_SEQUENCE.filter((e) => progress.experiences[e.id]?.completed).length
+  const level = levelFromXp(progress.xp)
+
+  const rows: Record<Tab, [string, string][]> = {
+    geral: [['XP total', `${progress.xp}`], ['Nível', `${level} · ${levelTitle(level)}`], ['Respostas certas', `${progress.stats.correct} de ${progress.stats.answered}`], ['Maior sequência de acertos', `${progress.bestAnswerStreak}`]],
+    historia: [['Fases concluídas', `${done} de ${STORY_SEQUENCE.length}`], ['Estrelas', `${stars} de ${STORY_SEQUENCE.length * 3}`], ['Fases com 3 estrelas', `${Object.values(progress.experiences).filter((e) => e.bestStars === 3).length}`], ['Baús abertos', `${Object.keys(progress.chests).length}`]],
+    livre: [['Partidas', `${progress.free.matches}`], ...FREE_MODES.filter((m) => progress.free.byMode[m.id]).map((m) => [`Recorde · ${m.title}`, `${progress.free.byMode[m.id]!.best} pts`] as [string, string]), ['Acertos no Contra o tempo (recorde)', `${progress.free.bestTimeAttack}`]],
+    diario: [['Desafios concluídos', `${progress.daily.completedCount}`], ['Sequência atual', `${visibleStreak(progress.streak, dayKey())} dias`], ['Melhor sequência', `${progress.streak.best} dias`], ['Último desafio', progress.daily.lastCompletedDay ?? '—']],
+    multiplayer: [['Partidas de demonstração', `${progress.multiplayer.demoMatches}`], ['Vitórias em demonstração', `${progress.multiplayer.demoWins}`]],
+  }
 
   return (
-    <div className="container section stack-lg">
-      <PageHeader eyebrow="Ranking" title="Classificação">
-        Ordenada por XP. A sequência diária aparece ao lado para valorizar a constância.
+    <div className="container section stack-lg narrow">
+      <PageHeader eyebrow="Rankings" title="Seus recordes">
+        Classificações por categoria.
       </PageHeader>
-      <Notice tone="demo" icon="info" title="Ranking de demonstração">
-        Não há servidor conectado nesta versão. Os nomes marcados como <strong>Exemplo</strong> são dados fictícios, e só a
-        sua linha reflete progresso real (salvo neste dispositivo). O ranking online exigirá conta e moderação de apelidos.
+      <Notice tone="info" icon="info" title="Ranking online indisponível">
+        Comparar resultados com outros jogadores exige um servidor, que ainda não existe nesta versão. Por isso, aqui
+        aparecem apenas os seus recordes, salvos neste aparelho. Nenhum jogador ou posição é inventado.
       </Notice>
-      <div className="table-wrap">
-        <table className="ranking">
-          <caption className="sr-only">Classificação por XP, com dados de exemplo</caption>
-          <thead>
-            <tr><th scope="col">#</th><th scope="col">Jogador</th><th scope="col">Nível</th><th scope="col">XP</th><th scope="col">Sequência</th></tr>
-          </thead>
-          <tbody>
-            {rows.map((r, i) => (
-              <tr key={r.nickname + i} className={r.example ? '' : 'is-me'}>
-                <td>{i + 1}</td>
-                <td>
-                  <span className="rank-name">
-                    {!r.example && <Avatar id={profile!.avatar} size={28} />}
-                    {r.nickname}
-                    {r.example ? <span className="tag tag-demo">Exemplo</span> : <span className="tag">Você · local</span>}
-                  </span>
-                </td>
-                <td>{levelFromXp(r.xp)}</td>
-                <td>{r.xp}</td>
-                <td>{r.streak} {r.streak === 1 ? 'dia' : 'dias'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="tabs" role="tablist" aria-label="Categorias de ranking">
+        {TABS.map((t) => (
+          <button key={t.id} role="tab" id={`rk-${t.id}`} aria-selected={tab === t.id} aria-controls="rk-panel" className={`tab ${tab === t.id ? 'is-on' : ''}`} onClick={() => setParams({ aba: t.id }, { replace: true })}>
+            {t.label}
+          </button>
+        ))}
       </div>
+      <section id="rk-panel" role="tabpanel" aria-labelledby={`rk-${tab}`} className="panel stack">
+        <h2><Icon name="trophy" /> {name}</h2>
+        <div className="table-wrap">
+          <table className="simple-table">
+            <caption className="sr-only">Recordes de {name} em {TABS.find((t) => t.id === tab)?.label}</caption>
+            <tbody>{rows[tab].map(([k, v]) => <tr key={k}><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody>
+          </table>
+        </div>
+        {tab === 'multiplayer' && <p className="small muted">As partidas multiplayer desta versão são demonstrações contra participantes fictícios e não rendem XP.</p>}
+      </section>
     </div>
   )
 }

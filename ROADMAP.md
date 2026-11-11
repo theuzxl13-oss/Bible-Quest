@@ -3,6 +3,7 @@
 ## Fase 1 — Versão estática (concluída)
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
+- **0.3:** aventura, com personagem do jogador, mapa de fases com avatar e baús, Gênesis em 20 fases, Biblioteca Bíblica, linha do tempo, revisão inteligente e Modo Livre com 10 modalidades.
 - **0.2:** dois modos de jogo.
   - **Modo História:** cânon de 66 livros; Gênesis com 19 experiências e Êxodo com 4.
   - **Modo Livre:** 7 modalidades, desafio diário e multiplayer de demonstração.

@@ -3,17 +3,21 @@ import { useGame } from '../state/GameContext'
 import { Icon, type IconName } from './Icon'
 import { Avatar } from './ui'
 import { levelFromXp } from '../services/game/levels'
+import { Adventurer } from './Adventurer'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/painel', label: 'Painel', short: 'Início', icon: 'home' },
   { to: '/historia', label: 'Modo História', short: 'História', icon: 'map' },
   { to: '/livre', label: 'Modo Livre', short: 'Livre', icon: 'star' },
-  { to: '/diario', label: 'Diário', short: 'Diário', icon: 'calendar' },
+  { to: '/biblioteca', label: 'Biblioteca', short: 'Biblioteca', icon: 'book' },
   { to: '/perfil', label: 'Perfil', short: 'Perfil', icon: 'user' },
 ]
 
 const SECONDARY: { to: string; label: string }[] = [
   { to: '/ranking', label: 'Ranking' },
+  { to: '/diario', label: 'Desafio diário' },
+  { to: '/revisao', label: 'Revisão' },
+  { to: '/linha-do-tempo', label: 'Linha do tempo' },
   { to: '/livre/multiplayer', label: 'Multiplayer' },
   { to: '/conquistas', label: 'Conquistas' },
   { to: '/configuracoes', label: 'Configurações' },
@@ -21,7 +25,7 @@ const SECONDARY: { to: string; label: string }[] = [
 ]
 
 /** Telas de jogo usam layout imersivo, sem barra inferior. */
-const IMMERSIVE = [/\/desafio$/, /^\/livre\/(?!multiplayer)[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
+const IMMERSIVE = [/^\/personagem$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/livre\/(?!multiplayer)[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
 
 export function Layout() {
   const { profile, progress } = useGame()
@@ -49,14 +53,18 @@ export function Layout() {
                   {n.label}
                 </NavLink>
               ))}
-              <NavLink to="/ranking" className="topnav-link">Ranking</NavLink>
+              <NavLink to="/diario" className="topnav-link">Diário</NavLink>
             </nav>
           )}
           <div className="topbar-actions">
             {profile ? (
               <Link to="/perfil" className="topbar-profile" aria-label={`Perfil de ${profile.nickname}, nível ${levelFromXp(progress.xp)}`}>
                 <span className="topbar-level">Nv {levelFromXp(progress.xp)}</span>
-                <Avatar id={profile.avatar} size={34} />
+                {profile.character ? (
+                  <span className="topbar-portrait"><Adventurer config={profile.character} size={36} portrait /></span>
+                ) : (
+                  <Avatar id={profile.avatar} size={34} />
+                )}
               </Link>
             ) : (
               <Link to="/entrar" className="btn btn-gold btn-sm">Entrar</Link>
@@ -85,7 +93,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.2 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.3 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>

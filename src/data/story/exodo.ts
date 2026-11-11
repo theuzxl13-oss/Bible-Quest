@@ -21,6 +21,8 @@ export const EXODO: Experience[] = experiences('exodo', [
       'As parteiras Sifrá e Puá temeram a Deus e não mataram os meninos (Êxodo 1:15–17). Em Midiã, Moisés casou-se com Zípora, filha de Jetro, também chamado Reuel.',
       'O capítulo termina dizendo que Deus ouviu o gemido do povo e se lembrou da aliança com Abraão, Isaque e Jacó (Êxodo 2:24).',
     ],
+    characters: ['moises', 'filha-farao', 'miria'],
+    places: ['egito', 'nilo', 'midia'],
   },
   {
     id: 'ex-sarca',
@@ -43,6 +45,8 @@ export const EXODO: Experience[] = experiences('exodo', [
       'Deus revela seu nome a Moisés em Êxodo 3:14. Moisés recebe sinais, como a vara que se transforma em serpente.',
       'Moisés apresenta várias objeções à missão. O texto mostra que a chamada não depende da autoconfiança de quem é chamado.',
     ],
+    characters: ['moises', 'jetro', 'arao'],
+    places: ['midia', 'horebe'],
   },
   {
     id: 'ex-pragas',
@@ -63,6 +67,8 @@ export const EXODO: Experience[] = experiences('exodo', [
       'As dez pragas foram: sangue, rãs, piolhos, moscas, peste nos animais, úlceras, saraiva, gafanhotos, trevas e morte dos primogênitos.',
       'A Páscoa (Pessach) passou a ser celebrada como memorial da libertação (Êxodo 12:14). No Novo Testamento, a Páscoa é o contexto da última ceia de Jesus.',
     ],
+    characters: ['moises', 'arao', 'farao-exodo'],
+    places: ['egito', 'gosen'],
   },
   {
     id: 'ex-mar-sinai',
@@ -85,5 +91,7 @@ export const EXODO: Experience[] = experiences('exodo', [
       'No deserto, o povo recebeu o maná e água da rocha. Miriã, irmã de Moisés, conduziu o cântico após a travessia.',
       'Os Dez Mandamentos começam lembrando a libertação (Êxodo 20:2): a lei é apresentada como resposta a um Deus que já havia libertado o povo.',
     ],
+    characters: ['moises', 'arao', 'miria'],
+    places: ['mar-vermelho', 'horebe'],
   },
 ])

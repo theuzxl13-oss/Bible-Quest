@@ -80,7 +80,7 @@ export const JOSE_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 40:12–13',
   },
   {
-    id: 'jo-11', experienceId: 'gn-jose-farao', type: 'multiple', difficulty: 1, category: 'narrativa',
+    id: 'jo-11', experienceId: 'gn-jose-egito', type: 'multiple', difficulty: 1, category: 'narrativa',
     prompt: 'O que os sonhos do Faraó anunciavam?',
     options: [
       'Sete anos de fartura seguidos de sete anos de fome',
@@ -93,7 +93,7 @@ export const JOSE_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 41:29–30',
   },
   {
-    id: 'jo-12', experienceId: 'gn-jose-farao', type: 'complete', difficulty: 2, category: 'versiculos',
+    id: 'jo-12', experienceId: 'gn-jose-egito', type: 'complete', difficulty: 2, category: 'versiculos',
     prompt: 'Complete o versículo.',
     verse: 'Isso não está em mim; Deus dará resposta de ____ a Faraó.',
     options: ['paz', 'vida', 'honra', 'glória'], answer: 0,
@@ -101,21 +101,21 @@ export const JOSE_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 41:16',
   },
   {
-    id: 'jo-13', experienceId: 'gn-jose-farao', type: 'multiple', difficulty: 3, category: 'cronologia',
+    id: 'jo-13', experienceId: 'gn-jose-egito', type: 'multiple', difficulty: 3, category: 'cronologia',
     prompt: 'Que idade José tinha quando se apresentou diante do Faraó?',
     options: ['30 anos', '17 anos', '40 anos', '25 anos'], answer: 0,
     explanation: 'José tinha trinta anos quando esteve diante de Faraó, rei do Egito.',
     reference: 'Gênesis 41:46',
   },
   {
-    id: 'jo-14', experienceId: 'gn-jose-farao', type: 'truefalse', difficulty: 2, category: 'personagens',
+    id: 'jo-14', experienceId: 'gn-jose-egito', type: 'truefalse', difficulty: 2, category: 'personagens',
     prompt: 'Os filhos de José nascidos no Egito chamavam-se Manassés e Efraim.',
     answer: true,
     explanation: 'Os dois filhos nasceram antes dos anos de fome.',
     reference: 'Gênesis 41:50–52',
   },
   {
-    id: 'jo-15', experienceId: 'gn-jose-farao', type: 'order', difficulty: 2, category: 'cronologia',
+    id: 'jo-15', experienceId: 'gn-jose-egito', type: 'order', difficulty: 2, category: 'cronologia',
     prompt: 'Organize a trajetória de José até o governo do Egito.',
     items: [
       'José é vendido pelos irmãos',
@@ -128,7 +128,7 @@ export const JOSE_QUESTIONS = bank('genesis', [
     reference: 'Gênesis 37–41',
   },
   {
-    id: 'jo-16', experienceId: 'gn-jose-farao', type: 'book', difficulty: 3, category: 'livros',
+    id: 'jo-16', type: 'book', difficulty: 3, category: 'livros',
     prompt: 'Em qual livro do Novo Testamento Estêvão resume a história de José em seu discurso?',
     options: ['Atos dos Apóstolos', 'Gálatas', 'Marcos', 'Apocalipse'], answer: 0,
     explanation: 'No discurso de Estêvão, José é lembrado como alguém com quem Deus estava.',

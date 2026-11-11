@@ -4,6 +4,7 @@ import { levelFromXp } from './levels'
 import { capPractice, DAILY_BONUS, storyXp, type MatchSummary } from './scoring'
 import { updateStreak } from './streak'
 import { canClaimDaily } from './daily'
+import { recordAnswers } from './review'
 
 export interface MatchInput {
   mode: MatchRecord['mode']
@@ -13,6 +14,8 @@ export interface MatchInput {
   experienceId?: string
   results: AnswerResult[]
   summary: MatchSummary
+  /** Multiplayer demonstrativo: o jogador venceu a partida simulada. */
+  demoWin?: boolean
 }
 
 export interface MatchOutcome {
@@ -87,8 +90,21 @@ export function applyMatch(progress: Progress, input: MatchInput, today: string,
     next.free.byMode[input.freeMode] = { played: m.played + 1, best: Math.max(m.best, summary.score) }
     next.free.oneClueHits += input.results.filter((r) => r.correct && r.cluesUsed === 1).length
     if (input.freeMode === 'contra-o-tempo') next.free.bestTimeAttack = Math.max(next.free.bestTimeAttack, summary.correct)
+  } else if (input.mode === 'revisao') {
+    xpGained = addPractice(summary.score)
+  } else if (input.mode === 'demo-multiplayer') {
+    // Resultados simulados não concedem XP nem contam sequência; só estatística identificada como demonstração.
+    next.multiplayer.demoMatches++
+    if (input.demoWin) next.multiplayer.demoWins++
   }
-  // 'demo-multiplayer': resultados simulados não concedem XP nem contam sequência.
+
+  if (input.mode !== 'demo-multiplayer') {
+    next.review = recordAnswers(next.review, input.results, now)
+    for (const r of input.results) {
+      next.currentAnswerStreak = r.correct ? next.currentAnswerStreak + 1 : 0
+      next.bestAnswerStreak = Math.max(next.bestAnswerStreak, next.currentAnswerStreak)
+    }
+  }
 
   for (const r of input.results) {
     next.stats.answered++

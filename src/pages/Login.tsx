@@ -21,7 +21,7 @@ export default function Login() {
   const [ageRange, setAgeRange] = useState<AgeRange | ''>('')
   const [error, setError] = useState('')
 
-  if (profile) return <Navigate to="/painel" replace />
+  if (profile) return <Navigate to={profile.character ? '/painel' : '/personagem'} replace />
 
   const submit = (e: FormEvent) => {
     e.preventDefault()
@@ -32,7 +32,7 @@ export default function Login() {
     try {
       createProfile({ nickname, avatar, ageRange })
       const from = (location.state as { from?: string } | null)?.from
-      navigate(from && from !== '/entrar' ? from : '/painel', { replace: true })
+      navigate('/personagem', { replace: true, state: { from: from && from !== '/entrar' ? from : '/painel' } })
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Não foi possível criar o perfil.')
     }

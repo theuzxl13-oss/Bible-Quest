@@ -109,7 +109,8 @@ export default function Multiplayer() {
     if (!room) return
     if (index + 1 >= room.questionIds.length) {
       const summary = summarizeMatch(results, room.questionIds.length, Number.POSITIVE_INFINITY)
-      recordMatch({ mode: 'demo-multiplayer', title: 'Partida demonstrativa', results, summary })
+      const top = room.players.reduce((a, b) => (b.score > a.score ? b : a))
+      recordMatch({ mode: 'demo-multiplayer', title: 'Partida demonstrativa', results, summary, demoWin: top.id === 'you' })
       setPhase('finished')
       return
     }

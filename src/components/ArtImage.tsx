@@ -7,9 +7,11 @@ interface Props {
   priority?: boolean
   sizes?: string
   decorative?: boolean
+  /** Enquadramento (CSS object-position), útil para retratos recortados. */
+  focus?: string
 }
 
-export function ArtImage({ art, className, priority, sizes = '100vw', decorative }: Props) {
+export function ArtImage({ art, className, priority, sizes = '100vw', decorative, focus }: Props) {
   const meta = ART[art]
   return (
     <img
@@ -21,6 +23,7 @@ export function ArtImage({ art, className, priority, sizes = '100vw', decorative
       loading={priority ? 'eager' : 'lazy'}
       decoding="async"
       fetchPriority={priority ? 'high' : 'auto'}
+      style={focus ? { objectPosition: focus } : undefined}
     />
   )
 }
