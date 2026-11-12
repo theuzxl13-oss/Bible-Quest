@@ -39,8 +39,8 @@ export function createScene(renderer: THREE.WebGLRenderer, quality: Quality3D) {
   pmrem.dispose()
   room.dispose()
 
-  const key = new THREE.DirectionalLight('#fff0db', 1.9)
-  key.position.set(1.4, 3.0, 2.4)
+  const key = new THREE.DirectionalLight('#fff0db', 2.0)
+  key.position.set(2.3, 2.7, 1.9)
   if (quality === 'alta') {
     key.castShadow = true
     key.shadow.mapSize.set(1024, 1024)
@@ -50,9 +50,9 @@ export function createScene(renderer: THREE.WebGLRenderer, quality: Quality3D) {
     key.shadow.camera.bottom = -0.2
     key.shadow.bias = -0.0004
     key.shadow.normalBias = 0.02
-    key.shadow.radius = 4
+    key.shadow.radius = 6
   }
-  const rim = new THREE.DirectionalLight('#a9c6ff', 1.6)
+  const rim = new THREE.DirectionalLight('#a9c6ff', 2.3)
   rim.position.set(-2.2, 2.4, -2.4)
   const fill = new THREE.HemisphereLight('#fff6e8', '#4a3524', 0.8)
   scene.add(key, key.target, rim, fill)

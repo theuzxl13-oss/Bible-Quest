@@ -185,6 +185,11 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
 
         {answer && (
           <div id="feedback" ref={feedbackRef} tabIndex={-1} className={`feedback ${correct ? 'is-correct' : 'is-wrong'}`} role="status" aria-live="polite">
+            {correct && !settings.reduceMotion && (
+              <span className="feedback-burst" aria-hidden="true">
+                {Array.from({ length: 10 }, (_, i) => <span key={i} style={{ ['--i' as string]: i }} />)}
+              </span>
+            )}
             <div className="feedback-head">
               <Icon name={correct ? 'check' : 'x'} size={22} />
               <strong>

@@ -13,7 +13,7 @@ Links e status:
 
 - **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
 - **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
-- **Status:** versão 0.5 (personagem 3D personalizável, com rotação 360° e qualidade gráfica ajustável). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
+- **Status:** versão 0.6 (acabamento do personagem 3D: mechas de cabelo, rosto refinado, tecidos com profundidade). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
 
 ## Como jogar
 
@@ -41,10 +41,12 @@ A entrada tem 5 passos:
 
 **Personagem 3D.** O personagem é tridimensional (Three.js), com:
 
-- rosto esculpido, olhos que piscam e expressões;
-- cabelo em mechas, barba;
+- rosto esculpido, com lábios em volume, vinco nas pálpebras, olhos que piscam e expressões;
+- sobrancelhas fio a fio;
+- cabelo com centenas de **mechas** afinando até a ponta e cachos em espiral;
+- barba com mechas;
 - mãos e pés com dedos;
-- roupas com dobras e textura de tecido;
+- roupas com dobras sombreadas, gola enrolada e textura de tecido;
 - iluminação de três pontos e sombras.
 
 Na personalização é possível:
@@ -376,8 +378,11 @@ Nunca coloque a `service_role` key, senhas ou tokens no frontend.
 
 ## Testes
 
-São 111 testes automatizados (Vitest e Testing Library), em sete arquivos. O ambiente de teste não tem WebGL, então os testes de tela usam o personagem 2D; o 3D é verificado no navegador.
+São 113 testes automatizados (Vitest e Testing Library), em sete arquivos. O ambiente de teste não tem WebGL, então os testes de tela usam o personagem 2D; o 3D é verificado no navegador.
 
+- **v0.6:**
+  - A ficha de personagem traz o contexto histórico.
+  - A tela de boas-vindas mostra o personagem de quem já começou.
 - **v0.5:**
   - Corpo e barba deduzidos para perfis antigos.
   - O tingimento muda a cor e a identidade visual.
@@ -457,6 +462,23 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.6.0 — 12/11/2026 — Acabamento do personagem e lacunas do pedido
+
+- **Cabelo:** centenas de mechas afinando até a ponta, saindo do redemoinho (ou da risca) até a linha do cabelo, que agora é irregular. Mechas soltas nos cabelos longos; cachos em espiral; com manto, o cabelo longo fica por dentro.
+- **Rosto:**
+  - Lábios com volume e cor que acompanha o tom de pele.
+  - Vinco da pálpebra e abertura dos olhos amendoada.
+  - Branco dos olhos com sombra e íris maior.
+  - Sobrancelhas fio a fio.
+  - Barba cheia com mechas e borda suave.
+- **Pele e tecidos:** brilho de pele que imita a luz atravessando a pele; sombra nas reentrâncias das dobras da túnica e do manto; gola enrolada; luz principal mais lateral, para dar volume ao rosto.
+- **Lacunas do pedido:**
+  - Boas-vindas com o personagem do jogador acenando.
+  - **Contexto histórico** nas fichas de personagens (eventos da linha do tempo, com o tipo de datação).
+  - Partículas discretas no acerto e tremor no erro.
+  - Transição suave entre telas. Tudo respeita "reduzir animações".
+- 2 testes novos (113 no total).
 
 ### 0.5.0 — 11/11/2026 — Personagem 3D
 

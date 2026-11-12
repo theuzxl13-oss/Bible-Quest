@@ -71,7 +71,7 @@ export interface FaceParts {
   mouths: { neutral: THREE.Object3D; smile: THREE.Object3D; open: THREE.Object3D }
 }
 
-export function buildFace(female: boolean, mats: { skin: THREE.Material; eye: THREE.Material; brow: THREE.Material; lash: THREE.Material; mouth: THREE.Material; teeth: THREE.Material }, browWeight: number): FaceParts {
+export function buildFace(female: boolean, mats: { skin: THREE.Material; eye: THREE.Material; brow: THREE.Material; lash: THREE.Material; mouth: THREE.Material; teeth: THREE.Material; lip: THREE.Material; crease: THREE.Material }, browWeight: number): FaceParts {
   const group = new THREE.Group()
   const lids: THREE.Object3D[] = []
   const brows: THREE.Object3D[] = []
@@ -91,13 +91,19 @@ export function buildFace(female: boolean, mats: { skin: THREE.Material; eye: TH
     lash.rotation.x = Math.PI / 2
     lash.position.y = eyeR * 1.075 * Math.cos(1.2)
     lidPivot.add(lash)
-    lidPivot.rotation.x = 0.12
-    lidPivot.userData.open = 0.12
+    lidPivot.rotation.x = 0.15
+    lidPivot.userData.open = 0.15
     eyeGroup.add(lidPivot)
     lids.push(lidPivot)
     const lower = new THREE.Mesh(new THREE.SphereGeometry(eyeR * 1.05, 24, 8, 0, Math.PI * 2, Math.PI - 0.95, 0.95), mats.skin)
-    lower.rotation.x = -0.15
+    lower.rotation.x = -0.3
     eyeGroup.add(lower)
+    // vinco da pálpebra superior
+    const creaseR = eyeR * 1.2 * Math.sin(0.9)
+    const crease = new THREE.Mesh(new THREE.TorusGeometry(creaseR, 0.00075, 4, 24, Math.PI * 0.8), mats.crease)
+    crease.rotation.set(Math.PI / 2 - 0.25, 0, Math.PI * 0.1)
+    crease.position.y = eyeR * 1.2 * Math.cos(0.9) + 0.0015
+    eyeGroup.add(crease)
     group.add(eyeGroup)
 
     // sobrancelha: curva sobre o arco da órbita
@@ -108,11 +114,48 @@ export function buildFace(female: boolean, mats: { skin: THREE.Material; eye: TH
       return q
     })
     const curve = new THREE.CatmullRomCurve3(pts)
-    const brow = new THREE.Mesh(new THREE.TubeGeometry(curve, 20, browWeight, 6, false), mats.brow)
-    brow.scale.set(1, 0.7, 1)
+    // sobrancelha feita de fios curtos: mais densos e inclinados para cima na parte interna
+    const hairs = 90
+    const stroke = new THREE.CapsuleGeometry(browWeight * 0.3, 0.0042, 2, 4)
+    const brow = new THREE.InstancedMesh(stroke, mats.brow, hairs)
+    const m4 = new THREE.Matrix4()
+    const q = new THREE.Quaternion()
+    const up = new THREE.Vector3(0, 1, 0)
+    for (let i = 0; i < hairs; i++) {
+      const k = (i * 0.618034) % 1
+      const at = curve.getPointAt(k)
+      const tan = curve.getTangentAt(k).normalize()
+      const lift = (1 - k) * 0.55 + 0.08
+      const dirv = tan.clone().multiplyScalar(s).add(new THREE.Vector3(0, lift, 0)).normalize()
+      q.setFromUnitVectors(up, dirv)
+      const jitter = ((i * 37) % 7) / 7 - 0.5
+      at.y += jitter * browWeight * 1.3
+      at.x += (((i * 53) % 11) / 11 - 0.5) * 0.002
+      const sc = 0.75 + 0.5 * (1 - k)
+      m4.compose(at, q, new THREE.Vector3(1, sc, 1))
+      brow.setMatrixAt(i, m4)
+    }
     brows.push(brow)
     group.add(brow)
   }
+
+  // lábios com volume (afinam nos cantos; arco do cupido no superior)
+  const lip = (y: number, w: number, h: number, d: number, upper: boolean) => {
+    const geo = new THREE.SphereGeometry(1, 28, 12)
+    deform(geo, (p) => {
+      const ax = Math.abs(p.x)
+      p.y *= 1 - 0.55 * ax * ax
+      if (upper && p.y > 0) p.y *= 1 + 0.35 * gauss(p.x, 0, 0.32, 0, 0.18, 1) + 0.35 * gauss(p.x, 0, -0.32, 0, 0.18, 1) - 0.25 * gauss(p.x, 0, 0, 0, 0.12, 1)
+      p.z *= 1 - 0.4 * ax * ax
+      p.set(p.x * w, p.y * h, p.z * d)
+    })
+    const m = new THREE.Mesh(geo, mats.lip)
+    const at = facePoint(0, y, female)
+    m.position.set(at.x, at.y, at.z - d * 0.55)
+    return m
+  }
+  group.add(lip(-0.39, female ? 0.0182 : 0.0178, female ? 0.0036 : 0.0028, 0.0042, true))
+  group.add(lip(-0.447, female ? 0.0165 : 0.016, female ? 0.0046 : 0.0038, 0.0046, false))
 
   // boca: três expressões (neutra, sorriso, alegria)
   const line = (lift: number) => {

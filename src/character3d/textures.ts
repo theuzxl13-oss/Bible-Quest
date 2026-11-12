@@ -58,8 +58,8 @@ export function skinTexture(skin: string, opts: { freckles: boolean; female: boo
     const r = rng(7)
     // variação sutil de tom
     for (let i = 0; i < 2200; i++) {
-      g.fillStyle = r() > 0.5 ? hexShade(skin, 0.03) : hexShade(skin, -0.035)
-      g.globalAlpha = 0.18
+      g.fillStyle = r() > 0.5 ? hexShade(skin, 0.02) : hexShade(skin, -0.025)
+      g.globalAlpha = 0.1
       g.beginPath()
       g.arc(r() * w, r() * h, 2 + r() * 6, 0, Math.PI * 2)
       g.fill()
@@ -125,17 +125,22 @@ export function skinTexture(skin: string, opts: { freckles: boolean; female: boo
 
 export function eyeTexture(iris: string) {
   return make(`eye|${iris}`, 256, 128, (g, w, h) => {
-    g.fillStyle = '#f4efe8'
-    g.fillRect(0, 0, w, h)
     const cx = w / 2, cy = h / 2
-    const grd = g.createRadialGradient(cx, cy, 2, cx, cy, 20)
+    // branco do olho com sombra suave nas bordas (não "colado")
+    const sc = g.createRadialGradient(cx, cy, 10, cx, cy, 70)
+    sc.addColorStop(0, '#f1ebe3')
+    sc.addColorStop(0.6, '#e2d6cc')
+    sc.addColorStop(1, '#b89a8c')
+    g.fillStyle = sc
+    g.fillRect(0, 0, w, h)
+    const grd = g.createRadialGradient(cx, cy, 2, cx, cy, 24)
     grd.addColorStop(0, hexShade(iris, -0.1))
     grd.addColorStop(0.55, iris)
     grd.addColorStop(0.92, hexShade(iris, -0.18))
     grd.addColorStop(1, '#1d1410')
     g.fillStyle = grd
     g.beginPath()
-    g.arc(cx, cy, 20, 0, Math.PI * 2)
+    g.arc(cx, cy, 24, 0, Math.PI * 2)
     g.fill()
     const r = rng(3)
     g.strokeStyle = hexShade(iris, 0.18)
@@ -143,14 +148,14 @@ export function eyeTexture(iris: string) {
     for (let i = 0; i < 40; i++) {
       const a = r() * Math.PI * 2
       g.beginPath()
-      g.moveTo(cx + Math.cos(a) * 8, cy + Math.sin(a) * 8)
-      g.lineTo(cx + Math.cos(a) * 18, cy + Math.sin(a) * 18)
+      g.moveTo(cx + Math.cos(a) * 9, cy + Math.sin(a) * 9)
+      g.lineTo(cx + Math.cos(a) * 21, cy + Math.sin(a) * 21)
       g.stroke()
     }
     g.globalAlpha = 1
     g.fillStyle = '#0b0807'
     g.beginPath()
-    g.arc(cx, cy, 7.5, 0, Math.PI * 2)
+    g.arc(cx, cy, 8.5, 0, Math.PI * 2)
     g.fill()
   })
 }

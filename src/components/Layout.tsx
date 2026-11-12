@@ -80,7 +80,9 @@ export function Layout() {
       </header>
 
       <main id="conteudo" tabIndex={-1}>
-        <Outlet />
+        <div key={pathname} className="route-fade">
+          <Outlet />
+        </div>
         {profile && <ItemReward />}
       </main>
 
@@ -97,7 +99,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.5 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.6 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>

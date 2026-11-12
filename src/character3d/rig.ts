@@ -3,7 +3,7 @@ import type { CharacterAppearance } from '../types'
 import { resolveLook } from '../data/character/look'
 import { buildAccessories } from './accessories'
 import { buildEars, buildFace, buildFoot, buildHand, buildHeadMesh, buildNeck, buildShin, buildThigh, curlHand, type FaceParts } from './anatomy'
-import { buildBelt, buildFootwear, buildMantle, buildSleeves, buildTunic } from './clothing'
+import { buildBelt, buildCollar, buildFootwear, buildMantle, buildSleeves, buildTunic } from './clothing'
 import { buildBeard, buildHair } from './hair'
 import { hexShade } from './math'
 import { eyeTexture, fabricTexture, hairBump, hairTexture, leatherTexture, skinTexture, weaveBump } from './textures'
@@ -55,16 +55,18 @@ export function buildCharacter(a: CharacterAppearance, quality: Quality3D): Rig 
   const M = (p: THREE.MeshPhysicalMaterialParameters) => {
     if (phys) return new THREE.MeshPhysicalMaterial(p)
     // qualidade leve: material padrão, sem brilho de tecido nem verniz
-    const { sheen: _s, sheenColor: _sc, sheenRoughness: _sr, clearcoat: _c, clearcoatRoughness: _cr, ...rest } = p
-    void _s, void _sc, void _sr, void _c, void _cr
+    const { sheen: _s, sheenColor: _sc, sheenRoughness: _sr, clearcoat: _c, clearcoatRoughness: _cr, specularIntensity: _si, ...rest } = p
+    void _s, void _sc, void _sr, void _c, void _cr, void _si
     return new THREE.MeshStandardMaterial(rest)
   }
   const iris = a.skin <= 1 && [2, 3, 4].includes(a.hairColor) ? '#5b6a3c' : '#3d2617'
 
-  const skinFace = M({ map: skinTexture(look.skin, { freckles: look.face === 'sardas', female, beard: look.beard !== 'nenhuma', hair: look.hair }), roughness: 0.56 })
-  const skin = new THREE.MeshStandardMaterial({ color: look.skin, roughness: 0.58 })
+  // pele: brilho avermelhado nas bordas imita a luz atravessando a pele (subsurface)
+  const sss = { roughness: 0.52, sheen: 0.32, sheenColor: new THREE.Color('#ff8f78'), sheenRoughness: 0.45, specularIntensity: 0.45 }
+  const skinFace = M({ map: skinTexture(look.skin, { freckles: look.face === 'sardas', female, beard: look.beard !== 'nenhuma', hair: look.hair }), ...sss })
+  const skin = M({ color: look.skin, ...sss })
   const eye = M({ map: eyeTexture(iris), roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.05 })
-  const browMat = new THREE.MeshStandardMaterial({ color: hexShade(look.hair, -0.05), roughness: 0.85 })
+  const browMat = new THREE.MeshStandardMaterial({ color: hexShade(look.hair, 0.02), roughness: 0.85 })
   const lash = new THREE.MeshStandardMaterial({ color: '#1a120d', roughness: 0.8 })
   const mouth = new THREE.MeshStandardMaterial({ color: '#4a1f1a', roughness: 0.7 })
   const teeth = new THREE.MeshStandardMaterial({ color: '#f1ead8', roughness: 0.4 })
@@ -99,11 +101,21 @@ export function buildCharacter(a: CharacterAppearance, quality: Quality3D): Rig 
   // roupas presas ao corpo (coordenadas com os pés em y = 0)
   const dress = g('vestes', 0, -HIP, 0)
   J.body.add(dress)
-  dress.add(buildTunic(female, Boolean(look.tunic.short), tunicMat))
+  const tunicBody = tunicMat.clone()
+  tunicBody.vertexColors = true
+  dress.add(buildTunic(female, Boolean(look.tunic.short), tunicBody))
+  dress.add(buildCollar(female, tunicMat))
+  // peito sob o decote (evita o vão escuro na gola)
+  const chestFill = new THREE.Mesh(new THREE.SphereGeometry(1, 24, 16), skin)
+  chestFill.scale.set(female ? 0.07 : 0.08, 0.06, female ? 0.055 : 0.062)
+  chestFill.position.set(0, female ? 1.43 : 1.435, 0.004)
+  dress.add(chestFill)
   if (look.mantle) {
     const mOuter = cloth(look.mantle.color, { stripes: look.mantle.stripes, trim: look.mantle.trim, edges: true })
     const mInner = new THREE.MeshStandardMaterial({ color: hexShade(look.mantle.color, -0.05), roughness: 0.95, side: THREE.BackSide })
     ;(mOuter as THREE.MeshStandardMaterial).side = THREE.FrontSide
+    mOuter.vertexColors = true
+    mInner.vertexColors = true
     dress.add(buildMantle(look.mantle, female, mOuter, mInner))
   }
   if (look.belt) dress.add(buildBelt(look.belt, female, look.belt.style === 'faixa' ? cloth(look.belt.color, {}) : leather(look.belt.color), metal))
@@ -114,12 +126,18 @@ export function buildCharacter(a: CharacterAppearance, quality: Quality3D): Rig 
   headPivot.scale.setScalar(1.07)
   J.head.add(headPivot)
   headPivot.add(buildHeadMesh(female, skinFace))
-  const face: FaceParts = buildFace(female, { skin: skinFace, eye, brow: browMat, lash, mouth, teeth }, look.face === 'marcante' ? 0.0027 : female ? 0.0017 : 0.0022)
+  // cor dos lábios acompanha o tom de pele (mais escura em peles escuras)
+  const dark = new THREE.Color(look.skin).getHSL({ h: 0, s: 0, l: 0 }).l < 0.4
+  const lipColor = new THREE.Color(look.skin).lerp(new THREE.Color(dark ? '#5a2a26' : female ? '#b45a5a' : '#9a5a4a'), dark ? 0.35 : female ? 0.5 : 0.35)
+  const lipMat = M({ color: lipColor, roughness: 0.48, map: null })
+  const crease = new THREE.MeshStandardMaterial({ color: hexShade(look.skin, -0.16), roughness: 0.8 })
+  const face: FaceParts = buildFace(female, { skin: skinFace, eye, brow: browMat, lash, mouth, teeth, lip: lipMat, crease }, look.face === 'marcante' ? 0.0027 : female ? 0.0017 : 0.0022)
   headPivot.add(face.group)
   headPivot.add(buildEars(female, skin))
 
   const acc = buildAccessories(look.accessories, female, quality)
-  headPivot.add(buildHair(look.hairStyle, female, hairMat, { covered: acc.coversHair }))
+  const lockMat = M({ map: hairTexture(look.hair), roughness: 0.48, sheen: 0.6, sheenColor: new THREE.Color(hexShade(look.hair, 0.2)), sheenRoughness: 0.3 })
+  headPivot.add(buildHair(look.hairStyle, female, hairMat, { covered: acc.coversHair, lockMat, mantle: Boolean(look.mantle) }))
   const beard = buildBeard(look.beard, female, hairMat)
   if (beard) headPivot.add(beard)
   if (acc.head) headPivot.add(acc.head)

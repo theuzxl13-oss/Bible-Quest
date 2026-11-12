@@ -55,7 +55,7 @@ export default function Dashboard() {
         <div className="container home-scene-inner">
           <div className="home-char">
             <div className="home-char-glow" aria-hidden="true" />
-            <PlayerCharacter live size={240} pose="idle" title={`${character.name}, seu personagem`} />
+            <PlayerCharacter live size={270} pose="idle" title={`${character.name}, seu personagem`} />
             <div className="home-ground" aria-hidden="true" />
           </div>
           <div className="home-info">

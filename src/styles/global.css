@@ -1139,3 +1139,19 @@ a.lib-card:hover { border-color: var(--gold); }
 }
 @media (prefers-reduced-motion: reduce) { .char3d.is-loading { animation: none; } }
 .ach-hero { display: grid; place-items: center; margin-bottom: -12px; }
+
+/* ===== v0.6 · Boas-vindas, contexto, feedback e transições ===== */
+.welcome-char { display: grid; place-items: center; margin: -8px 0 4px; }
+.context-list { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 10px; }
+.context-list p { margin: 2px 0; }
+.route-fade { animation: route-in 260ms ease-out both; }
+@keyframes route-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.feedback { position: relative; }
+.feedback.is-wrong { animation: wrong-shake 380ms ease-in-out 1; }
+@keyframes wrong-shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.feedback-burst { position: absolute; left: 28px; top: 22px; width: 0; height: 0; pointer-events: none; }
+.feedback-burst span { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--gold-strong); box-shadow: 0 0 8px rgba(255, 220, 130, 0.9); animation: burst-out 700ms ease-out forwards; transform: rotate(calc(var(--i) * 36deg)); }
+.feedback-burst span:nth-child(even) { background: #9be3b4; width: 5px; height: 5px; }
+@keyframes burst-out { from { opacity: 1; translate: 0 0; } to { opacity: 0; translate: calc(cos(var(--i) * 36deg) * 46px) calc(sin(var(--i) * 36deg) * 46px); } }
+@media (prefers-reduced-motion: reduce) { .route-fade, .feedback.is-wrong { animation: none; } }
+:root[data-motion='reduzido'] .route-fade, :root[data-motion='reduzido'] .feedback.is-wrong { animation: none; }

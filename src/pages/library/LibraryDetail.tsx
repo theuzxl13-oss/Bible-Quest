@@ -12,6 +12,7 @@ import { bookCompletion, isExperienceUnlocked, percent } from '../../services/ga
 import { useGame } from '../../state/GameContext'
 import NotFound from '../NotFound'
 import { firstPhaseWith } from './Library'
+import { DATING_LABEL, TIMELINE } from '../../data/timeline'
 
 function PhaseLinks({ ids }: { ids: string[] }) {
   const { progress } = useGame()
@@ -63,6 +64,23 @@ export function CharacterSheet() {
       <p>{c.summary}</p>
       <p className="small muted">Ilustração: pintura em domínio público relacionada à história; não é um retrato.</p>
       <section><h2>Principais acontecimentos</h2><ul className="bullets">{c.events.map((e) => <li key={e}>{e}</li>)}</ul></section>
+      {TIMELINE.some((ev) => ev.characters.includes(c.id)) && (
+        <section>
+          <h2>Contexto histórico</h2>
+          <p className="small muted">Onde {c.name} aparece na linha do tempo bíblica. O tipo de datação indica se a ordem vem do texto, de uma estimativa ou de um debate entre estudiosos.</p>
+          <ul className="context-list">
+            {TIMELINE.filter((ev) => ev.characters.includes(c.id)).map((ev) => (
+              <li key={ev.id} className="panel">
+                <p className="eyebrow">{ev.era} · {DATING_LABEL[ev.dating.kind]}</p>
+                <strong>{ev.title}</strong>
+                <p className="small">{ev.dating.label}</p>
+                <p className="small muted">{ev.references.join('; ')}</p>
+              </li>
+            ))}
+          </ul>
+          <Link to="/linha-do-tempo" className="link small">Ver a linha do tempo completa</Link>
+        </section>
+      )}
       <section>
         <h2>Relações</h2>
         <ul className="chips">

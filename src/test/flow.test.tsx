@@ -468,6 +468,22 @@ describe('fluxos de ponta a ponta', () => {
     expect(screen.queryByText('Barba')).not.toBeInTheDocument()
   })
 
+  it('ficha de personagem traz o contexto histórico da linha do tempo', async () => {
+    const store = withProfile()
+    const s2 = createLocalServices(store)
+    const p = s2.progress.load()
+    s2.progress.save({ ...p, library: { ...p.library, characters: { ...p.library.characters, abraao: '2026-11-12T00:00:00.000Z' } } })
+    setup('/biblioteca/personagem/abraao', store)
+    expect(await screen.findByRole('heading', { name: 'Contexto histórico' })).toBeInTheDocument()
+    expect(screen.getAllByText(/sequência bíblica|data estimada|data debatida/i).length).toBeGreaterThan(0)
+  })
+
+  it('boas-vindas mostra o personagem de quem já começou a jornada', async () => {
+    setup('/boas-vindas', withProfile())
+    expect(await screen.findByRole('link', { name: /continuar jornada/i })).toBeInTheDocument()
+    expect(document.querySelector('.welcome-char .character')!.getAttribute('data-appearance')).toMatch(/^viajante\|2\|suave\|cacheado/)
+  })
+
   it('página inexistente mostra mensagem amigável', async () => {
     setup('/nao-existe')
     expect(await screen.findByRole('heading', { name: /não está no mapa/i })).toBeInTheDocument()

@@ -3,6 +3,7 @@
 ## Fase 1 — Versão estática (concluída)
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
+- **0.6:** acabamento do personagem 3D (mechas, lábios, pálpebras, sobrancelhas fio a fio, sombras nas dobras), contexto histórico nas fichas, partículas de acerto e transições entre telas.
 - **0.5:** personagem 3D (Three.js) com rotação 360°, zoom, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável.
 - **0.4:** personagem por itens com guarda-roupa e tela de recompensa, entrada em 5 passos, Home em cena, Modo Quiz com mapa próprio (4 regiões, 24 desafios), estatísticas, Biblioteca com acontecimentos e temas.
 - **0.3:** aventura, com personagem do jogador, mapa de fases com avatar e baús, Gênesis em 20 fases, Biblioteca Bíblica, linha do tempo, revisão inteligente e Modo Livre com 10 modalidades.

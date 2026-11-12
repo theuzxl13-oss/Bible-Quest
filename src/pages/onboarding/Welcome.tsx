@@ -3,6 +3,7 @@ import { ArtImage, ArtCredit } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
 import { useGame } from '../../state/GameContext'
 import { StepBar } from './StepBar'
+import { PlayerCharacter } from '../../components/character/PlayerCharacter'
 
 /** Etapa 1 — boas-vindas. */
 export default function Welcome() {
@@ -17,6 +18,11 @@ export default function Welcome() {
       <div className="welcome-rays" aria-hidden="true" />
       <div className="container welcome-body">
         {!profile?.character && <StepBar current={1} />}
+        {profile?.character && (
+          <div className="welcome-char">
+            <PlayerCharacter live size={170} pose="wave" title={`${profile.character.name} acena para você`} />
+          </div>
+        )}
         <p className="eyebrow">Kzann Tech apresenta</p>
         <h1 className="display welcome-title">Bible Quest</h1>
         <p className="hero-slogan">Uma jornada pelas Escrituras.</p>

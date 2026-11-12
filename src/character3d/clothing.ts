@@ -49,7 +49,45 @@ function tunicGeometry(female: boolean, short: boolean) {
     if (female && z > 0) z += 0.028 * gauss(p.y, Math.abs(Math.sin(phi)), 1.24, 0.38, 0.07, 0.3)
     p.set(Math.sin(phi) * r * TUNIC_X, yy, z)
   })
+  // sombra nas reentrâncias das dobras e sob o cinto (oclusão ambiente simples)
+  const pos = geo.attributes.position as THREE.BufferAttribute
+  const col: number[] = []
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i)
+    const phi = Math.atan2(x / TUNIC_X, z / TUNIC_Z)
+    const below = smoothstep(1.02, hem, y)
+    const fold = 0.013 * below * Math.sin(phi * 9 + 0.7) + 0.006 * below * Math.sin(phi * 17 + 2.1)
+    let c = 1 - 0.32 * Math.max(0, Math.min(1, -fold / 0.016))
+    c -= 0.18 * gauss(y, 0, 1.0, 0, 0.03, 1)
+    c -= 0.1 * smoothstep(hem + 0.06, hem, y)
+    col.push(c, c, c)
+  }
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3))
   return geo
+}
+
+/** Gola enrolada no decote da túnica. */
+export function buildCollar(female: boolean, mat: THREE.Material) {
+  const top = female ? 1.485 : 1.49
+  const r = tunicRadius(top, female)
+  const geo = new THREE.TorusGeometry(1, 0.1, 10, 48)
+  geo.rotateX(Math.PI / 2)
+  geo.scale(r * TUNIC_X, 0.05, r * TUNIC_Z)
+  geo.translate(0, top - 0.004, 0)
+  const m = new THREE.Mesh(geo, mat)
+  m.name = 'gola'
+  return m
+}
+
+/** Garante atributo de cor (branco) para materiais com cores por vértice. */
+function ensureColor(o: THREE.Object3D) {
+  o.traverse((c) => {
+    const g = (c as THREE.Mesh).geometry as THREE.BufferGeometry | undefined
+    if (g && !g.getAttribute('color')) {
+      const n = g.attributes.position.count
+      g.setAttribute('color', new THREE.Float32BufferAttribute(new Array(n * 3).fill(1), 3))
+    }
+  })
 }
 
 /** Manga: parte superior (no braço) e boca larga (no antebraço). */
@@ -81,6 +119,7 @@ export function buildMantle(item: MantleItem, female: boolean, outer: THREE.Mate
   const S = 72, T = 56
   const pos: number[] = []
   const uv: number[] = []
+  const col: number[] = []
   const idx: number[] = []
   const r = rng(31)
   const phase = r() * 6
@@ -100,6 +139,9 @@ export function buildMantle(item: MantleItem, female: boolean, outer: THREE.Mate
       const yy = y - (j === T ? 0.01 * Math.sin(phi * 6) : 0)
       pos.push(Math.sin(phi) * rx * rr, yy, Math.cos(phi) * rz * rr - 0.01)
       uv.push(i / S, 1 - t)
+      const fold = (0.06 * Math.sin(phi * 8 + phase) + 0.025 * Math.sin(phi * 15 + phase * 2)) * smoothstep(1.32, hem, y)
+      const c = 1 - 0.38 * Math.max(0, Math.min(1, -fold / 0.06))
+      col.push(c, c, c)
     }
   }
   for (let j = 0; j < T; j++) {
@@ -112,6 +154,7 @@ export function buildMantle(item: MantleItem, female: boolean, outer: THREE.Mate
     const g2 = new THREE.BufferGeometry()
     g2.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3))
     g2.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2))
+    g2.setAttribute('color', new THREE.Float32BufferAttribute(col, 3))
     g2.setIndex(idx)
     g2.computeVertexNormals()
     return g2
@@ -151,6 +194,7 @@ export function buildMantle(item: MantleItem, female: boolean, outer: THREE.Mate
     }
     g.add(fr)
   }
+  ensureColor(g)
   return g
 }
 
