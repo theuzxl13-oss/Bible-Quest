@@ -119,11 +119,12 @@ describe('fluxos de ponta a ponta', () => {
     const nameInput = screen.getByLabelText('Nome do personagem')
     await user.clear(nameInput)
     await user.type(nameInput, 'Rute Viajante')
+    await user.click(screen.getByRole('tab', { name: 'Cabelo' }))
     await user.click(screen.getByLabelText('Longo'))
-    await user.click(screen.getByRole('tab', { name: 'Túnicas' }))
+    await user.click(screen.getByRole('tab', { name: 'Túnica' }))
     await user.click(screen.getByRole('button', { name: /túnica de linho\./i }))
     expect(preview()).toContain('tunica-linho')
-    await user.click(screen.getByRole('tab', { name: 'Mantos' }))
+    await user.click(screen.getByRole('tab', { name: 'Manto' }))
     expect(screen.getByRole('button', { name: /manto marrom\. equipado; toque para retirar/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /manto azul-escuro\. bloqueado: alcance o nível 2/i })).toBeInTheDocument()
     await user.click(screen.getByRole('tab', { name: 'Acessórios' }))
@@ -446,7 +447,7 @@ describe('fluxos de ponta a ponta', () => {
     for (const path of ['/painel', '/historia', '/quiz', '/quiz/desafio/vale-1', '/historia/genesis/gn-criacao', '/perfil', '/guarda-roupa']) {
       const { unmount } = setup(path, store) // nova montagem = recarregar a página
       await waitFor(() => expect(document.querySelectorAll('.character[data-appearance]').length).toBeGreaterThan(0))
-      const shown = new Set(Array.from(document.querySelectorAll('.character[data-appearance]:not(.item-preview .character)')).map((e) => e.getAttribute('data-appearance')))
+      const shown = new Set(Array.from(document.querySelectorAll('.character[data-appearance]:not(.item-preview .character):not(.option-preview .character)')).map((e) => e.getAttribute('data-appearance')))
       expect([...shown], path).toEqual([expected])
       unmount()
     }
@@ -455,17 +456,23 @@ describe('fluxos de ponta a ponta', () => {
   it('guarda-roupa: corpo, barba e tingimento são salvos e aparecem no personagem', async () => {
     const store = withProfile()
     const { user, services } = setup('/guarda-roupa', store)
-    await user.click(await screen.findByLabelText('Cheia'))
-    await user.click(screen.getByRole('tab', { name: 'Túnicas' }))
+    await user.click(await screen.findByRole('tab', { name: 'Barba' }))
+    await user.click(screen.getByLabelText('Cheia'))
+    await user.click(screen.getByRole('tab', { name: 'Túnica' }))
     await user.click(screen.getByLabelText('Índigo'))
-    await user.click(screen.getByRole('button', { name: 'Salvar aparência' }))
+    await user.click(screen.getByRole('button', { name: 'Confirmar' }))
     const c = services.auth.current()!.character!
     expect(c).toMatchObject({ beard: 'cheia', dyes: { tunica: 4 } })
     expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/\|masculino\|cheia\|4\/-$/)
     // estrutura feminina remove a barba
-    await user.click(screen.getByRole('tab', { name: 'Cabelo e rosto' }))
+    await user.click(screen.getByRole('tab', { name: 'Rosto' }))
     await user.click(screen.getByLabelText('Feminino'))
-    expect(screen.queryByText('Barba')).not.toBeInTheDocument()
+    expect(screen.queryByRole('tab', { name: 'Barba' })).not.toBeInTheDocument()
+    // remover acessórios e voltar ao padrão
+    await user.click(screen.getByRole('button', { name: 'Remover acessórios' }))
+    expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/\|sandalias-simples\|cinto-couro\|\|/)
+    await user.click(screen.getByRole('button', { name: 'Voltar à aparência padrão' }))
+    expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/^viajante\|1\|suave\|curto/)
   })
 
   it('ficha de personagem traz o contexto histórico da linha do tempo', async () => {

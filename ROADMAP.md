@@ -3,6 +3,7 @@
 ## Fase 1 — Versão estática (concluída)
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
+- **0.7:** personagem reconstruído como modelo GLB (MakeHuman CC0 + Blender): esqueleto, roupas simuladas, animações, expressões e criador com 9 categorias.
 - **0.6:** acabamento do personagem 3D (mechas, lábios, pálpebras, sobrancelhas fio a fio, sombras nas dobras), contexto histórico nas fichas, partículas de acerto e transições entre telas.
 - **0.5:** personagem 3D (Three.js) com rotação 360°, zoom, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável.
 - **0.4:** personagem por itens com guarda-roupa e tela de recompensa, entrada em 5 passos, Home em cena, Modo Quiz com mapa próprio (4 regiões, 24 desafios), estatísticas, Biblioteca com acontecimentos e temas.
@@ -46,6 +47,7 @@
 - Mais itens de vestuário de época e novas regiões do Modo Quiz conforme o banco de perguntas crescer.
 - Animações extras do personagem (gestos por tipo de resposta).
 - Personagem 3D: rostos com mais variações (formato de olhos, nariz e boca), simulação simples de tecido no manto, roupas com costuras e mais estilos de cabelo.
+- Personagem: encomendar a um artista um modelo estilizado seguindo o "contrato do modelo" (`tools/personagem/README.md`), sardas na pele 3D, mais cortes de cabelo e simulação de tecido em tempo real nas poses extremas.
 - Avaliar modelos GLB de artistas contratados (com licença de redistribuição) se for necessário um acabamento de nível profissional acima do modelo procedural.
 - PWA com funcionamento offline (service worker) e testes E2E com Playwright no CI.
 

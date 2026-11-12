@@ -3,6 +3,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import type { CharacterAppearance } from '../types'
 import { appearanceKey } from '../data/character/look'
 import { buildCharacter, type Pose3D, type Quality3D, type Rig } from './rig'
+import { buildHero, loadHero } from './heroi'
+import { bodyOf } from '../data/character/look'
 import { createRenderer, createScene, fitDistance, FRAMES, type Framing } from './stage'
 
 /*
@@ -14,6 +16,24 @@ import { createRenderer, createScene, fitDistance, FRAMES, type Framing } from '
  */
 
 export type View = 'frente' | 'lado' | 'costas'
+
+/** Fonte do modelo em uso: GLB (padrão) ou modelo procedural (só se o GLB falhar). */
+export let modeloEmUso: 'glb' | 'procedural' = 'glb'
+
+/** Monta o personagem: modelo GLB; se não for possível carregá-lo, o modelo procedural. */
+export async function montar(a: CharacterAppearance, quality: Quality3D): Promise<Rig> {
+  try {
+    const gltf = await loadHero(bodyOf(a))
+    const rig = buildHero(gltf, a, quality)
+    await (rig as Rig & { ready?: Promise<void> }).ready
+    modeloEmUso = 'glb'
+    return rig
+  } catch (e) {
+    console.warn('Modelo GLB indisponível; usando o personagem procedural.', e)
+    modeloEmUso = 'procedural'
+    return buildCharacter(a, quality)
+  }
+}
 
 export interface ViewerOptions {
   quality: Quality3D
@@ -47,17 +67,30 @@ export function createViewer(container: HTMLElement, appearance: CharacterAppear
   let pose = opts.pose
   let disposed = false
 
+  let pedido = 0
   const setAppearance = (a: CharacterAppearance) => {
     const k = appearanceKey(a)
     if (k === key) return
     key = k
-    const next = buildCharacter(a, opts.quality)
-    if (rig) {
-      scene.remove(rig.root)
-      rig.dispose()
-    }
-    rig = next
-    scene.add(rig.root)
+    const meu = ++pedido
+    montar(a, opts.quality).then(async (next) => {
+      if (disposed || meu !== pedido) return next.dispose()
+      // compila os shaders sem travar a página (KHR_parallel_shader_compile quando disponível)
+      const tmp = new THREE.Scene()
+      tmp.environment = scene.environment
+      tmp.add(next.root)
+      if (renderer.extensions.has('KHR_parallel_shader_compile')) await renderer.compileAsync(tmp, camera).catch(() => undefined)
+      tmp.remove(next.root)
+      if (disposed || meu !== pedido) return next.dispose()
+      if (rig) {
+        scene.remove(rig.root)
+        rig.dispose()
+      }
+      rig = next
+      scene.add(rig.root)
+      container.classList.remove('is-loading')
+      opts.onReady?.()
+    })
   }
   setAppearance(appearance)
 
@@ -111,9 +144,12 @@ export function createViewer(container: HTMLElement, appearance: CharacterAppear
   let last = performance.now()
   let t = 0
   let viewAnim: { from: number; to: number; start: number } | null = null
+  const minFrame = opts.quality === 'leve' ? 1 / 30 : 0
   const tick = () => {
     const now = performance.now()
-    const dt = Math.min(0.05, (now - last) / 1000)
+    const passou = (now - last) / 1000
+    if (passou < minFrame) return
+    const dt = Math.min(0.05, passou)
     last = now
     t += dt
     if (viewAnim) {
@@ -135,7 +171,6 @@ export function createViewer(container: HTMLElement, appearance: CharacterAppear
   document.addEventListener('visibilitychange', onVis)
   loop()
   renderer.render(scene, camera)
-  opts.onReady?.()
 
   return {
     setAppearance,
@@ -210,7 +245,7 @@ export function snapshot(a: CharacterAppearance, o: SnapshotOptions): Promise<st
   const job = queue.then(
     () =>
       new Promise<string>((resolve) => {
-        const run = () => {
+        const run = async () => {
           const again = images.get(k)
           if (again) return resolve(again)
           if (!shared || shared.quality !== o.quality) {
@@ -222,7 +257,7 @@ export function snapshot(a: CharacterAppearance, o: SnapshotOptions): Promise<st
           const ak = `${appearanceKey(a)}|${o.quality}`
           let rig = rigs.get(ak)
           if (!rig) {
-            rig = buildCharacter(a, o.quality)
+            rig = await montar(a, o.quality)
             rigs.set(ak, rig)
             if (rigs.size > 4) {
               const [oldK, old] = rigs.entries().next().value!
@@ -232,6 +267,7 @@ export function snapshot(a: CharacterAppearance, o: SnapshotOptions): Promise<st
           }
           scene.add(rig.root)
           rig.update(o.pose, o.time ?? 0.6, 10)
+          if (renderer.extensions.has('KHR_parallel_shader_compile')) await renderer.compileAsync(scene, camera).catch(() => undefined)
           const scale = Math.min(2, window.devicePixelRatio || 1)
           renderer.setPixelRatio(scale)
           renderer.setSize(o.width, o.height, false)
@@ -250,8 +286,8 @@ export function snapshot(a: CharacterAppearance, o: SnapshotOptions): Promise<st
           resolve(url)
         }
         const ric = (window as unknown as { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void }).requestIdleCallback
-        if (ric) ric(run, { timeout: 120 })
-        else setTimeout(run, 0)
+        if (ric) ric(() => void run(), { timeout: 120 })
+        else setTimeout(() => void run(), 0)
       }),
   )
   queue = job.catch(() => undefined)

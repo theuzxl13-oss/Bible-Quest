@@ -155,3 +155,41 @@ describe('aparência 3D (v0.5)', () => {
     expect(resolveQuality('2d')).toBe('2d')
   })
 })
+
+describe('modelo 3D (GLB) e personalização', () => {
+  it('cada item do jogo corresponde a uma peça do modelo e a aparência decide o que aparece', async () => {
+    const { pecasVisiveis, PECAS_DO_MODELO } = await import('../character3d/heroi')
+    const a = newAppearance('pastora', 'Ana')
+    const v = pecasVisiveis(a)
+    expect(v).toEqual(expect.arrayContaining(['Tunica_cima', 'Tunica_saia', 'Cabelo_tranca', 'Manto', 'Cinto_corda', 'Sandalia_simples', 'Acessorio_cajado']))
+    for (const n of v) expect(PECAS_DO_MODELO, n).toContain(n)
+    // todos os itens equipáveis têm uma peça visível no modelo
+    for (const it of ITEMS) {
+      const b = equipItem(newAppearance('viajante', 'Tobias'), it.id)
+      const pecas = pecasVisiveis(b)
+      for (const n of pecas) expect(PECAS_DO_MODELO, `${it.id} -> ${n}`).toContain(n)
+    }
+    // lenço cobre o cabelo; barba só na estrutura masculina
+    expect(pecasVisiveis(equipItem(a, 'lenco')).some((n) => n.startsWith('Cabelo_'))).toBe(false)
+    expect(pecasVisiveis({ ...a, beard: 'cheia' })).not.toContain('Barba_cheia')
+    expect(pecasVisiveis({ ...newAppearance('peregrino', 'Jo'), beard: 'cheia' })).toContain('Barba_cheia')
+  })
+
+  it('o modelo GLB publicado contém todas as peças, as animações e as expressões', async () => {
+    const { readFileSync, existsSync } = await import('node:fs')
+    const { PECAS_DO_MODELO } = await import('../character3d/heroi')
+    for (const corpo of ['masculino', 'feminino']) {
+      const f = `public/models/personagem/heroi-${corpo}.glb`
+      expect(existsSync(f), f).toBe(true)
+      const b = readFileSync(f)
+      const n = b.readUInt32LE(12)
+      const j = JSON.parse(b.subarray(20, 20 + n).toString('utf8'))
+      const pecas = new Set(j.materials.map((m: { name: string }) => m.name.split('__')[1]))
+      const esperadas = PECAS_DO_MODELO.filter((p) => corpo === 'masculino' || !p.startsWith('Barba'))
+      for (const p of esperadas) expect(pecas.has(p), `${corpo}: ${p}`).toBe(true)
+      expect(j.animations.map((a: { name: string }) => a.name)).toEqual(['Idle', 'Walk', 'Run', 'Victory', 'Greeting', 'Discovery'])
+      const morph = j.meshes.flatMap((m: { extras?: { targetNames?: string[] } }) => m.extras?.targetNames ?? [])
+      for (const e of ['Piscar', 'Sorriso', 'Surpresa', 'Alegria']) expect(morph).toContain(e)
+    }
+  })
+})

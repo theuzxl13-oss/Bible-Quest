@@ -30,14 +30,22 @@ export function createRenderer(quality: Quality3D, canvas?: HTMLCanvasElement, p
   return renderer
 }
 
+const ambientes = new WeakMap<THREE.WebGLRenderer, THREE.Texture>()
+
 export function createScene(renderer: THREE.WebGLRenderer, quality: Quality3D) {
   const scene = new THREE.Scene()
-  const pmrem = new THREE.PMREMGenerator(renderer)
-  const room = new RoomEnvironment()
-  scene.environment = pmrem.fromScene(room, 0.04).texture
+  // ambiente de reflexos: gerado uma vez por renderizador (é caro em aparelhos simples)
+  let env = ambientes.get(renderer)
+  if (!env) {
+    const pmrem = new THREE.PMREMGenerator(renderer)
+    const room = new RoomEnvironment()
+    env = pmrem.fromScene(room, 0.04).texture
+    pmrem.dispose()
+    room.dispose()
+    ambientes.set(renderer, env)
+  }
+  scene.environment = env
   scene.environmentIntensity = 0.45
-  pmrem.dispose()
-  room.dispose()
 
   const key = new THREE.DirectionalLight('#fff0db', 2.0)
   key.position.set(2.3, 2.7, 1.9)

@@ -13,7 +13,7 @@ Links e status:
 
 - **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
 - **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
-- **Status:** versão 0.6 (acabamento do personagem 3D: mechas de cabelo, rosto refinado, tecidos com profundidade). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
+- **Status:** versão 0.7 (personagem 3D reconstruído: modelo GLB com malha humana, esqueleto, roupas drapeadas por simulação de tecido, animações e expressões). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
 
 ## Como jogar
 
@@ -39,7 +39,17 @@ A entrada tem 5 passos:
 - progresso geral;
 - os botões Personalizar, Modo História, Modo Quiz, Conquistas, Biblioteca e Estatísticas.
 
-**Personagem 3D.** O personagem é tridimensional (Three.js), com:
+**Personagem 3D (v0.7).** O personagem é um **modelo 3D de verdade (GLB)**:
+
+- malha humana contínua (MakeHuman, CC0) com esqueleto de 163 ossos e pesos de pele;
+- rosto com textura de pele real, olhos com íris, sobrancelhas, cílios e dentes;
+- 7 cortes de cabelo com textura de fios, tingidos com a cor escolhida;
+- roupas de época **drapeadas por simulação de tecido** no Blender;
+- animações (espera, caminhada, corrida, vitória, saudação, descoberta) e expressões faciais (piscar, sorriso, surpresa, alegria).
+
+O modelo é gerado por scripts em `tools/personagem/` (veja o README de lá) e publicado em `public/models/personagem/`. As licenças estão em `public/models/personagem/LICENCAS.md` e o diagnóstico em `docs/AUDITORIA-v0.7.md`.
+
+Até a v0.6, o personagem era montado por código, com:
 
 - rosto esculpido, com lábios em volume, vinco nas pálpebras, olhos que piscam e expressões;
 - sobrancelhas fio a fio;
@@ -378,7 +388,7 @@ Nunca coloque a `service_role` key, senhas ou tokens no frontend.
 
 ## Testes
 
-São 113 testes automatizados (Vitest e Testing Library), em sete arquivos. O ambiente de teste não tem WebGL, então os testes de tela usam o personagem 2D; o 3D é verificado no navegador.
+São 115 testes automatizados (Vitest e Testing Library), em sete arquivos. O ambiente de teste não tem WebGL, então os testes de tela usam o personagem 2D; o 3D é verificado no navegador.
 
 - **v0.6:**
   - A ficha de personagem traz o contexto histórico.
@@ -462,6 +472,40 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.7.0 — 12/11/2026 — Personagem 3D reconstruído (modelo GLB)
+
+- **Etapas 1 e 2:** diagnóstico do personagem anterior e escolha da tecnologia (`docs/AUDITORIA-v0.7.md`).
+- **Modelo principal:** pipeline reprodutível no Blender (`tools/personagem/`), com recursos CC0 do MakeHuman.
+  - Corpo humano contínuo, com targets de sexo, idade, musculatura e proporções.
+  - Esqueleto de 163 ossos (com rig facial) e pesos.
+  - Olhos, sobrancelhas, cílios, dentes e língua.
+  - 7 cabelos texturizados e textura de pele real.
+  - Estruturas masculina e feminina.
+- **Roupas:**
+  - Túnica, com saia longa e curta drapeada por **simulação de tecido**.
+  - Mantos (padrão, longo, xale, capuz), também simulados.
+  - Cintos de couro, corda e faixa; sandálias simples e de tiras; botas.
+  - Barba curta e cheia; lenço.
+  - Bolsa, odre e colar.
+  - Cajado, pergaminho, lamparina, cesto e coroa de folhas, presos aos ossos.
+- **Animações:** Idle, Walk, Run, Victory, Greeting e Discovery. **Expressões:** Piscar, Sorriso, Surpresa e Alegria.
+- **No jogo** (`src/character3d/heroi.ts`):
+  - Cada peça é ligada ou desligada conforme a aparência salva.
+  - Cores e tingimentos por item; cabelo, barba e sobrancelhas tingidos no shader.
+  - Listras e barras bordadas desenhadas no shader.
+  - Mão fechada ao segurar objetos; piscar automático; expressões combinadas com as animações.
+  - O mesmo modelo aparece ao vivo e como imagem (miniaturas) em todas as telas.
+- **Criador reformulado:**
+  - 9 categorias: Rosto, Cabelo, Cor do cabelo, Barba, Túnica, Manto, Cinto, Sandálias e Acessórios.
+  - Cada opção mostra uma prévia no próprio personagem.
+  - Botões Confirmar, Cancelar, Restaurar aparência anterior, Remover acessórios e Voltar à aparência padrão.
+- **Desempenho:**
+  - Compressão meshopt e texturas WebP (cerca de 4,8 MB por corpo, carregado sob demanda).
+  - Materiais simplificados para compilar rápido; compilação assíncrona de shaders quando o navegador permite.
+  - A renderização por software é detectada e usa a qualidade leve, limitada a 30 quadros por segundo.
+  - A recompensa usa imagem do modelo em vez de um segundo visualizador ao vivo.
+- **Testes:** 115 automatizados (2 novos: correspondência item → peça do modelo; o GLB publicado contém peças, animações e expressões). Auditoria no navegador com o GLB, em celular e computador.
 
 ### 0.6.0 — 12/11/2026 — Acabamento do personagem e lacunas do pedido
 

@@ -5,34 +5,44 @@ import { Character, type CharacterViewApi } from '../../components/character/Cha
 import { DYES, beardOf, bodyOf } from '../../data/character/look'
 import { Icon } from '../../components/Icon'
 import { BASES, HAIR_COLORS, HAIR_COLOR_LABEL, SKIN_TONES, newAppearance } from '../../data/character/bases'
-import { ITEMS, PLACE_LABEL, SLOT_LABEL, type CharacterItem, type ItemSlot } from '../../data/character/items'
+import { ITEMS, PLACE_LABEL, type CharacterItem, type ItemSlot } from '../../data/character/items'
 import { equipItem, isEquipped, isItemUnlocked, requirementLabel, unequipItem } from '../../services/game/items'
 import { useGame } from '../../state/GameContext'
 import { StepBar } from './StepBar'
 
-type Tab = 'aparencia' | ItemSlot
+/*
+ * CRIADOR E GUARDA-ROUPA DO PERSONAGEM
+ * O personagem 3D fica sempre visível (girar, aproximar, frente/lado/costas).
+ * Nove categorias; cada opção mostra uma prévia no próprio personagem.
+ * Nada é salvo até o jogador confirmar.
+ */
+
+type Tab = 'rosto' | 'cabelo' | 'cor' | 'barba' | ItemSlot
 const TABS: { id: Tab; label: string }[] = [
-  { id: 'aparencia', label: 'Cabelo e rosto' },
-  { id: 'tunica', label: SLOT_LABEL.tunica },
-  { id: 'manto', label: SLOT_LABEL.manto },
-  { id: 'calcado', label: SLOT_LABEL.calcado },
-  { id: 'cinto', label: SLOT_LABEL.cinto },
-  { id: 'acessorio', label: SLOT_LABEL.acessorio },
+  { id: 'rosto', label: 'Rosto' },
+  { id: 'cabelo', label: 'Cabelo' },
+  { id: 'cor', label: 'Cor do cabelo' },
+  { id: 'barba', label: 'Barba' },
+  { id: 'tunica', label: 'Túnica' },
+  { id: 'manto', label: 'Manto' },
+  { id: 'cinto', label: 'Cinto' },
+  { id: 'calcado', label: 'Sandálias' },
+  { id: 'acessorio', label: 'Acessórios' },
 ]
 
 const HAIR: { id: HairStyle; label: string }[] = [
   { id: 'curto', label: 'Curto' },
+  { id: 'raspado', label: 'Bem curto' },
+  { id: 'ondulado', label: 'Médio' },
   { id: 'longo', label: 'Longo' },
-  { id: 'ondulado', label: 'Ondulado' },
   { id: 'cacheado', label: 'Cacheado' },
-  { id: 'coque', label: 'Coque' },
+  { id: 'coque', label: 'Preso' },
   { id: 'tranca', label: 'Trança' },
-  { id: 'raspado', label: 'Raspado' },
 ]
-const FACES: { id: FaceStyle; label: string }[] = [
-  { id: 'suave', label: 'Suave' },
-  { id: 'marcante', label: 'Sobrancelhas marcantes' },
-  { id: 'sardas', label: 'Sardas' },
+const FACES: { id: FaceStyle; label: string; help: string }[] = [
+  { id: 'suave', label: 'Suave', help: 'Sobrancelhas naturais' },
+  { id: 'marcante', label: 'Sobrancelhas marcantes', help: 'Olhar mais intenso' },
+  { id: 'sardas', label: 'Sardas', help: 'Pele com sardas (no desenho 2D)' },
 ]
 const BODIES: { id: BodyBuild; label: string }[] = [
   { id: 'masculino', label: 'Masculino' },
@@ -65,10 +75,18 @@ function DyePicker({ slot, draft, onChange }: { slot: 'tunica' | 'manto'; draft:
   )
 }
 
-/**
- * Etapa 4 (criação) e guarda-roupa (edição). A prévia em corpo inteiro usa o
- * mesmo renderizador do jogo inteiro; nada é salvo até o jogador confirmar.
- */
+/** Opção com prévia no próprio personagem (botão de rádio acessível). */
+function Opcao({ name, label, checked, onChange, preview, portrait = true, help }: { name: string; label: string; checked: boolean; onChange: () => void; preview: CharacterAppearance; portrait?: boolean; help?: string }) {
+  return (
+    <label className={`option-card ${checked ? 'is-on' : ''}`}>
+      <input type="radio" name={name} checked={checked} onChange={onChange} />
+      <span className="option-preview"><Character appearance={preview} size={portrait ? 76 : 64} portrait={portrait} pose="still" /></span>
+      <strong>{label}</strong>
+      {help && <span className="small muted">{help}</span>}
+    </label>
+  )
+}
+
 export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
   const { profile, progress, saveCharacter } = useGame()
   const navigate = useNavigate()
@@ -76,8 +94,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
   const baseId = (location.state as { base?: string } | null)?.base ?? BASES[0].id
   const saved = profile?.character
   const [draft, setDraft] = useState<CharacterAppearance>(() => saved ?? newAppearance(baseId, profile?.nickname ?? ''))
-  const [tab, setTab] = useState<Tab>('aparencia')
-  const [flash, setFlash] = useState(0)
+  const [tab, setTab] = useState<Tab>('rosto')
   const [status, setStatus] = useState('')
   const [error, setError] = useState('')
   const changed = useMemo(() => JSON.stringify(draft) !== JSON.stringify(saved), [draft, saved])
@@ -97,7 +114,6 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
 
   const update = (next: CharacterAppearance) => {
     setDraft(next)
-    setFlash((f) => f + 1)
     setStatus('')
   }
 
@@ -106,19 +122,40 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
     update(isEquipped(draft, item.id) ? unequipItem(draft, item.id) : equipItem(draft, item.id))
   }
 
-  const finish = () => {
+  const confirmar = () => {
     if (draft.name.trim().length < 2) {
       setError('Dê um nome ao seu personagem (pelo menos 2 letras).')
-      setTab('aparencia')
+      setTab('rosto')
       return
     }
+    setError('')
     saveCharacter(draft)
     if (mode === 'criar') setCreated(true)
     else setStatus('Aparência salva. Ela já aparece em todas as telas do jogo.')
   }
 
+  const cancelar = () => {
+    if (mode === 'criar') navigate('/personagem')
+    else {
+      if (saved) setDraft(saved)
+      navigate(-1)
+    }
+  }
+
+  const padrao = () => {
+    const base = newAppearance(draft.base, draft.name)
+    update({ ...base, id: draft.id, name: draft.name })
+    setStatus('Aparência padrão do personagem-base restaurada (ainda não salva).')
+  }
+
+  const semAcessorios = () => {
+    update({ ...draft, equipped: { ...draft.equipped, acessorios: [] } })
+    setStatus('Acessórios removidos (ainda não salvo).')
+  }
+
   const items = ITEMS.filter((i) => i.slot === tab)
   const unlockedCount = ITEMS.filter((i) => isItemUnlocked(i, progress)).length
+  const female = bodyOf(draft) === 'feminino'
 
   return (
     <section className="onb wardrobe">
@@ -136,8 +173,8 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
         <div className="wardrobe-grid">
           <div className="wardrobe-preview panel">
             <div className="creator-glow" aria-hidden="true" />
-            <div className={flash ? 'wardrobe-stage' : 'wardrobe-stage'}>
-              <Character ref={viewer} live controls autoRotate={spin} appearance={draft} size={300} pose="idle" title={`Prévia de ${draft.name || 'seu personagem'}. Arraste para girar.`} />
+            <div className="wardrobe-stage">
+              <Character ref={viewer} live controls autoRotate={spin} appearance={draft} size={330} pose="idle" title={`Prévia de ${draft.name || 'seu personagem'}. Arraste para girar.`} />
             </div>
             <div className="view-controls" role="group" aria-label="Visualização do personagem">
               <button type="button" className="chip" onClick={() => viewer.current?.setView('frente')}>Frente</button>
@@ -148,7 +185,6 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
               <button type="button" className="chip" aria-label="Afastar" onClick={() => viewer.current?.zoom(1.25)}>−</button>
             </div>
             <p className="creator-name">{draft.name || 'Sem nome'}</p>
-            <p className="small muted">{BASES.find((b) => b.id === draft.base)?.label}</p>
             <ul className="equipped-list small" aria-label="Itens equipados">
               {[draft.equipped.tunica, draft.equipped.manto, draft.equipped.calcado, draft.equipped.cinto, ...draft.equipped.acessorios]
                 .filter(Boolean)
@@ -157,28 +193,28 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
           </div>
 
           <div className="panel wardrobe-panel">
-            <div className="tabs" role="tablist" aria-label="Categorias">
-              {TABS.map((t) => (
+            <div className="tabs wardrobe-tabs" role="tablist" aria-label="Categorias">
+              {TABS.filter((t) => t.id !== 'barba' || !female).map((t) => (
                 <button key={t.id} role="tab" id={`wt-${t.id}`} aria-selected={tab === t.id} aria-controls="wardrobe-tab" className={`tab ${tab === t.id ? 'is-on' : ''}`} onClick={() => setTab(t.id)}>
                   {t.label}
                 </button>
               ))}
             </div>
 
-            <div id="wardrobe-tab" role="tabpanel" aria-labelledby={`wt-${tab}`}>
-              {tab === 'aparencia' ? (
-                <div className="stack">
+            <div id="wardrobe-tab" role="tabpanel" aria-labelledby={`wt-${tab}`} className="stack">
+              {tab === 'rosto' && (
+                <>
                   <div className="field">
                     <label htmlFor="char-name">Nome do personagem</label>
                     <input id="char-name" value={draft.name} maxLength={20} onChange={(e) => update({ ...draft, name: e.target.value })} placeholder="Ex.: Tobias, Lia, Ana..." />
                   </div>
                   <fieldset className="field">
                     <legend>Corpo</legend>
-                    <div className="chips">
+                    <div className="option-grid">
                       {BODIES.map((b) => (
-                        <label key={b.id} className={`chip ${bodyOf(draft) === b.id ? 'is-on' : ''}`}>
-                          <input type="radio" name="body" checked={bodyOf(draft) === b.id} onChange={() => update({ ...draft, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard })} /> {b.label}
-                        </label>
+                        <Opcao key={b.id} name="body" label={b.label} checked={bodyOf(draft) === b.id} portrait={false}
+                          preview={{ ...draft, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard }}
+                          onChange={() => update({ ...draft, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard })} />
                       ))}
                     </div>
                   </fieldset>
@@ -195,49 +231,55 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                   </fieldset>
                   <fieldset className="field">
                     <legend>Rosto</legend>
-                    <div className="chips">
+                    <div className="option-grid">
                       {FACES.map((f) => (
-                        <label key={f.id} className={`chip ${draft.face === f.id ? 'is-on' : ''}`}>
-                          <input type="radio" name="face" checked={draft.face === f.id || (f.id === 'suave' && draft.face === 'barba')} onChange={() => update({ ...draft, face: f.id, beard: beardOf(draft) })} /> {f.label}
-                        </label>
+                        <Opcao key={f.id} name="face" label={f.label} checked={draft.face === f.id || (f.id === 'suave' && draft.face === 'barba')}
+                          preview={{ ...draft, face: f.id, beard: beardOf(draft) }} onChange={() => update({ ...draft, face: f.id, beard: beardOf(draft) })} />
                       ))}
                     </div>
                   </fieldset>
-                  {bodyOf(draft) === 'masculino' && (
-                    <fieldset className="field">
-                      <legend>Barba</legend>
-                      <div className="chips">
-                        {BEARDS.map((b) => (
-                          <label key={b.id} className={`chip ${beardOf(draft) === b.id ? 'is-on' : ''}`}>
-                            <input type="radio" name="beard" checked={beardOf(draft) === b.id} onChange={() => update({ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face })} /> {b.label}
-                          </label>
-                        ))}
-                      </div>
-                    </fieldset>
-                  )}
-                  <fieldset className="field">
-                    <legend>Estilo do cabelo</legend>
-                    <div className="chips">
-                      {HAIR.map((h) => (
-                        <label key={h.id} className={`chip ${draft.hairStyle === h.id ? 'is-on' : ''}`}>
-                          <input type="radio" name="hair" checked={draft.hairStyle === h.id} onChange={() => update({ ...draft, hairStyle: h.id })} /> {h.label}
-                        </label>
-                      ))}
-                    </div>
-                  </fieldset>
-                  <fieldset className="field">
-                    <legend>Cor do cabelo</legend>
-                    <div className="swatches">
-                      {HAIR_COLORS.map((c, i) => (
-                        <label key={c} className={`swatch ${draft.hairColor === i ? 'is-on' : ''}`} style={{ background: c }} title={HAIR_COLOR_LABEL[i]}>
-                          <input type="radio" name="hairColor" checked={draft.hairColor === i} onChange={() => update({ ...draft, hairColor: i })} />
-                          <span className="sr-only">{HAIR_COLOR_LABEL[i]}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </fieldset>
-                </div>
-              ) : (
+                </>
+              )}
+
+              {tab === 'cabelo' && (
+                <fieldset className="field">
+                  <legend>Estilo do cabelo</legend>
+                  <div className="option-grid">
+                    {HAIR.map((h) => (
+                      <Opcao key={h.id} name="hair" label={h.label} checked={draft.hairStyle === h.id} preview={{ ...draft, hairStyle: h.id }} onChange={() => update({ ...draft, hairStyle: h.id })} />
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+
+              {tab === 'cor' && (
+                <fieldset className="field">
+                  <legend>Cor do cabelo</legend>
+                  <div className="option-grid">
+                    {HAIR_COLORS.map((c, i) => (
+                      <label key={c} className={`option-card ${draft.hairColor === i ? 'is-on' : ''}`}>
+                        <input type="radio" name="hairColor" checked={draft.hairColor === i} onChange={() => update({ ...draft, hairColor: i })} />
+                        <span className="option-preview"><Character appearance={{ ...draft, hairColor: i }} size={76} portrait pose="still" /></span>
+                        <strong><span className="color-dot" style={{ background: c }} aria-hidden="true" /> {HAIR_COLOR_LABEL[i]}</strong>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+
+              {tab === 'barba' && !female && (
+                <fieldset className="field">
+                  <legend>Barba</legend>
+                  <div className="option-grid">
+                    {BEARDS.map((b) => (
+                      <Opcao key={b.id} name="beard" label={b.label} checked={beardOf(draft) === b.id} preview={{ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face }}
+                        onChange={() => update({ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face })} />
+                    ))}
+                  </div>
+                </fieldset>
+              )}
+
+              {(tab === 'tunica' || tab === 'manto' || tab === 'cinto' || tab === 'calcado' || tab === 'acessorio') && (
                 <>
                   {(tab === 'tunica' || (tab === 'manto' && draft.equipped.manto)) && (
                     <DyePicker slot={tab} draft={draft} onChange={(v) => update({ ...draft, dyes: { ...draft.dyes, [tab]: v } })} />
@@ -263,7 +305,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                             onClick={() => toggleItem(item)}
                           >
                             <span className="item-preview">
-                              <Character appearance={equipItem(draft, item.id)} size={64} pose="still" portrait={item.slot === 'acessorio' && item.place === 'cabeca'} />
+                              <Character appearance={equipItem(draft, item.id)} size={72} pose="still" portrait={item.slot === 'acessorio' && (item.place === 'cabeca' || item.place === 'pescoco')} />
                               {!unlocked && <span className="item-lock"><Icon name="lock" size={18} /></span>}
                               {on && <span className="item-check"><Icon name="check" size={14} /></span>}
                             </span>
@@ -283,19 +325,18 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
         {error && <p className="form-error" role="alert">{error}</p>}
         <p className="small" role="status" aria-live="polite">{status}</p>
         <div className="row-actions wardrobe-actions">
+          <button type="button" className="btn btn-ghost" onClick={cancelar}>Cancelar</button>
+          <button type="button" className="btn btn-outline" disabled={draft.equipped.acessorios.length === 0} onClick={semAcessorios}>Remover acessórios</button>
+          <button type="button" className="btn btn-outline" onClick={padrao}>Voltar à aparência padrão</button>
+          {mode === 'editar' && (
+            <button type="button" className="btn btn-outline" disabled={!profile.previousCharacter} onClick={() => profile.previousCharacter && update(profile.previousCharacter)}>
+              Restaurar aparência anterior
+            </button>
+          )}
           {mode === 'criar' ? (
-            <>
-              <button type="button" className="btn btn-ghost" onClick={() => navigate('/personagem')}><Icon name="arrowLeft" /> Escolher outro personagem</button>
-              <button type="button" className="btn btn-gold btn-lg" onClick={finish}>Finalizar personagem <Icon name="check" /></button>
-            </>
+            <button type="button" className="btn btn-gold btn-lg" onClick={confirmar}>Finalizar personagem <Icon name="check" /></button>
           ) : (
-            <>
-              <button type="button" className="btn btn-ghost" disabled={!changed} onClick={() => saved && update(saved)}>Descartar alterações</button>
-              <button type="button" className="btn btn-outline" disabled={!profile.previousCharacter} onClick={() => profile.previousCharacter && update(profile.previousCharacter)}>
-                Restaurar aparência anterior
-              </button>
-              <button type="button" className="btn btn-gold btn-lg" disabled={!changed} onClick={finish}>Salvar aparência</button>
-            </>
+            <button type="button" className="btn btn-gold btn-lg" disabled={!changed} onClick={confirmar}>Confirmar</button>
           )}
         </div>
       </div>

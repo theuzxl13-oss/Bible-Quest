@@ -37,7 +37,7 @@ export function ItemReward() {
         <p className="eyebrow">Novo item desbloqueado{queue.length > 1 ? ` · 1 de ${queue.length}` : ''}</p>
         <div className="item-reward-stage">
           <div className="item-reward-burst" aria-hidden="true" />
-          <Character live appearance={equipItem(character, item.id)} size={150} pose="react" title={`${character.name} com ${item.name}`} />
+          <Character appearance={equipItem(character, item.id)} size={150} pose="react" title={`${character.name} com ${item.name}`} />
         </div>
         <h2 id="ir-t">{item.name}</h2>
         <p className="small muted">{SLOT_LABEL[item.slot]}{item.slot === 'acessorio' ? ` · ${PLACE_LABEL[item.place]}` : ''} · {item.description}</p>

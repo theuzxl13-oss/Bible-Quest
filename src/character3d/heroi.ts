@@ -1,0 +1,354 @@
+import * as THREE from 'three'
+import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
+import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js'
+import type { CharacterAppearance } from '../types'
+import { resolveLook } from '../data/character/look'
+import { hexShade } from './math'
+import type { Pose3D, Quality3D, Rig } from './rig'
+
+/*
+ * PERSONAGEM 3D A PARTIR DO MODELO GLB (tools/personagem → public/models/personagem)
+ * Malha humana MakeHuman (CC0) com esqueleto de 163 ossos, roupas drapeadas por
+ * simulação de tecido no Blender, animações e expressões. Cada variante (cabelo,
+ * túnica, manto, cinto, calçado, acessório) é uma malha com nome próprio; a
+ * aparência do jogador decide o que fica visível e as cores.
+ */
+
+const BASE = (import.meta.env?.BASE_URL ?? './') + 'models/personagem/'
+const cache = new Map<string, Promise<GLTF>>()
+
+export function heroUrl(body: 'masculino' | 'feminino') {
+  return `${BASE}heroi-${body}.glb`
+}
+
+export function loadHero(body: 'masculino' | 'feminino'): Promise<GLTF> {
+  let p = cache.get(body)
+  if (!p) {
+    const loader = new GLTFLoader()
+    loader.setMeshoptDecoder(MeshoptDecoder)
+    p = loader.loadAsync(heroUrl(body))
+    p.catch(() => cache.delete(body))
+    cache.set(body, p)
+  }
+  return p
+}
+
+const peles = new Map<string, Promise<THREE.Texture>>()
+function pele(nome: string) {
+  let p = peles.get(nome)
+  if (!p) {
+    p = new THREE.TextureLoader().loadAsync(`${BASE}${nome}.webp`).then((t) => {
+      t.colorSpace = THREE.SRGBColorSpace
+      t.flipY = false
+      return t
+    })
+    peles.set(nome, p)
+  }
+  return p
+}
+
+/** Correspondência dos estilos do jogo com as malhas do modelo. */
+const CABELO: Record<string, string> = {
+  curto: 'Cabelo_curto', raspado: 'Cabelo_raspado', longo: 'Cabelo_longo', ondulado: 'Cabelo_ondulado',
+  cacheado: 'Cabelo_cacheado', coque: 'Cabelo_coque', tranca: 'Cabelo_tranca',
+}
+const MANTO: Record<string, string[]> = { manto: ['Manto'], longo: ['Manto_longo'], xale: ['Xale'], capuz: ['Manto', 'Capuz'] }
+const CINTO: Record<string, string> = { couro: 'Cinto_couro', corda: 'Cinto_corda', faixa: 'Cinto_faixa' }
+const CALCADO: Record<string, string> = { simples: 'Sandalia_simples', tiras: 'Sandalia_tiras', botas: 'Botas' }
+const ACESSORIO: Record<string, string> = {
+  cajado: 'Acessorio_cajado', pergaminho: 'Acessorio_pergaminho', lamparina: 'Acessorio_lamparina', cesto: 'Acessorio_cesto',
+  bolsa: 'Bolsa', odre: 'Odre', lenco: 'Lenco', colar: 'Colar', louros: 'Acessorio_louros',
+}
+const CLIPE: Record<Pose3D, string> = { idle: 'Idle', walk: 'Walk', celebrate: 'Victory', react: 'Discovery', wave: 'Greeting', still: 'Idle' }
+const EXPRESSAO: Partial<Record<Pose3D, Record<string, number>>> = {
+  celebrate: { Alegria: 1 },
+  react: { Surpresa: 0.85 },
+  wave: { Sorriso: 0.9 },
+  walk: { Sorriso: 0.35 },
+}
+
+/** Tinge a textura pela luminância (cabelo, barba, sobrancelhas): mantém os fios e troca a cor. */
+function tingirPorLuminancia(m: THREE.MeshStandardMaterial, cor: string, ganho = 1.9) {
+  m.color.set(cor)
+  m.onBeforeCompile = (sh) => {
+    sh.fragmentShader = sh.fragmentShader.replace(
+      '#include <map_fragment>',
+      `#ifdef USE_MAP
+        vec4 texelColor = texture2D( map, vMapUv );
+        float lum = dot( texelColor.rgb, vec3( 0.2126, 0.7152, 0.0722 ) );
+        diffuseColor.rgb *= vec3( clamp( lum * ${ganho.toFixed(2)}, 0.0, 1.6 ) );
+        diffuseColor.a *= texelColor.a;
+      #endif`,
+    )
+  }
+  m.customProgramCacheKey = () => `lum-${ganho}`
+}
+
+interface Faixas { listra?: string; barra?: string; bainha: number; bordas?: boolean }
+
+/** Tecido com listras e barra bordada desenhadas no shader (pela posição de repouso). */
+function tecidoComFaixas(m: THREE.MeshStandardMaterial, f: Faixas) {
+  const u = {
+    uListra: { value: new THREE.Color(f.listra ?? '#000') },
+    uListraOn: { value: f.listra ? 1 : 0 },
+    uBarra: { value: new THREE.Color(f.barra ?? '#000') },
+    uBarraOn: { value: f.barra ? 1 : 0 },
+    uBainha: { value: f.bainha },
+    uBordas: { value: f.bordas ? 1 : 0 },
+  }
+  m.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, u)
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vRepouso;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvRepouso = position;')
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vRepouso;\nuniform vec3 uListra; uniform float uListraOn; uniform vec3 uBarra; uniform float uBarraOn; uniform float uBainha; uniform float uBordas;')
+      .replace(
+        '#include <map_fragment>',
+        `#include <map_fragment>
+        float ang = atan( vRepouso.x, vRepouso.z );
+        if ( uListraOn > 0.5 ) {
+          float s = fract( ang * 3.8197 );
+          if ( s < 0.12 || ( s > 0.2 && s < 0.24 ) ) diffuseColor.rgb = uListra * ( diffuseColor.rgb / max( vec3(0.001), diffuseColor.rgb ) ) * 0.95;
+        }
+        if ( uBarraOn > 0.5 ) {
+          float h = vRepouso.y - uBainha;
+          bool barra = h > 0.012 && h < 0.05;
+          #ifdef USE_MAP
+          if ( uBordas > 0.5 && ( vMapUv.x < 0.035 || vMapUv.x > 1.965 ) ) barra = true;
+          #endif
+          if ( barra ) diffuseColor.rgb = uBarra * 0.95;
+        }`,
+      )
+  }
+  m.customProgramCacheKey = () => `faixas-${f.listra ? 1 : 0}${f.barra ? 1 : 0}${f.bordas ? 1 : 0}`
+}
+
+/**
+ * Copia o material do GLB (Physical, por causa das extensões ior/specular) para
+ * MeshStandardMaterial: shader menor e compilação bem mais rápida em celulares.
+ */
+function paraStandard(src: THREE.Material): THREE.MeshStandardMaterial {
+  const m = src as THREE.MeshStandardMaterial
+  const out = new THREE.MeshStandardMaterial({
+    name: m.name, color: m.color?.clone(), map: m.map ?? null, normalMap: m.normalMap ?? null,
+    roughness: m.roughness ?? 0.8, metalness: m.metalness ?? 0, transparent: m.transparent, alphaTest: m.alphaTest,
+    side: m.side, vertexColors: m.vertexColors, depthWrite: m.depthWrite, opacity: m.opacity,
+  })
+  if (m.normalScale) out.normalScale.copy(m.normalScale)
+  return out
+}
+
+/** Nome da peça (variante) a partir do material "<tipo>__<peça>" gravado pelo construtor. */
+export function pecaDe(m: THREE.Mesh) {
+  const mat = (Array.isArray(m.material) ? m.material[0] : m.material) as THREE.Material
+  const parts = mat?.name?.split('__')
+  return parts && parts.length > 1 ? parts[1].replace(/\.\d+$/, '') : m.name
+}
+
+const BAINHA: Record<string, number> = { Tunica_saia: 0.07, Tunica_saia_curta: 0.38, Manto: 0.32, Manto_longo: 0.12, Xale: 0.92 }
+
+/**
+ * Peças do modelo que ficam visíveis para uma aparência (regra única, testada).
+ * O corpo, os olhos, os dentes, a língua, as sobrancelhas e os cílios estão sempre visíveis.
+ */
+export function pecasVisiveis(a: CharacterAppearance): string[] {
+  const look = resolveLook(a)
+  const acess = look.accessories.map((x) => x.kind)
+  const out: string[] = ['Tunica_cima', look.tunic.short ? 'Tunica_saia_curta' : 'Tunica_saia']
+  if (!acess.includes('lenco')) out.push(CABELO[look.hairStyle] ?? 'Cabelo_curto')
+  if (look.mantle) out.push(...(MANTO[look.mantle.style] ?? ['Manto']))
+  if (look.belt) out.push(CINTO[look.belt.style] ?? 'Cinto_couro')
+  out.push(CALCADO[look.foot.style] ?? 'Sandalia_simples')
+  if (look.beard !== 'nenhuma') out.push(look.beard === 'cheia' ? 'Barba_cheia' : 'Barba_curta')
+  for (const k of acess) out.push(ACESSORIO[k])
+  return out
+}
+
+/** Todas as peças opcionais que o modelo GLB precisa conter. */
+export const PECAS_DO_MODELO = [
+  ...Object.values(CABELO), 'Tunica_cima', 'Tunica_saia', 'Tunica_saia_curta', 'Manto', 'Manto_longo', 'Xale', 'Capuz',
+  ...Object.values(CINTO), ...Object.values(CALCADO), 'Barba_curta', 'Barba_cheia', ...Object.values(ACESSORIO),
+]
+
+export interface HeroRig extends Rig {
+  ready: Promise<void>
+}
+
+/** Monta um personagem a partir do GLB carregado e da aparência salva. */
+export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D): Rig {
+  const look = resolveLook(a)
+  const root = cloneSkinned(gltf.scene) as THREE.Group
+  root.name = 'personagem'
+  const meshes = new Map<string, THREE.Mesh[]>()
+  root.traverse((o) => {
+    const m = o as THREE.Mesh
+    if (m.isMesh) {
+      const k = pecaDe(m)
+      m.userData.peca = k
+      meshes.set(k, [...(meshes.get(k) ?? []), m])
+      m.castShadow = quality === 'alta'
+      m.frustumCulled = false
+      // cada personagem tem seus próprios materiais (cores independentes)
+      m.material = Array.isArray(m.material) ? m.material.map(paraStandard) : paraStandard(m.material as THREE.Material)
+    }
+  })
+  const mostrar = (nome: string, v: boolean) => meshes.get(nome)?.forEach((m) => (m.visible = v))
+  const todos = [...meshes.keys()]
+  for (const n of todos) {
+    if (/^(Cabelo_|Tunica_saia|Manto|Xale|Capuz|Cinto_|Sandalia_|Botas|Barba_|Acessorio_|Bolsa|Odre|Lenco|Colar)/.test(n)) mostrar(n, false)
+  }
+
+  const acess = look.accessories.map((x) => x.kind)
+  for (const n of pecasVisiveis(a)) mostrar(n, true)
+
+  // materiais e cores
+  const hairHex = look.hair
+  root.traverse((o) => {
+    const mesh = o as THREE.Mesh
+    if (!mesh.isMesh) return
+    const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.MeshStandardMaterial[]
+    for (const m of mats) {
+      const n = m.name.split('__')[0]
+      if (n.startsWith('Cabelo')) {
+        tingirPorLuminancia(m, hairHex, 1.12)
+        m.transparent = true
+        m.depthWrite = true
+        m.alphaTest = 0.05
+        m.side = THREE.DoubleSide
+      } else if (n === 'Sobrancelhas') {
+        tingirPorLuminancia(m, hexShade(hairHex, look.face === 'marcante' ? -0.12 : -0.04), look.face === 'marcante' ? 0.75 : 0.95)
+      } else if (n === 'Barba') {
+        tingirPorLuminancia(m, hairHex, 1.1)
+        m.vertexColors = true
+        m.transparent = true
+        m.depthWrite = false
+      } else if (n === 'Cilios') {
+        m.color.set('#1a120d')
+      } else if (n === 'Tunica') {
+        m.color.set(look.tunic.color)
+        const nome = mesh.userData.peca as string
+        tecidoComFaixas(m, { listra: look.tunic.stripes, barra: look.tunic.trim, bainha: BAINHA[nome] ?? -1 })
+      } else if (n === 'Manto' && look.mantle) {
+        m.color.set(look.mantle.color)
+        const nome = mesh.userData.peca as string
+        tecidoComFaixas(m, { listra: look.mantle.stripes, barra: look.mantle.trim, bainha: BAINHA[nome] ?? -1, bordas: true })
+      } else if (n === 'Couro') {
+        const peca = mesh.userData.peca as string
+        m.color.set(look.belt && peca.startsWith('Cinto') ? look.belt.color : look.foot.color)
+        if (peca === 'Bolsa' || peca === 'Odre') m.color.set('#6b4423')
+      } else if (n === 'Corda' && look.belt) {
+        m.color.set(look.belt.color)
+      } else if (n === 'Faixa' && look.belt) {
+        m.color.set(look.belt.color)
+      } else if (n === 'Lenco') {
+        m.color.set(look.accessories.find((x) => x.kind === 'lenco')?.color ?? '#d9c7a0')
+      } else if (n === 'Pele') {
+        m.roughness = 0.55
+        if ('sheen' in m) Object.assign(m, { sheen: 0.25 })
+      }
+      if (quality === 'leve') m.envMapIntensity = 0.8
+    }
+  })
+
+  // pele: textura conforme o tom (clara, média ou escura) e ajuste fino de cor
+  const tom = a.skin
+  const arquivo = `pele-${look.body === 'feminino' ? 'f' : 'm'}-${tom <= 1 ? 'clara' : tom <= 3 ? 'media' : 'escura'}`
+  const ajuste = ['#ffffff', '#f1d9c4', '#ffffff', '#e7c6a8', '#ffffff', '#d9b9a2'][tom] ?? '#ffffff'
+  const peleMats: THREE.MeshStandardMaterial[] = []
+  root.traverse((o) => {
+    const mesh = o as THREE.Mesh
+    if (mesh.isMesh && (mesh.material as THREE.Material).name.startsWith('Pele')) peleMats.push(mesh.material as THREE.MeshStandardMaterial)
+  })
+  peleMats.forEach((m) => m.color.set(ajuste))
+  const ready = arquivo.endsWith('clara')
+    ? Promise.resolve()
+    : pele(arquivo).then((t) => peleMats.forEach((m) => {
+        m.map = t
+        m.needsUpdate = true
+      })).catch(() => undefined)
+
+  // animação
+  const mixer = new THREE.AnimationMixer(root)
+  const clipes = new Map(gltf.animations.map((c) => [c.name, c]))
+  let atual: THREE.AnimationAction | null = null
+  let poseAtual: Pose3D | null = null
+  const morphMeshes: THREE.Mesh[] = []
+  root.traverse((o) => {
+    const m = o as THREE.Mesh
+    if (m.isMesh && m.morphTargetDictionary) morphMeshes.push(m)
+  })
+  const expr: Record<string, number> = { Piscar: 0, Sorriso: 0, Surpresa: 0, Alegria: 0 }
+  const alvo: Record<string, number> = { ...expr }
+  const dedosR: THREE.Bone[] = []
+  root.traverse((o) => {
+    if ((o as THREE.Bone).isBone && /^finger[2-5]-[1-3]R$|^finger[2-5]-[1-3]\.R$/.test(o.name)) dedosR.push(o as THREE.Bone)
+  })
+  const segura = acess.some((k) => ['cajado', 'pergaminho', 'lamparina', 'cesto'].includes(k))
+  let piscarEm = 2
+  const tocar = (pose: Pose3D) => {
+    if (pose === poseAtual) return
+    poseAtual = pose
+    const clip = clipes.get(CLIPE[pose])
+    if (!clip) return
+    const nova = mixer.clipAction(clip)
+    nova.reset()
+    nova.enabled = true
+    nova.setEffectiveWeight(1)
+    nova.play()
+    if (pose === 'still') nova.paused = true
+    if (atual && atual !== nova) atual.crossFadeTo(nova, 0.35, false)
+    atual = nova
+    for (const k of Object.keys(alvo)) alvo[k] = 0
+    Object.assign(alvo, EXPRESSAO[pose] ?? {})
+  }
+
+  function update(pose: Pose3D, t: number, dt: number, reduced = false) {
+    const p = reduced && pose !== 'still' ? 'still' : pose
+    tocar(p)
+    mixer.update(p === 'still' ? 0 : Math.min(dt, 0.1))
+    if (dt >= 1) {
+      // quadro isolado (miniaturas): vai direto ao instante pedido
+      if (atual && p !== 'still') atual.time = t % (atual.getClip().duration || 1)
+      mixer.update(0)
+      for (const k of Object.keys(expr)) expr[k] = alvo[k]
+    }
+    // expressão suave + piscar
+    const k = Math.min(1, dt * 6)
+    for (const n of Object.keys(expr)) expr[n] += (alvo[n] - expr[n]) * k
+    let pisca = 0
+    if (!reduced && p !== 'still') {
+      if (t > piscarEm + 0.16) piscarEm = t + 2.5 + ((t * 7.31) % 1) * 3
+      if (t > piscarEm) pisca = Math.sin(((t - piscarEm) / 0.16) * Math.PI)
+    }
+    for (const m of morphMeshes) {
+      const d = m.morphTargetDictionary!
+      const inf = m.morphTargetInfluences!
+      for (const n of Object.keys(expr)) if (n in d) inf[d[n]] = expr[n]
+      if ('Piscar' in d) inf[d.Piscar] = pisca
+    }
+    // mão direita fechada quando segura um objeto
+    if (segura) for (const b of dedosR) b.rotation.x += 0.9
+  }
+
+  update('still', 0, 1)
+
+  return Object.assign(
+    {
+      root,
+      update,
+      dispose() {
+        mixer.stopAllAction()
+        root.traverse((o) => {
+          const m = o as THREE.Mesh
+          if (m.isMesh) {
+            const mats = Array.isArray(m.material) ? m.material : [m.material]
+            mats.forEach((x) => x.dispose())
+          }
+        })
+      },
+    },
+    { ready },
+  )
+}
