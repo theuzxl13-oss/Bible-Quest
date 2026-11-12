@@ -7,3 +7,4 @@ coverage/
 lab/
 tools/personagem/fonte/
 tools/personagem/saida/
+__pycache__/
