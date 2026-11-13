@@ -37,6 +37,8 @@ export interface Rig {
   root: THREE.Group
   update(pose: Pose3D, t: number, dt: number, reduced?: boolean): void
   dispose(): void
+  /** Troca só as cores, ao vivo, sem remontar (quando o modelo permite). */
+  recolorir?: (a: CharacterAppearance) => void
 }
 
 const g = (name: string, x = 0, y = 0, z = 0) => {

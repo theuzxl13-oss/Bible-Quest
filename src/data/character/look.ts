@@ -1,4 +1,4 @@
-import type { BeardStyle, BodyBuild, CharacterAppearance } from '../../types'
+import type { BeardStyle, BodyBuild, CharacterAppearance, Expressao } from '../../types'
 import { HAIR_COLORS, SKIN_TONES } from './bases'
 import { getItem, type AccessoryItem, type BeltItem, type FootwearItem, type MantleItem, type TunicItem } from './items'
 
@@ -36,6 +36,9 @@ export interface ResolvedLook {
   foot: FootwearItem
   belt?: BeltItem
   accessories: AccessoryItem[]
+  /** Cor dos olhos escolhida (v0.8); ausente = cor original do modelo. */
+  eyes?: string
+  expressao: Expressao
 }
 
 export function bodyOf(a: CharacterAppearance): BodyBuild {
@@ -52,18 +55,23 @@ export function resolveLook(a: CharacterAppearance): ResolvedLook {
   const mantle = getItem(a.equipped.manto) as MantleItem | undefined
   const dyeT = a.dyes?.tunica !== undefined ? DYES[a.dyes.tunica]?.color : undefined
   const dyeM = a.dyes?.manto !== undefined ? DYES[a.dyes.manto]?.color : undefined
+  const c = a.cores ?? {}
+  const belt = getItem(a.equipped.cinto) as BeltItem | undefined
+  const foot = (getItem(a.equipped.calcado) as FootwearItem | undefined) ?? (getItem('sandalias-simples') as FootwearItem)
   return {
     body: bodyOf(a),
     beard: beardOf(a),
     skin: SKIN_TONES[a.skin] ?? SKIN_TONES[1],
-    hair: HAIR_COLORS[a.hairColor] ?? HAIR_COLORS[1],
+    hair: c.cabelo ?? HAIR_COLORS[a.hairColor] ?? HAIR_COLORS[1],
     hairStyle: a.hairStyle,
     face: a.face,
-    tunic: { ...tunic, color: dyeT ?? tunic.color },
-    mantle: mantle ? { ...mantle, color: dyeM ?? mantle.color } : undefined,
-    foot: (getItem(a.equipped.calcado) as FootwearItem | undefined) ?? (getItem('sandalias-simples') as FootwearItem),
-    belt: getItem(a.equipped.cinto) as BeltItem | undefined,
+    tunic: { ...tunic, color: c.tunica ?? dyeT ?? tunic.color },
+    mantle: mantle ? { ...mantle, color: c.manto ?? dyeM ?? mantle.color } : undefined,
+    foot: c.couro ? { ...foot, color: c.couro } : foot,
+    belt: belt && c.faixa ? { ...belt, color: c.faixa } : belt,
     accessories: a.equipped.acessorios.map((id) => getItem(id)).filter(Boolean) as AccessoryItem[],
+    eyes: c.olhos,
+    expressao: a.expressao ?? 'neutra',
   }
 }
 
@@ -75,5 +83,9 @@ export function resolveLook(a: CharacterAppearance): ResolvedLook {
 export function appearanceKey(a: CharacterAppearance): string {
   const e = a.equipped
   const dyes = `${a.dyes?.tunica ?? '-'}/${a.dyes?.manto ?? '-'}`
-  return [a.base, a.skin, a.face, a.hairStyle, a.hairColor, e.tunica, e.manto ?? '-', e.calcado, e.cinto ?? '-', e.acessorios.join(','), bodyOf(a), beardOf(a), dyes].join('|')
+  const cores = a.cores ? Object.entries(a.cores).filter(([, v]) => v).sort().map(([k, v]) => `${k}=${v}`).join(',') : ''
+  const chave = [a.base, a.skin, a.face, a.hairStyle, a.hairColor, e.tunica, e.manto ?? '-', e.calcado, e.cinto ?? '-', e.acessorios.join(','), bodyOf(a), beardOf(a), dyes]
+  // campos da v0.8 só entram quando usados: perfis antigos mantêm a mesma chave
+  if (cores || a.expressao) chave.push(cores || '-', a.expressao ?? 'neutra')
+  return chave.join('|')
 }

@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import type { CharacterAppearance } from '../types'
 import { appearanceKey } from '../data/character/look'
 import { buildCharacter, type Pose3D, type Quality3D, type Rig } from './rig'
-import { buildHero, loadHero, modeloDe } from './heroi'
+import { buildHero, loadHero, modeloDe, soCores } from './heroi'
 import { bodyOf } from '../data/character/look'
 import { createRenderer, createScene, fitDistance, FRAMES, type Framing } from './stage'
 
@@ -69,10 +69,18 @@ export function createViewer(container: HTMLElement, appearance: CharacterAppear
   let disposed = false
 
   let pedido = 0
+  let ultima: CharacterAppearance | null = null
   const setAppearance = (a: CharacterAppearance) => {
     const k = appearanceKey(a)
     if (k === key) return
     key = k
+    // só mudou cor no mesmo modelo: troca ao vivo, sem remontar nem recarregar
+    if (rig?.recolorir && ultima && soCores(ultima, a)) {
+      ultima = a
+      rig.recolorir(a)
+      return
+    }
+    ultima = a
     const meu = ++pedido
     montar(a, opts.quality).then(async (next) => {
       if (disposed || meu !== pedido) return next.dispose()

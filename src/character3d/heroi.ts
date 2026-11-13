@@ -32,6 +32,14 @@ export function modeloDe(a: CharacterAppearance): string {
   return MODELOS_POR_BASE.includes(a.base) && doCorpo ? a.base : body
 }
 
+/**
+ * Entre duas aparências, só mudam cores no modelo estilizado? (mesmo arquivo de modelo e
+ * mesmos acessórios: cabelo, túnica, manto, cinto e calçado mudam apenas a cor nele).
+ */
+export function soCores(a: CharacterAppearance, b: CharacterAppearance) {
+  return modeloDe(a) === modeloDe(b) && a.equipped.acessorios.join(',') === b.equipped.acessorios.join(',')
+}
+
 export function heroUrl(modelo: string) {
   return `${BASE}heroi-${modelo}.glb`
 }
@@ -75,6 +83,13 @@ const ACESSORIO: Record<string, string> = {
   bolsa: 'Bolsa', odre: 'Odre', lenco: 'Lenco', colar: 'Colar', louros: 'Acessorio_louros',
 }
 const CLIPE: Record<Pose3D, string> = { idle: 'Idle', walk: 'Walk', celebrate: 'Victory', react: 'Discovery', wave: 'Greeting', still: 'Idle' }
+/** Expressão de repouso escolhida pelo jogador (v0.8): morph targets de cada uma. */
+const EXPRESSAO_BASE: Record<string, Record<string, number>> = {
+  neutra: {},
+  sorriso: { Sorriso: 0.8 },
+  alegria: { Alegria: 0.85 },
+  surpresa: { Surpresa: 0.7 },
+}
 const EXPRESSAO: Partial<Record<Pose3D, Record<string, number>>> = {
   celebrate: { Alegria: 1 },
   react: { Surpresa: 0.85 },
@@ -104,12 +119,14 @@ function tingirPorLuminancia(m: THREE.MeshStandardMaterial, cor: string, ganho =
  * Só os texels com cor parecida com a de base mudam (olhos, bordados e sobrancelhas ficam).
  */
 function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string, saturacao = 1) {
-  const u = { uBase: { value: new THREE.Color(base) }, uAlvo: { value: new THREE.Color(alvo) }, uSat: { value: saturacao } }
+  const u = { uBase: { value: new THREE.Color(base) }, uAlvo: { value: new THREE.Color(alvo) }, uSat: { value: saturacao }, uExp: { value: 0.5 } }
+  // guardado no material: a cor muda ao vivo (recolorir), sem recompilar o shader nem remontar o personagem
+  m.userData.regiao = u
   m.color.set('#ffffff')
   m.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, u)
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform vec3 uBase; uniform vec3 uAlvo; uniform float uSat;')
+      .replace('#include <common>', '#include <common>\nuniform vec3 uBase; uniform vec3 uAlvo; uniform float uSat; uniform float uExp;')
       .replace(
         '#include <map_fragment>',
         `#ifdef USE_MAP
@@ -120,10 +137,11 @@ function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string,
         vec3 bn = uBase / max( dot( uBase, LUM ), 0.004 );
         float w = 1.0 - smoothstep( 0.35, 0.8, length( cn - bn ) );
         // a cor nova recebe o claro-escuro da textura (relação de luminância com a cor de base)
-        // a diferença de claridade entre alvo e base é suavizada (expoente 0,5): tons muito claros não estouram
+        // a diferença de claridade entre alvo e base é suavizada (expoente uExp: 0,5 na pele, para os tons claros
+        // não estourarem; 0,9 nas outras regiões, para um cabelo escuro poder virar loiro, por exemplo)
         float lb = max( dot( uBase, LUM ), 0.004 );
         float r = max( dot( uAlvo, LUM ), 0.002 ) / lb;
-        float k = dot( c, LUM ) / lb * pow( r, 0.5 ) / r;
+        float k = dot( c, LUM ) / lb * pow( r, uExp ) / r;
         vec3 tinto = uAlvo * k;
         // pele: um pouco mais de saturação, porque a luz do palco e o tone mapping acinzentam os tons claros
         tinto = min( mix( vec3( dot( tinto, LUM ) ), tinto, uSat ), vec3( 1.0 ) );
@@ -297,6 +315,7 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
       if (base && tipo in alvo) {
         mesh.visible = true
         tingirRegiao(m, base, alvo[tipo as keyof typeof alvo] ?? base, tipo === 'Pele' ? saturacaoPele(alvo.Pele) : 1)
+        ;(m.userData.regiao as { uExp: { value: number } }).uExp.value = tipo === 'Pele' ? 0.5 : 0.9
         m.roughness = tipo === 'Pele' ? 0.6 : 0.85
         if (quality === 'leve') m.envMapIntensity = 0.8
       }
@@ -379,6 +398,7 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
     const m = o as THREE.Mesh
     if (m.isMesh && m.morphTargetDictionary) morphMeshes.push(m)
   })
+  let expressaoBase: string = look.expressao
   const expr: Record<string, number> = { Piscar: 0, Sorriso: 0, Surpresa: 0, Alegria: 0 }
   const alvo: Record<string, number> = { ...expr }
   const dedosR: THREE.Bone[] = []
@@ -401,7 +421,7 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
     if (atual && atual !== nova) atual.crossFadeTo(nova, 0.35, false)
     atual = nova
     for (const k of Object.keys(alvo)) alvo[k] = 0
-    Object.assign(alvo, EXPRESSAO[pose] ?? {})
+    Object.assign(alvo, EXPRESSAO[pose] ?? EXPRESSAO_BASE[expressaoBase] ?? {})
   }
 
   function update(pose: Pose3D, t: number, dt: number, reduced = false) {
@@ -433,6 +453,32 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
   }
 
   update('still', 0, 1)
+  const alvo0 = alvo
+
+  /** Modelo estilizado: troca só as cores (uniforms), sem remontar. */
+  const recolorir = estilizado
+    ? (b: CharacterAppearance) => {
+        // expressão de repouso: vale na próxima troca de pose ou já, se estiver parado
+        expressaoBase = resolveLook(b).expressao
+        if (poseAtual && !EXPRESSAO[poseAtual]) {
+          for (const k of Object.keys(alvo0)) alvo0[k] = 0
+          Object.assign(alvo0, EXPRESSAO_BASE[expressaoBase] ?? {})
+        }
+        const alvo = coresEstilizado(b)
+        root.traverse((o) => {
+          const mesh = o as THREE.Mesh
+          if (!mesh.isMesh) return
+          const m = mesh.material as THREE.MeshStandardMaterial
+          const u = m.userData.regiao as { uBase: { value: THREE.Color }; uAlvo: { value: THREE.Color }; uSat: { value: number } } | undefined
+          if (!u) return
+          const tipo = m.name.split('__')[0] as keyof typeof alvo
+          const hex = alvo[tipo]
+          if (hex) u.uAlvo.value.set(hex)
+          else u.uAlvo.value.copy(u.uBase.value)
+          u.uSat.value = tipo === 'Pele' ? saturacaoPele(alvo.Pele) : 1
+        })
+      }
+    : undefined
 
   return Object.assign(
     {
@@ -449,6 +495,6 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
         })
       },
     },
-    { ready },
+    { ready, recolorir },
   )
 }

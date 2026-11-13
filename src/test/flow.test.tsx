@@ -460,7 +460,7 @@ describe('fluxos de ponta a ponta', () => {
     await user.click(screen.getByLabelText('Cheia'))
     await user.click(screen.getByRole('tab', { name: 'Túnica' }))
     await user.click(screen.getByLabelText('Índigo'))
-    await user.click(screen.getByRole('button', { name: 'Confirmar' }))
+    await user.click(screen.getByRole('button', { name: 'Salvar personagem' }))
     const c = services.auth.current()!.character!
     expect(c).toMatchObject({ beard: 'cheia', dyes: { tunica: 4 } })
     expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/\|masculino\|cheia\|4\/-$/)
@@ -471,8 +471,21 @@ describe('fluxos de ponta a ponta', () => {
     // remover acessórios e voltar ao padrão
     await user.click(screen.getByRole('button', { name: 'Remover acessórios' }))
     expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/\|sandalias-simples\|cinto-couro\|\|/)
-    await user.click(screen.getByRole('button', { name: 'Voltar à aparência padrão' }))
+    await user.click(screen.getByRole('button', { name: 'Restaurar aparência original' }))
     expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/^viajante\|1\|suave\|curto/)
+  })
+
+  it('editor: cores livres e expressão aparecem no personagem e são salvas', async () => {
+    const store = withProfile()
+    const { user, services } = setup('/guarda-roupa', store)
+    await user.click(await screen.findByRole('tab', { name: 'Cores' }))
+    await user.click(screen.getByLabelText('Cabelo: cor #d8b26a'))
+    await user.click(screen.getByLabelText('Túnica: cor #2f4766'))
+    await user.click(screen.getByRole('tab', { name: 'Rosto' }))
+    await user.click(screen.getByLabelText('Sorriso'))
+    expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/cabelo=#d8b26a,tunica=#2f4766\|sorriso$/)
+    await user.click(screen.getByRole('button', { name: 'Salvar personagem' }))
+    expect(services.auth.current()!.character).toMatchObject({ cores: { cabelo: '#d8b26a', tunica: '#2f4766' }, expressao: 'sorriso' })
   })
 
   it('ficha de personagem traz o contexto histórico da linha do tempo', async () => {

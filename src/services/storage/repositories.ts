@@ -1,4 +1,4 @@
-import type { CharacterAppearance, CharacterConfig, Profile, Progress, Settings } from '../../types'
+import type { CharacterAppearance, CharacterConfig, Expressao, Profile, Progress, RegiaoCor, Settings } from '../../types'
 import type { KeyValueStore } from './keyValueStore'
 
 /*
@@ -184,8 +184,29 @@ const OLD_TUNIC_BY_COLOR = ['tunica-terra', 'tunica-azul', 'tunica-terra', 'tuni
  * Converte o personagem da v0.3 (vestimenta única + acessório) para a
  * aparência por itens da v0.4, preservando pele, cabelo e acessório.
  */
+const HEX = /^#[0-9a-f]{6}$/i
+const REGIOES: RegiaoCor[] = ['cabelo', 'olhos', 'tunica', 'manto', 'faixa', 'couro']
+const EXPRESSOES: Expressao[] = ['neutra', 'sorriso', 'alegria', 'surpresa']
+
+/** Campos da v0.8 (cores livres e expressão): valores inválidos vindos do armazenamento são descartados. */
+function limparExtras(a: CharacterAppearance): CharacterAppearance {
+  if (a.cores === undefined && a.expressao === undefined) return a
+  const out = { ...a }
+  if (a.cores) {
+    const cores: CharacterAppearance['cores'] = {}
+    for (const r of REGIOES) {
+      const v = (a.cores as Record<string, unknown>)[r]
+      if (typeof v === 'string' && HEX.test(v)) cores[r] = v.toLowerCase()
+    }
+    if (Object.keys(cores).length) out.cores = cores
+    else delete out.cores
+  }
+  if (a.expressao !== undefined && !EXPRESSOES.includes(a.expressao)) delete out.expressao
+  return out
+}
+
 export function migrateCharacter(c: CharacterAppearance | CharacterConfig): CharacterAppearance {
-  if ((c as CharacterAppearance).version === 2) return c as CharacterAppearance
+  if ((c as CharacterAppearance).version === 2) return limparExtras(c as CharacterAppearance)
   const old = c as CharacterConfig
   const equipped: CharacterAppearance['equipped'] = { tunica: 'tunica-linho', manto: null, calcado: 'sandalias-simples', cinto: 'cinto-corda', acessorios: [] }
   if (old.outfit === 'tunica') equipped.tunica = OLD_TUNIC_BY_COLOR[old.outfitColor] ?? 'tunica-linho'

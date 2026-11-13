@@ -65,3 +65,15 @@ public/models/personagem/
 Com a cota gratuita (cerca de 2 gerações por dia), as cerca de 19 gerações levam perto de 10 dias. Roupas e calçados por script não dependem da cota.
 
 Enquanto as peças não existem, o editor funciona com o que há: os modelos estilizados de peça única, com troca de cores, e o modelo modular v0.7. O catálogo mostra o que falta.
+
+## Andamento
+
+- **13/11/2026, v0.9.0:**
+  - Feito: cores livres por região com troca ao vivo, expressão de repouso, restaurar original, salvar, categorias laterais e testes.
+  - A fazer:
+    - referências do corpo base: o gerador do Canva insistiu em folhas de peças ou em manter as roupas;
+    - geração 3D do corpo base;
+    - cabelos e acessórios estilizados;
+    - roupas e calçados por script;
+    - cor e formato dos olhos;
+    - encaixe de peças (`montagem.ts`).

@@ -161,6 +161,11 @@ export interface Experience {
 export type AgeRange = 'ate12' | '13a17' | '18mais'
 
 export type HairStyle = 'curto' | 'longo' | 'cacheado' | 'coque' | 'tranca' | 'raspado' | 'ondulado'
+/** Regiões do personagem com cor livre no editor (v0.8). */
+export type RegiaoCor = 'cabelo' | 'olhos' | 'tunica' | 'manto' | 'faixa' | 'couro'
+/** Expressão do rosto em repouso (v0.8). */
+export type Expressao = 'neutra' | 'sorriso' | 'alegria' | 'surpresa'
+
 export type FaceStyle = 'suave' | 'barba' | 'sardas' | 'marcante'
 /** Estrutura corporal do personagem 3D. */
 export type BodyBuild = 'masculino' | 'feminino'
@@ -188,6 +193,10 @@ export interface CharacterAppearance {
   beard?: BeardStyle
   /** v0.5. Tingimento escolhido (índice em DYES) para a túnica e o manto; ausente = cor original do item. */
   dyes?: { tunica?: number; manto?: number }
+  /** v0.8. Cor livre (#rrggbb) por região; tem prioridade sobre o tingimento e a cor do item. Ausente = cor padrão. */
+  cores?: Partial<Record<RegiaoCor, string>>
+  /** v0.8. Expressão do rosto em repouso; ausente = neutra. */
+  expressao?: Expressao
   equipped: {
     tunica: string
     manto: string | null

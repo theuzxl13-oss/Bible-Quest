@@ -13,7 +13,7 @@ Links e status:
 
 - **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
 - **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
-- **Status:** versão 0.8 (herói masculino no estilo de filme de animação 3D; a estrutura feminina continua com o modelo da v0.7 até a versão estilizada ficar pronta). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
+- **Status:** versão 0.9 (editor com cores livres e expressão; herói masculino no estilo de filme de animação 3D; a estrutura feminina continua com o modelo da v0.7 até a versão estilizada ficar pronta). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
 
 ## Como jogar
 
@@ -480,6 +480,25 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.9.0 — 13/11/2026 — Editor de personagem: cores livres, expressão e troca ao vivo
+
+Primeira entrega do editor modular (`docs/EDITOR-3D-PLANO.md`, Etapas 4 e 6).
+
+- **Cores livres por região:** nova aba **Cores** no guarda-roupa e na criação, para cabelo, túnica, manto, faixa e cinto, e couro.
+  - Cada região tem uma paleta de época, a opção "cor original" e um seletor livre (`SeletorDeCor`).
+  - A cor livre vale nos dois modelos (estilizado e v0.7) e tem prioridade sobre o tingimento.
+- **Expressão de repouso:** Serena, Sorriso, Alegre ou Curiosa, na aba Rosto. Usa os morph targets do modelo.
+- **Troca ao vivo:** no modelo estilizado, mudar uma cor só atualiza os uniforms do shader. O personagem não é remontado nem o GLB recarregado (`recolorir` no `Rig`, `soCores` em `heroi.ts`).
+- **Shader:** a suavização de claridade agora é por região (forte na pele, leve nas outras). Assim um cabelo escuro pode virar loiro.
+- **Interface:** categorias em coluna lateral nas telas largas. Botões **Restaurar aparência original** e **Salvar personagem**.
+- **Salvamento:** os campos novos `cores` e `expressao` em `CharacterAppearance` guardam apenas cores (#rrggbb) e identificadores. Valores inválidos vindos do armazenamento são descartados. Perfis antigos mantêm a mesma chave visual.
+- **Lógica do editor:** fica em `src/services/game/aparencia.ts` (`definirCor`, `definirExpressao`, `restaurarOriginal`).
+- **Testes:** 125 no total. Novos:
+  - `editor.test.ts`: cabelo, cores, roupas, acessórios, expressão, salvamento, recuperação, dados corrompidos e restauração;
+  - fluxo de ponta a ponta das cores e da expressão.
+  - O teste do guarda-roupa passou a usar os novos nomes dos botões.
+- **Ainda falta:** cor dos olhos e formatos de olhos, cortes de cabelo, roupas e calçados como peças 3D estilizadas. Dependem do corpo base estilizado (veja o plano).
 
 ### 0.8.5 — 13/11/2026 — Plano do editor de personagens modular
 

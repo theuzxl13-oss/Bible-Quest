@@ -9,6 +9,8 @@ import { ITEMS, PLACE_LABEL, type CharacterItem, type ItemSlot } from '../../dat
 import { equipItem, isEquipped, isItemUnlocked, requirementLabel, unequipItem } from '../../services/game/items'
 import { useGame } from '../../state/GameContext'
 import { StepBar } from './StepBar'
+import { SeletorDeCor } from '../../components/character/editor/SeletorDeCor'
+import { EXPRESSOES, REGIOES_COR, definirCor, definirExpressao, restaurarOriginal } from '../../services/game/aparencia'
 
 /*
  * CRIADOR E GUARDA-ROUPA DO PERSONAGEM
@@ -17,7 +19,7 @@ import { StepBar } from './StepBar'
  * Nada é salvo até o jogador confirmar.
  */
 
-type Tab = 'rosto' | 'cabelo' | 'cor' | 'barba' | ItemSlot
+type Tab = 'rosto' | 'cabelo' | 'cor' | 'barba' | 'cores' | ItemSlot
 const TABS: { id: Tab; label: string }[] = [
   { id: 'rosto', label: 'Rosto' },
   { id: 'cabelo', label: 'Cabelo' },
@@ -28,6 +30,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'cinto', label: 'Cinto' },
   { id: 'calcado', label: 'Sandálias' },
   { id: 'acessorio', label: 'Acessórios' },
+  { id: 'cores', label: 'Cores' },
 ]
 
 const HAIR: { id: HairStyle; label: string }[] = [
@@ -143,9 +146,8 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
   }
 
   const padrao = () => {
-    const base = newAppearance(draft.base, draft.name)
-    update({ ...base, id: draft.id, name: draft.name })
-    setStatus('Aparência padrão do personagem-base restaurada (ainda não salva).')
+    update(restaurarOriginal(draft))
+    setStatus('Aparência original do personagem restaurada (ainda não salva).')
   }
 
   const semAcessorios = () => {
@@ -238,6 +240,24 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                       ))}
                     </div>
                   </fieldset>
+                  <fieldset className="field">
+                    <legend>Expressão</legend>
+                    <div className="option-grid">
+                      {EXPRESSOES.map((e) => (
+                        <Opcao key={e.id} name="expressao" label={e.label} checked={(draft.expressao ?? 'neutra') === e.id}
+                          preview={definirExpressao(draft, e.id)} onChange={() => update(definirExpressao(draft, e.id))} />
+                      ))}
+                    </div>
+                  </fieldset>
+                </>
+              )}
+
+              {tab === 'cores' && (
+                <>
+                  <p className="small muted">As cores mudam na hora, no próprio personagem. Olhos, bordados e sobrancelhas mantêm a pintura original.</p>
+                  {REGIOES_COR.map((r) => (
+                    <SeletorDeCor key={r.id} label={r.label} paleta={r.paleta} valor={draft.cores?.[r.id]} onChange={(hex) => update(definirCor(draft, r.id, hex))} />
+                  ))}
                 </>
               )}
 
@@ -327,7 +347,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
         <div className="row-actions wardrobe-actions">
           <button type="button" className="btn btn-ghost" onClick={cancelar}>Cancelar</button>
           <button type="button" className="btn btn-outline" disabled={draft.equipped.acessorios.length === 0} onClick={semAcessorios}>Remover acessórios</button>
-          <button type="button" className="btn btn-outline" onClick={padrao}>Voltar à aparência padrão</button>
+          <button type="button" className="btn btn-outline" onClick={padrao}>Restaurar aparência original</button>
           {mode === 'editar' && (
             <button type="button" className="btn btn-outline" disabled={!profile.previousCharacter} onClick={() => profile.previousCharacter && update(profile.previousCharacter)}>
               Restaurar aparência anterior
@@ -336,7 +356,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
           {mode === 'criar' ? (
             <button type="button" className="btn btn-gold btn-lg" onClick={confirmar}>Finalizar personagem <Icon name="check" /></button>
           ) : (
-            <button type="button" className="btn btn-gold btn-lg" disabled={!changed} onClick={confirmar}>Confirmar</button>
+            <button type="button" className="btn btn-gold btn-lg" disabled={!changed} onClick={confirmar}>Salvar personagem</button>
           )}
         </div>
       </div>
