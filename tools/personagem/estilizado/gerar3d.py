@@ -8,7 +8,8 @@ from gradio_client import Client, handle_file
 img, saida = sys.argv[1], sys.argv[2]
 seed = int(sys.argv[3]) if len(sys.argv) > 3 else 1
 t0 = time.time()
-c = Client('microsoft/TRELLIS.2', verbose=False)
+# a chave do Hugging Face é injetada pelo proxy do ambiente; aqui vai só um marcador
+c = Client('https://microsoft-trellis-2.hf.space/', token='hf_proxy-injected', verbose=False)
 c.predict(api_name='/start_session')
 pre = c.predict(handle_file(img), api_name='/preprocess_image')
 print('pré-processada', time.time() - t0, flush=True)

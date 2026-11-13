@@ -473,6 +473,10 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.7.3 — 13/11/2026 — Primeiro teste de imagem para 3D
+
+- `gerar3d.py` agora usa a chave do Hugging Face injetada pelo ambiente (cabeçalho `x-hf-authorization`), sem guardar a chave no código. Teste completo: modelo 3D com textura gerado em cerca de 37 segundos, de graça. O modelo de teste fica fora do Git; nenhuma mudança no jogo.
+
 ### 0.7.2 — 13/11/2026 — Início do personagem no estilo de animação
 
 - Regra de imagens do `CLAUDE.md` atualizada, com autorização do dono do projeto: além das obras em domínio público, também são permitidos recursos gerados por IA e recursos CC0, com origem e licença registradas.
