@@ -1,6 +1,16 @@
 # Licenças dos modelos 3D do personagem
 
-Os arquivos `heroi-masculino.glb`, `heroi-feminino.glb` e `pele-*.webp` foram gerados pelo pipeline de `tools/personagem/`, a partir destes recursos:
+## Herói masculino estilizado (v0.8): `heroi-masculino.glb`
+
+| Recurso | Origem, ferramenta e data | Licença |
+| --- | --- | --- |
+| Imagem de referência do personagem | Gerada por IA no Canva (gerador de imagens), na conta do dono do projeto, em 13/11/2026 | Uso permitido pelos termos do Canva para conteúdo gerado pelo usuário; autorizado pelo dono do projeto |
+| Malha 3D e textura pintada | Geradas a partir da imagem com o TRELLIS.2 (Microsoft), pela demonstração gratuita do Hugging Face (`microsoft/TRELLIS.2`), em 13/11/2026 | Código e pesos do TRELLIS.2: **MIT**. O resultado foi gerado pelo projeto |
+| Esqueleto, pesos, regiões de cor, expressões, animações e acessórios | Criados para o Bible Quest pelos scripts de `tools/personagem/estilizado/` e `tools/personagem/` (Blender), em 13/11/2026 | Mesma licença do projeto |
+
+## Estrutura feminina (v0.7): `heroi-feminino.glb`
+
+Os arquivos `heroi-feminino.glb` e `pele-*.webp` (e o `heroi-masculino.glb` da v0.7) foram gerados pelo pipeline de `tools/personagem/`, a partir destes recursos:
 
 | Recurso | Origem | Licença |
 | --- | --- | --- |

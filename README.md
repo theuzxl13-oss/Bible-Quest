@@ -13,7 +13,7 @@ Links e status:
 
 - **Jogar agora:** https://theuzxl13-oss.github.io/Bible-Quest/
 - **Repositório:** https://github.com/theuzxl13-oss/Bible-Quest
-- **Status:** versão 0.7 (personagem 3D reconstruído: modelo GLB com malha humana, esqueleto, roupas drapeadas por simulação de tecido, animações e expressões). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
+- **Status:** versão 0.8 (herói masculino no estilo de filme de animação 3D; a estrutura feminina continua com o modelo da v0.7 até a versão estilizada ficar pronta). A publicação é verificada no endereço público a cada versão; veja o histórico no fim deste arquivo.
 
 ## Como jogar
 
@@ -39,7 +39,15 @@ A entrada tem 5 passos:
 - progresso geral;
 - os botões Personalizar, Modo História, Modo Quiz, Conquistas, Biblioteca e Estatísticas.
 
-**Personagem 3D (v0.7).** O personagem é um **modelo 3D de verdade (GLB)**:
+**Personagem estilizado (v0.8).** O herói masculino tem visual de filme de animação 3D: olhos grandes, cabelo volumoso, túnica de linho com barra bordada, faixa, manto curto e sandálias de tiras.
+
+- Gerado de uma imagem de referência com o **TRELLIS.2** (Microsoft, licença MIT), pela demonstração gratuita do Hugging Face, e preparado no Blender por `tools/personagem/estilizado/`.
+- Corpo, cabelo e roupa formam uma peça só. A personalização troca as **cores**: pele (6 tons), cabelo, túnica, manto, faixa e couro. Olhos, bordados e sobrancelhas mantêm a pintura original.
+- Usa as mesmas animações e expressões (piscar, sorriso, surpresa, alegria) e os acessórios de mão e a coroa de folhas.
+- Ainda não muda com corte de cabelo, estilo de manto, cinto, calçado e barba; essas variações virão aos poucos.
+- Cerca de 1,8 MB.
+
+**Personagem 3D (v0.7, estrutura feminina).** Um **modelo 3D de verdade (GLB)**:
 
 - malha humana contínua (MakeHuman, CC0) com esqueleto de 163 ossos e pesos de pele;
 - rosto com textura de pele real, olhos com íris, sobrancelhas, cílios e dentes;
@@ -472,6 +480,14 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.8.0 — 13/11/2026 — Herói masculino no estilo de animação 3D
+
+- **Novo herói masculino** publicado: modelo gerado de imagem com o TRELLIS.2 (gratuito), com esqueleto, as seis animações, quatro expressões e acessórios de mão.
+- `tools/personagem/estilizado/acabar.py`: separa seis regiões de cor pela textura e pela posição (pele, cabelo, túnica, manto, faixa, couro), aumenta um pouco os olhos, cria as expressões e exporta. O piscar fecha o olho para cima, com a pele da bochecha cobrindo. `montar.sh` faz o processo inteiro.
+- **Jogo:** `heroi.ts` reconhece o modelo estilizado (`estilo: animacao` nos extras da cena) e tinge cada região por um shader. Só mudam os texels parecidos com a cor de base; a claridade da cor nova é suavizada, para tons muito claros não estourarem. A cor de base de cada material agora é preservada na conversão para MeshStandardMaterial.
+- **Limitações:** a estrutura feminina continua com o modelo v0.7 até a referência feminina ser gerada (a cota gratuita diária do Hugging Face permite poucos modelos por dia). Troca de corte de cabelo, manto, cinto, calçado e barba não aparece no herói estilizado.
+- **Testes:** o teste do GLB publicado aceita o modelo estilizado (regiões com cor de base e acessórios); novo teste das cores por região.
 
 ### 0.7.4 — 13/11/2026 — Esqueleto e animações no personagem estilizado
 

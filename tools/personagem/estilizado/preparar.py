@@ -22,9 +22,6 @@ bpy.ops.object.mode_set(mode='EDIT')
 bpy.ops.mesh.select_all(action='SELECT')
 bpy.ops.mesh.remove_doubles(threshold=0.0004)
 bpy.ops.object.mode_set(mode='OBJECT')
-dec = ob.modifiers.new('dec', 'DECIMATE')
-dec.ratio = min(1.0, faces / len(ob.data.polygons))
-bpy.ops.object.modifier_apply(modifier='dec')
 # escala e posição: pés em z = 0, centro em x = y = 0
 zs = [v.co.z for v in ob.data.vertices]
 xs = [v.co.x for v in ob.data.vertices]
@@ -33,6 +30,18 @@ k = altura / (max(zs) - min(zs))
 desl = Vector(((max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2, min(zs)))
 for v in ob.data.vertices:
     v.co = (v.co - desl) * k
+# reduz o corpo, mas mantém o rosto (frente da cabeça) com toda a resolução, para as expressões
+g = ob.vertex_groups.new(name='reduzir')
+z_rosto = altura * 0.82
+for v in ob.data.vertices:
+    rosto = v.co.z > z_rosto and v.co.y < 0.02 * altura and abs(v.co.x) < 0.075 * altura
+    g.add([v.index], 0.0 if rosto else 1.0, 'REPLACE')
+dec = ob.modifiers.new('dec', 'DECIMATE')
+dec.ratio = min(1.0, faces / len(ob.data.polygons))
+dec.vertex_group = 'reduzir'
+bpy.ops.object.modifier_apply(modifier='dec')
+if 'reduzir' in ob.vertex_groups:
+    ob.vertex_groups.remove(ob.vertex_groups['reduzir'])
 ob.data.update()
 bpy.ops.object.shade_smooth()
 print('faces', len(ob.data.polygons), 'vértices', len(ob.data.vertices))

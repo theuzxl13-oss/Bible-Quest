@@ -177,7 +177,7 @@ describe('modelo 3D (GLB) e personalização', () => {
 
   it('o modelo GLB publicado contém todas as peças, as animações e as expressões', async () => {
     const { readFileSync, existsSync } = await import('node:fs')
-    const { PECAS_DO_MODELO } = await import('../character3d/heroi')
+    const { PECAS_DO_MODELO, REGIOES_ESTILIZADO } = await import('../character3d/heroi')
     for (const corpo of ['masculino', 'feminino']) {
       const f = `public/models/personagem/heroi-${corpo}.glb`
       expect(existsSync(f), f).toBe(true)
@@ -185,11 +185,33 @@ describe('modelo 3D (GLB) e personalização', () => {
       const n = b.readUInt32LE(12)
       const j = JSON.parse(b.subarray(20, 20 + n).toString('utf8'))
       const pecas = new Set(j.materials.map((m: { name: string }) => m.name.split('__')[1]))
-      const esperadas = PECAS_DO_MODELO.filter((p) => corpo === 'masculino' || !p.startsWith('Barba'))
-      for (const p of esperadas) expect(pecas.has(p), `${corpo}: ${p}`).toBe(true)
+      if (j.scenes[0].extras?.estilo === 'animacao') {
+        // modelo estilizado (v0.8): regiões de cor com a cor de base gravada, e os acessórios de mão
+        const mats = j.materials as { name: string; extras?: { base?: string } }[]
+        for (const r of REGIOES_ESTILIZADO) {
+          const m = mats.find((x) => x.name.split('__')[0] === r)
+          expect(m, `${corpo}: região ${r}`).toBeTruthy()
+          expect(m!.extras?.base, `${corpo}: base de ${r}`).toMatch(/^#[0-9a-f]{6}$/)
+        }
+        for (const p of ['Acessorio_cajado', 'Acessorio_pergaminho', 'Acessorio_lamparina', 'Acessorio_cesto', 'Acessorio_louros']) expect(pecas.has(p), `${corpo}: ${p}`).toBe(true)
+      } else {
+        const esperadas = PECAS_DO_MODELO.filter((p) => corpo === 'masculino' || !p.startsWith('Barba'))
+        for (const p of esperadas) expect(pecas.has(p), `${corpo}: ${p}`).toBe(true)
+      }
       expect(j.animations.map((a: { name: string }) => a.name)).toEqual(['Idle', 'Walk', 'Run', 'Victory', 'Greeting', 'Discovery'])
       const morph = j.meshes.flatMap((m: { extras?: { targetNames?: string[] } }) => m.extras?.targetNames ?? [])
       for (const e of ['Piscar', 'Sorriso', 'Surpresa', 'Alegria']) expect(morph).toContain(e)
     }
+  })
+
+  it('modelo estilizado: a aparência decide a cor de cada região', async () => {
+    const { coresEstilizado, REGIOES_ESTILIZADO } = await import('../character3d/heroi')
+    const { SKIN_TONES } = await import('../data/character/bases')
+    const a = newAppearance('viajante', 'Tobias')
+    const c = coresEstilizado(a)
+    expect(Object.keys(c).sort()).toEqual([...REGIOES_ESTILIZADO].sort())
+    expect(c.Pele).toBe(SKIN_TONES[a.skin])
+    expect(c.Tunica).toMatch(/^#/)
+    expect(coresEstilizado({ ...a, skin: 0 }).Pele).not.toBe(coresEstilizado({ ...a, skin: 5 }).Pele)
   })
 })

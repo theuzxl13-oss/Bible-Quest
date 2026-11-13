@@ -85,6 +85,39 @@ function tingirPorLuminancia(m: THREE.MeshStandardMaterial, cor: string, ganho =
   m.customProgramCacheKey = () => `lum-${ganho}`
 }
 
+/**
+ * Modelo estilizado (v0.8): troca a cor de uma região da textura pintada.
+ * Só os texels com cor parecida com a de base mudam (olhos, bordados e sobrancelhas ficam).
+ */
+function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string) {
+  const u = { uBase: { value: new THREE.Color(base) }, uAlvo: { value: new THREE.Color(alvo) } }
+  m.color.set('#ffffff')
+  m.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, u)
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nuniform vec3 uBase; uniform vec3 uAlvo;')
+      .replace(
+        '#include <map_fragment>',
+        `#ifdef USE_MAP
+        vec4 texelColor = texture2D( map, vMapUv );
+        vec3 c = texelColor.rgb;
+        const vec3 LUM = vec3( 0.2126, 0.7152, 0.0722 );
+        vec3 cn = c / max( dot( c, LUM ), 0.004 );
+        vec3 bn = uBase / max( dot( uBase, LUM ), 0.004 );
+        float w = 1.0 - smoothstep( 0.35, 0.8, length( cn - bn ) );
+        // a cor nova recebe o claro-escuro da textura (relação de luminância com a cor de base)
+        // a diferença de claridade entre alvo e base é suavizada (expoente 0,6): tons muito claros não estouram
+        float lb = max( dot( uBase, LUM ), 0.004 );
+        float r = max( dot( uAlvo, LUM ), 0.002 ) / lb;
+        float k = dot( c, LUM ) / lb * pow( r, 0.6 ) / r;
+        vec3 tinto = min( uAlvo * k, vec3( 1.0 ) );
+        diffuseColor *= vec4( mix( c, tinto, w ), texelColor.a );
+      #endif`,
+      )
+  }
+  m.customProgramCacheKey = () => 'regiao'
+}
+
 interface Faixas { listra?: string; barra?: string; bainha: number; bordas?: boolean }
 
 /** Tecido com listras e barra bordada desenhadas no shader (pela posição de repouso). */
@@ -137,6 +170,7 @@ function paraStandard(src: THREE.Material): THREE.MeshStandardMaterial {
     side: m.side, vertexColors: m.vertexColors, depthWrite: m.depthWrite, opacity: m.opacity,
   })
   if (m.normalScale) out.normalScale.copy(m.normalScale)
+  out.userData = { ...m.userData }
   return out
 }
 
@@ -172,6 +206,27 @@ export const PECAS_DO_MODELO = [
   ...Object.values(CINTO), ...Object.values(CALCADO), 'Barba_curta', 'Barba_cheia', ...Object.values(ACESSORIO),
 ]
 
+/** Regiões do modelo estilizado (v0.8), em que a aparência troca a cor. */
+export const REGIOES_ESTILIZADO = ['Pele', 'Cabelo', 'Tunica', 'Manto', 'Faixa', 'Couro'] as const
+
+/** O GLB é o modelo estilizado (gerado de imagem, peça única com regiões de cor)? */
+export function ehEstilizado(gltf: { scene: { userData: Record<string, unknown> } }) {
+  return gltf.scene.userData?.estilo === 'animacao'
+}
+
+/** Cor de cada região do modelo estilizado para uma aparência (sem item: a cor original, `undefined`). */
+export function coresEstilizado(a: CharacterAppearance): Record<(typeof REGIOES_ESTILIZADO)[number], string | undefined> {
+  const look = resolveLook(a)
+  return {
+    Pele: look.skin,
+    Cabelo: look.hair,
+    Tunica: look.tunic.color,
+    Manto: look.mantle?.color,
+    Faixa: look.belt?.color,
+    Couro: look.foot.color,
+  }
+}
+
 export interface HeroRig extends Rig {
   ready: Promise<void>
 }
@@ -202,12 +257,30 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
 
   const acess = look.accessories.map((x) => x.kind)
   for (const n of pecasVisiveis(a)) mostrar(n, true)
+  const estilizado = ehEstilizado(gltf)
+  if (estilizado) {
+    // corpo, cabelo e roupa são uma peça só: aparecem sempre; a aparência troca as cores
+    const alvo = coresEstilizado(a)
+    root.traverse((o) => {
+      const mesh = o as THREE.Mesh
+      if (!mesh.isMesh) return
+      const m = mesh.material as THREE.MeshStandardMaterial
+      const [tipo] = m.name.split('__')
+      const base = (m.userData as { base?: string }).base
+      if (base && tipo in alvo) {
+        mesh.visible = true
+        tingirRegiao(m, base, alvo[tipo as keyof typeof alvo] ?? base)
+        m.roughness = tipo === 'Pele' ? 0.6 : 0.85
+        if (quality === 'leve') m.envMapIntensity = 0.8
+      }
+    })
+  }
 
-  // materiais e cores
+  // materiais e cores (modelo v0.7)
   const hairHex = look.hair
   root.traverse((o) => {
     const mesh = o as THREE.Mesh
-    if (!mesh.isMesh) return
+    if (!mesh.isMesh || estilizado) return
     const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.MeshStandardMaterial[]
     for (const m of mats) {
       const n = m.name.split('__')[0]
@@ -259,10 +332,10 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
   const peleMats: THREE.MeshStandardMaterial[] = []
   root.traverse((o) => {
     const mesh = o as THREE.Mesh
-    if (mesh.isMesh && (mesh.material as THREE.Material).name.startsWith('Pele')) peleMats.push(mesh.material as THREE.MeshStandardMaterial)
+    if (mesh.isMesh && !estilizado && (mesh.material as THREE.Material).name.startsWith('Pele')) peleMats.push(mesh.material as THREE.MeshStandardMaterial)
   })
-  peleMats.forEach((m) => m.color.set(ajuste))
-  const ready = arquivo.endsWith('clara')
+  if (!estilizado) peleMats.forEach((m) => m.color.set(ajuste))
+  const ready = estilizado || arquivo.endsWith('clara')
     ? Promise.resolve()
     : pele(arquivo).then((t) => peleMats.forEach((m) => {
         m.map = t
