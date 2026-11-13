@@ -473,6 +473,10 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.7.1 — 13/11/2026 — Plano do estilo de animação 3D
+
+- Registrado em `docs/PROXIMOS-PASSOS-3D.md` o plano para deixar personagens e interface no estilo de filme de animação 3D, pelo caminho gratuito (imagens de referência, TRELLIS, Blender), com as decisões pendentes. Nenhuma mudança no jogo.
+
 ### 0.7.0 — 12/11/2026 — Personagem 3D reconstruído (modelo GLB)
 
 - **Etapas 1 e 2:** diagnóstico do personagem anterior e escolha da tecnologia (`docs/AUDITORIA-v0.7.md`).
