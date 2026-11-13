@@ -481,6 +481,10 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.8.5 — 13/11/2026 — Plano do editor de personagens modular
+
+- `docs/EDITOR-3D-PLANO.md`: análise do que já existe, arquitetura proposta e lista dos modelos 3D necessários para o editor modular pedido (Etapas 1 a 3). Nenhuma mudança no jogo.
+
 ### 0.8.4 — 13/11/2026 — Interface em tons quentes
 
 - O azul-marinho da interface virou marrom-terra quente (variáveis `--navy-*` e as cores fixas equivalentes em `global.css`), combinando com o estilo de animação. O texto continua claro sobre fundo escuro, com o mesmo contraste. O modo de alto contraste não mudou.
