@@ -34,6 +34,15 @@ tools/personagem/montar.sh
 | `animacoes.py` | Clipes Idle, Walk, Run, Victory, Greeting e Discovery. Expressões (morph targets) Piscar, Sorriso, Surpresa e Alegria, feitas com o rig facial. |
 | `montar.sh` | Executa tudo e comprime: `gltfpack -cc -kn -km -ke` (meshopt). |
 
+## Personagens estilizados (v0.8)
+
+Pasta `estilizado/`: modelos gerados de imagem com o TRELLIS.2 (gratuito, Hugging Face).
+
+1. `gerar3d.py <imagem> <saida.glb> <seed>`: imagem → malha com textura (precisa da chave do Hugging Face no ambiente).
+2. Medir as juntas e o rosto do modelo e gravar em `juntas-<nome>.json` (veja `juntas-m.json`): quadril, coluna, ombros, cotovelos, pulsos, joelhos, tornozelos, caixa do rosto, olhos e boca.
+3. `montar.sh <nome> <malha.glb>`: `preparar.py` (une vértices, reduz, escala), `rigar.py` (esqueleto, pesos, animações), `acabar.py` (regiões de cor, expressões, acessórios) e `gltfpack`.
+4. Para um personagem com modelo próprio, publicar como `heroi-<base>.glb` e acrescentar a base em `MODELOS_POR_BASE` (`src/character3d/heroi.ts`).
+
 ## Contrato do modelo (para substituir por um modelo de artista)
 
 O jogo (`src/character3d/heroi.ts`) só depende destas convenções. Um modelo feito por um artista pode substituir o atual se seguir estas regras:

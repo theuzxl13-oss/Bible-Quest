@@ -218,4 +218,16 @@ describe('modelo 3D (GLB) e personalização', () => {
     expect(saturacaoPele(SKIN_TONES[0])).toBeGreaterThan(1.2)
     expect(saturacaoPele(SKIN_TONES[5])).toBe(1)
   })
+
+  it('cada base usa o próprio modelo estilizado quando ele existe; senão, o do corpo', async () => {
+    const { modeloDe, MODELOS_POR_BASE } = await import('../character3d/heroi')
+    const { existsSync } = await import('node:fs')
+    for (const b of MODELOS_POR_BASE) expect(existsSync(`public/models/personagem/heroi-${b}.glb`), b).toBe(true)
+    const v = newAppearance('viajante', 'Tobias')
+    expect(modeloDe(v)).toBe('masculino')
+    const p = newAppearance('pastora', 'Ana')
+    expect(modeloDe(p)).toBe(MODELOS_POR_BASE.includes('pastora') ? 'pastora' : 'feminino')
+    // trocar o corpo volta ao modelo do corpo escolhido
+    expect(modeloDe({ ...p, body: 'masculino' })).toBe('masculino')
+  })
 })

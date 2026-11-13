@@ -481,6 +481,11 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.8.3 — 13/11/2026 — Um modelo por personagem
+
+- O jogo agora carrega o modelo próprio de cada personagem (`heroi-<base>.glb`), quando existir, listado em `MODELOS_POR_BASE` (`src/character3d/heroi.ts`). Se o jogador trocar o corpo, ou se o arquivo faltar ou falhar, usa o modelo do corpo, como antes. Novo teste.
+- Referências em pose neutra (braços um pouco abertos, mãos vazias) de 6 personagens, geradas no Canva a partir dos desenhos do dono do projeto, em `tools/personagem/estilizado/referencias/`. Os modelos 3D saem um por dia (cota gratuita).
+
 ### 0.8.2 — 13/11/2026 — Referências dos outros personagens
 
 - Folha com os 8 personagens enviada pelo dono do projeto: cada figura foi recortada para `tools/personagem/estilizado/referencias/` (com `LEIA-ME.md`), para virar modelo 3D, um por dia, conforme a cota gratuita. Nenhuma mudança no jogo.

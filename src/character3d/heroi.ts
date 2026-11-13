@@ -3,7 +3,7 @@ import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 import { clone as cloneSkinned } from 'three/examples/jsm/utils/SkeletonUtils.js'
 import type { CharacterAppearance } from '../types'
-import { resolveLook } from '../data/character/look'
+import { bodyOf, resolveLook } from '../data/character/look'
 import { hexShade } from './math'
 import type { Pose3D, Quality3D, Rig } from './rig'
 
@@ -18,18 +18,32 @@ import type { Pose3D, Quality3D, Rig } from './rig'
 const BASE = (import.meta.env?.BASE_URL ?? './') + 'models/personagem/'
 const cache = new Map<string, Promise<GLTF>>()
 
-export function heroUrl(body: 'masculino' | 'feminino') {
-  return `${BASE}heroi-${body}.glb`
+/**
+ * Personagens (bases) que já têm modelo estilizado próprio em `heroi-<base>.glb`.
+ * As outras usam o modelo do corpo (`heroi-masculino.glb` ou `heroi-feminino.glb`).
+ * O Viajante usa `heroi-masculino.glb`, que já é o modelo estilizado dele.
+ */
+export const MODELOS_POR_BASE: readonly string[] = []
+
+/** Arquivo do modelo de uma aparência: o da base, se existir e o corpo for o da base; senão, o do corpo. */
+export function modeloDe(a: CharacterAppearance): string {
+  const body = bodyOf(a)
+  const doCorpo = bodyOf({ ...a, body: undefined }) === body
+  return MODELOS_POR_BASE.includes(a.base) && doCorpo ? a.base : body
 }
 
-export function loadHero(body: 'masculino' | 'feminino'): Promise<GLTF> {
-  let p = cache.get(body)
+export function heroUrl(modelo: string) {
+  return `${BASE}heroi-${modelo}.glb`
+}
+
+export function loadHero(modelo: string): Promise<GLTF> {
+  let p = cache.get(modelo)
   if (!p) {
     const loader = new GLTFLoader()
     loader.setMeshoptDecoder(MeshoptDecoder)
-    p = loader.loadAsync(heroUrl(body))
-    p.catch(() => cache.delete(body))
-    cache.set(body, p)
+    p = loader.loadAsync(heroUrl(modelo))
+    p.catch(() => cache.delete(modelo))
+    cache.set(modelo, p)
   }
   return p
 }
