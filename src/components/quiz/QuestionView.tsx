@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import type { MemoryQuestion, MultipleChoiceQuestion, OrderQuestion, Question, TrueFalseQuestion } from '../types'
-import { MATCH_MISTAKES_ALLOWED, memoryMistakesAllowed, type AnswerResponse } from '../services/game/answers'
-import { shuffle, shuffleNotIdentity } from '../services/game/random'
-import { QUESTION_TYPE_LABEL, DIFFICULTY_LABEL } from '../data/questions'
-import { ArtImage } from './ArtImage'
-import { ART } from '../data/images'
-import { Icon } from './Icon'
+import type { MemoryQuestion, MultipleChoiceQuestion, OrderQuestion, Question, TrueFalseQuestion } from '../../types'
+import { MATCH_MISTAKES_ALLOWED, memoryMistakesAllowed, type AnswerResponse } from '../../services/game/answers'
+import { shuffle, shuffleNotIdentity } from '../../services/game/random'
+import { QUESTION_TYPE_LABEL, DIFFICULTY_LABEL } from '../../data/questions'
+import { ArtImage } from '../ArtImage'
+import { ART } from '../../data/images'
+import { Icon } from '../Icon'
 
 interface Props {
   question: Question

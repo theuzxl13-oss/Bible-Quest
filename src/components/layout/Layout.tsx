@@ -1,10 +1,10 @@
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
-import { useGame } from '../state/GameContext'
-import { Icon, type IconName } from './Icon'
-import { Avatar } from './ui'
-import { levelFromXp } from '../services/game/levels'
-import { PlayerCharacter } from './character/PlayerCharacter'
-import { ItemReward } from './character/ItemReward'
+import { useGame } from '../../state/GameContext'
+import { Icon, type IconName } from '../Icon'
+import { Avatar } from '../ui'
+import { levelFromXp } from '../../services/game/levels'
+import { PlayerCharacter } from '../character/PlayerCharacter'
+import { ItemReward } from '../character/ItemReward'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/painel', label: 'Início', short: 'Início', icon: 'home' },

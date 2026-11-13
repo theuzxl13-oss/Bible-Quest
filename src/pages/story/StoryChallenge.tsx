@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { QuizRunner } from '../../components/QuizRunner'
+import { QuizRunner } from '../../components/quiz/QuizRunner'
 import { getBook } from '../../data/bible/canon'
 import { getExperience } from '../../data/story'
 import { questionsForExperience } from '../../data/questions'

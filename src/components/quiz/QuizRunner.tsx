@@ -1,18 +1,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import type { AnswerResult, FreeModeId, MatchRecord, Question } from '../types'
-import { checkAnswer, correctOptionText, type AnswerResponse } from '../services/game/answers'
+import type { AnswerResult, FreeModeId, MatchRecord, Question } from '../../types'
+import { checkAnswer, correctOptionText, type AnswerResponse } from '../../services/game/answers'
 import {
   basePoints,
   summarizeMatch,
   timeAttackPoints,
   whoamiPoints,
-} from '../services/game/scoring'
-import { useGame } from '../state/GameContext'
-import { Icon } from './Icon'
-import { ProgressBar } from './ui'
+} from '../../services/game/scoring'
+import { useGame } from '../../state/GameContext'
+import { Icon } from '../Icon'
+import { ProgressBar } from '../ui'
 import { QuestionView } from './QuestionView'
-import { PlayerCharacter } from './character/PlayerCharacter'
+import { PlayerCharacter } from '../character/PlayerCharacter'
 
 /** Frases do companheiro (o próprio personagem do jogador), sem falas de personagens bíblicos. */
 const ANIMO_ACERTO = ['Muito bem!', 'Isso mesmo!', 'Excelente!', 'Que memória!', 'Continue assim!']

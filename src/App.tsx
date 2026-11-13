@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation, useParams } from 'react-router-dom'
-import { Layout } from './components/Layout'
+import { Layout } from './components/layout/Layout'
 import { useGame } from './state/GameContext'
 import Welcome from './pages/onboarding/Welcome'
 import CharacterBase from './pages/onboarding/CharacterBase'

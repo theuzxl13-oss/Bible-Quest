@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../../components/Icon'
-import { QuizRunner, type QuizRules } from '../../components/QuizRunner'
+import { QuizRunner, type QuizRules } from '../../components/quiz/QuizRunner'
 import { FREE_LEVELS, availableCharacters, availableThemes, buildRound, filteredPool, getFreeMode, type RoundOptions } from '../../services/game/freeModes'
 import { TIME_ATTACK_MAX_ERRORS, TIME_ATTACK_SECONDS } from '../../services/game/scoring'
 import type { FreeLevel, FreeModeId } from '../../types'

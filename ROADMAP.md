@@ -4,7 +4,7 @@
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
 - **v0.10:** central do acampamento em 3D, com o personagem do jogador no centro, missões e acampamento evolutivo. Próximos: mais elementos do acampamento (por exemplo, por livro concluído) e decorações escolhidas pelo jogador.
-- **Em andamento (v0.8):** estilo de filme de animação 3D, de graça. Feito: herói masculino estilizado com cores personalizáveis e interface em tons quentes. Próximos: modelos próprios dos outros 7 personagens (cota diária do Hugging Face) e o editor de personagens modular (plano em `docs/EDITOR-3D-PLANO.md`). Veja `docs/PROXIMOS-PASSOS-3D.md`.
+- **Em andamento (v0.8):** estilo de filme de animação 3D, de graça. Feito: herói masculino estilizado com cores personalizáveis e interface em tons quentes. Próximos: modelos próprios dos outros 7 personagens (cota diária do Hugging Face) e o editor de personagens modular (plano em `docs/planos/EDITOR-3D-PLANO.md`). Veja `docs/planos/PROXIMOS-PASSOS-3D.md`.
 - **0.7:** personagem reconstruído como modelo GLB (MakeHuman CC0 + Blender): esqueleto, roupas simuladas, animações, expressões e criador com 9 categorias.
 - **0.6:** acabamento do personagem 3D (mechas, lábios, pálpebras, sobrancelhas fio a fio, sombras nas dobras), contexto histórico nas fichas, partículas de acerto e transições entre telas.
 - **0.5:** personagem 3D (Three.js) com rotação 360°, zoom, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável.

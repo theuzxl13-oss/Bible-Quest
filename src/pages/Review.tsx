@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Icon } from '../components/Icon'
-import { QuizRunner } from '../components/QuizRunner'
+import { QuizRunner } from '../components/quiz/QuizRunner'
 import { PageHeader, ProgressBar } from '../components/ui'
 import { getBook } from '../data/bible/canon'
 import { characterReviewQuestions, masteredTopics, pendingErrors, reviewQuestions, topicStats, weakCharacters, weakTopics } from '../services/game/review'
