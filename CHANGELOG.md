@@ -2,6 +2,23 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.13.0 — 13/11/2026 — Mapas em trilha de fases
+
+- **Modo História e Modo Quiz abrem direto no mapa**, em tela cheia e sem poluição visual. Saíram o cabeçalho com nível e barra de progresso, a lista de mundos, os títulos ao lado das fases, os atalhos e a lista de próximos mundos.
+- **Fica só o essencial:**
+  - botão redondo para voltar ao acampamento;
+  - total de estrelas conquistadas;
+  - no Modo Quiz, um botão para o treino livre.
+- **Novo visual:**
+  - campo claro com céu e montanhas ao longe;
+  - caminho sinuoso listrado;
+  - ilhas de grama com amendoeiras floridas, árvores, oliveiras, palmeiras, ovelhas, tendas, poço, pirâmide, torre e cidade;
+  - flores, borboletas e nuvens.
+- **Botões das fases:** redondos e brilhantes, com número grande. As fases concluídas alternam verde, azul, laranja e roxo e têm três estrelas embaixo. A fase atual é dourada e pulsa, e as bloqueadas são cinza com cadeado.
+- Cada mundo e cada região tem suas cores e uma fita com o nome (`src/data/paletasMapa.ts`). O cenário é desenhado em código (`src/components/map/Prado.tsx`), sem imagens externas, e fica igual em todas as visitas.
+- O título de cada fase continua no nome acessível do botão, lido pelos leitores de tela.
+- Testes ajustados ao mapa novo: continuam 132.
+
 ## 0.12.0 — 13/11/2026 — Ícones ilustrados
 
 - **Novo componente `GameIcon`** (`src/components/GameIcon.tsx`): 30 ícones coloridos desenhados em SVG, com contorno escuro, brilho e volume, no estilo de jogo de aventura. Exemplos: tenda, túnica, troféu, pilha de livros, pessoa, estrela, chama, baú, pergaminho, mapa, calendário, louros, coroa, escudo, bússola, lamparina, pomba, cérebro, engrenagem, cadeado e coração.

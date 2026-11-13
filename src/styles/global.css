@@ -1585,3 +1585,68 @@ html[data-contrast='alto'] .section-title { background: #000; clip-path: none; }
   .hud-settings .game-icon { width: 34px; height: 34px; }
 }
 .topnav-link { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ===== v0.13 — mapas no estilo de trilha de fases (limpos, só o caminho) ===== */
+.app.is-mapa .topbar { display: none; }
+.app.is-mapa main { padding: 0; }
+.app.is-mapa main::before { display: none; }
+.app.is-mapa { background: #8fcf55; }
+.saga { position: relative; min-height: 100vh; }
+.saga-coluna { display: block; }
+.saga-trecho { position: relative; overflow: hidden; background: linear-gradient(180deg, var(--ceu) 0, var(--campo) 240px, var(--campo-fundo) 100%); }
+.saga-canvas { position: relative; width: 100%; max-width: 520px; margin: 0 auto; }
+@media (min-width: 900px) { .saga-canvas { max-width: 600px; } }
+.prado-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; display: block; }
+.prado-borda { fill: none; stroke: rgba(70, 45, 20, 0.35); stroke-width: 34; stroke-linecap: round; }
+.prado-caminho { fill: none; stroke: #fffaf0; stroke-width: 26; stroke-linecap: round; }
+.prado-listras { fill: none; stroke-width: 20; stroke-dasharray: 9 11; opacity: 0.85; }
+.prado-brilho { fill: none; stroke: rgba(255, 255, 255, 0.55); stroke-width: 4; stroke-linecap: round; transform: translate(-3px, -4px); }
+.prado-borboleta { transform-box: fill-box; transform-origin: center; animation: borboleta 0.5s ease-in-out infinite alternate; }
+@keyframes borboleta { from { transform: scaleX(1); } to { transform: scaleX(0.35); } }
+.prado-fita { position: absolute; left: 50%; top: 74px; transform: translateX(-50%); margin: 0; z-index: 2; white-space: nowrap; pointer-events: none; }
+.prado-fita span { position: relative; display: inline-block; padding: 7px 30px 9px; font-family: var(--font-display); font-size: clamp(1.05rem, 4.2vw, 1.35rem); font-weight: 700; color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); background: linear-gradient(180deg, color-mix(in srgb, var(--fita) 75%, #fff), var(--fita) 55%, color-mix(in srgb, var(--fita) 75%, #000)); border-radius: 6px; box-shadow: 0 4px 0 color-mix(in srgb, var(--fita) 55%, #000), 0 8px 14px rgba(0, 0, 0, 0.25); clip-path: polygon(0 0, 100% 0, 96% 50%, 100% 100%, 0 100%, 4% 50%); }
+
+.saga-no { position: absolute; transform: translate(-50%, -50%); z-index: 3; }
+.saga-btn { position: relative; display: grid; place-items: center; width: 62px; height: 62px; border-radius: 50%; text-decoration: none; cursor: pointer; border: 4px solid #fff; padding: 0; color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; --c1: #6fe08a; --c2: #1f9e4a; --c3: #0e6a2e; background: radial-gradient(circle at 50% 30%, var(--c1), var(--c2) 62%, var(--c3)); box-shadow: 0 5px 0 var(--c3), 0 9px 14px rgba(0, 0, 0, 0.3); transition: transform var(--speed); }
+.saga-btn::after { content: ''; position: absolute; left: 18%; right: 18%; top: 8%; height: 34%; border-radius: 50%; background: linear-gradient(180deg, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0)); pointer-events: none; }
+.saga-btn:hover { transform: translateY(-2px) scale(1.06); }
+.saga-btn:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--c3), 0 4px 8px rgba(0, 0, 0, 0.3); }
+.saga-btn:focus-visible { outline: 4px solid #ffd34d; outline-offset: 4px; }
+.saga-num { position: relative; z-index: 1; line-height: 1; -webkit-text-stroke: 1.5px rgba(0, 0, 0, 0.45); paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); display: grid; place-items: center; }
+.saga-no.cor-1 .saga-btn { --c1: #7cc8ff; --c2: #2a7fd8; --c3: #164f94; }
+.saga-no.cor-2 .saga-btn { --c1: #ffb46a; --c2: #e8641f; --c3: #9c3c0c; }
+.saga-no.cor-3 .saga-btn { --c1: #d3a2ff; --c2: #8a4ad8; --c3: #55248f; }
+.saga-no.is-atual .saga-btn { width: 76px; height: 76px; font-size: 1.85rem; --c1: #fff2a8; --c2: #f5b41e; --c3: #a86a06; animation: saga-pulso 1.7s ease-in-out infinite; }
+@keyframes saga-pulso { 0%, 100% { box-shadow: 0 5px 0 var(--c3), 0 0 0 0 rgba(255, 220, 90, 0.75); } 50% { box-shadow: 0 5px 0 var(--c3), 0 0 0 16px rgba(255, 220, 90, 0); } }
+.saga-no.is-bloqueada .saga-btn { width: 54px; height: 54px; --c1: #c9d0dc; --c2: #8e97a8; --c3: #5d6575; color: #eef1f6; }
+.saga-no.just-unlocked .saga-btn { animation: unlock-pop 0.9s ease-out, saga-pulso 1.7s 0.9s ease-in-out infinite; }
+.saga-estrelas { position: absolute; left: 50%; top: calc(100% - 8px); transform: translateX(-50%); display: flex; align-items: flex-start; z-index: 2; }
+.saga-estrelas svg { stroke: #7a4a06; stroke-width: 1.6; stroke-linejoin: round; filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.3)); }
+.saga-estrelas svg:nth-child(2) { margin-top: 5px; }
+.saga-estrelas .on { fill: #ffd23a; }
+.saga-estrelas .off { fill: #e6e1d6; stroke: #8b8577; }
+.saga-bau .chest-btn { display: grid; place-items: center; padding: 4px; border: 0; background: none; cursor: pointer; border-radius: 12px; filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.3)); }
+.saga-bau.is-disponivel .chest-btn { animation: chest-wiggle 1.6s ease-in-out infinite; filter: drop-shadow(0 0 12px rgba(255, 215, 120, 0.95)); }
+.saga-bau.is-fechado .chest-btn { filter: grayscale(0.6) brightness(0.95); }
+.saga-bau.is-aberto .chest-btn { opacity: 0.8; }
+.saga-avatar { position: absolute; z-index: 4; transform: translate(-50%, -100%); transition: left 0.68s ease-in-out, top 0.68s ease-in-out; pointer-events: none; filter: drop-shadow(0 6px 5px rgba(0, 0, 0, 0.3)); }
+.saga-avatar.lado-dir { margin-left: 62px; margin-top: 34px; }
+.saga-avatar.lado-esq { margin-left: -62px; margin-top: 34px; }
+.saga-trecho.is-locked .saga-canvas > *:not(.prado-fita) { filter: grayscale(0.55) brightness(0.92); }
+
+.saga-topo { position: fixed; z-index: 30; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 10px; padding: max(10px, env(safe-area-inset-top)) 14px 10px; pointer-events: none; max-width: 640px; margin: 0 auto; }
+.saga-topo > * { pointer-events: auto; }
+.saga-redondo { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; color: #5a3511; background: radial-gradient(circle at 50% 30%, #fffbe8, #ffe08a 60%, #e5a93a); border: 3px solid #fff; box-shadow: 0 4px 0 #a86a06, 0 8px 14px rgba(0, 0, 0, 0.25); text-decoration: none; }
+.saga-redondo:focus-visible { outline: 4px solid #2a7fd8; outline-offset: 3px; }
+.saga-redondo.is-vazio { display: none; }
+.saga-topo > :last-child:not(.saga-pilula) { margin-left: auto; }
+.saga-pilula { display: inline-flex; align-items: center; gap: 6px; padding: 6px 16px 6px 8px; border-radius: 999px; font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35); background: linear-gradient(180deg, #6a4a2e, #3e2716); border: 3px solid #fff3c8; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25); }
+.saga-fim { display: grid; justify-items: center; gap: 4px; padding: 28px 16px 64px; text-align: center; color: #3b2a12; background: var(--campo-fim, #8fcf55); }
+.saga-fim p { margin: 0; text-shadow: none; }
+.saga-fim .small { color: #4b3a1e; }
+.saga-cadeado { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%; color: #eef1f6; background: radial-gradient(circle at 50% 30%, #c9d0dc, #8e97a8 62%, #5d6575); border: 4px solid #fff; box-shadow: 0 5px 0 #5d6575; }
+.app.is-mapa .map-toast { bottom: 24px; }
+@media (prefers-reduced-motion: reduce) {
+  .saga-no.is-atual .saga-btn, .saga-no.just-unlocked .saga-btn, .prado-borboleta, .saga-bau.is-disponivel .chest-btn { animation: none; }
+}
+.app.is-mapa .route-fade { animation: none; }

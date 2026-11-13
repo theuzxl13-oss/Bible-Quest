@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.12 (visual de jogo e ícones ilustrados) |
+| **Versão** | 0.13 (mapas em trilha de fases) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -68,13 +68,13 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 
 **Modo História**
 
-- Mapa sinuoso com fases numeradas, avatar que caminha até a fase atual, baús e 10 mundos.
+- Mapa em trilha de fases, limpo e colorido: campo claro, caminho listrado, botões redondos numerados com estrelas, avatar que caminha até a fase atual, baús e 10 mundos (cada um com sua fita e suas cores). Na tela só aparecem as fases, o botão de voltar e o total de estrelas.
 - Gênesis (20 fases) e Êxodo (4 fases) têm conteúdo; os outros 64 livros aparecem como "em preparação".
 - Cada fase tem cena em quadros (introdução, narrativa dramatizada, trechos bíblicos e aprendizado) e desafio.
 
 **Modo Quiz**
 
-- Mapa com 4 regiões (Vale dos Iniciantes, Planície do Saber, Montanhas dos Sábios e Torre dos Especialistas), com 6 desafios cada.
+- Mapa em trilha de fases, no mesmo estilo do Modo História, com 4 regiões (Vale dos Iniciantes, Planície do Saber, Montanhas dos Sábios e Torre dos Especialistas) e 6 desafios cada. Um botão no canto leva ao treino livre.
 - Treino livre em 10 modalidades:
   - perguntas aleatórias, verdadeiro ou falso, complete o versículo, quem sou eu?;
   - contra o tempo, ordem dos acontecimentos, identifique o livro;
@@ -182,7 +182,7 @@ npm run dev
     │   ├── layout/          Estrutura das páginas, topo e menu inferior
     │   ├── camp/            Cena do acampamento (3D ou 2D)
     │   ├── character/       Personagem, editor e tela de recompensa
-    │   ├── map/             Mapa de fases e cenário
+    │   ├── map/             Mapas em trilha de fases (cenário, caminho e botões)
     │   └── quiz/            Tela de perguntas e os 8 tipos de exercício
     ├── pages/               Telas
     │   ├── onboarding/      Boas-vindas, escolha e personalização do personagem
@@ -270,7 +270,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.13.0** (13/11/2026): mapas do Modo História e do Modo Quiz em trilha de fases, limpos e coloridos, sem textos extras.
 - **0.12.0** (13/11/2026): ícones ilustrados e coloridos no menu, no acampamento, nas conquistas e no treino livre.
 - **0.11.0** (13/11/2026): visual de jogo em todas as telas: céu e montanhas no topo, madeira, faixas, botões com relevo e pergaminho.
 - **0.10.1** (13/11/2026): README reorganizado, histórico movido para `CHANGELOG.md`, documentos em `docs/planos/` e `docs/auditorias/`, e componentes em `components/layout/` e `components/quiz/`.
-- **0.10.0** (13/11/2026): central do acampamento em 3D, com o personagem no centro, missões, acampamento evolutivo e menu inferior no estilo de jogo.

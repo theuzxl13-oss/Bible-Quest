@@ -1,26 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { PlayerCharacter } from '../../components/character/PlayerCharacter'
+import { MapaTopo } from '../../components/map/MapaTopo'
 import { ArtImage } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
 import { JourneyMap } from '../../components/map/JourneyMap'
 import { ChestIcon } from '../../components/map/Scenery'
-import { ProgressBar } from '../../components/ui'
-import { getBook } from '../../data/bible/canon'
 import { getCharacter } from '../../data/library/characters'
 import { STORY_SEQUENCE } from '../../data/story'
 import { WORLDS } from '../../data/worlds'
 import { avatarPhaseId, allChests, phaseState, worldSections } from '../../services/game/journeyMap'
-import { levelFromXp, levelTitle } from '../../services/game/levels'
-import { continueExperience, journeyCompletion, percent } from '../../services/game/progression'
 import { useGame } from '../../state/GameContext'
 
 const STEP_MS = 700
 
 export default function StoryMap() {
-  const { progress, profile, settings, setMapCursor, claimChest, markWorldSeen } = useGame()
+  const { progress, settings, setMapCursor, claimChest, markWorldSeen } = useGame()
   const sections = useMemo(() => worldSections(), [])
-  const character = profile!.character!
   const target = avatarPhaseId(progress)
   const startAt = progress.mapCursor && STORY_SEQUENCE.some((e) => e.id === progress.mapCursor) ? progress.mapCursor : target
   const [avatarAt, setAvatarAt] = useState(startAt)
@@ -31,7 +25,6 @@ export default function StoryMap() {
   const [worldIntro, setWorldIntro] = useState<string | null>(null)
   const timers = useRef<number[]>([])
   const reduceMotion = settings.reduceMotion || (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
-  const cont = continueExperience(progress)
   const contentWorlds = new Set(sections.map((s) => s.world.id))
 
   const scrollTo = (id: string, smooth = true) => {
@@ -49,6 +42,7 @@ export default function StoryMap() {
       return
     }
     if (reduceMotion || to < from) {
+      window.setTimeout(() => scrollTo(target, false), 80)
       setAvatarAt(target)
       setJustUnlocked(target)
       setMapCursor(target)
@@ -93,86 +87,33 @@ export default function StoryMap() {
   const introChars = intro
     ? [...new Set(sections.find((s) => s.world.id === intro.id)?.phases.flatMap((p) => p.experience.characters) ?? [])].slice(0, 6)
     : []
-  const level = levelFromXp(progress.xp)
+  const proximo = WORLDS.find((w) => !contentWorlds.has(w.id))
+  const estrelas = STORY_SEQUENCE.reduce((t, e) => t + (progress.experiences[e.id]?.bestStars ?? 0), 0)
 
   return (
-    <div className="story-map">
-      <section className="map-hero">
-        <ArtImage art="place-raheh" className="hero-bg" priority decorative />
-        <div className="hero-shade" />
-        <div className="container map-hero-inner">
-          <div className="map-hero-char">
-            <PlayerCharacter size={96} />
-          </div>
-          <div className="map-hero-info">
-            <p className="eyebrow">Modo História · A grande jornada bíblica</p>
-            <h1>{character.name}</h1>
-            <p className="small">Nível {level} · {levelTitle(level)} · {progress.xp} XP</p>
-            <ProgressBar value={Math.round(journeyCompletion(progress) * 1000)} max={1000} label="Conclusão da jornada completa" />
-            <p className="small muted">{percent(journeyCompletion(progress))} da Bíblia · de Gênesis a Apocalipse</p>
-          </div>
-          {cont && (
-            <Link to={`/historia/${cont.bookId}/${cont.id}`} className="btn btn-gold btn-lg map-hero-cta">
-              Continuar: fase {STORY_SEQUENCE.findIndex((e) => e.id === cont.id) + 1} <Icon name="arrowRight" />
-            </Link>
-          )}
-        </div>
-      </section>
+    <div className="saga story-map">
+      <MapaTopo voltar="/painel" estrelas={estrelas} />
 
-      <nav className="world-nav" aria-label="Mundos da jornada">
-        <div className="world-nav-inner">
-          {WORLDS.map((w) => (
-            <button
-              key={w.id}
-              type="button"
-              className={`world-chip ${contentWorlds.has(w.id) ? '' : 'is-locked'}`}
-              onClick={() => (contentWorlds.has(w.id) ? scrollTo(w.id) : document.getElementById('proximos-mundos')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' }))}
-            >
-              <span className="world-chip-n">{w.number}</span> {w.title}
-              {!contentWorlds.has(w.id) && <Icon name="lock" size={12} />}
-            </button>
-          ))}
-        </div>
-      </nav>
-
-      <div className="map-column">
-        {sections.map((s, i) => (
-          <div key={s.world.id}>
-            {i > 0 && (
-              <div className="world-gate" aria-hidden="true">
-                <span>Portal para o Mundo {s.world.number}</span>
-              </div>
-            )}
-            <JourneyMap
-              section={s}
-              progress={progress}
-              avatarAt={s.phases.some((p) => p.id === avatarAt) ? avatarAt : null}
-              walking={walking}
-              justUnlocked={justUnlocked}
-              onLocked={setToast}
-              onChest={openChest}
-            />
-          </div>
+      <div className="saga-coluna" role="region" aria-label="Mapa da jornada">
+        {sections.map((s) => (
+          <JourneyMap
+            key={s.world.id}
+            section={s}
+            progress={progress}
+            avatarAt={s.phases.some((p) => p.id === avatarAt) ? avatarAt : null}
+            walking={walking}
+            justUnlocked={justUnlocked}
+            onLocked={setToast}
+            onChest={openChest}
+          />
         ))}
-
-        <section id="proximos-mundos" className="next-worlds" aria-labelledby="nw-t">
-          <h2 id="nw-t">Próximos mundos</h2>
-          <p className="muted small">A jornada continua até Apocalipse. Cada mundo é liberado quando o anterior estiver completo e suas fases estiverem prontas.</p>
-          <ol className="next-world-list">
-            {WORLDS.filter((w) => !contentWorlds.has(w.id)).map((w) => (
-              <li key={w.id} className="next-world">
-                <ArtImage art={w.art} className="next-world-img" sizes="160px" decorative />
-                <div>
-                  <p className="eyebrow">Mundo {w.number} · Em preparação</p>
-                  <h3>{w.title}</h3>
-                  <p className="small muted">{w.books.map((b) => getBook(b)?.name).join(', ')}</p>
-                </div>
-                <Icon name="lock" />
-              </li>
-            ))}
-          </ol>
-          <Link to="/historia/livros" className="btn btn-outline">Ver os 66 livros e o progresso</Link>
-        </section>
+        {proximo && (
+          <div className="saga-fim">
+            <span className="saga-cadeado" aria-hidden="true"><Icon name="lock" size={22} /></span>
+            <p>Próximo mundo: <strong>{proximo.title}</strong></p>
+            <p className="small">Em preparação</p>
+          </div>
+        )}
       </div>
 
       <p className="map-toast" role="status" aria-live="polite">{toast && <span>{toast}</span>}</p>

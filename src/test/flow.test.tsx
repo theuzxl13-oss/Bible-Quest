@@ -142,7 +142,7 @@ describe('fluxos de ponta a ponta', () => {
 
     // mapa: abertura do mundo, fase 1 atual, fase 2 bloqueada
     await user.click(await screen.findByRole('button', { name: /entrar no mundo/i }))
-    expect(screen.getByRole('heading', { name: 'Rute Viajante' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Gênesis', level: 2 })).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /fase 1: a criação do mundo\. fase atual/i })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: /fase 2: .*bloqueada/i }))
     expect(await screen.findByText(/conclua a fase 1/i)).toBeInTheDocument()
@@ -242,7 +242,7 @@ describe('fluxos de ponta a ponta', () => {
 
   it('fases bloqueadas não abrem por URL', async () => {
     setup('/historia/genesis/gn-babel', withProfile())
-    expect(await screen.findByRole('navigation', { name: 'Mundos da jornada' })).toBeInTheDocument()
+    expect(await screen.findByRole('region', { name: 'Mapa da jornada' })).toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'A torre de Babel' })).not.toBeInTheDocument()
   })
 
@@ -322,7 +322,7 @@ describe('fluxos de ponta a ponta', () => {
 
   it('endereços antigos redirecionam para o Modo História', async () => {
     setup('/mapa', withProfile())
-    expect(await screen.findByRole('navigation', { name: 'Mundos da jornada' })).toBeInTheDocument()
+    expect(await screen.findByRole('region', { name: 'Mapa da jornada' })).toBeInTheDocument()
   })
 
   it('sem perfil com personagem, a jornada pede a criação do personagem', async () => {
