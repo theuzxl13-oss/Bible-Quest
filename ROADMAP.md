@@ -3,7 +3,7 @@
 ## Fase 1 — Versão estática (concluída)
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
-- **Em andamento (v0.8):** estilo de filme de animação 3D, de graça. Feito: herói masculino estilizado com cores personalizáveis. Próximos: herói feminino (cota diária do Hugging Face), variações de cabelo e manto geradas aos poucos, interface em tons quentes. Veja `docs/PROXIMOS-PASSOS-3D.md`.
+- **Em andamento (v0.8):** estilo de filme de animação 3D, de graça. Feito: herói masculino estilizado com cores personalizáveis e interface em tons quentes. Próximos: modelos próprios dos outros 7 personagens (cota diária do Hugging Face) e o editor de personagens modular. Veja `docs/PROXIMOS-PASSOS-3D.md`.
 - **0.7:** personagem reconstruído como modelo GLB (MakeHuman CC0 + Blender): esqueleto, roupas simuladas, animações, expressões e criador com 9 categorias.
 - **0.6:** acabamento do personagem 3D (mechas, lábios, pálpebras, sobrancelhas fio a fio, sombras nas dobras), contexto histórico nas fichas, partículas de acerto e transições entre telas.
 - **0.5:** personagem 3D (Three.js) com rotação 360°, zoom, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável.

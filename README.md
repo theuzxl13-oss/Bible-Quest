@@ -481,6 +481,13 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.8.4 — 13/11/2026 — Interface em tons quentes
+
+- O azul-marinho da interface virou marrom-terra quente (variáveis `--navy-*` e as cores fixas equivalentes em `global.css`), combinando com o estilo de animação. O texto continua claro sobre fundo escuro, com o mesmo contraste. O modo de alto contraste não mudou.
+- Cantos mais arredondados (cartões com 18 px, botões e campos com 12 px).
+- Palco 3D com luz quente: o contraluz azulado virou âmbar, e a luz principal ficou mais quente.
+- `theme-color` do navegador acompanha o novo fundo.
+
 ### 0.8.3 — 13/11/2026 — Um modelo por personagem
 
 - O jogo agora carrega o modelo próprio de cada personagem (`heroi-<base>.glb`), quando existir, listado em `MODELOS_POR_BASE` (`src/character3d/heroi.ts`). Se o jogador trocar o corpo, ou se o arquivo faltar ou falhar, usa o modelo do corpo, como antes. Novo teste.

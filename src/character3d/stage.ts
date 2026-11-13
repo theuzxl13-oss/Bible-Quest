@@ -47,7 +47,7 @@ export function createScene(renderer: THREE.WebGLRenderer, quality: Quality3D) {
   scene.environment = env
   scene.environmentIntensity = 0.45
 
-  const key = new THREE.DirectionalLight('#fff0db', 2.0)
+  const key = new THREE.DirectionalLight('#ffe8c8', 2.0)
   key.position.set(2.3, 2.7, 1.9)
   if (quality === 'alta') {
     key.castShadow = true
@@ -60,7 +60,7 @@ export function createScene(renderer: THREE.WebGLRenderer, quality: Quality3D) {
     key.shadow.normalBias = 0.02
     key.shadow.radius = 6
   }
-  const rim = new THREE.DirectionalLight('#a9c6ff', 2.3)
+  const rim = new THREE.DirectionalLight('#ffd2a1', 2.0)
   rim.position.set(-2.2, 2.4, -2.4)
   const fill = new THREE.HemisphereLight('#fff6e8', '#4a3524', 0.8)
   scene.add(key, key.target, rim, fill)
