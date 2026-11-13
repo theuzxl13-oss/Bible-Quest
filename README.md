@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.11 (visual de jogo em todas as telas) |
+| **Versão** | 0.12 (visual de jogo e ícones ilustrados) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -102,6 +102,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 **Visual**
 
 - Estilo de jogo de aventura em todas as telas: céu e montanhas no topo, madeira, faixas, pergaminho e botões com relevo.
+- Ícones ilustrados e coloridos (`src/components/GameIcon.tsx`) no menu, no acampamento, nas conquistas e no treino.
 
 **Acessibilidade**
 
@@ -216,7 +217,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 130 testes automatizados (Vitest e Testing Library), em 9 arquivos de `src/test/`:
+São 132 testes automatizados (Vitest e Testing Library), em 10 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -225,6 +226,7 @@ São 130 testes automatizados (Vitest e Testing Library), em 9 arquivos de `src/
 | `aventura` | Mapas, baús, revisão inteligente e modalidades |
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
+| `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
 O ambiente de teste não tem WebGL, então as telas usam o personagem e o acampamento em 2D. O 3D é conferido no navegador (Playwright), no celular e no computador, a cada versão.
@@ -268,7 +270,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.12.0** (13/11/2026): ícones ilustrados e coloridos no menu, no acampamento, nas conquistas e no treino livre.
 - **0.11.0** (13/11/2026): visual de jogo em todas as telas: céu e montanhas no topo, madeira, faixas, botões com relevo e pergaminho.
 - **0.10.1** (13/11/2026): README reorganizado, histórico movido para `CHANGELOG.md`, documentos em `docs/planos/` e `docs/auditorias/`, e componentes em `components/layout/` e `components/quiz/`.
 - **0.10.0** (13/11/2026): central do acampamento em 3D, com o personagem no centro, missões, acampamento evolutivo e menu inferior no estilo de jogo.
-- **0.9.3** (13/11/2026): novo visual da tela de perguntas.

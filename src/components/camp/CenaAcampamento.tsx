@@ -4,7 +4,8 @@ import { appearanceKey } from '../../data/character/look'
 import { resolveQuality } from '../../character3d/quality'
 import { useGame } from '../../state/GameContext'
 import { Character } from '../character/Character'
-import { Icon, type IconName } from '../Icon'
+import type { IconName } from '../Icon'
+import { GameIcon } from '../GameIcon'
 import type { AlvoAcampamento, CampHandle } from '../../character3d/acampamento'
 import type { Pose3D } from '../../character3d/rig'
 
@@ -128,7 +129,7 @@ export const CenaAcampamento = forwardRef<CenaApi, Props>(function CenaAcampamen
             onClick={() => onSelect(r.id)}
             aria-label={r.detalhe ? `${r.label}: ${r.detalhe}` : r.label}
           >
-            <span className="camp-label-icon" aria-hidden="true"><Icon name={r.icon} size={18} /></span>
+            <span className="camp-label-icon" aria-hidden="true"><GameIcon name={r.icon} size={24} /></span>
             <span className="camp-label-text">{r.label}</span>
             {r.badge ? <span className="camp-badge" aria-hidden="true">{r.badge}</span> : null}
           </button>

@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { Icon } from '../../components/Icon'
+import { GameIcon } from '../../components/GameIcon'
 import { QuizRunner, type QuizRules } from '../../components/quiz/QuizRunner'
 import { FREE_LEVELS, availableCharacters, availableThemes, buildRound, filteredPool, getFreeMode, type RoundOptions } from '../../services/game/freeModes'
 import { TIME_ATTACK_MAX_ERRORS, TIME_ATTACK_SECONDS } from '../../services/game/scoring'
@@ -71,7 +72,7 @@ export default function FreePlay() {
     <div className="container section narrow stack">
       <Link to="/quiz/treino" className="back-link"><Icon name="arrowLeft" size={16} /> Treino livre</Link>
       <div className="panel mode-intro stack">
-        <span className="mode-icon mode-icon-lg"><Icon name={mode.icon} size={30} /></span>
+        <span className="mode-icon mode-icon-lg"><GameIcon name={mode.icon} size={40} /></span>
         <p className="eyebrow">Modo Quiz · Treino livre</p>
         <h1>{mode.title}</h1>
         <p>{mode.rules}</p>

@@ -1561,3 +1561,27 @@ a.panel:hover, a.lib-card:hover { transform: translateY(-2px); filter: brightnes
 html[data-contrast='alto'] .panel, html[data-contrast='alto'] .lib-card, html[data-contrast='alto'] .mode-card, html[data-contrast='alto'] .history-item, html[data-contrast='alto'] .btn-outline, html[data-contrast='alto'] .chip, html[data-contrast='alto'] .topbar { background: #000; border-color: #ffd36b; box-shadow: none; }
 html[data-contrast='alto'] main::before { display: none; }
 html[data-contrast='alto'] .section-title { background: #000; clip-path: none; }
+
+/* ===== v0.12 · Ícones ilustrados ===== */
+.game-icon { display: block; flex-shrink: 0; filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.25)); overflow: visible; }
+.tabbar-icon { width: 34px; height: 34px; background: none; }
+.tabbar-link .game-icon { transition: transform 150ms ease; }
+.tabbar-link.active .tabbar-icon { background: none; }
+.tabbar-link.active .game-icon { transform: translateY(-3px) scale(1.12); filter: drop-shadow(0 0 8px rgba(255, 224, 138, 0.8)) drop-shadow(0 2px 0 rgba(0, 0, 0, 0.3)); }
+.hud-res { padding-left: 2px; }
+.hud-res-icon { width: 34px; height: 34px; background: none !important; margin: -4px 0; }
+.hud-settings { background: none; border: 0; box-shadow: none; width: 46px; height: 46px; }
+.hud-settings .game-icon { width: 40px; height: 40px; }
+.hud-level .game-icon { filter: none; }
+.camp-label-icon { width: 28px; height: 28px; background: none; margin: -4px 0 -4px -2px; }
+.board-icon { width: 32px; height: 32px; background: none !important; }
+.camp-board > summary .game-icon { filter: none; }
+.camp-mode-icon { background: rgba(255, 248, 230, 0.9); }
+.camp-mode-icon .game-icon { width: 46px; height: 46px; }
+.mode-icon .game-icon, .ach-icon .game-icon { filter: drop-shadow(0 2px 0 rgba(0, 0, 0, 0.3)); }
+@media (max-width: 719px) {
+  .camp-mode-icon .game-icon { width: 34px; height: 34px; }
+  .hud-res-icon { width: 28px; height: 28px; }
+  .hud-settings .game-icon { width: 34px; height: 34px; }
+}
+.topnav-link { display: inline-flex; align-items: center; gap: 6px; }

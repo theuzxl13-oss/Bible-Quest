@@ -2,6 +2,17 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.12.0 — 13/11/2026 — Ícones ilustrados
+
+- **Novo componente `GameIcon`** (`src/components/GameIcon.tsx`): 30 ícones coloridos desenhados em SVG, com contorno escuro, brilho e volume, no estilo de jogo de aventura. Exemplos: tenda, túnica, troféu, pilha de livros, pessoa, estrela, chama, baú, pergaminho, mapa, calendário, louros, coroa, escudo, bússola, lamparina, pomba, cérebro, engrenagem, cadeado e coração.
+- **Onde aparecem:**
+  - menu inferior: o ícone da tela atual sobe e brilha;
+  - barra superior;
+  - acampamento: estrela, chama, engrenagem e nível no cabeçalho, rótulos dos objetos, botões dos modos e quadro de missões;
+  - conquistas, perfil, resultado e modalidades do treino livre.
+- Os ícones de ação (setas, fechar, marcar) continuam de traço. Quando não existe versão ilustrada, aparece o ícone de traço.
+- **Testes:** 132 (2 novos para os ícones).
+
 ## 0.11.0 — 13/11/2026 — Visual de jogo em todas as telas
 
 Todas as telas seguem agora o estilo da central do acampamento:

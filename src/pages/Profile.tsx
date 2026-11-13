@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon } from '../components/Icon'
+import { GameIcon } from '../components/GameIcon'
 import { Avatar, AVATARS, LocalProfileNotice, ProgressBar, Stars } from '../components/ui'
 import { BOOKS } from '../data/bible/canon'
 import { STORY_SEQUENCE, hasContent } from '../data/story'
@@ -73,7 +74,7 @@ export default function ProfilePage() {
               {AVATARS.map((a) => (
                 <label key={a.id} className={`avatar-pick ${avatar === a.id ? 'is-on' : ''}`} title={a.label}>
                   <input type="radio" name="avatar-edit" checked={avatar === a.id} onChange={() => setAvatar(a.id)} />
-                  <Icon name={a.icon} size={24} />
+                  <GameIcon name={a.icon} size={32} />
                   <span className="sr-only">{a.label}</span>
                 </label>
               ))}

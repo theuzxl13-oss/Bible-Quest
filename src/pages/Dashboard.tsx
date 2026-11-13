@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Icon, type IconName } from '../components/Icon'
+import { GameIcon } from '../components/GameIcon'
 import { LocalProfileNotice, ProgressBar, Stars } from '../components/ui'
 import { STORY_SEQUENCE } from '../data/story'
 import { levelProgress, levelTitle } from '../services/game/levels'
@@ -89,7 +90,7 @@ export default function Dashboard() {
               <span className="hud-name">
                 <h1 id="home-name">{character.name}</h1>
               </span>
-              <span className="hud-level"><Icon name="shield" size={15} /> Nível {lp.level} · {levelTitle(lp.level)}</span>
+              <span className="hud-level"><GameIcon name="shield" size={18} /> Nível {lp.level} · {levelTitle(lp.level)}</span>
               <span className="hud-xp">
                 <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
                 <span className="hud-xp-text">{lp.current} / {lp.needed} XP</span>
@@ -98,14 +99,14 @@ export default function Dashboard() {
           </Link>
           <div className="hud-resources">
             <span className="hud-res" aria-label={`${stars} estrelas conquistadas`} title="Estrelas das fases e desafios">
-              <span className="hud-res-icon is-star" aria-hidden="true"><Icon name="star" size={18} /></span>
+              <span className="hud-res-icon" aria-hidden="true"><GameIcon name="star" size={30} /></span>
               {stars}
             </span>
             <span className="hud-res" aria-label={`Sequência de ${streak} ${streak === 1 ? 'dia' : 'dias'}`} title="Dias seguidos jogando">
-              <span className="hud-res-icon is-flame" aria-hidden="true"><Icon name="flame" size={18} /></span>
+              <span className="hud-res-icon" aria-hidden="true"><GameIcon name="flame" size={30} /></span>
               {streak}
             </span>
-            <Link to="/configuracoes" className="hud-settings" aria-label="Configurações"><Icon name="settings" size={22} /></Link>
+            <Link to="/configuracoes" className="hud-settings" aria-label="Configurações"><GameIcon name="settings" size={30} /></Link>
           </div>
         </header>
 
@@ -116,13 +117,13 @@ export default function Dashboard() {
 
         <details className="camp-board" open={quadroAberto} onToggle={(e) => setQuadroAberto((e.currentTarget as HTMLDetailsElement).open)}>
           <summary>
-            <Icon name="scroll" size={18} /> Missões
+            <GameIcon name="scroll" size={24} /> Missões
             {(!dailyDone || baus > 0) && <span className="camp-badge" aria-label="há missões disponíveis">{(dailyDone ? 0 : 1) + (baus ? 1 : 0)}</span>}
           </summary>
           <ul className="board-list">
             <li>
               <Link to="/diario" className={`board-item ${dailyDone ? 'is-done' : ''}`}>
-                <span className="board-icon"><Icon name={dailyDone ? 'check' : 'calendar'} size={18} /></span>
+                <span className="board-icon"><GameIcon name={dailyDone ? 'check' : 'calendar'} size={28} /></span>
                 <span>
                   <strong>Desafio diário</strong>
                   <small>{dailyDone ? `Concluído. Próximo em ${formatarTempo(minutos)}` : `5 perguntas · +${DAILY_BONUS} XP de bônus · termina em ${formatarTempo(minutos)}`}</small>
@@ -131,7 +132,7 @@ export default function Dashboard() {
             </li>
             <li>
               <Link to={cont ? `/historia/${cont.bookId}/${cont.id}` : '/historia'} className="board-item">
-                <span className="board-icon"><Icon name="map" size={18} /></span>
+                <span className="board-icon"><GameIcon name="map" size={28} /></span>
                 <span>
                   <strong>Continuar jornada</strong>
                   <small>{cont ? `Fase ${phaseNumber(cont.id)} · ${cont.title}` : 'Todas as fases publicadas concluídas'}</small>
@@ -140,7 +141,7 @@ export default function Dashboard() {
             </li>
             <li>
               <Link to={baus ? '/historia' : '/conquistas'} className={`board-item ${baus ? 'is-hot' : ''}`}>
-                <span className="board-icon"><Icon name="bau" size={18} /></span>
+                <span className="board-icon"><GameIcon name="bau" size={28} /></span>
                 <span>
                   <strong>{baus ? `${baus} ${baus === 1 ? 'baú pronto' : 'baús prontos'} para abrir` : 'Baús de recompensa'}</strong>
                   <small>{baus ? 'Abra no mapa do Modo História.' : recente ? `Conquista recente: ${recente.title}` : 'Conclua fases para liberar baús no mapa.'}</small>
@@ -149,7 +150,7 @@ export default function Dashboard() {
             </li>
             {melhoria && (
               <li className="board-item board-upgrade">
-                <span className="board-icon"><Icon name="tenda" size={18} /></span>
+                <span className="board-icon"><GameIcon name="tenda" size={28} /></span>
                 <span>
                   <strong>Próximo no acampamento: {melhoria.elemento.nome}</strong>
                   <small>{textoCondicao(melhoria.elemento.condicao)} ({melhoria.atual}/{melhoria.meta})</small>
@@ -162,7 +163,7 @@ export default function Dashboard() {
 
         <nav className="camp-modes" aria-label="Modos de jogo">
           <Link to="/historia" className="camp-mode camp-mode-story" onMouseEnter={() => cena.current?.gesto('celebrate', 2.4)} onFocus={() => cena.current?.gesto('celebrate', 2.4)}>
-            <span className="camp-mode-icon" aria-hidden="true"><Icon name="book" size={34} /></span>
+            <span className="camp-mode-icon" aria-hidden="true"><GameIcon name="book" size={46} /></span>
             <span className="camp-mode-text">
               <strong>Modo História</strong>
               <small>Explore as Escrituras</small>
@@ -171,7 +172,7 @@ export default function Dashboard() {
             <Icon name="arrowRight" size={22} className="camp-mode-arrow" />
           </Link>
           <Link to="/quiz" className="camp-mode camp-mode-quiz" onMouseEnter={() => cena.current?.gesto('react', 2.4)} onFocus={() => cena.current?.gesto('react', 2.4)}>
-            <span className="camp-mode-icon" aria-hidden="true"><Icon name="cerebro" size={34} /></span>
+            <span className="camp-mode-icon" aria-hidden="true"><GameIcon name="cerebro" size={46} /></span>
             <span className="camp-mode-text">
               <strong>Modo Quiz</strong>
               <small>Teste seu conhecimento</small>
@@ -200,7 +201,7 @@ export default function Dashboard() {
             ] as { to: string; icon: IconName; eyebrow: string; title: string; text: string }[]
           ).map((c) => (
             <Link key={c.to} to={c.to} className="panel daily-card">
-              <Icon name={c.icon} size={28} />
+              <GameIcon name={c.icon} size={40} />
               <div>
                 <p className="eyebrow">{c.eyebrow}</p>
                 <h3>{c.title}</h3>

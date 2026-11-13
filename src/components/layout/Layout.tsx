@@ -1,6 +1,7 @@
 import { NavLink, Outlet, Link, useLocation } from 'react-router-dom'
 import { useGame } from '../../state/GameContext'
 import { Icon, type IconName } from '../Icon'
+import { GameIcon } from '../GameIcon'
 import { Avatar } from '../ui'
 import { levelFromXp } from '../../services/game/levels'
 import { PlayerCharacter } from '../character/PlayerCharacter'
@@ -63,10 +64,11 @@ export function Layout() {
             <nav className="topnav" aria-label="Navegação principal">
               {NAV.map((n) => (
                 <NavLink key={n.to} to={n.to} className="topnav-link" end={n.to === '/painel' ? true : undefined}>
+                  <GameIcon name={n.icon === 'map' ? 'book' : n.icon === 'shield' ? 'cerebro' : n.icon === 'home' ? 'tenda' : n.icon === 'book' ? 'scroll' : n.icon} size={22} />
                   {n.label}
                 </NavLink>
               ))}
-              <NavLink to="/diario" className="topnav-link">Diário</NavLink>
+              <NavLink to="/diario" className="topnav-link"><GameIcon name="calendar" size={22} />Diário</NavLink>
             </nav>
           )}
           <div className="topbar-actions">
@@ -109,7 +111,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.11 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.12 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>
@@ -119,7 +121,7 @@ export function Layout() {
         <nav className="tabbar" aria-label="Navegação rápida">
           {TABS.map((n) => (
             <NavLink key={n.to} to={n.to} end={n.end} className="tabbar-link">
-              <span className="tabbar-icon" aria-hidden="true"><Icon name={n.icon} size={22} /></span>
+              <span className="tabbar-icon" aria-hidden="true"><GameIcon name={n.icon} size={30} /></span>
               <span>{n.label}</span>
             </NavLink>
           ))}

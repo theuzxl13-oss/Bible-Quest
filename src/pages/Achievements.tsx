@@ -1,4 +1,4 @@
-import { Icon } from '../components/Icon'
+import { GameIcon } from '../components/GameIcon'
 import { PageHeader } from '../components/ui'
 import { ACHIEVEMENTS, ACHIEVEMENT_AREA_LABEL } from '../data/achievements'
 import { BOOKS } from '../data/bible/canon'
@@ -31,7 +31,7 @@ export default function Achievements() {
             const m = bookMedal(b.id, progress)
             return (
               <li key={b.id} className={`medal-card ${m ? `medal-${m}` : 'is-locked'}`}>
-                <Icon name="laurel" size={32} />
+                <GameIcon name="laurel" size={40} />
                 <strong>{b.name}</strong>
                 <span className="small">{m ? `Medalha de ${MEDAL[m]}` : 'Ainda não conquistada'}</span>
               </li>
@@ -49,7 +49,7 @@ export default function Achievements() {
               const at = progress.achievements[a.id]
               return (
                 <li key={a.id} className={`ach-card ${at ? 'is-on' : ''}`}>
-                  <span className="ach-icon"><Icon name={at ? a.icon : 'lock'} size={26} /></span>
+                  <span className="ach-icon"><GameIcon name={at ? a.icon : 'lock'} size={34} /></span>
                   <div>
                     <strong>{a.title}</strong>
                     <p className="small muted">{a.description}</p>

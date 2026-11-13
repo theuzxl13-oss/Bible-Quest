@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArtImage } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
+import { GameIcon } from '../../components/GameIcon'
 import { DemoTag, ProgressBar } from '../../components/ui'
 import { FREE_MODES, freeModePool } from '../../services/game/freeModes'
 import { PRACTICE_DAILY_CAP } from '../../services/game/scoring'
@@ -68,7 +69,7 @@ export default function FreeHub() {
                   <Link to={`/quiz/treino/${m.id}`} className="mode-card">
                     <ArtImage art={m.image} className="mode-img" sizes="(min-width: 900px) 25vw, 50vw" decorative />
                     <div className="mode-body">
-                      <span className="mode-icon"><Icon name={m.icon} size={22} /></span>
+                      <span className="mode-icon"><GameIcon name={m.icon} size={30} /></span>
                       <h3>{m.title}</h3>
                       <p className="small">{m.tagline}</p>
                       <p className="mode-meta small">

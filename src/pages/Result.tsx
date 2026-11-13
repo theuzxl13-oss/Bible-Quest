@@ -1,5 +1,6 @@
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { Icon } from '../components/Icon'
+import { GameIcon } from '../components/GameIcon'
 import { Stars } from '../components/ui'
 import { ACHIEVEMENTS } from '../data/achievements'
 import { getBook } from '../data/bible/canon'
@@ -98,7 +99,7 @@ export default function Result() {
             <ul>
               {newAchievements.map((id) => {
                 const a = ACHIEVEMENTS.find((x) => x.id === id)!
-                return <li key={id}><Icon name={a.icon} /><span><strong>{a.title}</strong> — {a.description}</span></li>
+                return <li key={id}><GameIcon name={a.icon} size={28} /><span><strong>{a.title}</strong> — {a.description}</span></li>
               })}
             </ul>
           </div>
