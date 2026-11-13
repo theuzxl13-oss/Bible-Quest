@@ -213,5 +213,9 @@ describe('modelo 3D (GLB) e personalização', () => {
     expect(c.Pele).toBe(SKIN_TONES[a.skin])
     expect(c.Tunica).toMatch(/^#/)
     expect(coresEstilizado({ ...a, skin: 0 }).Pele).not.toBe(coresEstilizado({ ...a, skin: 5 }).Pele)
+    // tons claros ganham saturação; os escuros, não
+    const { saturacaoPele } = await import('../character3d/heroi')
+    expect(saturacaoPele(SKIN_TONES[0])).toBeGreaterThan(1.2)
+    expect(saturacaoPele(SKIN_TONES[5])).toBe(1)
   })
 })

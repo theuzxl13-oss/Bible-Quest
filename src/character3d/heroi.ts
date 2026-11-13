@@ -89,13 +89,13 @@ function tingirPorLuminancia(m: THREE.MeshStandardMaterial, cor: string, ganho =
  * Modelo estilizado (v0.8): troca a cor de uma região da textura pintada.
  * Só os texels com cor parecida com a de base mudam (olhos, bordados e sobrancelhas ficam).
  */
-function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string) {
-  const u = { uBase: { value: new THREE.Color(base) }, uAlvo: { value: new THREE.Color(alvo) } }
+function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string, saturacao = 1) {
+  const u = { uBase: { value: new THREE.Color(base) }, uAlvo: { value: new THREE.Color(alvo) }, uSat: { value: saturacao } }
   m.color.set('#ffffff')
   m.onBeforeCompile = (sh) => {
     Object.assign(sh.uniforms, u)
     sh.fragmentShader = sh.fragmentShader
-      .replace('#include <common>', '#include <common>\nuniform vec3 uBase; uniform vec3 uAlvo;')
+      .replace('#include <common>', '#include <common>\nuniform vec3 uBase; uniform vec3 uAlvo; uniform float uSat;')
       .replace(
         '#include <map_fragment>',
         `#ifdef USE_MAP
@@ -106,11 +106,13 @@ function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string)
         vec3 bn = uBase / max( dot( uBase, LUM ), 0.004 );
         float w = 1.0 - smoothstep( 0.35, 0.8, length( cn - bn ) );
         // a cor nova recebe o claro-escuro da textura (relação de luminância com a cor de base)
-        // a diferença de claridade entre alvo e base é suavizada (expoente 0,6): tons muito claros não estouram
+        // a diferença de claridade entre alvo e base é suavizada (expoente 0,5): tons muito claros não estouram
         float lb = max( dot( uBase, LUM ), 0.004 );
         float r = max( dot( uAlvo, LUM ), 0.002 ) / lb;
-        float k = dot( c, LUM ) / lb * pow( r, 0.6 ) / r;
-        vec3 tinto = min( uAlvo * k, vec3( 1.0 ) );
+        float k = dot( c, LUM ) / lb * pow( r, 0.5 ) / r;
+        vec3 tinto = uAlvo * k;
+        // pele: um pouco mais de saturação, porque a luz do palco e o tone mapping acinzentam os tons claros
+        tinto = min( mix( vec3( dot( tinto, LUM ) ), tinto, uSat ), vec3( 1.0 ) );
         diffuseColor *= vec4( mix( c, tinto, w ), texelColor.a );
       #endif`,
       )
@@ -206,6 +208,17 @@ export const PECAS_DO_MODELO = [
   ...Object.values(CINTO), ...Object.values(CALCADO), 'Barba_curta', 'Barba_cheia', ...Object.values(ACESSORIO),
 ]
 
+/**
+ * Saturação extra da pele no modelo estilizado: só os tons claros ganham (a luz azulada do
+ * palco e o tone mapping os acinzentam); os tons médios e escuros ficam como estão.
+ */
+export function saturacaoPele(hex?: string) {
+  if (!hex) return 1
+  const c = new THREE.Color(hex)
+  const l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b
+  return 1 + 0.8 * Math.min(1, Math.max(0, (l - 0.25) / 0.4))
+}
+
 /** Regiões do modelo estilizado (v0.8), em que a aparência troca a cor. */
 export const REGIOES_ESTILIZADO = ['Pele', 'Cabelo', 'Tunica', 'Manto', 'Faixa', 'Couro'] as const
 
@@ -269,7 +282,7 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
       const base = (m.userData as { base?: string }).base
       if (base && tipo in alvo) {
         mesh.visible = true
-        tingirRegiao(m, base, alvo[tipo as keyof typeof alvo] ?? base)
+        tingirRegiao(m, base, alvo[tipo as keyof typeof alvo] ?? base, tipo === 'Pele' ? saturacaoPele(alvo.Pele) : 1)
         m.roughness = tipo === 'Pele' ? 0.6 : 0.85
         if (quality === 'leve') m.envMapIntensity = 0.8
       }

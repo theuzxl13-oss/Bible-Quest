@@ -481,6 +481,11 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.8.1 — 13/11/2026 — Tons de pele do herói estilizado
+
+- O tingimento usa a luminância da textura sobre a cor escolhida, com a diferença de claridade suavizada (expoente 0,5).
+- Os tons claros de pele ganham saturação proporcional à claridade (`saturacaoPele`), porque a luz azulada do palco os deixava acinzentados. Os tons médios e escuros ficam como estão.
+
 ### 0.8.0 — 13/11/2026 — Herói masculino no estilo de animação 3D
 
 - **Novo herói masculino** publicado: modelo gerado de imagem com o TRELLIS.2 (gratuito), com esqueleto, as seis animações, quatro expressões e acessórios de mão.
