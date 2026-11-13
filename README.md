@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.10 (central do acampamento em 3D) |
+| **Versão** | 0.11 (visual de jogo em todas as telas) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -98,6 +98,10 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
   - 26 conquistas, histórico e recordes;
   - exportação e exclusão dos dados (LGPD).
 - **Painel administrativo** (`#/admin`): edição local de perguntas e rascunhos de fases, com importação e exportação em JSON.
+
+**Visual**
+
+- Estilo de jogo de aventura em todas as telas: céu e montanhas no topo, madeira, faixas, pergaminho e botões com relevo.
 
 **Acessibilidade**
 
@@ -264,7 +268,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.11.0** (13/11/2026): visual de jogo em todas as telas: céu e montanhas no topo, madeira, faixas, botões com relevo e pergaminho.
 - **0.10.1** (13/11/2026): README reorganizado, histórico movido para `CHANGELOG.md`, documentos em `docs/planos/` e `docs/auditorias/`, e componentes em `components/layout/` e `components/quiz/`.
 - **0.10.0** (13/11/2026): central do acampamento em 3D, com o personagem no centro, missões, acampamento evolutivo e menu inferior no estilo de jogo.
 - **0.9.3** (13/11/2026): novo visual da tela de perguntas.
-- **0.9.2** (13/11/2026): novo visual do painel.

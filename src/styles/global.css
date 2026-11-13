@@ -1454,3 +1454,110 @@ a.board-item:hover { background: rgba(255, 250, 235, 0.9); }
 :root[data-motion='reduzido'] .camp-mode, :root[data-motion='reduzido'] .camp-badge, :root[data-motion='reduzido'] .camp-paint-fire i { animation: none !important; transition: none; }
 html[data-contrast='alto'] .camp-label, html[data-contrast='alto'] .hud-player, html[data-contrast='alto'] .hud-res { background: #000; border-color: #fff; }
 html[data-contrast='alto'] .board-list, html[data-contrast='alto'] .camp-board > summary { background: #fff; color: #000; }
+
+/* =========================================================
+   v0.11 · Tema de jogo em todas as telas
+   (madeira, pergaminho, ouro e céu, como a central do acampamento)
+   ========================================================= */
+:root {
+  --wood-hi: #7a5030;
+  --wood: #5a3a22;
+  --wood-lo: #3d2716;
+  --wood-edge: #a87a3f;
+  --wood-shadow: #22140a;
+  --plank: linear-gradient(180deg, #6e4729 0%, #563620 55%, #462c19 100%);
+  --sky-top: #1f3c66;
+  --sky-mid: #33608f;
+}
+
+/* cenário no topo de cada página: céu, montanhas e colinas que se fundem ao chão */
+main { position: relative; isolation: isolate; }
+.app:not(.is-camp) main::before {
+  content: ''; position: absolute; z-index: -1; left: 0; right: 0; top: 0; height: 360px; pointer-events: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath d='M0 120V70l60-22 70 30 90-50 80 40 70-25 90 45 110-60 90 42 70-20 100 48 90-38 80 30 70-22 60 12v60z' fill='%23514a6e'/%3E%3Cpath d='M0 120V92l90-14 120 18 140-26 130 22 150-18 140 20 130-16 140 18 160-12v38z' fill='%23455e36'/%3E%3C/svg%3E") bottom / 100% 120px no-repeat,
+    radial-gradient(520px 110px at 70% 262px, rgba(255, 186, 110, 0.35), transparent 70%),
+    linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 52%, #6a5a78 78%, #4a3328 100%);
+  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+}
+body { background: linear-gradient(180deg, #2c1b11, #22150d 600px), #22150d; }
+main h1, main .display-sm { text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45), 0 4px 16px rgba(0, 0, 0, 0.35); }
+main .eyebrow { color: #f6dc94; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); }
+.muted, .small { text-shadow: 0 1px 1px rgba(0, 0, 0, 0.35); }
+
+/* barra superior de madeira */
+.topbar { background: linear-gradient(180deg, #5a3b24, #3a2416); border-bottom: 3px solid #8a6238; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); backdrop-filter: none; }
+.brand-name { text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45); }
+.topnav { gap: 4px; }
+.topnav-link { color: #e9d9b8; font-weight: 700; border-radius: 12px; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); }
+.topnav-link:hover { background: rgba(255, 255, 255, 0.07); color: #fff6dc; }
+.topnav-link.active { color: #3a2410; text-shadow: none; background: linear-gradient(180deg, #fff2c2, #e9b949); box-shadow: 0 3px 0 #7a5418; }
+.topbar-level { color: #3a2410; background: linear-gradient(180deg, #fff2c2, #e9b949); border: 0; box-shadow: 0 2px 0 #7a5418; font-weight: 800; }
+.icon-btn { color: #f3ede0; background: radial-gradient(circle at 40% 30%, #6d6a66, #3b3835); border: 2px solid #a8a29a; box-shadow: 0 3px 0 #1f1d1b; }
+.icon-btn:hover:not(:disabled) { color: #fff; border-color: #f6dc94; }
+
+/* painéis como placas de madeira */
+.panel, .lib-card, .mode-card {
+  background: var(--plank);
+  border: 2px solid var(--wood-edge);
+  box-shadow: 0 5px 0 var(--wood-shadow), 0 12px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 230, 180, 0.18), inset 0 0 0 3px rgba(0, 0, 0, 0.12);
+}
+.panel { border-radius: 18px; }
+.lib-card { border-radius: 16px; }
+.lib-card.is-locked { opacity: 1; filter: saturate(0.4) brightness(0.8); border-style: solid; }
+a.panel, a.lib-card { transition: transform 150ms ease, filter 150ms ease; }
+a.panel:hover, a.lib-card:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.stat-grid .panel { padding: 14px 16px; }
+.stat-grid dt { color: #e9d9b8; font-weight: 650; }
+.stat-grid dd { color: #ffe08a; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4); font-family: var(--font-display); }
+.history-item { background: var(--plank); border: 2px solid rgba(168, 122, 63, 0.7); box-shadow: 0 3px 0 var(--wood-shadow); }
+
+/* títulos de seção em faixa */
+.section-title { display: inline-flex; align-items: center; padding: 6px 22px; margin-bottom: 14px; color: #f6dc94; font-size: 1.15rem; background: linear-gradient(180deg, #8a3427, #6a241a); border-top: 2px solid #c99a45; border-bottom: 2px solid #c99a45; clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 50%, 100% 100%, 0 100%, 12px 50%); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4); }
+.section-head { align-items: center; }
+
+/* botões grandes com relevo */
+.btn { border-radius: 16px; font-weight: 750; border-width: 2px; }
+.btn:active:not(:disabled) { transform: translateY(3px); }
+.btn-gold { color: #2a1405; background: linear-gradient(180deg, #ffd27a, #f2a93b 55%, #d98a1f); border-color: rgba(255, 244, 214, 0.75); box-shadow: 0 5px 0 #7a4410, 0 10px 18px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5); text-shadow: 0 1px 0 rgba(255, 255, 255, 0.35); }
+.btn-gold:hover { color: #2a1405; background: linear-gradient(180deg, #ffe09a, #f6b54c 55%, #e0952a); }
+.btn-gold:active:not(:disabled) { box-shadow: 0 2px 0 #7a4410; }
+.btn-outline { color: #fff6dc; background: var(--plank); border-color: var(--wood-edge); box-shadow: 0 4px 0 var(--wood-shadow), inset 0 1px 0 rgba(255, 230, 180, 0.18); text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); }
+.btn-outline:hover { color: #fff; border-color: #f6dc94; filter: brightness(1.08); }
+.btn-outline:active:not(:disabled) { box-shadow: 0 1px 0 var(--wood-shadow); }
+.btn-danger { box-shadow: 0 4px 0 #4a1610; border-radius: 16px; }
+
+/* abas e opções */
+.tabs { gap: 6px; border-bottom: 0; padding: 6px; border-radius: 16px; background: rgba(0, 0, 0, 0.28); box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.35); }
+.tab { color: #e9d9b8; border-radius: 12px; font-weight: 750; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); }
+.tab:hover { background: rgba(255, 255, 255, 0.07); color: #fff6dc; }
+.tab.is-on { color: #3a2410; text-shadow: none; background: linear-gradient(180deg, #fff2c2, #e9b949); border-color: transparent; box-shadow: 0 3px 0 #7a5418; }
+.chip { background: var(--plank); border: 2px solid rgba(168, 122, 63, 0.75); box-shadow: 0 3px 0 var(--wood-shadow); font-weight: 650; }
+.chip.is-on { color: #3a2410; background: linear-gradient(180deg, #fff2c2, #e9b949); border-color: #fff4d6; box-shadow: 0 3px 0 #7a5418; }
+.tag { font-weight: 700; }
+
+/* barras de progresso douradas */
+.progress { height: 12px; background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(246, 220, 148, 0.3); box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.4); }
+.progress-fill { background: linear-gradient(180deg, #ffe08a, #e0a43c); box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15); }
+
+/* avisos em pergaminho */
+.notice { color: var(--ink); background: linear-gradient(180deg, #f3e3bd, #e6cf9c); border: 2px solid #8a5a2b; box-shadow: 0 4px 0 #5a3a1c; }
+.notice > .icon { color: #8a3427; }
+.notice a, .notice .link { color: #7a2e22; }
+.notice .muted, .notice .small { color: #5c3d22; text-shadow: none; }
+
+/* campos de formulário */
+.field input, .field select, .field textarea { color: var(--ink); background: #f6ead0; border: 2px solid #8a5a2b; box-shadow: inset 0 2px 4px rgba(90, 58, 28, 0.25); }
+.field select option { background: #f6ead0; color: var(--ink); }
+
+/* imagens de topo (fases, diário, treino) com moldura */
+.hero { border-bottom: 3px solid #8a6238; }
+
+/* rodapé de madeira */
+.footer { background: linear-gradient(180deg, #3a2416, #2a190e); border-top: 3px solid #8a6238; }
+
+/* alto contraste: superfícies lisas */
+html[data-contrast='alto'] .panel, html[data-contrast='alto'] .lib-card, html[data-contrast='alto'] .mode-card, html[data-contrast='alto'] .history-item, html[data-contrast='alto'] .btn-outline, html[data-contrast='alto'] .chip, html[data-contrast='alto'] .topbar { background: #000; border-color: #ffd36b; box-shadow: none; }
+html[data-contrast='alto'] main::before { display: none; }
+html[data-contrast='alto'] .section-title { background: #000; clip-path: none; }

@@ -2,6 +2,22 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.11.0 — 13/11/2026 — Visual de jogo em todas as telas
+
+Todas as telas seguem agora o estilo da central do acampamento:
+
+- **Céu no topo de cada página:** céu azul, pôr do sol, montanhas e colinas que se fundem ao chão escuro. Títulos com sombra para continuar legíveis.
+- **Barra superior de madeira:** item ativo em ouro, nível em medalhão e botões redondos de pedra.
+- **Painéis como placas de madeira:** borda dourada e relevo nos cartões, estatísticas, fichas da Biblioteca e histórico.
+- **Títulos de seção em faixa vermelha com borda dourada.**
+- **Botões grandes com relevo:** laranja-dourado (principal) e madeira (secundário), que afundam ao tocar.
+- **Abas e opções:** fundo de madeira, com a opção escolhida em ouro.
+- **Barras de progresso** douradas e mais grossas.
+- **Avisos em pergaminho.**
+- **Campos de texto** em papel claro.
+- **Rodapé de madeira.**
+- **Alto contraste:** desliga as texturas e volta às superfícies lisas.
+
 ## 0.10.1 — 13/11/2026 — Organização do repositório
 
 - **README reescrito:** mais curto e com sumário. Reúne como jogar, funcionalidades, tecnologias, como executar, árvore de pastas comentada, como acrescentar conteúdo, testes, publicação, o que depende de servidor e licenças. Saíram as seções repetidas e as informações desatualizadas.
