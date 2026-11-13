@@ -481,6 +481,10 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.8.2 — 13/11/2026 — Referências dos outros personagens
+
+- Folha com os 8 personagens enviada pelo dono do projeto: cada figura foi recortada para `tools/personagem/estilizado/referencias/` (com `LEIA-ME.md`), para virar modelo 3D, um por dia, conforme a cota gratuita. Nenhuma mudança no jogo.
+
 ### 0.8.1 — 13/11/2026 — Tons de pele do herói estilizado
 
 - O tingimento usa a luminância da textura sobre a cor escolhida, com a diferença de claridade suavizada (expoente 0,5).
