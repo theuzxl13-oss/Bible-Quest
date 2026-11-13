@@ -381,16 +381,30 @@ describe('fluxos de ponta a ponta', () => {
     expect(content.includeInFreeMode).toBe(true)
   })
 
-  it('Home em cena: personagem em corpo inteiro, nível, progresso e os dois modos', async () => {
-    setup('/painel', withProfile())
+  it('central do acampamento: personagem, cabeçalho, missões, os dois modos e o menu inferior', async () => {
+    const { user } = setup('/painel', withProfile())
     expect(await screen.findByRole('heading', { name: 'Tobias', level: 1 })).toBeInTheDocument()
-    expect(screen.getByText('Explore as Escrituras, conheça os acontecimentos bíblicos e percorra uma jornada pelos livros da Bíblia.')).toBeInTheDocument()
-    expect(screen.getByText('Teste seus conhecimentos, enfrente desafios bíblicos e descubra até onde você consegue chegar.')).toBeInTheDocument()
+    // cabeçalho com dados reais (nível, XP, estrelas, sequência), sem moedas inventadas
+    expect(screen.getByRole('progressbar', { name: 'Progresso para o próximo nível' })).toBeInTheDocument()
+    expect(screen.getByLabelText('0 estrelas conquistadas')).toBeInTheDocument()
+    expect(screen.queryByText(/moedas?/i)).not.toBeInTheDocument()
+    // modos de jogo
+    const modos = screen.getByRole('navigation', { name: 'Modos de jogo' })
+    expect(within(modos).getByRole('link', { name: /modo história.*explore as escrituras/i })).toHaveAttribute('href', '/historia')
+    expect(within(modos).getByRole('link', { name: /modo quiz.*teste seu conhecimento/i })).toHaveAttribute('href', '/quiz')
+    // quadro de missões e próxima melhoria do acampamento
+    expect(screen.getByRole('link', { name: /desafio diário/i })).toHaveAttribute('href', '/diario')
+    expect(screen.getByText(/próximo no acampamento: jarros de barro/i)).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Progresso geral' })).toBeInTheDocument()
-    for (const name of ['Personalizar', 'Conquistas', 'Biblioteca', 'Estatísticas']) {
-      expect(screen.getAllByRole('link', { name: new RegExp(name) }).length).toBeGreaterThan(0)
-    }
+    // menu inferior no estilo de jogo
+    const menu = screen.getByRole('navigation', { name: 'Navegação rápida' })
+    for (const name of ['Início', 'Personagem', 'Conquistas', 'Biblioteca', 'Perfil']) expect(within(menu).getByRole('link', { name })).toBeInTheDocument()
+    expect(within(menu).getByRole('link', { name: 'Início' })).toHaveClass('active')
+    // personagem em corpo inteiro no centro (cenário 2D nos testes, sem WebGL)
     expect(document.querySelector('.home-char .character')).not.toHaveClass('is-portrait')
+    // objetos do acampamento levam às funções reais
+    await user.click(screen.getByRole('button', { name: /^biblioteca/i }))
+    expect(await screen.findByRole('heading', { name: /personagens, livros, lugares/i, level: 1 })).toBeInTheDocument()
   })
 
   it('mapa do Modo Quiz: desafio concluído libera o próximo, com bônus da primeira vez', async () => {

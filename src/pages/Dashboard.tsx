@@ -1,10 +1,8 @@
-import { Link } from 'react-router-dom'
-import { ArtImage } from '../components/ArtImage'
+import { useEffect, useRef, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { Icon, type IconName } from '../components/Icon'
 import { LocalProfileNotice, ProgressBar, Stars } from '../components/ui'
-import { ACHIEVEMENTS } from '../data/achievements'
 import { STORY_SEQUENCE } from '../data/story'
-import { ITEMS } from '../data/character/items'
 import { levelProgress, levelTitle } from '../services/game/levels'
 import { continueExperience } from '../services/game/progression'
 import { visibleStreak } from '../services/game/streak'
@@ -13,7 +11,11 @@ import { PlayerCharacter } from '../components/character/PlayerCharacter'
 import { weakTopics } from '../services/game/review'
 import { phaseNumber } from '../services/game/journeyMap'
 import { quizAvatarNode, quizCompletion } from '../services/game/quizMap'
-import { isItemUnlocked } from '../services/game/items'
+import { DAILY_BONUS } from '../services/game/scoring'
+import { bausDisponiveis, conquistaRecente, elementosLiberados, formatarTempo, minutosAteAmanha, proximaMelhoria } from '../services/game/acampamento'
+import { textoCondicao } from '../data/acampamento'
+import { CenaAcampamento, type CenaApi, type RotuloAcampamento } from '../components/camp/CenaAcampamento'
+import type { AlvoAcampamento } from '../character3d/acampamento'
 import type { Progress } from '../types'
 
 export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Quiz · treino', quiz: 'Modo Quiz', diario: 'Desafio diário', revisao: 'Revisão', 'demo-multiplayer': 'Multiplayer (demo)' } as const
@@ -25,9 +27,25 @@ export function overallProgress(p: Progress) {
   return { done: story + quiz.done, total: STORY_SEQUENCE.length + quiz.total, story, quiz }
 }
 
+/** Contagem regressiva até o próximo desafio diário, atualizada a cada minuto. */
+function useMinutosAteAmanha() {
+  const [min, setMin] = useState(() => minutosAteAmanha())
+  useEffect(() => {
+    const t = window.setInterval(() => setMin(minutosAteAmanha()), 30000)
+    return () => window.clearInterval(t)
+  }, [])
+  return min
+}
+
+/**
+ * CENTRAL DO JOGO (v0.10): o acampamento do jogador.
+ * Cenário 3D com o personagem no centro, cabeçalho com nível e XP, quadro de
+ * missões com dados reais, acesso aos dois modos e um diário de viagem abaixo.
+ */
 export default function Dashboard() {
   const { profile, progress, dailyContext, questionPool } = useGame()
-  const weak = weakTopics(progress, questionPool)
+  const navigate = useNavigate()
+  const cena = useRef<CenaApi>(null)
   const character = profile!.character!
   const lp = levelProgress(progress.xp)
   const today = dailyContext().day
@@ -36,119 +54,161 @@ export default function Dashboard() {
   const cont = continueExperience(progress)
   const overall = overallProgress(progress)
   const quizNext = quizAvatarNode(progress)
-  const achievements = Object.keys(progress.achievements).length
-  const items = ITEMS.filter((i) => isItemUnlocked(i, progress)).length
-  const stars = Object.values(progress.experiences).reduce((s, e) => s + e.bestStars, 0)
+  const stars = Object.values(progress.experiences).reduce((s, e) => s + e.bestStars, 0) + overall.quiz.stars
+  const baus = bausDisponiveis(progress)
+  const recente = conquistaRecente(progress)
+  const melhoria = proximaMelhoria(progress)
+  const elementos = elementosLiberados(progress)
+  const weak = weakTopics(progress, questionPool)
+  const minutos = useMinutosAteAmanha()
+  const [quadroAberto, setQuadroAberto] = useState(() => typeof window === 'undefined' || !window.matchMedia || window.matchMedia('(min-width: 900px)').matches)
 
-  const shortcuts: { to: string; icon: IconName; label: string; detail: string }[] = [
-    { to: '/guarda-roupa', icon: 'user', label: 'Personalizar', detail: `${items} de ${ITEMS.length} itens` },
-    { to: '/conquistas', icon: 'laurel', label: 'Conquistas', detail: `${achievements} de ${ACHIEVEMENTS.length}` },
-    { to: '/biblioteca', icon: 'book', label: 'Biblioteca', detail: `${Object.keys(progress.library.characters).length} personagens` },
-    { to: '/estatisticas', icon: 'trophy', label: 'Estatísticas', detail: `${progress.stats.answered} respostas` },
+  const rotulos: RotuloAcampamento[] = [
+    { id: 'tenda', label: 'Personagem', detalhe: 'roupas e acessórios na tenda', icon: 'tunica' },
+    { id: 'mesa', label: 'Biblioteca', detalhe: 'mesa de estudos', icon: 'book' },
+    { id: 'quadro', label: 'Diário', detalhe: dailyDone ? 'desafio diário concluído' : 'desafio diário disponível', icon: 'scroll', badge: dailyDone ? undefined : 1 },
+    { id: 'bau', label: 'Recompensas', detalhe: baus ? `${baus} baú(s) pronto(s) para abrir no mapa` : 'conquistas e baús', icon: 'bau', badge: baus || undefined },
   ]
+  const destino: Record<AlvoAcampamento, string> = {
+    personagem: '/guarda-roupa',
+    tenda: '/guarda-roupa',
+    mesa: '/biblioteca',
+    quadro: '/diario',
+    bau: baus ? '/historia' : '/conquistas',
+  }
 
   return (
-    <div className="home">
-      <section className="home-scene" aria-labelledby="home-name">
-        <ArtImage art="place-raheh" className="hero-bg" priority decorative />
-        <div className="home-scene-shade" />
-        <div className="container home-scene-inner">
-          <div className="home-char">
-            <div className="home-char-glow" aria-hidden="true" />
-            <div className="home-pedestal" aria-hidden="true" />
-            <PlayerCharacter live size={270} pose="idle" title={`${character.name}, seu personagem`} />
+    <div className="camp">
+      <section className="camp-stage" aria-labelledby="home-name">
+        <CenaAcampamento ref={cena} appearance={character} elementos={elementos} bauPronto={baus > 0} rotulos={rotulos} onSelect={(a) => navigate(destino[a])} />
+
+        <header className="camp-hud">
+          <Link to="/perfil" className="hud-player" aria-label={`Perfil de ${profile!.nickname}`}>
+            <span className="hud-portrait"><PlayerCharacter size={60} portrait pose="still" /></span>
+            <span className="hud-player-info">
+              <span className="hud-name">
+                <h1 id="home-name">{character.name}</h1>
+              </span>
+              <span className="hud-level"><Icon name="shield" size={15} /> Nível {lp.level} · {levelTitle(lp.level)}</span>
+              <span className="hud-xp">
+                <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
+                <span className="hud-xp-text">{lp.current} / {lp.needed} XP</span>
+              </span>
+            </span>
+          </Link>
+          <div className="hud-resources">
+            <span className="hud-res" aria-label={`${stars} estrelas conquistadas`} title="Estrelas das fases e desafios">
+              <span className="hud-res-icon is-star" aria-hidden="true"><Icon name="star" size={18} /></span>
+              {stars}
+            </span>
+            <span className="hud-res" aria-label={`Sequência de ${streak} ${streak === 1 ? 'dia' : 'dias'}`} title="Dias seguidos jogando">
+              <span className="hud-res-icon is-flame" aria-hidden="true"><Icon name="flame" size={18} /></span>
+              {streak}
+            </span>
+            <Link to="/configuracoes" className="hud-settings" aria-label="Configurações"><Icon name="settings" size={22} /></Link>
           </div>
-          <div className="home-info">
-            <p className="eyebrow">Bible Quest · {profile!.nickname}</p>
-            <div className="home-title">
-              <span className="level-medal" aria-hidden="true"><small>Nível</small>{lp.level}</span>
-              <div>
-                <h1 id="home-name" className="display-sm">{character.name}</h1>
-                <p>Nível {lp.level} · {levelTitle(lp.level)}</p>
-              </div>
-            </div>
-            <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
-            <p className="small muted">{lp.current} / {lp.needed} XP para o nível {lp.level + 1} · {progress.xp} XP no total</p>
-            <ProgressBar value={overall.done} max={overall.total} label="Progresso geral" />
-            <p className="small muted">Progresso geral: {overall.done} de {overall.total} fases e desafios disponíveis</p>
-            <div className="stat-pills">
-              <span className="pill" title="Sequência de dias"><Icon name="flame" size={18} /> {streak} {streak === 1 ? 'dia' : 'dias'}</span>
-              <span className="pill"><Icon name="star" size={18} /> {stars + overall.quiz.stars} estrelas</span>
-            </div>
-            <div className="home-cta">
-              <Link to={cont ? `/historia/${cont.bookId}/${cont.id}` : '/historia'} className="btn btn-gold">Continuar jornada <Icon name="arrowRight" size={16} /></Link>
-              <Link to="/guarda-roupa" className="btn btn-outline btn-sm home-customize"><Icon name="user" size={16} /> Personalizar</Link>
-            </div>
-          </div>
+        </header>
+
+        <div className="camp-flag" aria-hidden="true">
+          <Icon name="book" size={26} />
+          <span>Bible<br />Quest</span>
         </div>
+
+        <details className="camp-board" open={quadroAberto} onToggle={(e) => setQuadroAberto((e.currentTarget as HTMLDetailsElement).open)}>
+          <summary>
+            <Icon name="scroll" size={18} /> Missões
+            {(!dailyDone || baus > 0) && <span className="camp-badge" aria-label="há missões disponíveis">{(dailyDone ? 0 : 1) + (baus ? 1 : 0)}</span>}
+          </summary>
+          <ul className="board-list">
+            <li>
+              <Link to="/diario" className={`board-item ${dailyDone ? 'is-done' : ''}`}>
+                <span className="board-icon"><Icon name={dailyDone ? 'check' : 'calendar'} size={18} /></span>
+                <span>
+                  <strong>Desafio diário</strong>
+                  <small>{dailyDone ? `Concluído. Próximo em ${formatarTempo(minutos)}` : `5 perguntas · +${DAILY_BONUS} XP de bônus · termina em ${formatarTempo(minutos)}`}</small>
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link to={cont ? `/historia/${cont.bookId}/${cont.id}` : '/historia'} className="board-item">
+                <span className="board-icon"><Icon name="map" size={18} /></span>
+                <span>
+                  <strong>Continuar jornada</strong>
+                  <small>{cont ? `Fase ${phaseNumber(cont.id)} · ${cont.title}` : 'Todas as fases publicadas concluídas'}</small>
+                </span>
+              </Link>
+            </li>
+            <li>
+              <Link to={baus ? '/historia' : '/conquistas'} className={`board-item ${baus ? 'is-hot' : ''}`}>
+                <span className="board-icon"><Icon name="bau" size={18} /></span>
+                <span>
+                  <strong>{baus ? `${baus} ${baus === 1 ? 'baú pronto' : 'baús prontos'} para abrir` : 'Baús de recompensa'}</strong>
+                  <small>{baus ? 'Abra no mapa do Modo História.' : recente ? `Conquista recente: ${recente.title}` : 'Conclua fases para liberar baús no mapa.'}</small>
+                </span>
+              </Link>
+            </li>
+            {melhoria && (
+              <li className="board-item board-upgrade">
+                <span className="board-icon"><Icon name="tenda" size={18} /></span>
+                <span>
+                  <strong>Próximo no acampamento: {melhoria.elemento.nome}</strong>
+                  <small>{textoCondicao(melhoria.elemento.condicao)} ({melhoria.atual}/{melhoria.meta})</small>
+                  <ProgressBar value={melhoria.atual} max={melhoria.meta} label={`Andamento até liberar ${melhoria.elemento.nome}`} />
+                </span>
+              </li>
+            )}
+          </ul>
+        </details>
+
+        <nav className="camp-modes" aria-label="Modos de jogo">
+          <Link to="/historia" className="camp-mode camp-mode-story" onMouseEnter={() => cena.current?.gesto('celebrate', 2.4)} onFocus={() => cena.current?.gesto('celebrate', 2.4)}>
+            <span className="camp-mode-icon" aria-hidden="true"><Icon name="book" size={34} /></span>
+            <span className="camp-mode-text">
+              <strong>Modo História</strong>
+              <small>Explore as Escrituras</small>
+              <span className="camp-mode-progress">{overall.story} de {STORY_SEQUENCE.length} fases</span>
+            </span>
+            <Icon name="arrowRight" size={22} className="camp-mode-arrow" />
+          </Link>
+          <Link to="/quiz" className="camp-mode camp-mode-quiz" onMouseEnter={() => cena.current?.gesto('react', 2.4)} onFocus={() => cena.current?.gesto('react', 2.4)}>
+            <span className="camp-mode-icon" aria-hidden="true"><Icon name="cerebro" size={34} /></span>
+            <span className="camp-mode-text">
+              <strong>Modo Quiz</strong>
+              <small>Teste seu conhecimento</small>
+              <span className="camp-mode-progress">{overall.quiz.done} de {overall.quiz.total} desafios</span>
+            </span>
+            <Icon name="arrowRight" size={22} className="camp-mode-arrow" />
+          </Link>
+        </nav>
       </section>
 
-      <div className="container section stack-lg home-body">
-        <div className="modes-grid">
-          <Link to="/historia" className="mode-hero mode-hero-story">
-            <ArtImage art="abraham-journey" className="mode-hero-img" sizes="(min-width: 900px) 50vw, 100vw" decorative />
-            <div className="mode-hero-shade" />
-            <div className="mode-hero-body">
-              <span className="mode-hero-icon"><Icon name="map" size={26} /></span>
-              <h2>Modo História</h2>
-              <p>Explore as Escrituras, conheça os acontecimentos bíblicos e percorra uma jornada pelos livros da Bíblia.</p>
-              <ProgressBar value={overall.story} max={STORY_SEQUENCE.length} label="Fases do Modo História concluídas" />
-              <span className="small">{overall.story} de {STORY_SEQUENCE.length} fases{cont ? ` · próxima: fase ${phaseNumber(cont.id)}, ${cont.title}` : ''}</span>
-              <span className="mode-hero-cta" aria-hidden="true">Jogar <Icon name="arrowRight" size={16} /></span>
-            </div>
-          </Link>
-          <Link to="/quiz" className="mode-hero mode-hero-free">
-            <ArtImage art="gn-babel" className="mode-hero-img" sizes="(min-width: 900px) 50vw, 100vw" decorative />
-            <div className="mode-hero-shade" />
-            <div className="mode-hero-body">
-              <span className="mode-hero-icon"><Icon name="shield" size={26} /></span>
-              <h2>Modo Quiz</h2>
-              <p>Teste seus conhecimentos, enfrente desafios bíblicos e descubra até onde você consegue chegar.</p>
-              <ProgressBar value={overall.quiz.done} max={overall.quiz.total} label="Desafios do Modo Quiz concluídos" />
-              <span className="small">{overall.quiz.done} de {overall.quiz.total} desafios · próximo: {quizNext.title}</span>
-              <span className="mode-hero-cta" aria-hidden="true">Jogar <Icon name="arrowRight" size={16} /></span>
-            </div>
-          </Link>
+      <div className="container section stack-lg camp-more">
+        <h2 className="section-title">Diário de viagem</h2>
+        <div className="panel camp-journey">
+          <ProgressBar value={overall.done} max={overall.total} label="Progresso geral" />
+          <p className="small muted">
+            Progresso geral: {overall.done} de {overall.total} fases e desafios disponíveis · {progress.xp} XP no total · próximo desafio do Quiz: {quizNext.title}
+          </p>
         </div>
 
-        <nav aria-label="Atalhos" className="home-shortcuts">
-          {shortcuts.map((s) => (
-            <Link key={s.to} to={s.to} className="home-shortcut">
-              <span className="home-shortcut-icon"><Icon name={s.icon} size={24} /></span>
-              <strong>{s.label}</strong>
-              <span className="small muted">{s.detail}</span>
+        <div className="dash-row">
+          {(
+            [
+              { to: '/revisao', icon: 'scroll', eyebrow: 'Revisão inteligente', title: weak.length ? `${weak.length} assunto(s) para revisar` : 'Seu desempenho', text: weak.length ? `${weak[0].title}: ${Math.round(weak[0].ratio * 100)}% de acertos` : 'Erros, assuntos dominados e evolução.' },
+              { to: '/estatisticas', icon: 'trophy', eyebrow: 'Estatísticas', title: `${progress.stats.answered} respostas`, text: 'Acertos por modo, tipo de pergunta e diário.' },
+              { to: '/ranking', icon: 'crown', eyebrow: 'Rankings', title: 'Seus recordes', text: 'Ranking online ainda indisponível.' },
+            ] as { to: string; icon: IconName; eyebrow: string; title: string; text: string }[]
+          ).map((c) => (
+            <Link key={c.to} to={c.to} className="panel daily-card">
+              <Icon name={c.icon} size={28} />
+              <div>
+                <p className="eyebrow">{c.eyebrow}</p>
+                <h3>{c.title}</h3>
+                <p className="muted small">{c.text}</p>
+              </div>
+              <Icon name="arrowRight" />
             </Link>
           ))}
-        </nav>
-
-        <div className="dash-row">
-          <Link to="/diario" className={`panel daily-card ${dailyDone ? 'is-done' : ''}`}>
-            <Icon name="calendar" size={28} />
-            <div>
-              <p className="eyebrow">Desafio diário</p>
-              <h2>{dailyDone ? 'Concluído hoje' : '5 perguntas de hoje'}</h2>
-              <p className="muted small">{dailyDone ? 'Volte amanhã para manter a sequência.' : 'Bônus de XP uma vez por dia.'}</p>
-            </div>
-            <Icon name="arrowRight" />
-          </Link>
-          <Link to="/revisao" className="panel daily-card">
-            <Icon name="scroll" size={28} />
-            <div>
-              <p className="eyebrow">Revisão inteligente</p>
-              <h2>{weak.length ? `${weak.length} assunto(s) para revisar` : 'Seu desempenho'}</h2>
-              <p className="muted small">{weak.length ? `${weak[0].title}: ${Math.round(weak[0].ratio * 100)}% de acertos` : 'Erros, assuntos dominados e evolução.'}</p>
-            </div>
-            <Icon name="arrowRight" />
-          </Link>
-          <Link to="/ranking" className="panel daily-card">
-            <Icon name="trophy" size={28} />
-            <div>
-              <p className="eyebrow">Rankings</p>
-              <h2>Seus recordes</h2>
-              <p className="muted small">Ranking online ainda indisponível.</p>
-            </div>
-            <Icon name="arrowRight" />
-          </Link>
         </div>
 
         <section aria-labelledby="hist-title">

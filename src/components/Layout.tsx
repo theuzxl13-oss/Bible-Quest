@@ -14,6 +14,15 @@ const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/perfil', label: 'Perfil', short: 'Perfil', icon: 'user' },
 ]
 
+/** Menu inferior no estilo de jogo (celular; no acampamento também no computador). */
+const TABS: { to: string; label: string; icon: IconName; end?: boolean }[] = [
+  { to: '/painel', label: 'Início', icon: 'tenda', end: true },
+  { to: '/guarda-roupa', label: 'Personagem', icon: 'tunica' },
+  { to: '/conquistas', label: 'Conquistas', icon: 'trophy' },
+  { to: '/biblioteca', label: 'Biblioteca', icon: 'book' },
+  { to: '/perfil', label: 'Perfil', icon: 'user' },
+]
+
 const SECONDARY: { to: string; label: string }[] = [
   { to: '/estatisticas', label: 'Estatísticas' },
   { to: '/guarda-roupa', label: 'Guarda-roupa' },
@@ -35,9 +44,10 @@ export function Layout() {
   const { pathname } = useLocation()
   const immersive = IMMERSIVE.some((r) => r.test(pathname))
   const showTabs = Boolean(profile) && !immersive
+  const camp = pathname === '/painel' && Boolean(profile?.character)
 
   return (
-    <div className={`app ${showTabs ? 'has-tabs' : ''}`}>
+    <div className={`app ${showTabs ? 'has-tabs' : ''} ${camp ? 'is-camp' : ''}`}>
       <a className="skip-link" href="#conteudo" onClick={(e) => { e.preventDefault(); document.getElementById('conteudo')?.focus() }}>
         Pular para o conteúdo
       </a>
@@ -86,7 +96,7 @@ export function Layout() {
         {profile && <ItemReward />}
       </main>
 
-      {!immersive && (
+      {!immersive && !camp && (
         <footer className="footer">
           <div className="container footer-inner">
             <div>
@@ -99,7 +109,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.7 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.10 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>
@@ -107,10 +117,10 @@ export function Layout() {
 
       {showTabs && (
         <nav className="tabbar" aria-label="Navegação rápida">
-          {NAV.map((n) => (
-            <NavLink key={n.to} to={n.to} className="tabbar-link">
-              <Icon name={n.icon} size={22} />
-              <span>{n.short}</span>
+          {TABS.map((n) => (
+            <NavLink key={n.to} to={n.to} end={n.end} className="tabbar-link">
+              <span className="tabbar-icon" aria-hidden="true"><Icon name={n.icon} size={22} /></span>
+              <span>{n.label}</span>
             </NavLink>
           ))}
         </nav>

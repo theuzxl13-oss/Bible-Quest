@@ -1299,3 +1299,158 @@ a.mode-hero:hover .mode-hero-cta { transform: translateX(4px); }
 :root[data-motion='reduzido'] .quiz-body .option, :root[data-motion='reduzido'] .combo, :root[data-motion='reduzido'] .quiz-bubble, :root[data-motion='reduzido'] .feedback-seal { animation: none !important; }
 html[data-contrast='alto'] .quiz-body .option { background: #000; box-shadow: none; }
 html[data-contrast='alto'] .quiz-body .question { background: #000; }
+
+/* ===== v0.10 · Central do acampamento ===== */
+.app.is-camp .topbar { display: none; }
+.app.is-camp main { padding-top: 0; }
+.camp { --camp-h: calc(100dvh - var(--tabbar-h) - env(safe-area-inset-bottom)); }
+.camp-stage { position: relative; height: var(--camp-h); min-height: 540px; max-height: 1000px; overflow: hidden; background: #93bfe6; isolation: isolate; }
+.camp-scene { position: absolute; inset: 0; }
+.camp-canvas-host { position: absolute; inset: 0; }
+.camp-canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+.camp-hero { position: absolute; left: 50%; bottom: 22%; transform: translateX(-50%); pointer-events: none; }
+.camp-scene.is-2d .camp-hero { pointer-events: auto; bottom: 21%; }
+.camp-loading { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); margin: 0; display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: 999px; background: rgba(30, 19, 12, 0.78); color: var(--parchment); font-weight: 650; z-index: 3; }
+.camp-loading-fire { width: 14px; height: 18px; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; background: radial-gradient(circle at 50% 70%, #ffe08a, #ff8a2a 60%, #c2410c); animation: flicker 0.6s ease-in-out infinite; }
+
+/* rótulos clicáveis sobre os objetos */
+.camp-labels { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.camp-label { position: absolute; left: 0; top: 0; pointer-events: auto; display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px 5px 5px; border-radius: 999px; border: 2px solid #f6dc94; background: linear-gradient(180deg, rgba(84, 52, 31, 0.95), rgba(44, 28, 17, 0.95)); color: var(--ivory); font-weight: 750; font-size: 0.85rem; white-space: nowrap; cursor: pointer; box-shadow: 0 4px 0 rgba(20, 11, 5, 0.6), 0 6px 14px rgba(0, 0, 0, 0.35); transition: opacity 200ms ease, filter 150ms ease; will-change: transform; }
+.camp-label::after { content: ''; position: absolute; left: 50%; bottom: -8px; translate: -50% 0; border: 6px solid transparent; border-top-color: #f6dc94; border-bottom: 0; }
+.camp-label:hover, .camp-label:focus-visible { filter: brightness(1.15); }
+.camp-label[data-visivel='nao'] { opacity: 0; pointer-events: none; }
+.camp-label-icon { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; color: #2a1a08; background: linear-gradient(180deg, #f6dc94, var(--gold) 70%, #a8802f); }
+.camp-badge { display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: #d9432f; color: #fff; font-size: 0.72rem; font-weight: 800; box-shadow: 0 0 0 2px #fff3; animation: unlock-pop 400ms ease both; }
+.camp-label .camp-badge { position: absolute; top: -9px; right: -8px; }
+
+/* cabeçalho (HUD) */
+.camp-hud { position: absolute; z-index: 4; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: max(12px, env(safe-area-inset-top)) clamp(12px, 3vw, 28px) 0; pointer-events: none; }
+.camp-hud > * { pointer-events: auto; }
+.hud-player { display: flex; align-items: center; gap: 10px; padding: 6px 16px 6px 6px; border-radius: 22px; text-decoration: none; color: var(--ivory); background: linear-gradient(180deg, rgba(40, 26, 16, 0.88), rgba(24, 15, 9, 0.88)); border: 1px solid rgba(246, 220, 148, 0.45); box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3); backdrop-filter: blur(6px); min-width: 0; }
+.hud-portrait { flex-shrink: 0; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; overflow: hidden; border: 3px solid #e7b955; background: radial-gradient(circle at 50% 30%, #f3d9a6, #b9824a); box-shadow: 0 3px 0 #6b4a1f; }
+.hud-player-info { display: grid; gap: 2px; min-width: 0; }
+.hud-name h1 { margin: 0; font-family: var(--font-display); font-size: 1.15rem; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.4); }
+.hud-level { display: inline-flex; align-items: center; gap: 5px; font-size: 0.82rem; font-weight: 750; color: #f6dc94; }
+.hud-xp { position: relative; display: block; width: clamp(140px, 22vw, 230px); }
+.hud-xp .progress { height: 16px; border-radius: 999px; background: rgba(0, 0, 0, 0.55); border: 1px solid rgba(246, 220, 148, 0.35); }
+.hud-xp .progress-fill { background: linear-gradient(180deg, #ffe08a, #e0a43c); border-radius: 999px; }
+.hud-xp-text { position: absolute; inset: 0; display: grid; place-items: center; font-size: 0.7rem; font-weight: 800; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8); }
+.hud-resources { display: flex; align-items: center; gap: 8px; }
+.hud-res { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px 0 4px; border-radius: 999px; font-weight: 800; font-size: 1.05rem; color: #fff; background: linear-gradient(180deg, rgba(40, 26, 16, 0.88), rgba(24, 15, 9, 0.88)); border: 1px solid rgba(246, 220, 148, 0.45); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25); font-variant-numeric: tabular-nums; }
+.hud-res-icon { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; }
+.hud-res-icon.is-star { color: #7a4b00; background: radial-gradient(circle at 35% 30%, #fff2c2, #f5c542 55%, #c98a12); }
+.hud-res-icon.is-star .icon { fill: currentColor; }
+.hud-res-icon.is-flame { color: #fff; background: radial-gradient(circle at 35% 30%, #ffd27a, #f08a2e 55%, #b3471a); }
+.hud-settings { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: #f3ede0; background: radial-gradient(circle at 40% 30%, #6d6a66, #3b3835); border: 2px solid #a8a29a; box-shadow: 0 4px 0 #1f1d1b; }
+
+/* estandarte com o nome do jogo */
+.camp-flag { position: absolute; z-index: 3; left: clamp(14px, 3vw, 34px); top: 112px; display: none; flex-direction: column; align-items: center; gap: 6px; width: 112px; padding: 16px 10px 26px; color: #f6dc94; text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1; background: linear-gradient(180deg, #7a2e22, #5a2018); border: 2px solid #c99a45; border-top-width: 6px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 88%, 0 100%); box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.35); text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45); pointer-events: none; }
+@media (min-width: 900px) { .camp-flag { display: flex; } }
+
+/* quadro de missões */
+.camp-board { position: absolute; z-index: 4; right: clamp(12px, 3vw, 28px); top: 84px; width: min(290px, calc(100vw - 24px)); color: var(--ink); }
+.camp-board > summary { list-style: none; margin-left: auto; width: max-content; display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; cursor: pointer; font-family: var(--font-display); font-weight: 700; color: #3a2410; background: linear-gradient(180deg, #f6e6bf, #e2c98f); border: 2px solid #8a5a2b; box-shadow: 0 4px 0 #5a3a1c, 0 8px 18px rgba(0, 0, 0, 0.3); }
+.camp-board > summary::-webkit-details-marker { display: none; }
+.camp-board[open] > summary { border-radius: 14px 14px 0 0; width: 100%; justify-content: center; box-shadow: none; border-bottom-width: 0; }
+.board-list { list-style: none; margin: 0; padding: 8px; display: grid; gap: 6px; border-radius: 0 0 14px 14px; background: linear-gradient(180deg, #f3e3bd, #e6cf9c); border: 2px solid #8a5a2b; border-top: 1px dashed rgba(90, 58, 28, 0.4); box-shadow: 0 6px 0 #5a3a1c, 0 12px 26px rgba(0, 0, 0, 0.35); max-height: calc(var(--camp-h) - 290px); overflow-y: auto; }
+.board-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 10px; border-radius: 10px; color: var(--ink); text-decoration: none; background: rgba(255, 250, 235, 0.55); border: 1px solid rgba(138, 90, 43, 0.25); }
+a.board-item:hover { background: rgba(255, 250, 235, 0.9); }
+.board-item strong { display: block; font-size: 0.9rem; }
+.board-item small { display: block; color: #6b4a2b; font-size: 0.78rem; line-height: 1.3; }
+.board-item .progress { margin-top: 4px; height: 6px; background: rgba(90, 58, 28, 0.2); }
+.board-item.is-done { opacity: 0.75; }
+.board-item.is-hot { background: linear-gradient(180deg, #fff1c4, #f7d77c); border-color: #c99a45; }
+.board-icon { flex-shrink: 0; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #f6dc94; background: #5c3d22; }
+.board-item.is-done .board-icon { background: #3f7a55; color: #fff; }
+.board-upgrade { background: rgba(92, 112, 70, 0.14); }
+
+/* botões dos modos */
+.camp-modes { position: absolute; z-index: 4; left: 50%; bottom: clamp(14px, 3vh, 30px); transform: translateX(-50%); width: min(920px, calc(100% - 24px)); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 2vw, 24px); }
+.camp-mode { position: relative; display: flex; align-items: center; gap: 12px; padding: 14px 18px; min-height: 92px; border-radius: 26px; text-decoration: none; color: #fff; border: 3px solid rgba(255, 255, 255, 0.55); transition: transform 150ms ease, filter 150ms ease, box-shadow 150ms ease; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.3); }
+.camp-mode::before { content: ''; position: absolute; inset: 4px 10px auto; height: 38%; border-radius: 20px 20px 50% 50% / 20px 20px 12px 12px; background: linear-gradient(180deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0)); pointer-events: none; }
+.camp-mode-story { background: linear-gradient(180deg, #f2b84b, #d0801f 55%, #a85d14); box-shadow: 0 7px 0 #6e3a0b, 0 14px 26px rgba(0, 0, 0, 0.35); }
+.camp-mode-quiz { background: linear-gradient(180deg, #45b8c9, #1f8a9e 55%, #136c7e); box-shadow: 0 7px 0 #0b4250, 0 14px 26px rgba(0, 0, 0, 0.35); }
+.camp-mode:hover, .camp-mode:focus-visible { transform: translateY(-3px) scale(1.015); filter: brightness(1.07); }
+.camp-mode:active { transform: translateY(5px); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.4); }
+.camp-mode-icon { flex-shrink: 0; display: grid; place-items: center; width: 64px; height: 64px; border-radius: 18px; background: rgba(255, 248, 230, 0.95); color: #8a5a17; box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.12); }
+.camp-mode-quiz .camp-mode-icon { color: #136c7e; }
+.camp-mode-text { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.camp-mode-text strong { font-family: var(--font-display); font-size: clamp(1.15rem, 2.4vw, 1.7rem); line-height: 1.05; }
+.camp-mode-text small { font-weight: 700; font-size: 0.92rem; opacity: 0.95; }
+.camp-mode-progress { justify-self: start; margin-top: 2px; padding: 1px 10px; border-radius: 999px; font-size: 0.74rem; font-weight: 750; background: rgba(0, 0, 0, 0.22); }
+.camp-mode-arrow { flex-shrink: 0; }
+
+/* diário de viagem (abaixo do acampamento) */
+.camp-more { padding-top: 28px; }
+.camp-journey { display: grid; gap: 6px; }
+.camp-more .daily-card h3 { margin: 0; font-size: 1.05rem; }
+
+/* menu inferior no estilo de jogo */
+.tabbar { background: linear-gradient(180deg, #5a3b24, #3a2416); border-top: 3px solid #8a6238; box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.35); padding-left: max(6px, env(safe-area-inset-left)); padding-right: max(6px, env(safe-area-inset-right)); gap: 4px; }
+.tabbar-link { position: relative; margin: 6px 0; border-radius: 14px; color: #e9d9b8; font-weight: 750; text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5); background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.12)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -2px 0 rgba(0, 0, 0, 0.25); }
+.tabbar-icon { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #f6dc94; background: rgba(0, 0, 0, 0.25); }
+.tabbar-link.active { color: #fff6dc; background: linear-gradient(180deg, #b07a3a, #7a4f22); box-shadow: 0 0 0 2px #f6dc94, 0 0 16px rgba(246, 220, 148, 0.45); }
+.tabbar-link.active .tabbar-icon { color: #3a2410; background: linear-gradient(180deg, #fff2c2, #e9b949); }
+@media (min-width: 960px) {
+  .app.is-camp .tabbar { display: grid; padding-left: max(12px, calc((100% - 820px) / 2)); padding-right: max(12px, calc((100% - 820px) / 2)); }
+  .app.is-camp.has-tabs { padding-bottom: calc(var(--tabbar-h) + env(safe-area-inset-bottom)); }
+}
+
+/* celular */
+@media (max-width: 719px) {
+  .camp-stage { min-height: 600px; }
+  .hud-player { padding: 4px 12px 4px 4px; gap: 8px; border-radius: 18px; }
+  .hud-portrait { width: 48px; height: 48px; border-radius: 14px; border-width: 2px; }
+  .hud-name h1 { font-size: 0.98rem; max-width: 34vw; }
+  .hud-level { font-size: 0.72rem; }
+  .hud-xp { width: 34vw; }
+  .hud-xp .progress { height: 13px; }
+  .hud-resources { flex-direction: column; align-items: flex-end; gap: 6px; }
+  .hud-res { height: 32px; font-size: 0.9rem; padding-right: 10px; }
+  .hud-res-icon { width: 26px; height: 26px; }
+  .hud-settings { width: 36px; height: 36px; position: absolute; top: max(12px, env(safe-area-inset-top)); right: 12px; }
+  .hud-resources { margin-top: 44px; }
+  .camp-board { top: 84px; left: 12px; right: auto; }
+  .camp-board > summary { margin-left: 0; padding: 6px 12px; font-size: 0.85rem; }
+  .camp-modes { grid-template-columns: 1fr 1fr; }
+  .camp-mode { flex-direction: column; text-align: center; gap: 6px; padding: 12px 8px 10px; min-height: 0; border-radius: 22px; }
+  .camp-mode-icon { width: 46px; height: 46px; border-radius: 14px; }
+  .camp-mode-icon .icon { width: 26px; height: 26px; }
+  .camp-mode-text { justify-items: center; }
+  .camp-mode-text small { font-size: 0.78rem; }
+  .camp-mode-progress { justify-self: center; }
+  .camp-mode-arrow { display: none; }
+  .camp-label { font-size: 0.76rem; padding: 3px 9px 3px 3px; }
+  .camp-label-icon { width: 22px; height: 22px; }
+  .tabbar-link span:last-child { font-size: 0.68rem; }
+}
+
+/* cenário ilustrado (sem 3D) */
+.camp-paint { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(180deg, #3f74b8 0%, #93bfe6 38%, #f4d7a8 56%); }
+.camp-paint > span { position: absolute; display: block; }
+.camp-paint-sun { right: 18%; top: 12%; width: 90px; height: 90px; border-radius: 50%; background: radial-gradient(circle, #fff7d6, rgba(255, 230, 160, 0)); }
+.camp-paint-mountains { left: -5%; right: -5%; top: 34%; height: 26%; background: linear-gradient(180deg, #8e8fae, #7f84a6); clip-path: polygon(0 100%, 8% 40%, 18% 70%, 30% 10%, 42% 60%, 55% 25%, 68% 65%, 80% 15%, 92% 55%, 100% 35%, 100% 100%); }
+.camp-paint-city { right: 6%; top: 40%; width: 30%; height: 18%; background: repeating-linear-gradient(90deg, #e6d3ad 0 18px, #d2b98c 18px 30px, #ead9b8 30px 46px); clip-path: polygon(0 100%, 0 55%, 12% 55%, 12% 35%, 25% 35%, 25% 50%, 40% 50%, 40% 20%, 48% 20%, 48% 0, 56% 0, 56% 30%, 70% 30%, 70% 45%, 85% 45%, 85% 60%, 100% 60%, 100% 100%); }
+.camp-paint-hills { left: -10%; right: -10%; top: 52%; height: 14%; border-radius: 50% 50% 0 0; background: #6f9445; }
+.camp-paint-ground { left: 0; right: 0; top: 60%; bottom: 0; background: radial-gradient(ellipse 60% 55% at 50% 45%, #c7a06c 0 60%, #86a24e 100%); }
+.camp-paint-tent { left: 6%; top: 42%; width: 26%; max-width: 230px; aspect-ratio: 1.2; background: repeating-linear-gradient(90deg, #e9dcc0 0 22px, #b06a3a 22px 30px); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.camp-paint-tent::after { content: ''; position: absolute; left: 38%; right: 38%; bottom: 0; height: 55%; background: #2b1a10; clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.camp-paint-fire { left: 26%; top: 66%; width: 70px; height: 70px; }
+.camp-paint-fire i { position: absolute; left: 50%; bottom: 10px; width: 26px; height: 46px; margin-left: -13px; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; background: radial-gradient(circle at 50% 75%, #ffe08a, #ff8a2a 60%, #c2410c); animation: flicker 0.7s ease-in-out infinite; }
+.camp-paint-fire i:nth-child(2) { margin-left: -26px; height: 32px; animation-delay: -0.3s; }
+.camp-paint-fire i:nth-child(3) { margin-left: 2px; height: 36px; animation-delay: -0.5s; }
+.camp-paint-fire::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 16px; border-radius: 50%; background: repeating-linear-gradient(90deg, #8e8474 0 12px, #a39784 12px 22px); }
+.camp-paint-table { left: 8%; top: 70%; width: 120px; height: 46px; background: linear-gradient(180deg, #7a5230 0 22%, transparent 22%), linear-gradient(90deg, transparent 6%, #6b4a2b 6% 12%, transparent 12% 88%, #6b4a2b 88% 94%, transparent 94%); }
+.camp-paint-board { right: 10%; top: 46%; width: 110px; height: 120px; background: linear-gradient(#efe0bb, #efe0bb) 10px 10px / 90px 64px no-repeat, linear-gradient(90deg, transparent 8%, #6b4a2b 8% 14%, transparent 14% 86%, #6b4a2b 86% 92%, transparent 92%), linear-gradient(#7d5733, #7d5733) 0 0 / 100% 84px no-repeat; }
+.camp-paint-chest { right: 24%; top: 69%; width: 86px; height: 58px; border-radius: 22px 22px 6px 6px; background: linear-gradient(90deg, transparent 18%, #e0b44c 18% 26%, transparent 26% 74%, #e0b44c 74% 82%, transparent 82%), linear-gradient(180deg, #9a6a3a, #6b4a2b); box-shadow: 0 6px 0 #4a3020; }
+.camp-paint-chest.is-open { box-shadow: 0 6px 0 #4a3020, 0 0 40px 12px rgba(255, 214, 120, 0.7); }
+.camp-scene.is-2d .camp-label { transform: translate(-50%, -100%); }
+.camp-scene.is-2d .camp-label-tenda { left: 19%; top: 41%; }
+.camp-scene.is-2d .camp-label-mesa { left: 14%; top: 69%; }
+.camp-scene.is-2d .camp-label-quadro { left: 84%; top: 45%; }
+.camp-scene.is-2d .camp-label-bau { left: 73%; top: 68%; }
+
+@media (prefers-reduced-motion: reduce) { .camp-mode, .camp-badge, .camp-paint-fire i, .camp-loading-fire { animation: none !important; transition: none; } }
+:root[data-motion='reduzido'] .camp-mode, :root[data-motion='reduzido'] .camp-badge, :root[data-motion='reduzido'] .camp-paint-fire i { animation: none !important; transition: none; }
+html[data-contrast='alto'] .camp-label, html[data-contrast='alto'] .hud-player, html[data-contrast='alto'] .hud-res { background: #000; border-color: #fff; }
+html[data-contrast='alto'] .board-list, html[data-contrast='alto'] .camp-board > summary { background: #fff; color: #000; }

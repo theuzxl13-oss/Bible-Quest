@@ -280,11 +280,17 @@ A progressão, o mapa, as porcentagens e as medalhas passam a considerar o novo 
 
 - **Personagem 3D** com rotação 360°, zoom, vistas, animações, estrutura corporal, barba, tingimentos e qualidade gráfica ajustável, com alternativa 2D.
 - **Entrada em 5 passos e personagem por itens**, com guarda-roupa, tela de recompensa e migração automática dos personagens da v0.3.
-- **Home em cena:**
-  - Personagem em corpo inteiro, nível, XP e progresso geral.
-  - Modo História e Modo Quiz com seus textos.
-  - Atalhos para Personalizar, Conquistas, Biblioteca, Estatísticas, desafio diário, revisão e rankings.
-  - Partidas recentes.
+- **Central do acampamento** (`#/painel`):
+  - cenário 3D do acampamento bíblico: tendas, fogueira animada, baú, quadro de missões, mesa de estudos, caminho de pedras, montanhas e cidade ao fundo;
+  - o personagem do jogador, com o mesmo modelo 3D do criador, no centro, com aceno, espera, gestos e comemoração;
+  - cabeçalho com retrato, nível, XP, estrelas e sequência de dias (só dados reais, sem moedas inventadas);
+  - quadro de missões: desafio diário com contagem regressiva, continuar a jornada, baús prontos e próxima melhoria do acampamento;
+  - botões grandes do Modo História e do Modo Quiz;
+  - objetos clicáveis: tenda e personagem (guarda-roupa), mesa (Biblioteca), quadro (desafio diário) e baú (mapa com baús ou conquistas);
+  - **acampamento evolutivo:** jarros, palmeiras, lamparinas, segunda tenda, estandarte, poço, rebanho e jardim aparecem conforme nível, fases, conquistas e baús (`src/data/acampamento.ts`);
+  - sem WebGL ou na qualidade 2D, um cenário ilustrado com o personagem 2D;
+  - abaixo do acampamento, o "Diário de viagem": progresso geral, revisão, estatísticas, rankings e partidas recentes.
+- **Menu inferior no estilo de jogo:** Início, Personagem, Conquistas, Biblioteca e Perfil.
 - **Modo Quiz:** mapa de 4 regiões e 24 desafios, independente do Modo História, mais o treino livre. Os endereços antigos `#/livre/...` redirecionam para `#/quiz/treino/...`.
 - **Biblioteca:** além de personagens, livros e lugares, tem abas de **Acontecimentos** (liberados ao concluir a fase) e **Temas**.
 - **Revisão:** assuntos, **personagens para revisar** e livros com baixo desempenho.
@@ -480,6 +486,25 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.10.0 — 13/11/2026 — Central do acampamento
+
+- **Nova tela inicial:** o acampamento do jogador em 3D (Three.js), no lugar do painel.
+  - O personagem é o mesmo modelo 3D do criador, no centro. Ele acena ao chegar, faz pequenos gestos, comemora quando há baú pronto e reage ao passar o mouse nos modos.
+  - A cena tem tendas, fogueira com chamas, fumaça, faíscas e luz, baú que se abre e brilha quando há baú no mapa, quadro de missões, mesa de estudos, caminho de pedras, montanhas, nuvens e cidades antigas ao fundo.
+  - Os objetos são clicáveis (com o mouse, o dedo ou o teclado) e levam às funções reais.
+- **Cabeçalho de jogo:** retrato, nome, nível, barra de XP, estrelas, sequência de dias e configurações. Só dados reais: o jogo não tem moedas, então elas não aparecem.
+- **Quadro de missões:** desafio diário com contagem regressiva até a meia-noite, próxima fase, baús prontos ou conquista recente, e a próxima melhoria do acampamento com a barra de andamento.
+- **Acampamento evolutivo:** 8 elementos novos liberados por nível, fases, conquistas e baús. Não há compras.
+- **Botões dos modos:** Modo História ("Explore as Escrituras") em dourado e Modo Quiz ("Teste seu conhecimento") em azul-esverdeado, com o andamento de cada um.
+- **Menu inferior:** Início, Personagem, Conquistas, Biblioteca e Perfil, com ícones em medalhões. No acampamento, aparece também no computador.
+- **Desempenho:**
+  - a cena é gerada por código, sem arquivos extras (cerca de 20 KB, carregados só na tela inicial);
+  - um único renderizador;
+  - na qualidade leve: sem sombras, 30 quadros por segundo e menos partículas;
+  - a animação para quando a tela não está visível;
+  - "reduzir movimento" desliga as animações.
+- **Testes:** 130 (5 novos para o acampamento; o teste da tela inicial foi refeito).
 
 ### 0.9.3 — 13/11/2026 — Novo visual da tela de perguntas
 
