@@ -12,6 +12,12 @@ import { useGame } from '../state/GameContext'
 import { Icon } from './Icon'
 import { ProgressBar } from './ui'
 import { QuestionView } from './QuestionView'
+import { PlayerCharacter } from './character/PlayerCharacter'
+
+/** Frases do companheiro (o próprio personagem do jogador), sem falas de personagens bíblicos. */
+const ANIMO_ACERTO = ['Muito bem!', 'Isso mesmo!', 'Excelente!', 'Que memória!', 'Continue assim!']
+const ANIMO_ERRO = ['Quase! Leia a explicação.', 'Vamos aprender juntos.', 'Na próxima você acerta.']
+const ANIMO_INICIO = ['Leia com calma.', 'Você consegue!', 'Pense bem antes de responder.']
 
 export interface QuizRules {
   /** Tentativas (vidas). 0 = sem limite de erros. */
@@ -132,6 +138,13 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
   const gained = correct ? (last?.points ?? basePoints(q.difficulty)) : 0
   const correctText = correctOptionText(q)
   const clock = rules.timeLimit ? timeLeft : elapsed
+  // sequência atual de acertos (combo)
+  let combo = 0
+  for (let i = results.length - 1; i >= 0 && results[i].correct; i--) combo++
+  const showSteps = !rules.timeLimit && questions.length <= 20
+  const animo = answer ? (correct ? ANIMO_ACERTO : ANIMO_ERRO) : ANIMO_INICIO
+  const fala = animo[index % animo.length]
+  const pose = answer ? (correct ? 'wave' : 'react') : 'idle'
 
   return (
     <div className={`quiz ${freeMode ? 'quiz-free' : ''}`}>
@@ -146,6 +159,14 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
             </span>
             {rules.timeLimit ? (
               <ProgressBar value={timeLeft} max={rules.timeLimit} label="Tempo restante" />
+            ) : showSteps ? (
+              <ol className="quiz-steps" role="progressbar" aria-label="Progresso da partida" aria-valuemin={0} aria-valuemax={questions.length} aria-valuenow={index + (answer ? 1 : 0)}>
+                {questions.map((qq, i) => {
+                  const r = results[i]
+                  const st = r ? (r.correct ? 'is-ok' : 'is-err') : i === index ? 'is-current' : ''
+                  return <li key={qq.id} className={`quiz-step ${st}`} />
+                })}
+              </ol>
             ) : (
               <ProgressBar value={index + (answer ? 1 : 0)} max={questions.length} label="Progresso da partida" />
             )}
@@ -158,7 +179,12 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
                 ))}
               </span>
             )}
-            <span className="score" aria-label={`Pontuação: ${score}`}>{score} pts</span>
+            {combo >= 2 && (
+              <span key={combo} className="combo" aria-label={`${combo} acertos seguidos`}>
+                <Icon name="flame" size={16} /> {combo}
+              </span>
+            )}
+            <span className="score" aria-label={`Pontuação: ${score}`}><span className="score-coin" aria-hidden="true" />{score} pts</span>
             {showClock && (
               <span className={`clock ${rules.timeLimit && timeLeft <= 10 ? 'is-urgent' : ''}`} aria-label={rules.timeLimit ? `${timeLeft} segundos restantes` : 'Tempo decorrido (não afeta a pontuação)'}>
                 <Icon name="clock" size={14} /> {Math.floor(clock / 60)}:{String(clock % 60).padStart(2, '0')}
@@ -180,8 +206,15 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
         </div>
       )}
 
-      <div className="container quiz-body">
-        <QuestionView key={q.id} question={q} answered={answer} onAnswer={onAnswer} progressiveClues={rules.progressiveClues} />
+      <div className="container quiz-stage">
+        <aside className="quiz-companion" aria-hidden="true">
+          <span key={`${index}-${pose}`} className={`quiz-bubble ${answer ? (correct ? 'is-ok' : 'is-err') : ''}`}>{fala}</span>
+          <span className="quiz-pedestal">
+            <PlayerCharacter size={190} pose={pose} />
+          </span>
+        </aside>
+        <div className="quiz-body">
+        <QuestionView key={q.id} question={q} answered={answer} onAnswer={onAnswer} progressiveClues={rules.progressiveClues} number={rules.timeLimit ? index + 1 : `${index + 1}/${questions.length}`} />
 
         {answer && (
           <div id="feedback" ref={feedbackRef} tabIndex={-1} className={`feedback ${correct ? 'is-correct' : 'is-wrong'}`} role="status" aria-live="polite">
@@ -191,7 +224,7 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
               </span>
             )}
             <div className="feedback-head">
-              <Icon name={correct ? 'check' : 'x'} size={22} />
+              <span className="feedback-seal" aria-hidden="true"><Icon name={correct ? 'check' : 'x'} size={22} /></span>
               <strong>
                 {correct ? `Correto! +${gained} pts` : rules.lives > 0 ? 'Não foi desta vez. Você perdeu uma tentativa.' : 'Não foi desta vez.'}
               </strong>
@@ -206,6 +239,7 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
             </button>
           </div>
         )}
+        </div>
       </div>
     </div>
   )

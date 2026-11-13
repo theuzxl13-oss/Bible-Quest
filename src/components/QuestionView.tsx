@@ -14,12 +14,16 @@ interface Props {
   onAnswer: (r: AnswerResponse) => void
   /** "Quem sou eu?" com pistas reveladas uma a uma. */
   progressiveClues?: boolean
+  /** Número da pergunta mostrado no medalhão ("3/10"). */
+  number?: string | number
 }
 
-export function QuestionView({ question, answered, onAnswer, progressiveClues }: Props) {
+export function QuestionView({ question, answered, onAnswer, progressiveClues, number }: Props) {
+  const short = 'options' in question ? (question as MultipleChoiceQuestion).options.every((o) => o.length <= 26) : false
   return (
-    <section className="question" aria-labelledby={`q-${question.id}`}>
+    <section className={`question ${short ? 'has-short-options' : ''}`} aria-labelledby={`q-${question.id}`}>
       <div className="question-meta">
+        {number !== undefined && <span className="question-medal" aria-hidden="true">{number}</span>}
         <span className="tag">{QUESTION_TYPE_LABEL[question.type]}</span>
         <span className={`tag tag-diff-${question.difficulty}`}>{DIFFICULTY_LABEL[question.difficulty]}</span>
       </div>

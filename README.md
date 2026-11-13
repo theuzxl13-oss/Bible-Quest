@@ -105,7 +105,7 @@ A jornada segue **Testamento → Livro → Mundo → Fase**, usando o cânon eva
 - **Mundos.** São 10 mundos com ambientação própria: Gênesis, Êxodo e o deserto, Conquista e Terra Prometida, Reis e reinos, Exílio e retorno, Poesia e sabedoria, Profetas, Evangelhos, Igreja primitiva e Apocalipse. Hoje, **Gênesis (20 fases) e Êxodo (4 fases)** têm conteúdo; os demais aparecem como "em preparação". Ao entrar num mundo novo, uma abertura apresenta os personagens que você vai conhecer.
 - **Cada fase.** A tela da fase mostra número, título, pintura, personagens bíblicos, referência, dificuldade e quantidade de perguntas. Depois vem:
   1. uma **cena** em quadros: introdução, narrativa dramatizada com os personagens entrando em cena, trechos bíblicos com referências e aprendizado;
-  2. um **desafio de 5 a 10 perguntas**, com uma por vez, explicação e referência após cada resposta.
+  2. um **desafio de 5 a 10 perguntas**, com uma por vez, explicação e referência após cada resposta. Na tela de perguntas, a barra do topo mostra uma marca por pergunta (verde para acerto, vermelha para erro), a pontuação e a sequência de acertos. No computador, o personagem do jogador acompanha ao lado com frases de incentivo.
 - **Estrelas.** A fase é concluída com 60% de acertos (1 estrela). Com 70% são 2 estrelas e com 90%, 3 estrelas.
 - **Resultado.** Mostra pontos, acertos, erros, aproveitamento, XP, estrelas e recompensas, com os botões "Continuar a jornada" e "Revisar conteúdo".
 - **Biblioteca.** Personagens e lugares de cada fase entram na Biblioteca quando você chega à fase.
@@ -480,6 +480,18 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 ## Histórico de atualizações
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
+
+### 0.9.3 — 13/11/2026 — Novo visual da tela de perguntas
+
+- **Topo:** uma marca por pergunta, verde para acerto e vermelha para erro; pontuação em moeda dourada; contador de acertos seguidos (a partir de 2) com chama.
+- **Pergunta:** cartão emoldurado com medalhão do número da pergunta ("3/10").
+- **Alternativas:**
+  - botões de jogo com relevo e número em moeda dourada;
+  - em duas colunas no computador quando as respostas são curtas;
+  - animação ao acertar e tremida ao errar.
+- **Companheiro:** no computador, o personagem do jogador fica ao lado da pergunta, num pedestal, com um balão de incentivo ("Leia com calma.", "Muito bem!", "Vamos aprender juntos."). O personagem acena quando você acerta e reage quando você erra. As frases são do jogador, não de personagens bíblicos.
+- **Explicação:** selo de acerto ou erro e referência em destaque.
+- **Acessibilidade:** respeita "reduzir movimento" e o alto contraste; atalhos 1 a 4 continuam valendo.
 
 ### 0.9.2 — 13/11/2026 — Novo visual do painel
 
