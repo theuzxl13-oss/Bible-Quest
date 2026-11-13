@@ -473,6 +473,11 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.7.2 — 13/11/2026 — Início do personagem no estilo de animação
+
+- Regra de imagens do `CLAUDE.md` atualizada, com autorização do dono do projeto: além das obras em domínio público, também são permitidos recursos gerados por IA e recursos CC0, com origem e licença registradas.
+- `tools/personagem/estilizado/gerar3d.py`: gera um modelo 3D a partir de uma imagem com o TRELLIS.2 (Microsoft, licença MIT), pela demonstração gratuita do Hugging Face. Precisa de uma chave gratuita de leitura do Hugging Face. Nenhuma mudança no jogo.
+
 ### 0.7.1 — 13/11/2026 — Plano do estilo de animação 3D
 
 - Registrado em `docs/PROXIMOS-PASSOS-3D.md` o plano para deixar personagens e interface no estilo de filme de animação 3D, pelo caminho gratuito (imagens de referência, TRELLIS, Blender), com as decisões pendentes. Nenhuma mudança no jogo.
