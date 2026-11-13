@@ -473,6 +473,14 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.7.4 — 13/11/2026 — Esqueleto e animações no personagem estilizado
+
+- Primeiro modelo estilizado (masculino) gerado da imagem de referência aprovada.
+- `tools/personagem/estilizado/preparar.py`: une vértices, reduz para 40 mil faces e põe a malha em metros.
+- `tools/personagem/estilizado/rigar.py`: esqueleto com os mesmos nomes de ossos do modelo v0.7 (juntas em `juntas-m.json`), pesos calculados numa cópia fechada da malha e transferidos, saia dividida entre tronco e pernas, braços baixados para a pose de repouso e os mesmos clipes (Idle, Walk, Run, Victory, Greeting, Discovery).
+- Correção em `animacoes.py`: canais constantes só são removidos quando estão no valor de repouso (antes, um braço erguido o clipe inteiro podia perder parte da rotação).
+- Ainda não integrado ao jogo.
+
 ### 0.7.3 — 13/11/2026 — Primeiro teste de imagem para 3D
 
 - `gerar3d.py` agora usa a chave do Hugging Face injetada pelo ambiente (cabeçalho `x-hf-authorization`), sem guardar a chave no código. Teste completo: modelo 3D com textura gerado em cerca de 37 segundos, de graça. O modelo de teste fica fora do Git; nenhuma mudança no jogo.

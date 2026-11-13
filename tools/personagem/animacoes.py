@@ -181,10 +181,12 @@ def gravar_clipes(arm):
                 pb.keyframe_insert('rotation_quaternion', frame=fr)
                 if pb.name == 'root':
                     pb.keyframe_insert('location', frame=fr)
-        # remove canais parados (ossos que não se movem neste clipe)
+        # remove canais parados no valor de repouso (ossos que não se movem neste clipe);
+        # um canal constante fora do repouso (ex.: braço erguido o tempo todo) precisa ficar
         for fc in list(act.fcurves):
             vals = [kp.co[1] for kp in fc.keyframe_points]
-            if max(vals) - min(vals) < 1e-5:
+            repouso = 1.0 if (fc.data_path.endswith('rotation_quaternion') and fc.array_index == 0) else 0.0
+            if max(vals) - min(vals) < 1e-5 and abs(vals[0] - repouso) < 1e-5:
                 act.fcurves.remove(fc)
         track = arm.animation_data.nla_tracks.new()
         track.name = nome
