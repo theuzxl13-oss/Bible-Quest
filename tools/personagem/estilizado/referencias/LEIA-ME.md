@@ -28,3 +28,10 @@ Objetos seguros na mão ficariam grudados ao corpo no modelo 3D e atrapalhariam 
 | — | Escriba | o filtro automático do Canva bloqueou 4 tentativas; aguardando decisão |
 
 Cada modelo é gerado com `../gerar3d.py` (TRELLIS.2, gratuito). A cota gratuita diária do Hugging Face permite cerca de um modelo por dia.
+
+## Corpos base (editor modular)
+
+| Arquivo | Corpo | Situação |
+| --- | --- | --- |
+| `corpo-feminino.png` | Feminino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); aguardando a cota para virar 3D |
+| `corpo-masculino.png` | Masculino | aguardando a imagem |

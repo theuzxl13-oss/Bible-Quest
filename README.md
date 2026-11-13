@@ -481,6 +481,10 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.9.1 — 13/11/2026 — Referência do corpo base feminino
+
+- Imagem do corpo base feminino (roupa justa simples, cabelo preso, descalça), enviada pelo dono do projeto, salva em `tools/personagem/estilizado/referencias/corpo-feminino.png` para virar o modelo 3D do editor modular. Nenhuma mudança no jogo.
+
 ### 0.9.0 — 13/11/2026 — Editor de personagem: cores livres, expressão e troca ao vivo
 
 Primeira entrega do editor modular (`docs/EDITOR-3D-PLANO.md`, Etapas 4 e 6).
