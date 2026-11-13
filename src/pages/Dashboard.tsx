@@ -55,13 +55,18 @@ export default function Dashboard() {
         <div className="container home-scene-inner">
           <div className="home-char">
             <div className="home-char-glow" aria-hidden="true" />
+            <div className="home-pedestal" aria-hidden="true" />
             <PlayerCharacter live size={270} pose="idle" title={`${character.name}, seu personagem`} />
-            <div className="home-ground" aria-hidden="true" />
           </div>
           <div className="home-info">
             <p className="eyebrow">Bible Quest · {profile!.nickname}</p>
-            <h1 id="home-name" className="display-sm">{character.name}</h1>
-            <p>Nível {lp.level} · {levelTitle(lp.level)}</p>
+            <div className="home-title">
+              <span className="level-medal" aria-hidden="true"><small>Nível</small>{lp.level}</span>
+              <div>
+                <h1 id="home-name" className="display-sm">{character.name}</h1>
+                <p>Nível {lp.level} · {levelTitle(lp.level)}</p>
+              </div>
+            </div>
             <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
             <p className="small muted">{lp.current} / {lp.needed} XP para o nível {lp.level + 1} · {progress.xp} XP no total</p>
             <ProgressBar value={overall.done} max={overall.total} label="Progresso geral" />
@@ -70,7 +75,10 @@ export default function Dashboard() {
               <span className="pill" title="Sequência de dias"><Icon name="flame" size={18} /> {streak} {streak === 1 ? 'dia' : 'dias'}</span>
               <span className="pill"><Icon name="star" size={18} /> {stars + overall.quiz.stars} estrelas</span>
             </div>
-            <Link to="/guarda-roupa" className="btn btn-outline btn-sm home-customize"><Icon name="user" size={16} /> Personalizar</Link>
+            <div className="home-cta">
+              <Link to={cont ? `/historia/${cont.bookId}/${cont.id}` : '/historia'} className="btn btn-gold">Continuar jornada <Icon name="arrowRight" size={16} /></Link>
+              <Link to="/guarda-roupa" className="btn btn-outline btn-sm home-customize"><Icon name="user" size={16} /> Personalizar</Link>
+            </div>
           </div>
         </div>
       </section>
@@ -86,6 +94,7 @@ export default function Dashboard() {
               <p>Explore as Escrituras, conheça os acontecimentos bíblicos e percorra uma jornada pelos livros da Bíblia.</p>
               <ProgressBar value={overall.story} max={STORY_SEQUENCE.length} label="Fases do Modo História concluídas" />
               <span className="small">{overall.story} de {STORY_SEQUENCE.length} fases{cont ? ` · próxima: fase ${phaseNumber(cont.id)}, ${cont.title}` : ''}</span>
+              <span className="mode-hero-cta" aria-hidden="true">Jogar <Icon name="arrowRight" size={16} /></span>
             </div>
           </Link>
           <Link to="/quiz" className="mode-hero mode-hero-free">
@@ -97,6 +106,7 @@ export default function Dashboard() {
               <p>Teste seus conhecimentos, enfrente desafios bíblicos e descubra até onde você consegue chegar.</p>
               <ProgressBar value={overall.quiz.done} max={overall.quiz.total} label="Desafios do Modo Quiz concluídos" />
               <span className="small">{overall.quiz.done} de {overall.quiz.total} desafios · próximo: {quizNext.title}</span>
+              <span className="mode-hero-cta" aria-hidden="true">Jogar <Icon name="arrowRight" size={16} /></span>
             </div>
           </Link>
         </div>
@@ -104,7 +114,7 @@ export default function Dashboard() {
         <nav aria-label="Atalhos" className="home-shortcuts">
           {shortcuts.map((s) => (
             <Link key={s.to} to={s.to} className="home-shortcut">
-              <Icon name={s.icon} size={26} />
+              <span className="home-shortcut-icon"><Icon name={s.icon} size={24} /></span>
               <strong>{s.label}</strong>
               <span className="small muted">{s.detail}</span>
             </Link>

@@ -481,6 +481,16 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
+### 0.9.2 — 13/11/2026 — Novo visual do painel
+
+- **Topo do painel:**
+  - pintura de fundo em tom quente, com luz dourada;
+  - personagem sobre um pedestal iluminado;
+  - cartão translúcido com medalhão do nível, barras de XP mais visíveis e botão **Continuar jornada**, que leva direto à próxima fase.
+- **Cartões do Modo História e do Modo Quiz:** botão "Jogar".
+- **Atalhos:** ícones em medalhões dourados.
+- **Celular:** topo compacto, com o personagem ao lado do cartão e as contagens numa linha só, sem ocupar a tela inteira.
+
 ### 0.9.1 — 13/11/2026 — Referências dos corpos base
 
 - Imagens dos corpos base feminino e masculino (roupa justa simples, cabelo preso ou curto, descalços), enviadas pelo dono do projeto, salvas em `tools/personagem/estilizado/referencias/corpo-feminino.png` e `corpo-masculino.png` para virarem os modelos 3D do editor modular. Nenhuma mudança no jogo.
