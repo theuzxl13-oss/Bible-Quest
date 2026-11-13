@@ -481,9 +481,9 @@ Em cada tela são verificados erros de console, imagens quebradas, rolagem later
 
 Este README é atualizado a cada mudança no projeto. A entrada mais recente fica no topo.
 
-### 0.9.1 — 13/11/2026 — Referência do corpo base feminino
+### 0.9.1 — 13/11/2026 — Referências dos corpos base
 
-- Imagem do corpo base feminino (roupa justa simples, cabelo preso, descalça), enviada pelo dono do projeto, salva em `tools/personagem/estilizado/referencias/corpo-feminino.png` para virar o modelo 3D do editor modular. Nenhuma mudança no jogo.
+- Imagens dos corpos base feminino e masculino (roupa justa simples, cabelo preso ou curto, descalços), enviadas pelo dono do projeto, salvas em `tools/personagem/estilizado/referencias/corpo-feminino.png` e `corpo-masculino.png` para virarem os modelos 3D do editor modular. Nenhuma mudança no jogo.
 
 ### 0.9.0 — 13/11/2026 — Editor de personagem: cores livres, expressão e troca ao vivo
 
