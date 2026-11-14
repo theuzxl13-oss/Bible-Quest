@@ -13,6 +13,8 @@ import { Icon } from '../Icon'
 import { ProgressBar } from '../ui'
 import { QuestionView } from './QuestionView'
 import { PlayerCharacter } from '../character/PlayerCharacter'
+import { CenarioFundo } from '../map/aventura/CenarioFundo'
+import { cenarioDaPartida } from '../../data/mapas/partida'
 
 /** Frases do companheiro (o próprio personagem do jogador), sem falas de personagens bíblicos. */
 const ANIMO_ACERTO = ['Muito bem!', 'Isso mesmo!', 'Excelente!', 'Que memória!', 'Continue assim!']
@@ -145,9 +147,11 @@ export function QuizRunner({ questions, title, mode, freeMode, quizNodeId, bookI
   const animo = answer ? (correct ? ANIMO_ACERTO : ANIMO_ERRO) : ANIMO_INICIO
   const fala = animo[index % animo.length]
   const pose = answer ? (correct ? 'wave' : 'react') : 'idle'
+  const cenario = cenarioDaPartida({ experienceId, quizNodeId })
 
   return (
-    <div className={`quiz ${freeMode ? 'quiz-free' : ''}`}>
+    <div className={`quiz av-jogo ${freeMode ? 'quiz-free' : ''}`}>
+      <CenarioFundo cenario={cenario} />
       <div className="quiz-top">
         <div className="container quiz-top-inner">
           <button type="button" className="icon-btn" onClick={() => setConfirmExit(true)} aria-label="Sair da partida">

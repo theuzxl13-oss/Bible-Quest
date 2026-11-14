@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.14 (mapas de aventura) |
+| **Versão** | 0.15 (mapas e telas de jogo de aventura) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -104,6 +104,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 
 - Estilo de jogo de aventura em todas as telas: céu e montanhas no topo, madeira, faixas, pergaminho e botões com relevo.
 - Ícones ilustrados e coloridos (`src/components/GameIcon.tsx`) no menu, no acampamento, nas conquistas e no treino.
+- Telas de jogo (perguntas e resultado) sobre a paisagem da região da fase: a arca nas fases de Noé, a torre em Babel, as pirâmides no Egito, a biblioteca no Quiz. O resultado tem faixa de vitória, personagem comemorando, estrelas grandes, moeda de XP, baú e confete.
 
 **Acessibilidade**
 
@@ -218,7 +219,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 139 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src/test/`:
+São 141 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -228,7 +229,7 @@ São 139 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
-| `mapas` | Regiões dos mapas de aventura, cabeçalho com dados reais, seletor de dificuldade, bloqueios e independência dos modos |
+| `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios e independência dos modos |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
 O ambiente de teste não tem WebGL, então as telas usam o personagem e o acampamento em 2D. O 3D é conferido no navegador (Playwright), no celular e no computador, a cada versão.
@@ -272,7 +273,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.15.0** (14/11/2026): telas de perguntas e de resultado no visual de aventura, com o cenário da região da fase ao fundo.
 - **0.14.0** (14/11/2026): mapas de aventura: Gênesis completo em regiões ilustradas, trilha própria do Quiz com seletor de dificuldade e janela de apresentação das fases.
 - **0.13.3** (14/11/2026): referências de penteados e véu para o editor de personagens por peças.
-- **0.13.2** (14/11/2026): corpos base com esqueleto e as 6 animações (parado, caminhada, corrida, aceno, comemoração e descoberta).
 - **0.13.0** (13/11/2026): mapas do Modo História e do Modo Quiz em trilha de fases, limpos e coloridos, sem textos extras.

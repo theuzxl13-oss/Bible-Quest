@@ -2,6 +2,26 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.15.0 — 14/11/2026 — Perguntas e resultado no visual de aventura (etapas 5 e 6)
+
+- **Tela de perguntas:**
+  - A partida acontece sobre a paisagem da região da fase: céu, montanhas, chão e marcos. Exemplos: a arca nas fases de Noé, a torre em Babel, pirâmide e celeiro no Egito, e no Quiz a biblioteca, o templo e os pergaminhos do desafio.
+  - O cabeçalho virou uma faixa de pergaminho, com botão redondo de sair, progresso, sequência de acertos e moeda de pontos.
+  - O cartão da pergunta é de madeira emoldurada.
+  - O personagem fica com a fala ao lado também no celular.
+  - A barra superior do site some durante a partida.
+- **Tela de resultado:**
+  - pergaminho sobre a mesma paisagem, faixa com o título e personagem comemorando com raios de luz;
+  - estrelas grandes (a do meio maior) e placas de madeira com acertos, erros, aproveitamento e pontos;
+  - moeda de XP que gira ao entrar, baú brilhando quando um baú é liberado e confete na vitória;
+  - sem o menu inferior, porque os botões levam de volta ao mapa;
+  - todos os valores vêm da partida registrada.
+- **Novos arquivos:**
+  - `src/components/map/aventura/CenarioFundo.tsx`: a paisagem;
+  - `src/data/mapas/partida.ts`: o cenário da fase ou do desafio.
+- **Animações:** confete e moeda respeitam "reduzir animações".
+- **Testes:** 141, com 2 novos (cenário de cada partida e início direto do desafio pela janela). O fluxo completo confere o resultado de vitória.
+
 ## 0.14.0 — 14/11/2026 — Mapas de aventura: Gênesis completo e trilha do Quiz
 
 Primeira etapa do redesign de aventura. Antes de mudar o código, foi feita uma auditoria da central e dos mapas: `docs/auditorias/AUDITORIA-v0.14.md`.

@@ -174,6 +174,8 @@ describe('fluxos de ponta a ponta', () => {
     expect(await screen.findByRole('heading', { name: /fase concluída/i })).toBeInTheDocument()
     expect(screen.getByRole('img', { name: '3 de 3 estrelas' })).toBeInTheDocument()
     expect(screen.getByText('100%')).toBeInTheDocument()
+    // resultado no visual de aventura: vitória com o cenário da região da fase
+    expect(document.querySelector('.av-resultado.is-vitoria .av-fundo')).not.toBeNull()
     const p = services.progress.load()
     expect(p.experiences['gn-criacao']).toMatchObject({ completed: true, bestStars: 3 })
     expect(p.xp).toBeGreaterThan(100)

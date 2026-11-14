@@ -97,7 +97,6 @@ Data: 14/11/2026. Pedido: redesign completo da experiência (central, mapas, fas
 
 ## 7. Limitações e próximas etapas
 
-- **Etapa 5:** telas de pergunta no visual claro de aventura, com o cenário da fase.
-- **Etapa 6:** resultado com animação de vitória, personagem comemorando e baú.
+- **Etapas 5 e 6: feitas na v0.15.0.** As perguntas e o resultado passaram para o visual de aventura, com a paisagem da região da fase. O resultado tem faixa de vitória, personagem comemorando, moeda de XP, baú e confete.
 - **Êxodo e os mundos seguintes:** recebem cenário próprio quando tiverem fases.
 - **Cenário:** é desenhado em código (SVG), sem pinturas. É leve e nítido, mas menos detalhado que a referência pintada.

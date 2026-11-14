@@ -73,3 +73,29 @@ export function zonasPorNo(zonas: ZonaPorFase[], fasesDosNos: number[]): Zona[] 
     .filter((z) => z.de >= 0 && z.ate >= z.de)
     .map((z, i, arr) => ({ ...z, de: i === 0 ? 0 : arr[i - 1].ate + 1, ate: i === arr.length - 1 ? fasesDosNos.length - 1 : z.ate }))
 }
+
+/** Cenário de fundo de uma partida: as cores e os marcos da região. */
+export interface CenarioPartida {
+  nome: string
+  chao: [string, string]
+  marcos: Zona['marcos']
+  vegetacao: Zona['vegetacao']
+  agua?: Zona['agua']
+}
+
+const PARA_PARTIDA = (z: ZonaPorFase): CenarioPartida => ({ nome: z.nome ?? '', chao: z.chao, marcos: z.marcos, vegetacao: z.vegetacao, agua: z.agua })
+
+/** Biblioteca antiga: cenário padrão do treino livre e do desafio diário. */
+export const CENARIO_BIBLIOTECA: CenarioPartida = PARA_PARTIDA(CENARIO_QUIZ.vale[2])
+
+/** Região do mapa do Modo História em que fica a fase (n = posição da fase no mundo, a partir de 1). */
+export function cenarioDaFaseNoMundo(mundoId: string, n: number, totalFases: number): CenarioPartida {
+  const zonas = CENARIO_MUNDO[mundoId] ?? cenarioGenerico(totalFases)
+  return PARA_PARTIDA(zonas.find((z) => n >= z.fases[0] && n <= z.fases[1]) ?? zonas[0])
+}
+
+/** Região do mapa do Modo Quiz em que fica o desafio (n a partir de 1). */
+export function cenarioDoDesafio(regiaoId: string, n: number): CenarioPartida {
+  const zonas = CENARIO_QUIZ[regiaoId] ?? CENARIO_QUIZ.vale
+  return PARA_PARTIDA(zonas.find((z) => n >= z.fases[0] && n <= z.fases[1]) ?? zonas[0])
+}

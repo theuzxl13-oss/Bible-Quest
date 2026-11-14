@@ -8,6 +8,7 @@ import { createLocalServices } from '../services'
 import { MemoryStore } from '../services/storage/keyValueStore'
 import { CENARIO_MUNDO, CENARIO_QUIZ, zonasPorNo } from '../data/mapas/cenarios'
 import { worldSections } from '../services/game/journeyMap'
+import { cenarioDaPartida } from '../data/mapas/partida'
 import type { CharacterAppearance } from '../types'
 
 const CHAR: CharacterAppearance = {
@@ -45,6 +46,14 @@ describe('cenários dos mapas', () => {
     expect(zonas[zonas.length - 1].ate).toBe(genesis.nodes.length - 1)
     zonas.forEach((z, i) => i > 0 && expect(z.de).toBe(zonas[i - 1].ate + 1))
     expect(zonas.map((z) => z.nome)).toEqual(['A criação', 'O jardim do Éden', 'Caim e Abel', 'Noé e o dilúvio', 'A torre de Babel', 'Abraão', 'Isaque e Jacó', 'José no Egito'])
+  })
+
+  it('a partida usa o cenário da região da fase ou do desafio', () => {
+    expect(cenarioDaPartida({ experienceId: 'gn-noe' }).nome).toBe('Noé e o dilúvio')
+    expect(cenarioDaPartida({ experienceId: 'gn-babel' }).nome).toBe('A torre de Babel')
+    expect(cenarioDaPartida({ experienceId: 'gn-jose-egito' }).nome).toBe('José no Egito')
+    expect(cenarioDaPartida({ quizNodeId: 'vale-5' }).nome).toBe('Biblioteca antiga')
+    expect(cenarioDaPartida({}).nome).toBe('Biblioteca antiga')
   })
 
   it('cada região do Modo Quiz tem cenário próprio', () => {
@@ -95,6 +104,14 @@ describe('mapa de aventura do Modo Quiz', () => {
     const nav = await screen.findByRole('navigation', { name: 'Treino livre' })
     expect(within(nav).getByRole('link', { name: /desafio por tempo/i })).toHaveAttribute('href', '/quiz/treino/contra-o-tempo')
     expect(within(nav).getByRole('link', { name: /perguntas aleatórias/i })).toHaveAttribute('href', '/quiz/treino/aleatorias')
+  })
+
+  it('"Começar desafio" na janela já abre a partida, com o cenário de aventura ao fundo', async () => {
+    const { user } = setup('/quiz')
+    await user.click(await screen.findByRole('button', { name: /desafio 1: verdadeiro ou falso\. disponível/i }))
+    await user.click(within(await screen.findByRole('dialog')).getByRole('button', { name: /começar desafio/i }))
+    expect(await screen.findByRole('button', { name: 'Sair da partida' })).toBeInTheDocument()
+    expect(document.querySelector('.quiz.av-jogo .av-fundo')).not.toBeNull()
   })
 
   it('concluir um desafio do Quiz não libera fases do Modo História', async () => {

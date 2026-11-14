@@ -17,6 +17,8 @@ import { ChestIcon } from '../components/map/Scenery'
 import { STAR_RULES } from '../services/game/scoring'
 import { useGame } from '../state/GameContext'
 import { QUIZ_NODES, getQuizNode } from '../data/quiz/regions'
+import { CenarioFundo } from '../components/map/aventura/CenarioFundo'
+import { cenarioDaPartida } from '../data/mapas/partida'
 
 export default function Result() {
   const { lastOutcome, progress, questionPool, profile } = useGame()
@@ -44,15 +46,23 @@ export default function Result() {
   const starred = record.mode === 'historia' || record.mode === 'quiz'
 
   return (
+    <div className={`av-jogo av-resultado ${record.passed ? 'is-vitoria' : 'is-derrota'}`}>
+      <CenarioFundo cenario={cenarioDaPartida({ experienceId: record.experienceId, quizNodeId: record.quizNodeId })} />
+      {record.passed && (
+        <div className="av-confete" aria-hidden="true">
+          {Array.from({ length: 24 }, (_, i) => <span key={i} style={{ ['--i' as string]: i }} />)}
+        </div>
+      )}
     <div className="container section stack-lg result">
       <header className="result-head panel">
-        {starred && profile?.character && (
+        {profile?.character && (
           <div className={`result-hero-char ${record.passed ? 'is-happy' : ''}`} aria-hidden="true">
-            <PlayerCharacter live size={132} pose={record.passed ? 'celebrate' : 'idle'} />
+            {record.passed && <span className="av-raios result-raios" />}
+            <PlayerCharacter live size={150} pose={record.passed ? 'celebrate' : 'idle'} />
           </div>
         )}
         <p className="eyebrow">{record.mode === 'historia' ? 'Modo História' : record.mode === 'quiz' ? 'Modo Quiz · mapa de desafios' : record.mode === 'livre' ? 'Modo Quiz · Treino livre' : record.title}</p>
-        <h1>{headline}</h1>
+        <div className="av-faixa result-faixa"><h1>{headline}</h1></div>
         {record.mode === 'historia' && <p className="muted">{exp ? `Fase ${phaseNumber(exp.id)} · ${exp.title}` : record.title}</p>}
         {record.mode === 'quiz' && <p className="muted">{record.title}</p>}
         {starred && (
@@ -72,8 +82,8 @@ export default function Result() {
         <div className="rewards" aria-label="Recompensas">
           <p className="eyebrow">Recompensas</p>
           <ul>
-            <li className="reward-xp"><Icon name="star" /> <strong>+{xpGained} XP</strong></li>
-            {chestReady && <li><ChestIcon size={28} /> Um baú de recompensa foi liberado no mapa!</li>}
+            <li className="reward-xp"><span className="reward-moeda" aria-hidden="true">XP</span> <strong>+{xpGained} XP</strong></li>
+            {chestReady && <li className="reward-bau"><span className="reward-bau-icone"><ChestIcon size={44} open /></span> Um baú de recompensa foi liberado no mapa!</li>}
             {record.mode === 'quiz' && firstClear && nextQuiz && <li><Icon name="shield" /> Próximo desafio liberado: {nextQuiz.title}</li>}
             {firstClear && nextExp && <li><Icon name="map" /> Próxima fase liberada: {nextExp.title}</li>}
           </ul>
@@ -141,6 +151,7 @@ export default function Result() {
           </ol>
         </section>
       )}
+    </div>
     </div>
   )
 }

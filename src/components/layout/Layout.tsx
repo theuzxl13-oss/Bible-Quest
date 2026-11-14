@@ -38,7 +38,7 @@ const SECONDARY: { to: string; label: string }[] = [
 ]
 
 /** Telas de jogo usam layout imersivo, sem barra inferior. */
-const IMMERSIVE = [/^\/$/, /^\/historia$/, /^\/quiz$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/quiz\/treino\/[^/]+$/, /^\/quiz\/desafio\/[^/]+$/, /^\/diario$/, /^\/boas-vindas$/]
+const IMMERSIVE = [/^\/$/, /^\/historia$/, /^\/quiz$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/quiz\/treino\/[^/]+$/, /^\/quiz\/desafio\/[^/]+$/, /^\/diario$/, /^\/boas-vindas$/, /^\/resultado$/]
 
 export function Layout() {
   const { profile, progress } = useGame()
@@ -112,7 +112,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.14 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.15 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>
