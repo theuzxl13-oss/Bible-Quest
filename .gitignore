@@ -3,3 +3,8 @@ dist/
 coverage/
 *.local
 .DS_Store
+*.tsbuildinfo
+lab/
+tools/personagem/fonte/
+tools/personagem/saida/
+__pycache__/
