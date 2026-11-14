@@ -239,13 +239,19 @@ O ambiente de teste não tem WebGL, então as telas usam o personagem e o acampa
 
 ## Publicação no GitHub Pages
 
-O workflow `.github/workflows/deploy.yml` roda a cada envio para `main`, `master` ou `claude/**`. Ele instala as dependências, verifica os tipos, roda os testes, gera o build e publica `dist/`. Hoje o ambiente `github-pages` do repositório aceita a publicação a partir do ramo de desenvolvimento (`claude/**`); nos envios ao `main`, o build roda, mas a etapa de publicação é recusada pela regra do ambiente (Settings → Environments → github-pages → Deployment branches).
+Processo completo, histórico do problema e como voltar a uma versão: [`docs/planos/PUBLICACAO-E-BACKUP.md`](docs/planos/PUBLICACAO-E-BACKUP.md).
 
-Configuração do GitHub (já feita):
+- **Produção:** o ramo `main`. Só ele publica no GitHub Pages, e uma versão chega a ele quando é aprovada.
+- **Desenvolvimento:** os ramos `claude/**` e os pull requests rodam o workflow `.github/workflows/deploy.yml` só para verificar tipos, testes, build e os arquivos gerados. Não publicam.
+- **Concorrência:** uma publicação em andamento nunca é cancelada. As seguintes esperam na fila (grupo `pages-producao`).
+- **Publicar de novo:** aba **Actions → Verificação e publicação no GitHub Pages → Run workflow**, escolhendo o `main`.
+- **Conferência:** o arquivo `assets/index-*.js` do site deve ser o mesmo gerado no build do commit publicado.
+- **Ponto de retorno:** tag `v0.16.1` (commit `5a1a21f`), a versão auditada.
+
+Configuração do GitHub:
 
 - Em **Settings → Pages**, a origem é **GitHub Actions**.
-- Em **Settings → Environments → github-pages**, as branches `claude/dazzling-johnson-mig8ai` e `claude/loving-carson-8mrbjo` podem publicar.
-  - Para publicar de outra branch, inclua-a nessa lista.
+- Em **Settings → Environments → github-pages → Deployment branches and tags**, o ramo `main` precisa estar liberado. Recomendado: deixar só o `main`.
 
 O build usa `base: './'` e `HashRouter`, então funciona em qualquer subpasta.
 
@@ -276,7 +282,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.16.2** (14/11/2026): Etapa 1, com tag de retorno `v0.16.1`, publicação só pelo `main` e sem cancelar publicações válidas.
 - **0.16.1** (14/11/2026): auditoria geral do projeto e plano oficial de evolução (`docs/auditorias/AUDITORIA-GERAL-v0.16.md`), aguardando aprovação.
 - **0.16.0** (14/11/2026): cena narrativa da fase, cenário próprio de Êxodo e Biblioteca, Conquistas e Perfil no visual de aventura.
 - **0.15.0** (14/11/2026): telas de perguntas e de resultado no visual de aventura, com o cenário da região da fase ao fundo.
-- **0.14.0** (14/11/2026): mapas de aventura: Gênesis completo em regiões ilustradas, trilha própria do Quiz com seletor de dificuldade e janela de apresentação das fases.

@@ -1,21 +1,31 @@
-name: Build e publicação no GitHub Pages
+name: Verificação e publicação no GitHub Pages
+
+# Estratégia de publicação (Etapa 1 do roadmap oficial):
+# - Produção = ramo `main`. Só ele publica no GitHub Pages ("versões aprovadas").
+# - Ramos de desenvolvimento (`claude/**`) e pull requests só VERIFICAM:
+#   tipos, testes e build. Não publicam.
+# - Publicação manual (workflow_dispatch) só é aceita a partir do `main`.
+# - Verificações de um mesmo ramo cancelam a anterior (economiza tempo).
+#   A publicação usa um grupo próprio, que NUNCA cancela uma publicação em
+#   andamento: as novas esperam na fila.
 
 on:
   push:
-    branches: [main, master, 'claude/**']
+    branches: [main, 'claude/**']
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: verificacao-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  build:
+  verificar:
+    name: Tipos, testes e build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,17 +37,33 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
+      - name: Conferir os arquivos gerados
+        run: |
+          test -f dist/index.html
+          ls dist/assets/*.js > /dev/null
+          ls dist/models/personagem/*.glb > /dev/null
+          grep -q 'src="./assets/' dist/index.html
+      - name: Preparar o pacote do Pages (só no main)
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
-  deploy:
-    needs: build
+  publicar:
+    name: Publicar no GitHub Pages
+    needs: verificar
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages-producao
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/configure-pages@v5
       - id: deployment
         uses: actions/deploy-pages@v4

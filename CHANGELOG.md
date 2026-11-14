@@ -2,6 +2,23 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.2 — 14/11/2026 — Etapa 1: ponto de retorno e publicação estável
+
+Sem mudança no jogo: personagens, mapas, perguntas e conteúdo bíblico ficaram iguais.
+
+- **Ponto de retorno:** tag anotada `v0.16.1` no commit `5a1a21f`, a versão auditada. Ela foi criada no repositório local da sessão, mas o envio ao GitHub foi recusado pela conexão da sessão; a criação no GitHub fica com o dono do projeto (passo a passo em `docs/planos/PUBLICACAO-E-BACKUP.md`).
+- **Causa da falha na publicação:**
+  - o ambiente `github-pages` só aceita os ramos `claude/...`, por isso toda publicação pelo `main` era recusada em 2 segundos (execuções 37, 39 e 41);
+  - todas as execuções usavam o grupo `pages` com `cancel-in-progress: true`, então o envio ao `main` cancelava a publicação válida do ramo de desenvolvimento (execuções 38 e 40).
+- **Correção (não percebida antes):** a versão 0.16.0 nunca foi publicada sozinha. O site ficou na 0.15.0 até a publicação da 0.16.1. A conferência daquela hora procurou um texto (`av-cena`) que já existia na 0.15 e deu falso positivo.
+- **Novo workflow** (`.github/workflows/deploy.yml`):
+  - produção só pelo `main`;
+  - `claude/**` e pull requests só verificam;
+  - grupo de publicação `pages-producao` sem cancelamento;
+  - permissões de publicação só no job que publica;
+  - conferência dos arquivos gerados (`index.html`, scripts, modelos e caminhos relativos).
+- **Documentação:** `docs/planos/PUBLICACAO-E-BACKUP.md` (processo, histórico, retorno e limitações); seção de publicação do README.
+
 ## 0.16.1 — 14/11/2026 — Auditoria geral e plano oficial de evolução
 
 - Novo documento `docs/auditorias/AUDITORIA-GERAL-v0.16.md`, com:

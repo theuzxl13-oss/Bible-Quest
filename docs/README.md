@@ -4,6 +4,7 @@
 | --- | --- |
 | [`planos/PLANO-v0.4.md`](planos/PLANO-v0.4.md) | Plano da v0.4: personagem por itens, mapas e progressão |
 | [`planos/PROXIMOS-PASSOS-3D.md`](planos/PROXIMOS-PASSOS-3D.md) | Caminho gratuito para o estilo de filme de animação 3D |
+| [`planos/PUBLICACAO-E-BACKUP.md`](planos/PUBLICACAO-E-BACKUP.md) | Etapa 1: ponto de retorno (tag `v0.16.1`), estratégia de publicação pelo `main`, histórico da falha e limitações |
 | [`planos/EDITOR-3D-PLANO.md`](planos/EDITOR-3D-PLANO.md) | Editor de personagens modular: análise, arquitetura e modelos necessários |
 | [`auditorias/AUDITORIA-v0.5.md`](auditorias/AUDITORIA-v0.5.md) | Diagnóstico e decisão técnica do personagem 3D (v0.5) |
 | [`auditorias/AUDITORIA-v0.14.md`](auditorias/AUDITORIA-v0.14.md) | Auditoria da central e dos mapas e redesign de aventura (mapa de Gênesis e trilha do Quiz) |
