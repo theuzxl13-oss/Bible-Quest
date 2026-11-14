@@ -2,6 +2,19 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.5 — 14/11/2026 — Plano técnico consolidado da Central do Jogador
+
+Sem mudança no jogo.
+
+- `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.pdf`: versão final do plano da tela piloto, com as seis decisões aprovadas:
+  - barra inferior com Central, História, Quiz, Biblioteca e Perfil;
+  - diário de viagem fora da Central;
+  - sem cidades na cena;
+  - os 13 elementos de evolução preservados;
+  - barra oculta nos mapas;
+  - página antiga da fase mantida.
+- O plano lista arquivos, componentes, organização visual, personagem, elementos, navegação, mapa de acessos preservados, responsividade, testes e critérios de aceitação. Ele aguarda aprovação para ser implementado.
+
 ## 0.16.4 — 14/11/2026 — Relatório da Etapa 2 em PDF
 
 Sem mudança no jogo.
