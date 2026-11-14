@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.15 (mapas e telas de jogo de aventura) |
+| **Versão** | 0.16 (mapas, fases e telas no visual de aventura) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -105,6 +105,9 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 - Estilo de jogo de aventura em todas as telas: céu e montanhas no topo, madeira, faixas, pergaminho e botões com relevo.
 - Ícones ilustrados e coloridos (`src/components/GameIcon.tsx`) no menu, no acampamento, nas conquistas e no treino.
 - Telas de jogo (perguntas e resultado) sobre a paisagem da região da fase: a arca nas fases de Noé, a torre em Babel, as pirâmides no Egito, a biblioteca no Quiz. O resultado tem faixa de vitória, personagem comemorando, estrelas grandes, moeda de XP, baú e confete.
+- Cena narrativa da fase no mesmo visual: pintura em moldura de madeira, personagens em cartões de pergaminho e referências bíblicas num rolo.
+- Êxodo com cenário próprio: o Nilo e o cesto entre os juncos, a sarça ardente, a porta da Páscoa, o mar aberto e o monte Sinai.
+- Biblioteca, Conquistas e Perfil com placa de pergaminho, paisagem ao fundo e painéis de pergaminho e madeira.
 
 **Acessibilidade**
 
@@ -219,7 +222,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 141 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src/test/`:
+São 144 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -229,14 +232,14 @@ São 141 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
-| `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios e independência dos modos |
+| `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
 O ambiente de teste não tem WebGL, então as telas usam o personagem e o acampamento em 2D. O 3D é conferido no navegador (Playwright), no celular e no computador, a cada versão.
 
 ## Publicação no GitHub Pages
 
-O workflow `.github/workflows/deploy.yml` roda a cada envio para `main`, `master` ou `claude/**`. Ele instala as dependências, verifica os tipos, roda os testes, gera o build e publica `dist/`.
+O workflow `.github/workflows/deploy.yml` roda a cada envio para `main`, `master` ou `claude/**`. Ele instala as dependências, verifica os tipos, roda os testes, gera o build e publica `dist/`. Hoje o ambiente `github-pages` do repositório aceita a publicação a partir do ramo de desenvolvimento (`claude/**`); nos envios ao `main`, o build roda, mas a etapa de publicação é recusada pela regra do ambiente (Settings → Environments → github-pages → Deployment branches).
 
 Configuração do GitHub (já feita):
 
@@ -273,7 +276,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.16.0** (14/11/2026): cena narrativa da fase, cenário próprio de Êxodo e Biblioteca, Conquistas e Perfil no visual de aventura.
 - **0.15.0** (14/11/2026): telas de perguntas e de resultado no visual de aventura, com o cenário da região da fase ao fundo.
 - **0.14.0** (14/11/2026): mapas de aventura: Gênesis completo em regiões ilustradas, trilha própria do Quiz com seletor de dificuldade e janela de apresentação das fases.
 - **0.13.3** (14/11/2026): referências de penteados e véu para o editor de personagens por peças.
-- **0.13.0** (13/11/2026): mapas do Modo História e do Modo Quiz em trilha de fases, limpos e coloridos, sem textos extras.

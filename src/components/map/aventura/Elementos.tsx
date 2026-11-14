@@ -14,6 +14,8 @@ export type TipoElemento =
   | 'pilar-betel' | 'piramide' | 'celeiro' | 'casa-pedra' | 'ruina'
   // Quiz
   | 'templo' | 'biblioteca' | 'pergaminho-pedestal' | 'ampulheta' | 'livros' | 'pedra-inscricao' | 'portal' | 'obelisco' | 'braseiro'
+  // Êxodo
+  | 'juncos' | 'cesto-juncos' | 'sarca' | 'mar-aberto' | 'monte-sinai' | 'tabuas' | 'porta-pascoa' | 'coluna-fogo'
 
 const C = { contorno: '#3b2414', sombra: 'rgba(30,20,10,.28)' }
 const traco = { stroke: C.contorno, strokeWidth: 1.6, strokeLinejoin: 'round' as const }
@@ -395,6 +397,96 @@ function desenho(tipo: TipoElemento) {
           <path d="M-10 -22 H10 L7 -30 H-7 Z" fill="#8a5a30" {...traco} />
           <path className="av-chama" d="M-6 -30 Q-8 -40 0 -48 Q2 -40 6 -42 Q8 -36 6 -30 Z" fill="#ff9a2e" stroke="#c4501a" strokeWidth="1" />
           <path d="M-2 -30 Q-3 -36 1 -40 Q3 -34 2 -30 Z" fill="#ffe27a" />
+        </g>
+      )
+    case 'juncos':
+      return (
+        <g>
+          <ellipse cx="0" cy="0" rx="26" ry="5" fill="#4aa8dc" opacity=".55" />
+          {[-18, -10, -3, 4, 11, 18].map((dx, i) => (
+            <g key={dx}>
+              <path d={`M${dx} 0 Q${dx + (i % 2 ? 3 : -3)} -18 ${dx + (i % 2 ? 1 : -2)} ${-28 - (i % 3) * 6}`} stroke="#5f8f2e" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+              <ellipse cx={dx + (i % 2 ? 1 : -2)} cy={-30 - (i % 3) * 6} rx="2.6" ry="6" fill="#8a5a30" stroke={C.contorno} strokeWidth="1" />
+            </g>
+          ))}
+        </g>
+      )
+    case 'cesto-juncos':
+      return (
+        <g>
+          <ellipse cx="0" cy="0" rx="34" ry="7" fill="#4aa8dc" stroke="#e9d9a8" strokeWidth="2" />
+          <ellipse cx="-10" cy="-1" rx="12" ry="1.6" fill="#fff" opacity=".6" />
+          <path d="M-16 -2 Q-18 -14 -12 -14 H12 Q18 -14 16 -2 Q0 4 -16 -2 Z" fill="#c99248" {...traco} />
+          {[-10, -4, 2, 8].map((dx) => <path key={dx} d={`M${dx} -13 v10`} stroke="#8a5a2a" strokeWidth="1.2" />)}
+          <path d="M-12 -14 Q0 -22 12 -14" fill="#e9d9a8" {...traco} />
+          {[-30, -24, 24, 30].map((dx, i) => <path key={dx} d={`M${dx} 0 q${i < 2 ? -2 : 2} -16 ${i < 2 ? 1 : -1} -26`} stroke="#5f8f2e" strokeWidth="2.4" fill="none" strokeLinecap="round" />)}
+        </g>
+      )
+    case 'sarca':
+      return (
+        <g>
+          <Sombra rx={20} ry={5} />
+          <Copa x={0} y={-14} r={15} cores={['#b3c46a', '#7c8f3a', '#4a5a20']} />
+          <Copa x={-12} y={-8} r={9} cores={['#b3c46a', '#7c8f3a', '#4a5a20']} />
+          <Copa x={12} y={-8} r={9} cores={['#b3c46a', '#7c8f3a', '#4a5a20']} />
+          <path className="av-chama" d="M-14 -16 Q-16 -34 -4 -44 Q-2 -34 2 -38 Q6 -48 12 -50 Q10 -40 16 -32 Q18 -22 14 -16 Z" fill="#ff9a2e" stroke="#c4501a" strokeWidth="1" opacity=".92" />
+          <path d="M-6 -18 Q-6 -28 0 -34 Q2 -28 6 -30 Q8 -24 6 -18 Z" fill="#ffe27a" />
+        </g>
+      )
+    case 'mar-aberto':
+      return (
+        <g>
+          <Sombra rx={70} ry={8} />
+          <path d="M-72 0 L-70 -46 Q-60 -58 -46 -50 Q-34 -60 -24 -48 L-14 0 Z" fill="#3b8fd0" {...traco} />
+          <path d="M-66 -40 Q-56 -50 -46 -44 Q-36 -52 -28 -42 L-24 -30 Q-44 -38 -66 -28 Z" fill="#7cc3ef" />
+          <path d="M72 0 L70 -46 Q60 -58 46 -50 Q34 -60 24 -48 L14 0 Z" fill="#3b8fd0" {...traco} />
+          <path d="M66 -40 Q56 -50 46 -44 Q36 -52 28 -42 L24 -30 Q44 -38 66 -28 Z" fill="#7cc3ef" />
+          <path d="M-14 0 L-10 -6 H10 L14 0 Z" fill="#e6cd98" stroke={C.contorno} strokeWidth="1" />
+          {[-58, -40, 40, 58].map((dx) => <path key={dx} d={`M${dx - 6} -50 q6 -6 12 0`} stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round" />)}
+        </g>
+      )
+    case 'monte-sinai':
+      return (
+        <g>
+          <Sombra rx={74} ry={9} />
+          <path d="M-74 0 L-30 -64 L-12 -54 L4 -96 L30 -60 L74 0 Z" fill="#a98a66" {...traco} />
+          <path d="M4 -96 L30 -60 L74 0 L20 0 L8 -50 Z" fill="#8a6c4c" />
+          <path d="M-8 -82 L4 -96 L16 -78 Q6 -72 -8 -82 Z" fill="#e9dcc4" />
+          <g className="av-fumaca">
+            <ellipse cx="0" cy="-104" rx="34" ry="12" fill="#cfcfd8" opacity=".9" />
+            <ellipse cx="18" cy="-112" rx="22" ry="10" fill="#e6e6ee" opacity=".9" />
+            <ellipse cx="-18" cy="-110" rx="18" ry="8" fill="#b9b9c6" opacity=".9" />
+          </g>
+          <path d="M-6 -100 L-2 -92 L-8 -88 L0 -80" stroke="#ffd23a" strokeWidth="2.4" fill="none" strokeLinecap="round" />
+        </g>
+      )
+    case 'tabuas':
+      return (
+        <g>
+          <Sombra rx={20} ry={5} />
+          {[-10, 10].map((dx) => (
+            <g key={dx}>
+              <path d={`M${dx - 9} 0 V-26 Q${dx} -36 ${dx + 9} -26 V0 Z`} fill="#d6cfc0" {...traco} />
+              {[-22, -16, -10, -4].map((y) => <path key={y} d={`M${dx - 5} ${y} h10`} stroke="#8a8070" strokeWidth="1.3" />)}
+            </g>
+          ))}
+        </g>
+      )
+    case 'porta-pascoa':
+      return (
+        <g>
+          <Sombra rx={28} ry={6} />
+          <rect x="-26" y="-40" width="52" height="40" fill="#e3c38a" {...traco} />
+          <rect x="-26" y="-46" width="52" height="8" fill="#c9a268" {...traco} />
+          <rect x="-9" y="-28" width="18" height="28" fill="#6a4220" {...traco} />
+          <path d="M-12 -32 H12 M-12 -32 V0 M12 -32 V0" stroke="#b5302a" strokeWidth="3" fill="none" />
+        </g>
+      )
+    case 'coluna-fogo':
+      return (
+        <g>
+          <path className="av-chama" d="M-10 0 Q-16 -40 -8 -80 Q-4 -100 0 -110 Q6 -96 8 -80 Q16 -40 10 0 Z" fill="#ff9a2e" stroke="#c4501a" strokeWidth="1" opacity=".85" />
+          <path d="M-4 0 Q-8 -40 -2 -76 Q2 -40 4 0 Z" fill="#ffe27a" opacity=".9" />
         </g>
       )
     default:

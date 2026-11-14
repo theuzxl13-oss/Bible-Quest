@@ -26,6 +26,13 @@ export const CENARIO_MUNDO: Record<string, ZonaPorFase[]> = {
     { fases: [15, 18], nome: 'Isaque e Jacó', chao: ['#b9df7e', '#79b553'], marcos: [{ tipo: 'poco' }, { tipo: 'pilar-betel' }, { tipo: 'ovelhas' }, { tipo: 'tenda' }], agua: 'lago', vegetacao: ['arvore', 'oliveira', 'arbusto', 'flores', 'pedras'], densidade: 3.4 },
     { fases: [19, 20], nome: 'José no Egito', chao: ['#f3dc9c', '#e0bb6c'], marcos: [{ tipo: 'piramide', onde: 'topo' }, { tipo: 'celeiro' }, { tipo: 'casa-pedra' }, { tipo: 'palmeira' }], agua: 'lago', vegetacao: ['palmeira', 'palmeira', 'pedras'], densidade: 2.6 },
   ],
+  // Êxodo: o Nilo, Midiã, o Egito das pragas, o mar e o Sinai
+  'mundo-exodo': [
+    { fases: [1, 1], nome: 'O rio Nilo', chao: ['#cfe08e', '#9cbf5e'], marcos: [{ tipo: 'cesto-juncos' }, { tipo: 'juncos' }, { tipo: 'piramide', onde: 'topo' }, { tipo: 'palmeira' }], agua: 'lago', vegetacao: ['palmeira', 'juncos', 'arbusto', 'pedras'], densidade: 3 },
+    { fases: [2, 2], nome: 'O deserto de Midiã', chao: ['#ecd496', '#c9a868'], marcos: [{ tipo: 'sarca', escala: 1.2 }, { tipo: 'ovelhas' }, { tipo: 'rocha-grande' }, { tipo: 'tenda' }], vegetacao: ['pedras', 'arbusto', 'palmeira'], densidade: 2.6 },
+    { fases: [3, 3], nome: 'As pragas no Egito', chao: ['#f0d898', '#d6b06a'], marcos: [{ tipo: 'porta-pascoa' }, { tipo: 'obelisco' }, { tipo: 'casa-pedra' }, { tipo: 'piramide', onde: 'topo' }], vegetacao: ['palmeira', 'pedras'], densidade: 2.4 },
+    { fases: [4, 4], nome: 'O mar e o monte Sinai', chao: ['#e2c98c', '#b99a62'], marcos: [{ tipo: 'mar-aberto', escala: 1.05 }, { tipo: 'monte-sinai', onde: 'topo' }, { tipo: 'tabuas' }, { tipo: 'coluna-fogo' }], agua: 'lago', vegetacao: ['pedras', 'palmeira', 'arbusto'], densidade: 2.4 },
+  ],
 }
 
 /** Cenário genérico (mundos ainda sem cenário próprio), pelos elementos do mundo. */
@@ -98,4 +105,11 @@ export function cenarioDaFaseNoMundo(mundoId: string, n: number, totalFases: num
 export function cenarioDoDesafio(regiaoId: string, n: number): CenarioPartida {
   const zonas = CENARIO_QUIZ[regiaoId] ?? CENARIO_QUIZ.vale
   return PARA_PARTIDA(zonas.find((z) => n >= z.fases[0] && n <= z.fases[1]) ?? zonas[0])
+}
+
+/** Paisagens das telas do acampamento. */
+export const CENARIO_PAGINAS: Record<'biblioteca' | 'conquistas' | 'perfil', CenarioPartida> = {
+  biblioteca: CENARIO_BIBLIOTECA,
+  conquistas: { nome: 'Salão das conquistas', chao: ['#e6cf94', '#c9a868'], marcos: [{ tipo: 'templo' }, { tipo: 'obelisco' }, { tipo: 'braseiro' }, { tipo: 'pergaminho-pedestal' }], vegetacao: ['palmeira', 'pedras', 'oliveira'] },
+  perfil: { nome: 'Acampamento', chao: ['#cfe08e', '#9cbf5e'], marcos: [{ tipo: 'tenda' }, { tipo: 'tenda' }, { tipo: 'braseiro' }, { tipo: 'ovelhas' }], vegetacao: ['oliveira', 'arbusto', 'flores'] },
 }

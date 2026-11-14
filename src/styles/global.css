@@ -1800,3 +1800,101 @@ html[data-contrast='alto'] .section-title { background: #000; clip-path: none; }
 @keyframes av-confete { to { transform: translateY(110vh) rotate(calc(var(--i) * 90deg + 360deg)); opacity: 0.9; } }
 @media (prefers-reduced-motion: reduce) { .av-confete, .reward-moeda, .reward-bau-icone { display: none; animation: none; } .reward-moeda { display: grid; } }
 :root[data-motion='reduzido'] .av-confete { display: none; }
+
+/* ===== v0.16 — cena narrativa da fase no visual de aventura ===== */
+.scene.av-cena { min-height: 100vh; min-height: 100svh; overflow: visible; background: none; }
+.av-cena-topo { position: sticky; top: 0; z-index: 30; color: #5a3511; background: linear-gradient(180deg, #fdf0c8, #ecca82 80%, #d9ac60); border-bottom: 4px solid #8a5a2a; box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); }
+.av-cena-topo-in { display: flex; align-items: center; gap: 12px; padding-top: 8px; padding-bottom: 8px; }
+.av-cena-topo .small { color: #5a3511; font-weight: 700; text-shadow: none; }
+.av-redondo-sm { width: 44px; height: 44px; font-size: 1rem; flex-shrink: 0; }
+.av-cena .scene-dots li { height: 8px; border-radius: 4px; background: rgba(90, 53, 17, 0.2); box-shadow: inset 0 1px 2px rgba(60, 30, 5, 0.35); }
+.av-cena .scene-dots li.is-past { background: #c9923a; }
+.av-cena .scene-dots li.is-on { background: linear-gradient(90deg, #f2a51e, #ffd23a); box-shadow: 0 0 8px rgba(242, 165, 30, 0.7); }
+.av-cena-pular { display: inline-flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 8px 14px; border-radius: 999px; font-weight: 800; color: #5a3511; text-decoration: none; background: #fff6dc; border: 2px solid #8a5a2a; box-shadow: 0 3px 0 #8a5a2a; }
+.av-cena-pular:focus-visible { outline: 4px solid #2a7fd8; outline-offset: 2px; }
+.av-cena .scene-stage { justify-content: flex-end; gap: 10px; padding-top: 14px; padding-bottom: 28px; min-height: calc(100svh - 70px); }
+.av-cena-regiao { align-self: center; display: inline-flex; align-items: center; gap: 6px; margin: 0; padding: 4px 14px; border-radius: 999px; font-weight: 800; font-size: 0.88rem; color: #fff; background: rgba(59, 36, 20, 0.82); border: 2px solid #e9c47a; }
+.av-cena-quadro { margin: 0 auto; width: min(560px, 88%); padding: 10px; border-radius: 10px; background: linear-gradient(135deg, #a8743e, #6a4220 55%, #a8743e); border: 3px solid #3b2414; box-shadow: inset 0 0 0 3px #e9c47a, 0 14px 30px rgba(0, 0, 0, 0.45); animation: fade 400ms ease both; }
+.av-cena-quadro-img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 4px; border: 2px solid #3b2414; }
+.av-cena-palco { position: relative; display: flex; align-items: flex-end; justify-content: center; gap: 10px; min-height: 0; }
+.av-cena .scene-player { position: static; margin: 0; filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.35)); }
+.av-cena .scene-cast li { text-shadow: none; padding: 8px 6px 6px; border-radius: 14px; background: linear-gradient(180deg, #fdf3d8, #ecd29a); border: 3px solid #8a5a2a; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3); }
+.av-cena .scene-cast li strong { color: #3b2414; }
+.av-cena .scene-cast li .small { color: #6b4a2b; }
+.av-cena .scene-cast .portrait { border: 3px solid #c9923a; box-shadow: 0 0 0 3px #fff3d6; }
+.av-cena .scene-card { color: #3b2414; background: linear-gradient(180deg, #fdf3d8, #f0dba8); border: 4px solid #8a5a2a; border-radius: 20px; box-shadow: inset 0 0 0 3px rgba(255, 250, 230, 0.7), 0 18px 40px rgba(0, 0, 0, 0.4); padding: 0 20px 18px; margin-top: 24px; }
+.av-cena .scene-card * { text-shadow: none; }
+.av-cena .scene-card .muted { color: #6b4a2b; }
+.av-cena .scene-card-head { flex-direction: column; align-items: center; gap: 6px; margin-bottom: 10px; }
+.av-cena-faixa { margin-top: -28px; min-height: 52px; padding: 4px 26px; }
+.av-cena-faixa h1 { margin: 0; font-size: clamp(1.2rem, 5vw, 1.6rem); color: #5a3511; }
+.av-cena-etiquetas { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.av-cena .scene-card-head .btn { margin-left: 0; }
+.av-cena .btn-ghost { color: #5a3511; }
+.av-cena .tag { background: #fff6dc; border-color: #b98a45; color: #5a3511; }
+.av-cena .scene-card p { font-size: 1.04rem; line-height: 1.6; }
+.av-cena .narrative { font-style: italic; }
+.av-cena .scene-biblia { background: linear-gradient(180deg, #fbf1d4, #ead39c); }
+.av-cena .scene-biblia::before, .av-cena .scene-biblia::after { content: ''; position: absolute; left: -10px; right: -10px; height: 16px; border-radius: 8px; background: linear-gradient(180deg, #c99248, #8a5a2a); border: 2px solid #5a3511; }
+.av-cena .scene-biblia::before { top: -10px; }
+.av-cena .scene-biblia::after { bottom: -10px; }
+.av-cena .passage { background: rgba(255, 255, 255, 0.5); border-left-color: #c9923a; color: #3b2414; }
+.av-cena .passage cite { color: #8a5a2a; }
+.av-cena .btn-outline { color: #5a3511; border-color: #8a5a2a; background: #fbefcf; }
+@media (max-width: 599px) {
+  .av-cena .scene-progress .small { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .av-cena .scene-cast li { width: 92px; }
+  .av-cena .scene-card { padding: 0 14px 16px; }
+}
+.av-cena .scene-player { display: block; }
+.av-cena .scene-card .narrative { color: #3b2414; font-family: var(--font-serif); font-size: 1.2rem; }
+.av-cena .scene-card p.small { font-size: 0.85rem; line-height: 1.45; }
+@media (max-width: 640px) {
+  .av-cena-quadro ~ .av-cena-palco .scene-player { display: none; }
+  .av-cena .scene-player .character { transform: scale(0.8); transform-origin: bottom center; }
+}
+.av-cena .passage p { font-size: 1.22rem; line-height: 1.5; }
+
+/* ===== v0.16 — Biblioteca, Conquistas e Perfil no visual de aventura ===== */
+.app:has(.av-pagina) .topbar { display: none; }
+.app:has(.av-pagina) main::before { display: none; }
+.app:has(.av-pagina) .footer { position: relative; z-index: 1; background: rgba(36, 22, 13, 0.92); }
+.av-pagina { position: relative; min-height: 100vh; }
+.av-topo-pagina { background: linear-gradient(180deg, rgba(20, 40, 70, 0.4), rgba(20, 40, 70, 0)); }
+.av-faixa-titulo { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.25rem, 5.2vw, 1.8rem); color: #5a3511; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6); }
+.av-pagina-corpo { position: relative; z-index: 1; padding-top: 104px; padding-bottom: 40px; }
+/* painéis de pergaminho com moldura de madeira */
+.av-pagina .page-header, .av-pagina .panel, .av-pagina .medal-card, .av-pagina .ach-card, .av-pagina .lib-card, .av-pagina .lib-book, .av-pagina .history-item, .av-pagina .lib-event {
+  color: #3b2414; background: linear-gradient(180deg, #fdf3d8, #f0dba8); border: 3px solid #8a5a2a; border-radius: 18px; box-shadow: inset 0 0 0 2px rgba(255, 250, 230, 0.7), 0 10px 22px rgba(0, 0, 0, 0.3); text-shadow: none;
+}
+.av-pagina .page-header { max-width: none; padding: 16px 20px; }
+.av-pagina .page-header h1, .av-pagina .panel h1, .av-pagina .panel h2, .av-pagina .panel h3 { color: #5a3511; text-shadow: none; }
+.av-pagina .page-header-lead, .av-pagina .muted, .av-pagina .small.muted { color: #6b4a2b; }
+.av-pagina .eyebrow { color: #8a5a2a; }
+.av-pagina .gold { color: #9a6a06; }
+.av-pagina a:not(.btn):not(.lib-card):not(.lib-book):not(.av-redondo) { color: #8a4706; }
+.av-pagina .section-title { color: #fff; text-shadow: 0 2px 0 rgba(59, 36, 20, 0.85), 0 0 10px rgba(59, 36, 20, 0.6); }
+.av-pagina .av-pagina-corpo > p.small, .av-pagina section > p.small { display: inline-block; padding: 4px 12px; border-radius: 10px; color: #3b2414; background: rgba(253, 243, 216, 0.9); }
+.av-pagina .tabs { background: linear-gradient(180deg, #8a5a30, #5e3a1c); border: 3px solid #3b2414; box-shadow: inset 0 0 0 2px rgba(240, 190, 100, 0.45); }
+.av-pagina .tab { color: #fff3d0; }
+.av-pagina .medal-card.is-locked, .av-pagina .lib-card.is-locked, .av-pagina .lib-event.is-locked { filter: grayscale(0.7); opacity: 0.85; }
+.av-pagina .ach-card.is-on { background: linear-gradient(180deg, #fff6d0, #f5d77e); border-color: #b47c10; }
+.av-pagina .ach-card:not(.is-on) .ach-icon { filter: grayscale(1); opacity: 0.7; }
+.av-pagina .stat-grid .panel { background: linear-gradient(180deg, #8a5a30, #5e3a1c); border: 3px solid #3b2414; box-shadow: inset 0 0 0 2px rgba(240, 190, 100, 0.45); }
+.av-pagina .stat-grid dt { color: #f6dc94; }
+.av-pagina .stat-grid dd { color: #fff; }
+.av-pagina .book-abbrev { color: #fff3d0; background: linear-gradient(180deg, #8a5a30, #5e3a1c); border-color: #3b2414; }
+.av-pagina .history-item { box-shadow: 0 4px 0 #8a5a2a; }
+.av-pagina .btn-outline { color: #5a3511; border-color: #8a5a2a; background: #fbefcf; }
+.av-pagina .field input, .av-pagina .field select { color: #3b2414; background: #fffaf0; border-color: #b98a45; }
+.av-pagina .field span, .av-pagina legend { color: #5a3511; }
+.av-pagina .simple-table th, .av-pagina .simple-table td { color: #3b2414; border-color: rgba(138, 90, 42, 0.35); }
+.av-pagina .notice { color: #3b2414; }
+.av-pagina .progress { background: rgba(90, 53, 17, 0.2); }
+.av-pagina .ach-hero { display: flex; justify-content: center; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35)); }
+@media (min-width: 1000px) { .av-pagina-corpo { max-width: 1000px; } }
+.app:has(.av-pagina) .route-fade { animation: none; }
+.av-pagina .notice strong, .av-pagina .notice b { color: #5a3511; }
+.av-pagina .medal-card.is-locked, .av-pagina .lib-card.is-locked, .av-pagina .lib-event.is-locked { filter: grayscale(0.4); opacity: 0.9; }
+.av-pagina .tabs a.tab, .av-pagina .tabs a { color: #ffe08a; }
+.av-pagina .tab.is-on { color: #5a3511; text-shadow: none; }

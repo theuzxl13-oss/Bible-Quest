@@ -4,8 +4,8 @@
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
 - **Em andamento (v0.14):** redesign de aventura (plano e auditoria em `docs/auditorias/AUDITORIA-v0.14.md`).
-  - Feito: mapa de Gênesis completo em regiões ilustradas, trilha do Quiz com seletor de dificuldade, janela de apresentação das fases (v0.14), e perguntas e resultado no mesmo visual (v0.15).
-  - Próximos: cena narrativa da fase no visual de aventura, cenário próprio para Êxodo e os mundos seguintes, e as demais telas (Biblioteca, Conquistas, Perfil) no mesmo padrão.
+  - Feito: mapa de Gênesis completo em regiões ilustradas, trilha do Quiz com seletor de dificuldade, janela de apresentação das fases (v0.14), perguntas e resultado no mesmo visual (v0.15), e cena da fase, cenário de Êxodo e Biblioteca, Conquistas e Perfil (v0.16).
+  - Próximos: cenário próprio para os mundos seguintes quando tiverem fases, fichas da Biblioteca, guarda-roupa, estatísticas e configurações no mesmo padrão.
 - **v0.10:** central do acampamento em 3D, com o personagem do jogador no centro, missões e acampamento evolutivo. Próximos: mais elementos do acampamento (por exemplo, por livro concluído) e decorações escolhidas pelo jogador.
 - **Em andamento (v0.8):** estilo de filme de animação 3D, de graça. Feito: herói masculino estilizado com cores personalizáveis e interface em tons quentes. Próximos: modelos próprios dos outros 7 personagens (cota diária do Hugging Face) e o editor de personagens modular (plano em `docs/planos/EDITOR-3D-PLANO.md`). Veja `docs/planos/PROXIMOS-PASSOS-3D.md`.
 - **0.7:** personagem reconstruído como modelo GLB (MakeHuman CC0 + Blender): esqueleto, roupas simuladas, animações, expressões e criador com 9 categorias.

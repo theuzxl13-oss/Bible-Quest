@@ -127,3 +127,22 @@ export function AjudaMapa({ onFechar, itens }: { onFechar: () => void; itens: { 
     </div>
   )
 }
+
+/** Cabeçalho das telas do acampamento (Biblioteca, Conquistas, Perfil): placa em pergaminho e botão de voltar. */
+export function CabecalhoPagina({ titulo, subtitulo, icone }: { titulo: string; subtitulo: string; icone: IconName }) {
+  return (
+    <header className="av-topo av-topo-pagina">
+      <div className="av-topo-linha">
+        <Link to="/painel" className="av-redondo" aria-label="Voltar ao acampamento"><Icon name="arrowLeft" size={24} /></Link>
+        <div className="av-faixa">
+          <span className="av-faixa-icone" aria-hidden="true"><GameIcon name={icone} size={44} /></span>
+          <span className="av-faixa-texto">
+            <strong className="av-faixa-titulo">{titulo}</strong>
+            <span>{subtitulo}</span>
+          </span>
+        </div>
+        <span aria-hidden="true" />
+      </div>
+    </header>
+  )
+}

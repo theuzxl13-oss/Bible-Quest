@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { render, screen, within } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 import App from '../App'
@@ -54,6 +54,17 @@ describe('cenários dos mapas', () => {
     expect(cenarioDaPartida({ experienceId: 'gn-jose-egito' }).nome).toBe('José no Egito')
     expect(cenarioDaPartida({ quizNodeId: 'vale-5' }).nome).toBe('Biblioteca antiga')
     expect(cenarioDaPartida({}).nome).toBe('Biblioteca antiga')
+  })
+
+  it('Êxodo tem cenário próprio: o Nilo, Midiã, as pragas, o mar e o Sinai', () => {
+    const exodo = worldSections().find((s) => s.world.id === 'mundo-exodo')!
+    let f = 0
+    const fasesDosNos = exodo.nodes.map((n) => (n.kind === 'phase' ? ++f : f))
+    const zonas = zonasPorNo(CENARIO_MUNDO['mundo-exodo'], fasesDosNos)
+    expect(zonas.map((z) => z.nome)).toEqual(['O rio Nilo', 'O deserto de Midiã', 'As pragas no Egito', 'O mar e o monte Sinai'])
+    expect(zonas[zonas.length - 1].ate).toBe(exodo.nodes.length - 1)
+    expect(cenarioDaPartida({ experienceId: 'ex-sarca' }).nome).toBe('O deserto de Midiã')
+    expect(cenarioDaPartida({ experienceId: 'ex-mar-sinai' }).marcos.map((m) => m.tipo)).toContain('monte-sinai')
   })
 
   it('cada região do Modo Quiz tem cenário próprio', () => {
@@ -120,5 +131,29 @@ describe('mapa de aventura do Modo Quiz', () => {
     })
     expect(await screen.findByRole('button', { name: /desafio 2: perguntas aleatórias\. disponível/i })).toBeInTheDocument()
     expect(Object.keys(services.progress.load().experiences)).toHaveLength(0)
+  })
+})
+
+describe('telas no visual de aventura', () => {
+  it('a cena narrativa da fase mostra a paisagem da região e volta ao mapa', async () => {
+    setup('/historia/genesis/gn-criacao/historia')
+    expect(await screen.findByRole('heading', { name: 'Introdução' })).toBeInTheDocument()
+    expect(document.querySelector('.av-cena .av-fundo')).not.toBeNull()
+    expect(screen.getByText('A criação')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Voltar ao mapa' })).toHaveAttribute('href', '/historia')
+    expect(screen.getByRole('link', { name: 'Pular' })).toHaveAttribute('href', '/historia/genesis/gn-criacao/desafio')
+  })
+
+  it('Biblioteca, Conquistas e Perfil usam a placa de pergaminho e a paisagem', async () => {
+    for (const [rota, placa] of [['/biblioteca', 'Biblioteca'], ['/conquistas', 'Conquistas'], ['/perfil', 'Perfil']]) {
+      cleanup()
+      setup(rota)
+      const topo = await screen.findByRole('link', { name: 'Voltar ao acampamento' })
+      expect(topo).toHaveAttribute('href', '/painel')
+      expect(document.querySelector('.av-topo-pagina .av-faixa-titulo')?.textContent).toBe(placa)
+      expect(document.querySelector('.av-pagina .av-fundo')).not.toBeNull()
+      // o conteúdo da tela continua: o título principal segue presente
+      expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument()
+    }
   })
 })

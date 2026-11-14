@@ -14,6 +14,8 @@ import { levelProgress, levelTitle } from '../services/game/levels'
 import { bookCompletion, bookMedal, journeyCompletion, percent, testamentCompletion } from '../services/game/progression'
 import { useGame } from '../state/GameContext'
 import { PlayerCharacter } from '../components/character/PlayerCharacter'
+import { PaginaAventura } from '../components/map/aventura/PaginaAventura'
+import { CENARIO_PAGINAS } from '../data/mapas/cenarios'
 
 const AGE_LABEL = { ate12: 'Até 12 anos', '13a17': '13 a 17 anos', '18mais': '18 anos ou mais' }
 
@@ -47,7 +49,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="container section stack-lg">
+    <PaginaAventura titulo="Perfil" subtitulo="Seu progresso e histórico" icone="user" cenario={CENARIO_PAGINAS.perfil}>
       <header className="profile-head panel">
         {p.character ? <PlayerCharacter size={84} /> : <Avatar id={p.avatar} size={84} />}
         <div className="profile-id">
@@ -200,6 +202,6 @@ export default function ProfilePage() {
           </div>
         )}
       </section>
-    </div>
+    </PaginaAventura>
   )
 }

@@ -11,6 +11,8 @@ import { phaseNumber } from '../../services/game/journeyMap'
 import { isExperienceUnlocked } from '../../services/game/progression'
 import type { Experience } from '../../types'
 import { useGame } from '../../state/GameContext'
+import { CenarioFundo } from '../../components/map/aventura/CenarioFundo'
+import { cenarioDaPartida } from '../../data/mapas/partida'
 import NotFound from '../NotFound'
 
 type Slide =
@@ -65,48 +67,61 @@ export default function PhaseScene() {
   const speech =
     s.kind === 'intro' || s.kind === 'aprendizado' ? s.paragraphs.join(' ') : s.kind === 'narrativa' ? s.text : exp.passages.map((p) => `${p.reference}. ${p.text}`).join(' ')
 
+  const cenario = cenarioDaPartida({ experienceId: exp.id })
+
   return (
-    <div className="scene">
-      <ArtImage art={exp.image} className="scene-bg" priority decorative />
-      <div className="scene-shade" />
-      <div className="scene-top container">
-        <Link to={`/historia/${exp.bookId}/${exp.id}`} className="icon-btn" aria-label="Voltar à fase"><Icon name="arrowLeft" /></Link>
-        <div className="scene-progress">
-          <span className="small">Fase {phaseNumber(exp.id)} · {exp.title}</span>
-          <ol className="scene-dots" aria-label={`Quadro ${i + 1} de ${slides.length}`}>
-            {slides.map((sl, k) => <li key={k} className={k === i ? 'is-on' : k < i ? 'is-past' : ''}><span className="sr-only">{TITLES[sl.kind]}</span></li>)}
-          </ol>
+    <div className="scene av-jogo av-cena">
+      <CenarioFundo cenario={cenario} />
+      <header className="av-cena-topo">
+        <div className="av-cena-topo-in container">
+          <Link to="/historia" className="av-redondo av-redondo-sm" aria-label="Voltar ao mapa"><Icon name="arrowLeft" /></Link>
+          <div className="scene-progress">
+            <span className="small">Fase {phaseNumber(exp.id)} · {exp.title}</span>
+            <ol className="scene-dots" aria-label={`Quadro ${i + 1} de ${slides.length}`}>
+              {slides.map((sl, k) => <li key={k} className={k === i ? 'is-on' : k < i ? 'is-past' : ''}><span className="sr-only">{TITLES[sl.kind]}</span></li>)}
+            </ol>
+          </div>
+          <Link to={challenge} className="av-cena-pular">Pular <Icon name="arrowRight" size={16} /></Link>
         </div>
-        <Link to={challenge} className="btn btn-ghost btn-sm">Pular para o desafio</Link>
-      </div>
+      </header>
 
       <div className="scene-stage container" key={i}>
-        {s.kind === 'narrativa' && s.characters.length > 0 && (
-          <ul className="scene-cast" aria-label="Personagens em cena">
-            {s.characters.map((id, k) => {
-              const c = getCharacter(id)
-              return c ? (
-                <li key={id} style={{ ['--k' as string]: k }}>
-                  <span className="portrait portrait-lg"><ArtImage art={c.image} focus={c.focus} className="portrait-img" sizes="96px" decorative /></span>
-                  <strong>{c.name}</strong>
-                  <span className="small">{c.role}</span>
-                </li>
-              ) : null
-            })}
-          </ul>
+        <p className="av-cena-regiao"><Icon name="map" size={15} /> {cenario.nome}</p>
+        {s.kind === 'intro' && (
+          <figure className="av-cena-quadro">
+            <ArtImage art={exp.image} className="av-cena-quadro-img" priority sizes="(min-width: 700px) 560px, 88vw" decorative />
+          </figure>
         )}
-        {profile?.character && (s.kind === 'intro' || s.kind === 'narrativa') && (
-          <div className="scene-player" aria-hidden="true">
-            <PlayerCharacter size={92} />
-          </div>
-        )}
+        <div className="av-cena-palco">
+          {profile?.character && (s.kind === 'intro' || s.kind === 'narrativa') && (
+            <div className="scene-player" aria-hidden="true">
+              <PlayerCharacter size={92} />
+            </div>
+          )}
+          {s.kind === 'narrativa' && s.characters.length > 0 && (
+            <ul className="scene-cast" aria-label="Personagens em cena">
+              {s.characters.map((id, k) => {
+                const c = getCharacter(id)
+                return c ? (
+                  <li key={id} style={{ ['--k' as string]: k }}>
+                    <span className="portrait portrait-lg"><ArtImage art={c.image} focus={c.focus} className="portrait-img" sizes="96px" decorative /></span>
+                    <strong>{c.name}</strong>
+                    <span className="small">{c.role}</span>
+                  </li>
+                ) : null
+              })}
+            </ul>
+          )}
+        </div>
 
         <section className={`scene-card scene-${s.kind}`} aria-live="polite" aria-labelledby="scene-t">
           <div className="scene-card-head">
-            <h1 id="scene-t">{TITLES[s.kind]}</h1>
-            {s.kind === 'narrativa' && <span className="tag tag-narrative">Narrativa dramatizada</span>}
-            {s.kind === 'biblia' && <span className="tag tag-scripture">Almeida RC 1911</span>}
-            <ReadAloud text={speech} />
+            <div className="av-faixa av-cena-faixa"><h1 id="scene-t">{TITLES[s.kind]}</h1></div>
+            <div className="av-cena-etiquetas">
+              {s.kind === 'narrativa' && <span className="tag tag-narrative">Narrativa dramatizada</span>}
+              {s.kind === 'biblia' && <span className="tag tag-scripture">Almeida RC 1911</span>}
+              <ReadAloud text={speech} />
+            </div>
           </div>
           {s.kind === 'intro' && s.paragraphs.map((p, k) => <p key={k}>{p}</p>)}
           {s.kind === 'narrativa' && (

@@ -2,6 +2,23 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.0 — 14/11/2026 — Cena da fase, cenário de Êxodo e telas do acampamento no visual de aventura
+
+- **Cena narrativa da fase** (a história antes das perguntas):
+  - acontece sobre a paisagem da região da fase, com faixa de pergaminho no topo (voltar ao mapa, quadros da cena e "Pular");
+  - a introdução mostra a pintura da fase numa moldura de madeira;
+  - personagens bíblicos em cartões de pergaminho e o personagem do jogador ao lado, também no celular;
+  - o texto fica num pergaminho com o título numa faixa; as referências bíblicas parecem um rolo, com as pontas de madeira;
+  - os avisos de narrativa dramatizada e a fonte do texto bíblico continuam iguais.
+- **Cenário próprio para Êxodo:** quatro regiões no mapa e nas partidas.
+  - O rio Nilo: cesto entre os juncos, pirâmide e palmeiras;
+  - O deserto de Midiã: a sarça ardente, ovelhas e tenda;
+  - As pragas no Egito: porta marcada da Páscoa, obelisco e casas;
+  - O mar e o monte Sinai: o mar aberto, o monte com nuvem e relâmpago, as tábuas e a coluna de fogo.
+- **Biblioteca, Conquistas e Perfil:** placa de pergaminho no topo, botão de voltar ao acampamento, paisagem ao fundo (biblioteca antiga, salão das conquistas e acampamento) e painéis de pergaminho e madeira. Todo o conteúdo e as funções continuam os mesmos, e o menu inferior continua.
+- **Novos arquivos:** `src/components/map/aventura/PaginaAventura.tsx` (moldura das telas) e o cabeçalho `CabecalhoPagina`.
+- **Testes:** 144, com 3 novos (regiões de Êxodo, cena da fase e as três telas).
+
 ## 0.15.0 — 14/11/2026 — Perguntas e resultado no visual de aventura (etapas 5 e 6)
 
 - **Tela de perguntas:**

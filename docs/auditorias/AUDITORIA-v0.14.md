@@ -52,7 +52,7 @@ Data: 14/11/2026. Pedido: redesign completo da experiência (central, mapas, fas
   - Abraão: tendas, camelo, altar e oliveira;
   - Isaque e Jacó: poço, pilar de Betel e ovelhas;
   - José no Egito: pirâmide, celeiro, palmeiras e lago.
-- **Êxodo:** usa um cenário genérico de deserto até ganhar cenário próprio.
+- **Êxodo:** usava um cenário genérico de deserto; ganhou cenário próprio na v0.16.0.
 - **Fases em medalhão:**
   - concluídas em ouro;
   - a atual dourada, com raios girando e pulsação;
@@ -98,5 +98,6 @@ Data: 14/11/2026. Pedido: redesign completo da experiência (central, mapas, fas
 ## 7. Limitações e próximas etapas
 
 - **Etapas 5 e 6: feitas na v0.15.0.** As perguntas e o resultado passaram para o visual de aventura, com a paisagem da região da fase. O resultado tem faixa de vitória, personagem comemorando, moeda de XP, baú e confete.
-- **Êxodo e os mundos seguintes:** recebem cenário próprio quando tiverem fases.
+- **Êxodo: feito na v0.16.0**, com quatro regiões (Nilo, Midiã, pragas, mar e Sinai). Na mesma versão, a cena narrativa da fase e as telas Biblioteca, Conquistas e Perfil passaram para o visual de aventura.
+- **Mundos seguintes:** recebem cenário próprio quando tiverem fases.
 - **Cenário:** é desenhado em código (SVG), sem pinturas. É leve e nítido, mas menos detalhado que a referência pintada.

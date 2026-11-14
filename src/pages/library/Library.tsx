@@ -14,6 +14,8 @@ import { DATING_LABEL, TIMELINE } from '../../data/timeline'
 import { THEMES } from '../../data/themes'
 import { filteredPool } from '../../services/game/freeModes'
 import { getExperience } from '../../data/story'
+import { PaginaAventura } from '../../components/map/aventura/PaginaAventura'
+import { CENARIO_PAGINAS } from '../../data/mapas/cenarios'
 
 type Tab = 'personagens' | 'livros' | 'lugares' | 'acontecimentos' | 'temas'
 const TABS: { id: Tab; label: string }[] = [
@@ -44,7 +46,7 @@ export default function Library() {
   const metPlaces = PLACES.filter((p) => progress.library.places[p.id]).length
 
   return (
-    <div className="container section stack-lg">
+    <PaginaAventura titulo="Biblioteca" subtitulo="Personagens, livros e lugares" icone="book" cenario={CENARIO_PAGINAS.biblioteca}>
       <PageHeader eyebrow="Biblioteca Bíblica" title="Personagens, livros, lugares, acontecimentos e temas">
         As fichas de personagens e lugares são desbloqueadas quando você os encontra na jornada. Os livros podem ser
         consultados a qualquer momento. <Link to="/linha-do-tempo">Ver a linha do tempo</Link>.
@@ -191,6 +193,6 @@ export default function Library() {
       </section>
       <ProgressBar value={metChars + metPlaces} max={CHARACTERS.length + PLACES.length} label="Fichas desbloqueadas" />
       <p className="small muted">{metChars + metPlaces} de {CHARACTERS.length + PLACES.length} fichas desbloqueadas.</p>
-    </div>
+    </PaginaAventura>
   )
 }

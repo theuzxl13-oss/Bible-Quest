@@ -6,6 +6,8 @@ import { hasContent } from '../data/story'
 import { bookMedal } from '../services/game/progression'
 import { useGame } from '../state/GameContext'
 import { PlayerCharacter } from '../components/character/PlayerCharacter'
+import { PaginaAventura } from '../components/map/aventura/PaginaAventura'
+import { CENARIO_PAGINAS } from '../data/mapas/cenarios'
 
 const MEDAL = { ouro: 'Ouro', prata: 'Prata', bronze: 'Bronze' } as const
 const AREAS = ['historia', 'livre', 'constancia'] as const
@@ -15,7 +17,7 @@ export default function Achievements() {
   const unlocked = ACHIEVEMENTS.filter((a) => progress.achievements[a.id]).length
   const books = BOOKS.filter((b) => hasContent(b.id))
   return (
-    <div className="container section stack-lg">
+    <PaginaAventura titulo="Conquistas" subtitulo="Medalhas e troféus" icone="trophy" cenario={CENARIO_PAGINAS.conquistas}>
       <div className="ach-hero">
         <PlayerCharacter size={110} pose={unlocked > 0 ? 'celebrate' : 'idle'} />
       </div>
@@ -61,6 +63,6 @@ export default function Achievements() {
           </ul>
         </section>
       ))}
-    </div>
+    </PaginaAventura>
   )
 }
