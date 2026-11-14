@@ -282,7 +282,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.16.6** (14/11/2026): versão em texto (Markdown) do plano técnico da Central em `docs/relatorios/`.
 - **0.16.5** (14/11/2026): plano técnico consolidado da Central do Jogador em `docs/relatorios/`, aguardando aprovação para implementar.
 - **0.16.4** (14/11/2026): relatório da Etapa 2 (direção artística aprovada e plano da Central do Jogador) em `docs/relatorios/`.
 - **0.16.3** (14/11/2026): relatórios em PDF (auditoria geral, Etapa 1 e proposta da Etapa 2A) em `docs/relatorios/`.
-- **0.16.2** (14/11/2026): Etapa 1, com tag de retorno `v0.16.1`, publicação só pelo `main` e sem cancelar publicações válidas.

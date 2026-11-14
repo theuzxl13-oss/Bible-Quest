@@ -2,6 +2,13 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.6 — 14/11/2026 — Plano da Central em texto
+
+Sem mudança no jogo.
+
+- `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.md`: versão em texto (Markdown) do plano técnico da Central, com o mesmo conteúdo do PDF, para ferramentas que não leem PDF (por exemplo, outro assistente de IA).
+- `CLAUDE.md`: os próximos relatórios em PDF também ganham uma versão em texto `.md`.
+
 ## 0.16.5 — 14/11/2026 — Plano técnico consolidado da Central do Jogador
 
 Sem mudança no jogo.
