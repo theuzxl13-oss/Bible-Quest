@@ -2,6 +2,12 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.13.1 — 14/11/2026 — Corpos base em 3D
+
+- Gerados com o TRELLIS.2 (gratuito, Hugging Face) os modelos 3D dos dois corpos base do editor modular, a partir das imagens `corpo-feminino.png` e `corpo-masculino.png`. Estão em `tools/personagem/estilizado/corpos-base/`, com prévias de frente e de lado.
+- Ainda não aparecem no jogo. Próximo passo: esqueleto e animações nos corpos, e depois cabelos, roupas, calçados e acessórios como peças separadas.
+- Origem, ferramenta, data e licença registradas em `public/models/personagem/LICENCAS.md`.
+
 ## 0.13.0 — 13/11/2026 — Mapas em trilha de fases
 
 - **Modo História e Modo Quiz abrem direto no mapa**, em tela cheia e sem poluição visual. Saíram o cabeçalho com nível e barra de progresso, a lista de mundos, os títulos ao lado das fases, os atalhos e a lista de próximos mundos.

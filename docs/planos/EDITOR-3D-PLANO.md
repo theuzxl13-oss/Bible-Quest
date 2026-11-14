@@ -52,7 +52,7 @@ public/models/personagem/
 
 | Componente | Como produzir (gratuito) | Situação |
 | --- | --- | --- |
-| Corpo base estilizado (masculino e feminino), com roupa de baixo simples, cabeça, olhos e sobrancelhas | TRELLIS.2 com imagem do corpo de roupa simples e cabelo curto colado. Esqueleto e regiões pelos scripts atuais | **A produzir** (2 gerações) |
+| Corpo base estilizado (masculino e feminino), com roupa de baixo simples, cabeça, olhos e sobrancelhas | TRELLIS.2 com imagem do corpo de roupa simples e cabelo curto colado. Esqueleto e regiões pelos scripts atuais | **Malhas geradas em 14/11/2026** (`tools/personagem/estilizado/corpos-base/`); falta esqueleto e regiões |
 | Cabelos (curto, médio, longo; liso, ondulado, cacheado; trança, coque, véu) | TRELLIS.2 com imagem só do penteado, encaixado na cabeça do corpo base (peso no osso da cabeça) | **A produzir** (cerca de 10 gerações) |
 | Roupas: túnicas, vestidos, mantos, capas, faixas, cintos | Scripts do Blender (simulação de tecido sobre o corpo base, como em `vestes.py`), na paleta do estilo. Assim se encaixam sem atravessar o corpo | **A produzir** por script, sem cota |
 | Calçados (sandálias, sandálias de tiras, botas) | Scripts do Blender sobre os pés do corpo base | **A produzir** por script |

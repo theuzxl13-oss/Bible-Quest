@@ -33,5 +33,5 @@ Cada modelo é gerado com `../gerar3d.py` (TRELLIS.2, gratuito). A cota gratuita
 
 | Arquivo | Corpo | Situação |
 | --- | --- | --- |
-| `corpo-feminino.png` | Feminino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); aguardando a cota para virar 3D |
-| `corpo-masculino.png` | Masculino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); aguardando a cota para virar 3D |
+| `corpo-feminino.png` | Feminino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); 3D gerado em 14/11/2026 → `../corpos-base/` |
+| `corpo-masculino.png` | Masculino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); 3D gerado em 14/11/2026 → `../corpos-base/` |

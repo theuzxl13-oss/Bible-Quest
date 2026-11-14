@@ -1,5 +1,14 @@
 # Licenças dos modelos 3D do personagem
 
+## Corpos base do editor modular (v0.13.1): `tools/personagem/estilizado/corpos-base/`
+
+Ainda não usados no jogo: são a base do editor de personagens por peças (`docs/planos/EDITOR-3D-PLANO.md`).
+
+| Recurso | Origem, ferramenta e data | Licença |
+| --- | --- | --- |
+| Imagens de referência `corpo-feminino.png` e `corpo-masculino.png` | Geradas por IA no Canva (gerador de imagens), na conta do dono do projeto, em 13/11/2026 | Uso permitido pelos termos do Canva para conteúdo gerado pelo usuário; autorizado pelo dono do projeto |
+| Malhas 3D e texturas `corpo-feminino.glb` e `corpo-masculino.glb` | Geradas a partir das imagens com o TRELLIS.2 (Microsoft), pela demonstração gratuita do Hugging Face (`microsoft/TRELLIS.2`), semente 1, em 14/11/2026 | Código e pesos do TRELLIS.2: **MIT**. O resultado foi gerado pelo projeto |
+
 ## Herói masculino estilizado (v0.8): `heroi-masculino.glb`
 
 | Recurso | Origem, ferramenta e data | Licença |
