@@ -282,7 +282,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.16.3** (14/11/2026): relatórios em PDF (auditoria geral, Etapa 1 e proposta da Etapa 2A) em `docs/relatorios/`.
 - **0.16.2** (14/11/2026): Etapa 1, com tag de retorno `v0.16.1`, publicação só pelo `main` e sem cancelar publicações válidas.
 - **0.16.1** (14/11/2026): auditoria geral do projeto e plano oficial de evolução (`docs/auditorias/AUDITORIA-GERAL-v0.16.md`), aguardando aprovação.
 - **0.16.0** (14/11/2026): cena narrativa da fase, cenário próprio de Êxodo e Biblioteca, Conquistas e Perfil no visual de aventura.
-- **0.15.0** (14/11/2026): telas de perguntas e de resultado no visual de aventura, com o cenário da região da fase ao fundo.

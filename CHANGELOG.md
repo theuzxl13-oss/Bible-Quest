@@ -2,6 +2,16 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.3 — 14/11/2026 — Relatórios em PDF no repositório
+
+Sem mudança no jogo.
+
+- Os três relatórios em PDF foram adicionados em `docs/relatorios/`, com acesso público pelo GitHub:
+  - `BIBLE_QUEST_AUDITORIA_GERAL.pdf`: auditoria geral da versão 0.16.1;
+  - `ETAPA_1_BACKUP_E_PUBLICACAO.pdf`: Etapa 1, concluída;
+  - `ETAPA_2A_DIRECAO_ARTISTICA.pdf`: proposta de direção artística, aguardando aprovação; nada dela foi implementado.
+- Índice de `docs/` atualizado.
+
 ## 0.16.2 — 14/11/2026 — Etapa 1: ponto de retorno e publicação estável
 
 Sem mudança no jogo: personagens, mapas, perguntas e conteúdo bíblico ficaram iguais.
