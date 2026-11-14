@@ -8,6 +8,7 @@ Ainda não usados no jogo: são a base do editor de personagens por peças (`doc
 | --- | --- | --- |
 | Imagens de referência `corpo-feminino.png` e `corpo-masculino.png` | Geradas por IA no Canva (gerador de imagens), na conta do dono do projeto, em 13/11/2026 | Uso permitido pelos termos do Canva para conteúdo gerado pelo usuário; autorizado pelo dono do projeto |
 | Malhas 3D e texturas `corpo-feminino.glb` e `corpo-masculino.glb` | Geradas a partir das imagens com o TRELLIS.2 (Microsoft), pela demonstração gratuita do Hugging Face (`microsoft/TRELLIS.2`), semente 1, em 14/11/2026 | Código e pesos do TRELLIS.2: **MIT**. O resultado foi gerado pelo projeto |
+| Esqueleto, pesos e animações (`corpo-*-rig.glb`) | Criados para o Bible Quest pelos scripts de `tools/personagem/estilizado/` (Blender), em 14/11/2026 | Mesma licença do projeto |
 
 ## Herói masculino estilizado (v0.8): `heroi-masculino.glb`
 

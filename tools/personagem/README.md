@@ -43,6 +43,17 @@ Pasta `estilizado/`: modelos gerados de imagem com o TRELLIS.2 (gratuito, Huggin
 3. `montar.sh <nome> <malha.glb>`: `preparar.py` (une vértices, reduz, escala), `rigar.py` (esqueleto, pesos, animações), `acabar.py` (regiões de cor, expressões, acessórios) e `gltfpack`.
 4. Para um personagem com modelo próprio, publicar como `heroi-<base>.glb` e acrescentar a base em `MODELOS_POR_BASE` (`src/character3d/heroi.ts`).
 
+### Corpos base do editor modular
+
+Pasta `estilizado/corpos-base/`: corpo feminino e corpo masculino, de roupa justa simples e descalços, base para as peças do editor (cabelos, roupas, calçados e acessórios).
+
+1. `gerar3d.py` com `referencias/corpo-<nome>.png` → `corpo-<nome>.glb` (malha bruta do TRELLIS.2).
+2. `preparar.py <malha> <saida.blend> <altura> 60000 0.35`: reduz para 60 mil faces. O último número (0,35) também reduz o rosto, que nestes corpos de cabeça grande tomaria quase todo o limite.
+3. `juntas_auto.py <feminino|masculino> <malha.npz> juntas-corpo-<nome>.json`: alturas e abertura das juntas medidas na silhueta de frente, profundidade calculada na malha.
+4. `rigar.py` (o mesmo dos personagens) e `exportar_corpo.py` → `corpo-<nome>-rig.glb`, comprimido com `gltfpack`. Esqueleto com os mesmos nomes de ossos e as 6 animações do jogo.
+
+Prévias: `previa-*.png` (frente e lado) e `poses-*.png` (aceno, passo, corrida, comemoração e caminhada).
+
 ## Contrato do modelo (para substituir por um modelo de artista)
 
 O jogo (`src/character3d/heroi.ts`) só depende destas convenções. Um modelo feito por um artista pode substituir o atual se seguir estas regras:

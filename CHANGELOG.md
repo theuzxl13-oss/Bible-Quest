@@ -2,6 +2,15 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.13.2 — 14/11/2026 — Esqueleto e animações nos corpos base
+
+- Os corpos base feminino e masculino ganharam esqueleto (os mesmos nomes de ossos dos personagens do jogo), pesos e as 6 animações: parado, caminhada, corrida, aceno, comemoração e descoberta. Arquivos: `tools/personagem/estilizado/corpos-base/corpo-*-rig.glb` (1,4 MB e 1,8 MB comprimidos).
+- **Novo `juntas_auto.py`:** posiciona as juntas de cada corpo. As alturas e a abertura vêm da silhueta de frente, e a profundidade é calculada na malha.
+- **Novo `exportar_corpo.py`:** exporta o corpo com esqueleto e animações.
+- **`preparar.py`:** novo parâmetro opcional que também reduz o rosto. Nos corpos de cabeça grande, o rosto inteiro tomava quase todo o limite de faces e o resto do corpo ficava quebrado.
+- Prévias das poses em `corpos-base/poses-*.png`.
+- Ainda não aparecem no jogo. Próximo passo: regiões de cor (pele, cabelo e roupa de baixo) e expressões, e depois as peças.
+
 ## 0.13.1 — 14/11/2026 — Corpos base em 3D
 
 - Gerados com o TRELLIS.2 (gratuito, Hugging Face) os modelos 3D dos dois corpos base do editor modular, a partir das imagens `corpo-feminino.png` e `corpo-masculino.png`. Estão em `tools/personagem/estilizado/corpos-base/`, com prévias de frente e de lado.
