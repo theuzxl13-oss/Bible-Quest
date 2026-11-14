@@ -64,8 +64,22 @@ Evidências: execuções do workflow (GitHub Actions) e o histórico de implanta
 4. **Conferência:** o nome do arquivo `assets/index-*.js` em `https://theuzxl13-oss.github.io/Bible-Quest/` deve ser igual ao do `dist/index.html` gerado no mesmo commit.
 5. Também é possível publicar de novo pelo botão **Run workflow** (aba Actions), escolhendo o `main`.
 
-## 5. Limitações conhecidas
+## 5. Verificação da correção (14/11/2026)
+
+O ramo `main` foi liberado no ambiente `github-pages` pelo dono do projeto.
+
+| # | Execução | Gatilho | Commit | Verificação | Publicação | Implantação | Site depois |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| — | 44 | envio a `claude/loving-carson-8mrbjo` | `e8bd523` | sucesso | **pulada** (como previsto) | — | sem mudança |
+| 1 | 45 | envio ao `main` | `e8bd523` | sucesso | sucesso | 7790588720: `success` às 16:44:35 (UTC) | `last-modified` de 15:54:47 para 16:44:29; serve `assets/index-CKNufloV.js` |
+| 2 | 46 | "Run workflow" no `main` | `e8bd523` | sucesso | sucesso | 7790604371: `success` às 16:45:46 (UTC) | `last-modified` 16:45:39; serve `assets/index-CKNufloV.js` |
+
+- **O jogo não mudou:** `assets/index-CKNufloV.js` e `assets/index-DjzVP5wM.css` são os mesmos arquivos da versão auditada (0.16.1), gerados pelo build local e servidos pelo site.
+- **Site publicado no navegador** (Chromium, 390 px): as 23 telas da auditoria abriram sem erro de JavaScript e sem rolagem lateral. O 3D ficou pronto em 2,7 s, e os modelos `.glb` e o manifesto responderam com status 200.
+
+## 6. Limitações conhecidas
 
 - **Tag `v0.16.1`:** precisa ser criada pelo dono do projeto (seção 1).
 - **Ambiente `github-pages`:** a regra de ramos é configurada em Settings, e esta sessão não tem acesso a essa configuração.
-- **Correção do workflow:** só fica comprovada com publicações reais pelo `main`. O resultado está no relatório da etapa, `ETAPA_1_BACKUP_E_PUBLICACAO.pdf`.
+- **Regras antigas do ambiente:** as regras dos ramos `claude/...` ainda podem existir no ambiente. O workflow já não publica por eles, mas removê-las garante que só o `main` publique.
+- **Envio ao `main`:** é feito pela sessão de desenvolvimento, com autorização do dono do projeto. Não há revisão obrigatória por pull request, nem proteção do ramo `main` (possível evolução).

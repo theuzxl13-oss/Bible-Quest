@@ -4,7 +4,7 @@
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
 - **Plano oficial de evolução (v0.16.1):** 9 etapas no `BIBLE_QUEST_AUDITORIA_GERAL.pdf` (a versão em texto, com a numeração E0–E10, está em `docs/auditorias/AUDITORIA-GERAL-v0.16.md`).
-  - **Etapa 1 (v0.16.2), auditoria técnica e backup:** tag de retorno `v0.16.1` e publicação só pelo `main` (`docs/planos/PUBLICACAO-E-BACKUP.md`). Pendências: criar a tag no GitHub, liberar o `main` no ambiente `github-pages` e verificar duas publicações seguidas.
+  - **Etapa 1 (v0.16.2), auditoria técnica e backup:** tag de retorno `v0.16.1` e publicação só pelo `main` (`docs/planos/PUBLICACAO-E-BACKUP.md`). Duas publicações seguidas pelo `main` foram verificadas (execuções 45 e 46). Pendência: criar a tag `v0.16.1` no GitHub.
 - **Em andamento (v0.14):** redesign de aventura (plano e auditoria em `docs/auditorias/AUDITORIA-v0.14.md`).
   - Feito: mapa de Gênesis completo em regiões ilustradas, trilha do Quiz com seletor de dificuldade, janela de apresentação das fases (v0.14), perguntas e resultado no mesmo visual (v0.15), e cena da fase, cenário de Êxodo e Biblioteca, Conquistas e Perfil (v0.16).
   - Próximos: cenário próprio para os mundos seguintes quando tiverem fases, fichas da Biblioteca, guarda-roupa, estatísticas e configurações no mesmo padrão.
