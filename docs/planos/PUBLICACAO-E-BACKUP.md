@@ -8,10 +8,10 @@ Data: 14/11/2026. Referência: `BIBLE_QUEST_AUDITORIA_GERAL.pdf` e `docs/auditor
 | --- | --- |
 | Versão auditada | 0.16.1 |
 | Commit | `5a1a21f1e4b386bcdccf9046cc5923e5139dd441` ("Auditoria geral e plano oficial de evolução (v0.16.1)") |
-| Tag | `v0.16.1` (anotada), criada no repositório local da sessão de desenvolvimento |
-| Situação no GitHub | **Pendente.** A sessão de desenvolvimento só pode enviar ao ramo de trabalho, e o envio da tag foi recusado pela conexão. A tag precisa ser criada no GitHub pelo dono do projeto (passo a passo abaixo) |
+| Tag | `v0.16.1` no GitHub, com o release "v0.16.1 — versão auditada" (pre-release), criado pelo dono do projeto em 14/11/2026 às 17:00 (UTC). Conferido: a tag aponta para `5a1a21f` |
+| Situação no GitHub | **Confirmada.** A sessão de desenvolvimento não pode enviar tags (o envio foi recusado), por isso a tag foi criada pelo site, seguindo o passo a passo abaixo |
 
-**Como criar a tag no GitHub:**
+**Como a tag foi criada no GitHub** (o mesmo vale para os próximos pontos de retorno):
 1. Abra **Releases → Draft a new release**.
 2. Em **Choose a tag**, digite `v0.16.1` e escolha **Create new tag**.
 3. Em **Target**, escolha o commit `5a1a21f` (aba **Recent commits**).
@@ -79,7 +79,7 @@ O ramo `main` foi liberado no ambiente `github-pages` pelo dono do projeto.
 
 ## 6. Limitações conhecidas
 
-- **Tag `v0.16.1`:** precisa ser criada pelo dono do projeto (seção 1).
+- **Tags:** a sessão de desenvolvimento não pode enviar tags. Os próximos pontos de retorno também serão criados pelo dono do projeto, pelo site.
 - **Ambiente `github-pages`:** a regra de ramos é configurada em Settings, e esta sessão não tem acesso a essa configuração.
 - **Regras antigas do ambiente:** as regras dos ramos `claude/...` ainda podem existir no ambiente. O workflow já não publica por eles, mas removê-las garante que só o `main` publique.
 - **Envio ao `main`:** é feito pela sessão de desenvolvimento, com autorização do dono do projeto. Não há revisão obrigatória por pull request, nem proteção do ramo `main` (possível evolução).

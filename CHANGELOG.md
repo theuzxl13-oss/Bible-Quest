@@ -23,7 +23,7 @@ Sem mudança no jogo: personagens, mapas, perguntas e conteúdo bíblico ficaram
   - duas publicações seguidas pelo `main` deram certo: execução 45 (envio) e execução 46 ("Run workflow"), implantações 7790588720 e 7790604371;
   - o site serve os mesmos arquivos da versão auditada;
   - as 23 telas abriram sem erro no site publicado.
-- **Pendente:** criar a tag `v0.16.1` no GitHub.
+- **Tag no GitHub:** `v0.16.1` criada pelo dono do projeto (release pre-release) e conferida: aponta para `5a1a21f`. **Etapa 1 concluída.**
 
 ## 0.16.1 — 14/11/2026 — Auditoria geral e plano oficial de evolução
 
