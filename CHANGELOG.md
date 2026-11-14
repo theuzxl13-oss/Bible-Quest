@@ -2,6 +2,13 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.4 — 14/11/2026 — Relatório da Etapa 2 em PDF
+
+Sem mudança no jogo.
+
+- `docs/relatorios/ETAPA_2_DIRECAO_ARTISTICA_E_PLANO.pdf`: decisões G1–G8 aprovadas e plano técnico da Central do Jogador. O plano aguarda aprovação; nada dele foi implementado.
+- `CLAUDE.md`: nova regra. Todo relatório em PDF é publicado em `docs/relatorios/`, com um commit só de documentação, inclusive nas etapas de análise (autorização do dono do projeto em 14/11/2026).
+
 ## 0.16.3 — 14/11/2026 — Relatórios em PDF no repositório
 
 Sem mudança no jogo.
