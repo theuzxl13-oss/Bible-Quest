@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.13 (mapas em trilha de fases) |
+| **Versão** | 0.14 (mapas de aventura) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -68,13 +68,14 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 
 **Modo História**
 
-- Mapa em trilha de fases, limpo e colorido: campo claro, caminho listrado, botões redondos numerados com estrelas, avatar que caminha até a fase atual, baús e 10 mundos (cada um com sua fita e suas cores). Na tela só aparecem as fases, o botão de voltar e o total de estrelas.
+- Mapa de aventura em 2D com camadas: o caminho sobe da fase 1 por regiões ilustradas de Gênesis (criação, Éden, Caim e Abel, Noé, Babel, Abraão, Isaque e Jacó, José no Egito), com paredões, escadas, lagos, cachoeiras e marcos de cada história. Fases em medalhão com 3 estrelas, avatar na fase atual e baús.
+- Cabeçalho com a placa do mundo visível, o total de estrelas e o botão do baú. Ao tocar numa fase, abre a apresentação: objetivo, referência bíblica, dificuldade, recompensa e estrelas.
 - Gênesis (20 fases) e Êxodo (4 fases) têm conteúdo; os outros 64 livros aparecem como "em preparação".
 - Cada fase tem cena em quadros (introdução, narrativa dramatizada, trechos bíblicos e aprendizado) e desafio.
 
 **Modo Quiz**
 
-- Mapa em trilha de fases, no mesmo estilo do Modo História, com 4 regiões (Vale dos Iniciantes, Planície do Saber, Montanhas dos Sábios e Torre dos Especialistas) e 6 desafios cada. Um botão no canto leva ao treino livre.
+- Mapa de desafios próprio, com cenário de templos, biblioteca, pergaminhos e enigmas. Seletor de dificuldade (Iniciante, Intermediário, Avançado e Especialista), uma região por vez, com 6 desafios cada. Atalhos para o treino livre embaixo.
 - Treino livre em 10 modalidades:
   - perguntas aleatórias, verdadeiro ou falso, complete o versículo, quem sou eu?;
   - contra o tempo, ordem dos acontecimentos, identifique o livro;
@@ -182,7 +183,7 @@ npm run dev
     │   ├── layout/          Estrutura das páginas, topo e menu inferior
     │   ├── camp/            Cena do acampamento (3D ou 2D)
     │   ├── character/       Personagem, editor e tela de recompensa
-    │   ├── map/             Mapas em trilha de fases (cenário, caminho e botões)
+    │   ├── map/             Mapas de aventura (aventura/: cenário, elementos, cabeçalho e janelas)
     │   └── quiz/            Tela de perguntas e os 8 tipos de exercício
     ├── pages/               Telas
     │   ├── onboarding/      Boas-vindas, escolha e personalização do personagem
@@ -217,7 +218,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 132 testes automatizados (Vitest e Testing Library), em 10 arquivos de `src/test/`:
+São 139 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -227,6 +228,7 @@ São 132 testes automatizados (Vitest e Testing Library), em 10 arquivos de `src
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
+| `mapas` | Regiões dos mapas de aventura, cabeçalho com dados reais, seletor de dificuldade, bloqueios e independência dos modos |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
 O ambiente de teste não tem WebGL, então as telas usam o personagem e o acampamento em 2D. O 3D é conferido no navegador (Playwright), no celular e no computador, a cada versão.
@@ -270,7 +272,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.14.0** (14/11/2026): mapas de aventura: Gênesis completo em regiões ilustradas, trilha própria do Quiz com seletor de dificuldade e janela de apresentação das fases.
 - **0.13.3** (14/11/2026): referências de penteados e véu para o editor de personagens por peças.
 - **0.13.2** (14/11/2026): corpos base com esqueleto e as 6 animações (parado, caminhada, corrida, aceno, comemoração e descoberta).
-- **0.13.1** (14/11/2026): corpos base feminino e masculino gerados em 3D para o futuro editor de personagens por peças.
 - **0.13.0** (13/11/2026): mapas do Modo História e do Modo Quiz em trilha de fases, limpos e coloridos, sem textos extras.

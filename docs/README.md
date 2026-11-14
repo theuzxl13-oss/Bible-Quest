@@ -6,6 +6,7 @@
 | [`planos/PROXIMOS-PASSOS-3D.md`](planos/PROXIMOS-PASSOS-3D.md) | Caminho gratuito para o estilo de filme de animação 3D |
 | [`planos/EDITOR-3D-PLANO.md`](planos/EDITOR-3D-PLANO.md) | Editor de personagens modular: análise, arquitetura e modelos necessários |
 | [`auditorias/AUDITORIA-v0.5.md`](auditorias/AUDITORIA-v0.5.md) | Diagnóstico e decisão técnica do personagem 3D (v0.5) |
+| [`auditorias/AUDITORIA-v0.14.md`](auditorias/AUDITORIA-v0.14.md) | Auditoria da central e dos mapas e redesign de aventura (mapa de Gênesis e trilha do Quiz) |
 | [`auditorias/AUDITORIA-v0.7.md`](auditorias/AUDITORIA-v0.7.md) | Diagnóstico do modelo GLB e escolha das ferramentas (v0.7) |
 | [`supabase/schema.sql`](supabase/schema.sql) | Esquema do banco e políticas de segurança (RLS) para a versão online |
 

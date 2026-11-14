@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import { PlayerCharacter } from '../../components/character/PlayerCharacter'
 import { Icon } from '../../components/Icon'
 import { QuizRunner } from '../../components/quiz/QuizRunner'
@@ -22,7 +22,9 @@ export default function QuizChallenge() {
   const { nodeId } = useParams()
   const node = getQuizNode(nodeId)
   const { progress, questionPool } = useGame()
-  const [round, setRound] = useState(0)
+  const location = useLocation()
+  // vindo da janela do mapa (botão "Começar desafio"), a partida começa direto
+  const [round, setRound] = useState((location.state as { iniciar?: boolean } | null)?.iniciar ? 1 : 0)
   const mode = node ? getFreeMode(node.mode) : undefined
   const opts = node ? { level: node.level, count: node.count, characterId: node.characterId, themeId: node.themeId } : {}
   const available = node ? filteredPool(node.mode, questionPool, opts).length : 0

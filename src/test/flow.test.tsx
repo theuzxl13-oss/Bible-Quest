@@ -142,19 +142,25 @@ describe('fluxos de ponta a ponta', () => {
 
     // mapa: abertura do mundo, fase 1 atual, fase 2 bloqueada
     await user.click(await screen.findByRole('button', { name: /entrar no mundo/i }))
-    expect(screen.getByRole('heading', { name: 'Gênesis', level: 2 })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /fase 1: a criação do mundo\. fase atual/i })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Mundo 1: Gênesis', level: 2 })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Modo História', level: 1 })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /fase 1: a criação do mundo\. fase atual/i })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: /fase 2: .*bloqueada/i }))
-    expect(await screen.findByText(/conclua a fase 1/i)).toBeInTheDocument()
+    // fase bloqueada: a janela explica o requisito e não tem botão de começar
+    const bloqueada = await screen.findByRole('dialog', { name: 'A criação do homem e da mulher' })
+    expect(within(bloqueada).getByText(/conclua a fase 1/i)).toBeInTheDocument()
+    expect(within(bloqueada).queryByRole('button', { name: /começar fase/i })).not.toBeInTheDocument()
+    await user.click(within(bloqueada).getByRole('button', { name: 'Fechar' }))
 
-    // tela da fase: personagens, referência, quantidade e dificuldade
-    await user.click(screen.getByRole('link', { name: /fase 1: a criação do mundo/i }))
-    expect(await screen.findByRole('heading', { name: 'A criação do mundo' })).toBeInTheDocument()
-    expect(screen.getByText('10 perguntas')).toBeInTheDocument()
-    expect(screen.getByText('Gênesis 1:1–2:3')).toBeInTheDocument()
+    // apresentação da fase: referência, objetivo, dificuldade e recompensa
+    await user.click(screen.getByRole('button', { name: /fase 1: a criação do mundo/i }))
+    const janela = await screen.findByRole('dialog', { name: 'A criação do mundo' })
+    expect(within(janela).getByText(/responda 10 perguntas/i)).toBeInTheDocument()
+    expect(within(janela).getByText('Gênesis 1:1–2:3')).toBeInTheDocument()
+    expect(within(janela).getByText(/\+ 50 XP na primeira conclusão/i)).toBeInTheDocument()
 
     // cena narrativa
-    await user.click(screen.getByRole('link', { name: /iniciar fase/i }))
+    await user.click(within(janela).getByRole('button', { name: /começar fase/i }))
     expect(await screen.findByRole('heading', { name: 'Introdução' })).toBeInTheDocument()
     for (let i = 0; i < 10; i++) {
       const next = screen.queryByRole('button', { name: /^continuar/i })
@@ -174,8 +180,8 @@ describe('fluxos de ponta a ponta', () => {
 
     // continuar a jornada: avatar vai para a fase 2, agora liberada
     await user.click(screen.getByRole('link', { name: /continuar a jornada/i }))
-    expect(await screen.findByRole('link', { name: /fase 1: a criação do mundo\. concluída, 3 de 3 estrelas/i })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /fase 2: a criação do homem e da mulher\. fase atual/i })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: /fase 1: a criação do mundo\. concluída, 3 de 3 estrelas/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /fase 2: a criação do homem e da mulher\. fase atual/i })).toBeInTheDocument()
     await waitFor(() => expect(services.progress.load().mapCursor).toBe('gn-homem-mulher'), { timeout: 4000 })
   })
 
@@ -411,8 +417,13 @@ describe('fluxos de ponta a ponta', () => {
     const { user, services } = setup('/quiz', withProfile())
     expect(await screen.findByRole('heading', { name: 'Vale dos Iniciantes' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /vale dos iniciantes, desafio 2: perguntas aleatórias\. bloqueado/i })).toBeInTheDocument()
-    await user.click(screen.getByRole('link', { name: /vale dos iniciantes, desafio 1: verdadeiro ou falso\. disponível/i }))
-    await user.click(await screen.findByRole('button', { name: /começar desafio/i }))
+    // trilha própria do Quiz: dificuldade, tipo de desafio e recompensa na apresentação
+    expect(screen.getByRole('combobox', { name: /dificuldade/i })).toHaveValue('vale')
+    await user.click(screen.getByRole('button', { name: /vale dos iniciantes, desafio 1: verdadeiro ou falso\. disponível/i }))
+    const janela = await screen.findByRole('dialog', { name: 'Verdadeiro ou falso' })
+    expect(within(janela).getByText('Iniciante')).toBeInTheDocument()
+    expect(within(janela).getByText(/\+ 30 XP na primeira conclusão/i)).toBeInTheDocument()
+    await user.click(within(janela).getByRole('button', { name: /começar desafio/i }))
     for (let i = 0; i < 6; i++) {
       await answerCorrectly(user, currentQuestion())
       await user.click(screen.getByRole('button', { name: /próxima pergunta|ver resultado/i }))
@@ -425,7 +436,7 @@ describe('fluxos de ponta a ponta', () => {
     // o mapa de desafios é independente do Modo História
     expect(Object.keys(p.experiences)).toHaveLength(0)
     await user.click(screen.getByRole('link', { name: /voltar ao mapa do quiz/i }))
-    expect(await screen.findByRole('link', { name: /vale dos iniciantes, desafio 2: perguntas aleatórias\. disponível/i })).toBeInTheDocument()
+    expect(await screen.findByRole('button', { name: /vale dos iniciantes, desafio 2: perguntas aleatórias\. disponível/i })).toBeInTheDocument()
   })
 
   it('desafio bloqueado do Quiz não abre por URL', async () => {

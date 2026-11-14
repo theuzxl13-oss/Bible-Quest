@@ -2,6 +2,30 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.14.0 — 14/11/2026 — Mapas de aventura: Gênesis completo e trilha do Quiz
+
+Primeira etapa do redesign de aventura. Antes de mudar o código, foi feita uma auditoria da central e dos mapas: `docs/auditorias/AUDITORIA-v0.14.md`.
+
+- **Modo História:** o mapa virou um mundo de aventura em 2D com camadas.
+  - O caminho sobe da fase 1 por regiões ilustradas de Gênesis: criação, Éden, Caim e Abel, Noé, Babel, Abraão, Isaque e Jacó, e José no Egito.
+  - O cenário tem paredões de pedra com escadas, lagos e cachoeiras, arca, arco-íris, torre de Babel, tendas, camelo, poço, pirâmide e outros elementos.
+- **Fases em medalhão:** ouro quando concluídas, dourada com raios quando é a atual, prata com cadeado quando bloqueadas, e três estrelas embaixo.
+- **Cabeçalho em pergaminho:**
+  - botões de voltar e de ajuda;
+  - placa do mundo visível com as fases concluídas;
+  - total de estrelas e botão do baú, que leva até o baú pronto.
+- **Janela de apresentação da fase:**
+  - número, nome, pintura, descrição, objetivo, referência bíblica, dificuldade, recompensa e estrelas;
+  - numa fase bloqueada, explica o requisito e não deixa começar.
+- **Modo Quiz:** trilha própria com cenário de templos, biblioteca, pergaminhos, livros, ampulheta, pedras com inscrição, portal e braseiros, em caminho de pedra.
+  - Seletor de dificuldade (Iniciante, Intermediário, Avançado e Especialista), uma região por vez.
+  - Ícone do tipo de desafio em cada medalhão.
+  - Atalhos para o treino livre: por tempo, por tema, avançado e aleatórias.
+  - "Começar desafio" na janela já inicia a partida.
+- **Sem mudança nas regras de progresso:** os dois modos continuam com desbloqueios separados e compartilham XP, nível e conquistas.
+- **Removidos os arquivos do mapa da v0.13:** `Prado.tsx`, `MapaTopo.tsx` e `paletasMapa.ts`.
+- **Testes:** 139, com 7 novos em `src/test/mapas.test.tsx`.
+
 ## 0.13.3 — 14/11/2026 — Referências dos penteados
 
 - Imagens de referência de 5 peças do editor modular, geradas no Canva no estilo dos corpos base: cabelo longo ondulado, trança, cacheado volumoso e véu (femininos), e cacheado (masculino). Ficam em `tools/personagem/estilizado/referencias/cabelos/`.

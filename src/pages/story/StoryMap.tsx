@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { MapaTopo } from '../../components/map/MapaTopo'
+import { AjudaMapa, CabecalhoMapa, ContadorEstrelas, PlacaRegiao } from '../../components/map/aventura/Interface'
+import { JanelaFaseHistoria } from '../../components/map/aventura/JanelaFaseHistoria'
 import { ArtImage } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
 import { JourneyMap } from '../../components/map/JourneyMap'
@@ -7,7 +8,7 @@ import { ChestIcon } from '../../components/map/Scenery'
 import { getCharacter } from '../../data/library/characters'
 import { STORY_SEQUENCE } from '../../data/story'
 import { WORLDS } from '../../data/worlds'
-import { avatarPhaseId, allChests, phaseState, worldSections } from '../../services/game/journeyMap'
+import { avatarPhaseId, allChests, chestState, phaseState, worldSections, type PhaseNode } from '../../services/game/journeyMap'
 import { useGame } from '../../state/GameContext'
 
 const STEP_MS = 700
@@ -23,6 +24,9 @@ export default function StoryMap() {
   const [toast, setToast] = useState('')
   const [chest, setChest] = useState<{ id: string; xp: number; opened: boolean; newItems: string[] } | null>(null)
   const [worldIntro, setWorldIntro] = useState<string | null>(null)
+  const [fase, setFase] = useState<PhaseNode | null>(null)
+  const [ajuda, setAjuda] = useState(false)
+  const [mundoVisivel, setMundoVisivel] = useState<string | null>(null)
   const timers = useRef<number[]>([])
   const reduceMotion = settings.reduceMotion || (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
   const contentWorlds = new Set(sections.map((s) => s.world.id))
@@ -76,6 +80,17 @@ export default function StoryMap() {
     if (w) setWorldIntro(w.world.id)
   }, [walking, progress, sections])
 
+  // placa da região: mundo que está no meio da tela
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return
+    const obs = new IntersectionObserver(
+      (es) => es.forEach((e) => e.isIntersecting && setMundoVisivel((e.target as HTMLElement).dataset.mundo ?? null)),
+      { rootMargin: '-45% 0px -45% 0px' },
+    )
+    document.querySelectorAll('[data-mundo]').forEach((el) => obs.observe(el))
+    return () => obs.disconnect()
+  }, [])
+
   useEffect(() => {
     if (!toast) return
     const t = window.setTimeout(() => setToast(''), 3200)
@@ -88,33 +103,58 @@ export default function StoryMap() {
     ? [...new Set(sections.find((s) => s.world.id === intro.id)?.phases.flatMap((p) => p.experience.characters) ?? [])].slice(0, 6)
     : []
   const proximo = WORLDS.find((w) => !contentWorlds.has(w.id))
+  const totalFases = STORY_SEQUENCE.length
   const estrelas = STORY_SEQUENCE.reduce((t, e) => t + (progress.experiences[e.id]?.bestStars ?? 0), 0)
+  const bausProntos = allChests().filter((c) => chestState(c, progress) === 'disponivel')
+  const secaoVisivel = sections.find((s) => s.world.id === mundoVisivel) ?? sections.find((s) => s.phases.some((p) => p.id === avatarAt)) ?? sections[0]
+  const feitasNoMundo = secaoVisivel.phases.filter((p) => phaseState(p.id, progress) === 'concluida').length
+  const abrirFase = (n: PhaseNode) => setFase(n)
+  const ordem = [...sections].reverse() // o caminho sobe: o primeiro mundo fica embaixo
 
   return (
-    <div className="saga story-map">
-      <MapaTopo voltar="/painel" estrelas={estrelas} />
+    <div className="av-mapa av-historia story-map">
+      <CabecalhoMapa titulo="Modo História" subtitulo="Explore as Escrituras" icone="book" onAjuda={() => setAjuda(true)}>
+        <PlacaRegiao nome={secaoVisivel.world.title} feitas={feitasNoMundo} total={secaoVisivel.phases.length} />
+        <ContadorEstrelas estrelas={estrelas} max={totalFases * 3} baus={bausProntos.length} onBau={() => (bausProntos[0] ? scrollTo(bausProntos[0].id) : setToast('Nenhum baú pronto. Conclua as fases para liberar o próximo.'))} />
+      </CabecalhoMapa>
 
-      <div className="saga-coluna" role="region" aria-label="Mapa da jornada">
-        {sections.map((s) => (
-          <JourneyMap
-            key={s.world.id}
-            section={s}
-            progress={progress}
-            avatarAt={s.phases.some((p) => p.id === avatarAt) ? avatarAt : null}
-            walking={walking}
-            justUnlocked={justUnlocked}
-            onLocked={setToast}
-            onChest={openChest}
-          />
-        ))}
+      <div className="av-coluna" role="region" aria-label="Mapa da jornada">
         {proximo && (
-          <div className="saga-fim">
-            <span className="saga-cadeado" aria-hidden="true"><Icon name="lock" size={22} /></span>
+          <div className="av-portao">
+            <span className="av-portao-cadeado" aria-hidden="true"><Icon name="lock" size={26} /></span>
             <p>Próximo mundo: <strong>{proximo.title}</strong></p>
             <p className="small">Em preparação</p>
           </div>
         )}
+        {ordem.map((s, i) => (
+          <JourneyMap
+            key={s.world.id}
+            section={s}
+            progress={progress}
+            topoDoMapa={i === 0}
+            avatarAt={s.phases.some((p) => p.id === avatarAt) ? avatarAt : null}
+            walking={walking}
+            justUnlocked={justUnlocked}
+            onFase={abrirFase}
+            onLocked={setToast}
+            onChest={openChest}
+          />
+        ))}
       </div>
+
+      {fase && <JanelaFaseHistoria node={fase} onFechar={() => setFase(null)} />}
+      {ajuda && (
+        <AjudaMapa
+          onFechar={() => setAjuda(false)}
+          itens={[
+            { icone: 'flag', texto: 'O caminho começa embaixo e sobe. Toque numa fase para ver a apresentação e começar.' },
+            { icone: 'star', texto: 'Cada fase dá até 3 estrelas, pelo seu aproveitamento nas perguntas.' },
+            { icone: 'lock', texto: 'Fases com cadeado abrem quando você conclui a anterior.' },
+            { icone: 'bau', texto: 'Os baús do caminho abrem uma única vez, depois das fases antes deles.' },
+            { icone: 'map', texto: 'O progresso do Modo História é separado do Modo Quiz. Os dois somam XP e nível.' },
+          ]}
+        />
+      )}
 
       <p className="map-toast" role="status" aria-live="polite">{toast && <span>{toast}</span>}</p>
 
