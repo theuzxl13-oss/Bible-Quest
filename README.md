@@ -270,7 +270,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.13.3** (14/11/2026): referências de penteados e véu para o editor de personagens por peças.
 - **0.13.2** (14/11/2026): corpos base com esqueleto e as 6 animações (parado, caminhada, corrida, aceno, comemoração e descoberta).
 - **0.13.1** (14/11/2026): corpos base feminino e masculino gerados em 3D para o futuro editor de personagens por peças.
 - **0.13.0** (13/11/2026): mapas do Modo História e do Modo Quiz em trilha de fases, limpos e coloridos, sem textos extras.
-- **0.12.0** (13/11/2026): ícones ilustrados e coloridos no menu, no acampamento, nas conquistas e no treino livre.

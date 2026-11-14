@@ -2,6 +2,11 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.13.3 — 14/11/2026 — Referências dos penteados
+
+- Imagens de referência de 5 peças do editor modular, geradas no Canva no estilo dos corpos base: cabelo longo ondulado, trança, cacheado volumoso e véu (femininos), e cacheado (masculino). Ficam em `tools/personagem/estilizado/referencias/cabelos/`.
+- Viram 3D com a cota gratuita do Hugging Face, cerca de 2 por dia. A primeira geração está agendada para 14/11 às 22:45 (Brasília).
+
 ## 0.13.2 — 14/11/2026 — Esqueleto e animações nos corpos base
 
 - Os corpos base feminino e masculino ganharam esqueleto (os mesmos nomes de ossos dos personagens do jogo), pesos e as 6 animações: parado, caminhada, corrida, aceno, comemoração e descoberta. Arquivos: `tools/personagem/estilizado/corpos-base/corpo-*-rig.glb` (1,4 MB e 1,8 MB comprimidos).

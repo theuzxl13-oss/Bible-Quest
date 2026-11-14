@@ -35,3 +35,16 @@ Cada modelo é gerado com `../gerar3d.py` (TRELLIS.2, gratuito). A cota gratuita
 | --- | --- | --- |
 | `corpo-feminino.png` | Feminino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); 3D gerado em 14/11/2026 → `../corpos-base/` |
 | `corpo-masculino.png` | Masculino | enviado pelo dono do projeto em 13/11/2026 (gerado no Canva); 3D gerado em 14/11/2026 → `../corpos-base/` |
+
+## Penteados e véu do editor modular (pasta `cabelos/`)
+
+Gerados por IA no Canva (gerador de imagens) em 14/11/2026, a partir das imagens dos corpos base, mesmo rosto e mesmo estilo. Baixados e enviados pelo dono do projeto (550 × 550, ampliados para 1024 × 1024 com fundo branco). Uso autorizado por ele. Cada um vira peça 3D com `../gerar3d.py`; o cabelo é separado da cabeça e encaixado no corpo base.
+
+| Arquivo | Peça | Situação |
+| --- | --- | --- |
+| `f-longo-ondulado.png` | Cabelo longo ondulado (feminino) | na fila do 3D |
+| `f-tranca.png` | Trança (feminino) | na fila do 3D |
+| `f-cacheado.png` | Cacheado volumoso (feminino) | na fila do 3D |
+| `f-veu.png` | Véu (feminino) | na fila do 3D |
+| `m-cacheado.png` | Cacheado (masculino) | na fila do 3D |
+| — | Cabelo médio com barba (masculino) | imagem recebida no chat, mas não chegou como arquivo; aguardando reenvio |
