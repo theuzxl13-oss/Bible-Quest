@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Icon, type IconName } from '../components/Icon'
 import { GameIcon } from '../components/GameIcon'
-import { LocalProfileNotice, ProgressBar, Stars } from '../components/ui'
+import { ProgressBar } from '../components/ui'
 import { STORY_SEQUENCE } from '../data/story'
 import { levelProgress, levelTitle } from '../services/game/levels'
 import { continueExperience } from '../services/game/progression'
@@ -18,6 +17,8 @@ import { textoCondicao } from '../data/acampamento'
 import { CenaAcampamento, type CenaApi, type RotuloAcampamento } from '../components/camp/CenaAcampamento'
 import type { AlvoAcampamento } from '../character3d/acampamento'
 import type { Progress } from '../types'
+import { PainelMissoes, type ItemMissao } from '../components/camp/PainelMissoes'
+import { AcoesAcampamento } from '../components/camp/AcoesAcampamento'
 
 export const MODE_LABEL = { historia: 'Modo História', livre: 'Modo Quiz · treino', quiz: 'Modo Quiz', diario: 'Desafio diário', revisao: 'Revisão', 'demo-multiplayer': 'Multiplayer (demo)' } as const
 
@@ -39,9 +40,10 @@ function useMinutosAteAmanha() {
 }
 
 /**
- * CENTRAL DO JOGO (v0.10): o acampamento do jogador.
- * Cenário 3D com o personagem no centro, cabeçalho com nível e XP, quadro de
- * missões com dados reais, acesso aos dois modos e um diário de viagem abaixo.
+ * CENTRAL DO JOGADOR (Etapa 2, tela piloto): o Acampamento de Aventura.
+ * Cena em tela cheia com o personagem em destaque, HUD com dados reais, painel
+ * de missões recolhível e as ações (Continuar, Modo História, Modo Quiz).
+ * Revisão, estatísticas, ranking e histórico ficam no painel de missões e no Perfil.
  */
 export default function Dashboard() {
   const { profile, progress, dailyContext, questionPool } = useGame()
@@ -62,7 +64,6 @@ export default function Dashboard() {
   const elementos = elementosLiberados(progress)
   const weak = weakTopics(progress, questionPool)
   const minutos = useMinutosAteAmanha()
-  const [quadroAberto, setQuadroAberto] = useState(() => typeof window === 'undefined' || !window.matchMedia || window.matchMedia('(min-width: 900px)').matches)
 
   const rotulos: RotuloAcampamento[] = [
     { id: 'tenda', label: 'Personagem', detalhe: 'roupas e acessórios na tenda', icon: 'tunica' },
@@ -78,6 +79,18 @@ export default function Dashboard() {
     bau: baus ? '/historia' : '/conquistas',
   }
 
+  const missoes: ItemMissao[] = [
+    { id: 'diario', icon: dailyDone ? 'check' : 'calendar', titulo: 'Desafio diário', to: '/diario', estado: dailyDone ? 'feito' : undefined, detalhe: dailyDone ? `Concluído. Próximo em ${formatarTempo(minutos)}` : `5 perguntas · +${DAILY_BONUS} XP de bônus · termina em ${formatarTempo(minutos)}` },
+    { id: 'jornada', icon: 'map', titulo: 'Continuar jornada', to: cont ? `/historia/${cont.bookId}/${cont.id}` : '/historia', detalhe: cont ? `Fase ${phaseNumber(cont.id)} · ${cont.title}` : 'Todas as fases publicadas concluídas' },
+    { id: 'baus', icon: 'bau', titulo: baus ? `${baus} ${baus === 1 ? 'baú pronto' : 'baús prontos'} para abrir` : 'Baús de recompensa', to: baus ? '/historia' : '/conquistas', estado: baus ? 'destaque' : undefined, detalhe: baus ? 'Abra no mapa do Modo História.' : recente ? `Conquista recente: ${recente.title}` : 'Conclua fases para liberar baús no mapa.' },
+    { id: 'revisao', icon: 'cerebro', titulo: 'Revisão inteligente', to: '/revisao', detalhe: weak.length ? `${weak.length} assunto(s) para revisar · ${weak[0].title}: ${Math.round(weak[0].ratio * 100)}% de acertos` : 'Erros, assuntos dominados e evolução.' },
+  ]
+  if (melhoria) {
+    missoes.push({ id: 'upgrade', icon: 'tenda', titulo: `Próximo no acampamento: ${melhoria.elemento.nome}`, detalhe: `${textoCondicao(melhoria.elemento.condicao)} (${melhoria.atual}/${melhoria.meta})`, progresso: { valor: melhoria.atual, max: melhoria.meta, rotulo: `Andamento até liberar ${melhoria.elemento.nome}` } })
+  }
+  missoes.push({ id: 'geral', icon: 'compass', titulo: 'Progresso geral', detalhe: `${overall.done} de ${overall.total} fases e desafios · ${progress.xp} XP no total · próximo desafio do Quiz: ${quizNext.title}`, progresso: { valor: overall.done, max: overall.total, rotulo: 'Progresso geral' } })
+  const pendentes = (dailyDone ? 0 : 1) + (baus ? 1 : 0)
+
   return (
     <div className="camp">
       <section className="camp-stage" aria-labelledby="home-name">
@@ -85,7 +98,7 @@ export default function Dashboard() {
 
         <header className="camp-hud">
           <Link to="/perfil" className="hud-player" aria-label={`Perfil de ${profile!.nickname}`}>
-            <span className="hud-portrait"><PlayerCharacter size={60} portrait pose="still" /></span>
+            <span className="hud-portrait"><PlayerCharacter size={56} portrait pose="still" /></span>
             <span className="hud-player-info">
               <span className="hud-name">
                 <h1 id="home-name">{character.name}</h1>
@@ -110,136 +123,15 @@ export default function Dashboard() {
           </div>
         </header>
 
-        <div className="camp-flag" aria-hidden="true">
-          <Icon name="book" size={26} />
-          <span>Bible<br />Quest</span>
-        </div>
+        <PainelMissoes itens={missoes} pendentes={pendentes} />
 
-        <details className="camp-board" open={quadroAberto} onToggle={(e) => setQuadroAberto((e.currentTarget as HTMLDetailsElement).open)}>
-          <summary>
-            <GameIcon name="scroll" size={24} /> Missões
-            {(!dailyDone || baus > 0) && <span className="camp-badge" aria-label="há missões disponíveis">{(dailyDone ? 0 : 1) + (baus ? 1 : 0)}</span>}
-          </summary>
-          <ul className="board-list">
-            <li>
-              <Link to="/diario" className={`board-item ${dailyDone ? 'is-done' : ''}`}>
-                <span className="board-icon"><GameIcon name={dailyDone ? 'check' : 'calendar'} size={28} /></span>
-                <span>
-                  <strong>Desafio diário</strong>
-                  <small>{dailyDone ? `Concluído. Próximo em ${formatarTempo(minutos)}` : `5 perguntas · +${DAILY_BONUS} XP de bônus · termina em ${formatarTempo(minutos)}`}</small>
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link to={cont ? `/historia/${cont.bookId}/${cont.id}` : '/historia'} className="board-item">
-                <span className="board-icon"><GameIcon name="map" size={28} /></span>
-                <span>
-                  <strong>Continuar jornada</strong>
-                  <small>{cont ? `Fase ${phaseNumber(cont.id)} · ${cont.title}` : 'Todas as fases publicadas concluídas'}</small>
-                </span>
-              </Link>
-            </li>
-            <li>
-              <Link to={baus ? '/historia' : '/conquistas'} className={`board-item ${baus ? 'is-hot' : ''}`}>
-                <span className="board-icon"><GameIcon name="bau" size={28} /></span>
-                <span>
-                  <strong>{baus ? `${baus} ${baus === 1 ? 'baú pronto' : 'baús prontos'} para abrir` : 'Baús de recompensa'}</strong>
-                  <small>{baus ? 'Abra no mapa do Modo História.' : recente ? `Conquista recente: ${recente.title}` : 'Conclua fases para liberar baús no mapa.'}</small>
-                </span>
-              </Link>
-            </li>
-            {melhoria && (
-              <li className="board-item board-upgrade">
-                <span className="board-icon"><GameIcon name="tenda" size={28} /></span>
-                <span>
-                  <strong>Próximo no acampamento: {melhoria.elemento.nome}</strong>
-                  <small>{textoCondicao(melhoria.elemento.condicao)} ({melhoria.atual}/{melhoria.meta})</small>
-                  <ProgressBar value={melhoria.atual} max={melhoria.meta} label={`Andamento até liberar ${melhoria.elemento.nome}`} />
-                </span>
-              </li>
-            )}
-          </ul>
-        </details>
-
-        <nav className="camp-modes" aria-label="Modos de jogo">
-          <Link to="/historia" className="camp-mode camp-mode-story" onMouseEnter={() => cena.current?.gesto('celebrate', 2.4)} onFocus={() => cena.current?.gesto('celebrate', 2.4)}>
-            <span className="camp-mode-icon" aria-hidden="true"><GameIcon name="book" size={46} /></span>
-            <span className="camp-mode-text">
-              <strong>Modo História</strong>
-              <small>Explore as Escrituras</small>
-              <span className="camp-mode-progress">{overall.story} de {STORY_SEQUENCE.length} fases</span>
-            </span>
-            <Icon name="arrowRight" size={22} className="camp-mode-arrow" />
-          </Link>
-          <Link to="/quiz" className="camp-mode camp-mode-quiz" onMouseEnter={() => cena.current?.gesto('react', 2.4)} onFocus={() => cena.current?.gesto('react', 2.4)}>
-            <span className="camp-mode-icon" aria-hidden="true"><GameIcon name="cerebro" size={46} /></span>
-            <span className="camp-mode-text">
-              <strong>Modo Quiz</strong>
-              <small>Teste seu conhecimento</small>
-              <span className="camp-mode-progress">{overall.quiz.done} de {overall.quiz.total} desafios</span>
-            </span>
-            <Icon name="arrowRight" size={22} className="camp-mode-arrow" />
-          </Link>
-        </nav>
+        <AcoesAcampamento
+          proxima={cont}
+          historia={{ feitas: overall.story, total: STORY_SEQUENCE.length }}
+          quiz={{ feitos: overall.quiz.done, total: overall.quiz.total }}
+          onGesto={(m) => cena.current?.gesto(m === 'historia' ? 'celebrate' : 'react', 2.4)}
+        />
       </section>
-
-      <div className="container section stack-lg camp-more">
-        <h2 className="section-title">Diário de viagem</h2>
-        <div className="panel camp-journey">
-          <ProgressBar value={overall.done} max={overall.total} label="Progresso geral" />
-          <p className="small muted">
-            Progresso geral: {overall.done} de {overall.total} fases e desafios disponíveis · {progress.xp} XP no total · próximo desafio do Quiz: {quizNext.title}
-          </p>
-        </div>
-
-        <div className="dash-row">
-          {(
-            [
-              { to: '/revisao', icon: 'scroll', eyebrow: 'Revisão inteligente', title: weak.length ? `${weak.length} assunto(s) para revisar` : 'Seu desempenho', text: weak.length ? `${weak[0].title}: ${Math.round(weak[0].ratio * 100)}% de acertos` : 'Erros, assuntos dominados e evolução.' },
-              { to: '/estatisticas', icon: 'trophy', eyebrow: 'Estatísticas', title: `${progress.stats.answered} respostas`, text: 'Acertos por modo, tipo de pergunta e diário.' },
-              { to: '/ranking', icon: 'crown', eyebrow: 'Rankings', title: 'Seus recordes', text: 'Ranking online ainda indisponível.' },
-            ] as { to: string; icon: IconName; eyebrow: string; title: string; text: string }[]
-          ).map((c) => (
-            <Link key={c.to} to={c.to} className="panel daily-card">
-              <GameIcon name={c.icon} size={40} />
-              <div>
-                <p className="eyebrow">{c.eyebrow}</p>
-                <h3>{c.title}</h3>
-                <p className="muted small">{c.text}</p>
-              </div>
-              <Icon name="arrowRight" />
-            </Link>
-          ))}
-        </div>
-
-        <section aria-labelledby="hist-title">
-          <div className="section-head">
-            <h2 id="hist-title" className="section-title">Partidas recentes</h2>
-            <Link to="/perfil" className="link">Histórico completo</Link>
-          </div>
-          {progress.history.length === 0 ? (
-            <p className="muted">Nenhuma partida ainda. Comece pela primeira fase do Modo História ou pelo primeiro desafio do Modo Quiz.</p>
-          ) : (
-            <ul className="history">
-              {progress.history.slice(0, 5).map((h) => (
-                <li key={h.id} className="history-item">
-                  <div>
-                    <strong>{h.title}</strong>
-                    <span className="muted small"> · {MODE_LABEL[h.mode]} · {new Date(h.date).toLocaleDateString('pt-BR')}</span>
-                  </div>
-                  <div className="history-right">
-                    {(h.mode === 'historia' || h.mode === 'quiz') && <Stars value={h.stars} size={14} />}
-                    <span className="small">{h.correct}/{h.total}</span>
-                    <span className="small gold">+{h.xp} XP</span>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
-
-        <LocalProfileNotice />
-      </div>
     </div>
   )
 }

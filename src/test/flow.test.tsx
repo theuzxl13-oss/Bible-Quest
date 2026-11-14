@@ -389,7 +389,7 @@ describe('fluxos de ponta a ponta', () => {
     expect(content.includeInFreeMode).toBe(true)
   })
 
-  it('central do acampamento: personagem, cabeçalho, missões, os dois modos e o menu inferior', async () => {
+  it('central do acampamento: personagem, cabeçalho, missões, os dois modos e a navegação global', async () => {
     const { user } = setup('/painel', withProfile())
     expect(await screen.findByRole('heading', { name: 'Tobias', level: 1 })).toBeInTheDocument()
     // cabeçalho com dados reais (nível, XP, estrelas, sequência), sem moedas inventadas
@@ -400,14 +400,15 @@ describe('fluxos de ponta a ponta', () => {
     const modos = screen.getByRole('navigation', { name: 'Modos de jogo' })
     expect(within(modos).getByRole('link', { name: /modo história.*explore as escrituras/i })).toHaveAttribute('href', '/historia')
     expect(within(modos).getByRole('link', { name: /modo quiz.*teste seu conhecimento/i })).toHaveAttribute('href', '/quiz')
-    // quadro de missões e próxima melhoria do acampamento
+    // painel de missões (recolhido; abre ao tocar) e próxima melhoria do acampamento
+    await user.click(screen.getByRole('button', { name: /missões/i }))
     expect(screen.getByRole('link', { name: /desafio diário/i })).toHaveAttribute('href', '/diario')
     expect(screen.getByText(/próximo no acampamento: jarros de barro/i)).toBeInTheDocument()
     expect(screen.getByRole('progressbar', { name: 'Progresso geral' })).toBeInTheDocument()
-    // menu inferior no estilo de jogo
+    // navegação global inferior (Etapa 2): Central, História, Quiz, Biblioteca, Perfil
     const menu = screen.getByRole('navigation', { name: 'Navegação rápida' })
-    for (const name of ['Início', 'Personagem', 'Conquistas', 'Biblioteca', 'Perfil']) expect(within(menu).getByRole('link', { name })).toBeInTheDocument()
-    expect(within(menu).getByRole('link', { name: 'Início' })).toHaveClass('active')
+    for (const name of ['Central', 'História', 'Quiz', 'Biblioteca', 'Perfil']) expect(within(menu).getByRole('link', { name })).toBeInTheDocument()
+    expect(within(menu).getByRole('link', { name: 'Central' })).toHaveClass('active')
     // personagem em corpo inteiro no centro (cenário 2D nos testes, sem WebGL)
     expect(document.querySelector('.home-char .character')).not.toHaveClass('is-portrait')
     // objetos do acampamento levam às funções reais

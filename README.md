@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.16 (mapas, fases e telas no visual de aventura) |
+| **Versão** | 0.17 (Central do Jogador: Acampamento de Aventura) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -33,7 +33,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 
 1. **Boas-vindas e cadastro:** apelido e faixa etária (até 12, 13 a 17, 18 ou mais). O jogo não pede data de nascimento, endereço nem telefone.
 2. **Personagem:** escolha um dos 8 personagens-base (Viajante, Pastora, Escriba, Exploradora, Mensageiro, Guardiã da lâmpada, Peregrino e Contadora de histórias) e personalize: pele, rosto, expressão, cabelo, cores livres, roupas, calçados e acessórios.
-3. **Acampamento:** a tela inicial. O seu personagem fica no centro do acampamento, que cresce conforme você joga. Ali você vê o nível, as missões do dia e os baús prontos, e escolhe o modo.
+3. **Acampamento (Central do Jogador):** a tela inicial, um acampamento de aventura ao entardecer. O seu personagem é o destaque da cena, que cresce conforme você joga. No topo ficam o nível, o XP, as estrelas e a sequência; a placa de missões abre o desafio diário, os baús, a revisão e o progresso. Embaixo, "Continuar" leva à próxima fase, e as placas dos dois modos levam aos mapas.
 4. **Modo História:** mapa de fases → tela da fase → cena narrativa → desafio de 5 a 10 perguntas → resultado com estrelas e recompensas.
 5. **Modo Quiz:** mapa de desafios em regiões, ou treino livre por modalidade, tema, personagem ou dificuldade.
 
@@ -108,6 +108,8 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 - Cena narrativa da fase no mesmo visual: pintura em moldura de madeira, personagens em cartões de pergaminho e referências bíblicas num rolo.
 - Êxodo com cenário próprio: o Nilo e o cesto entre os juncos, a sarça ardente, a porta da Páscoa, o mar aberto e o monte Sinai.
 - Biblioteca, Conquistas e Perfil com placa de pergaminho, paisagem ao fundo e painéis de pergaminho e madeira.
+- Central do Jogador (v0.17, tela piloto da identidade "Crônicas da Jornada"): acampamento ao entardecer, sem cidades, com cordilheiras e névoa, florestas, rochas, texturas geradas em código e a fogueira; o personagem ocupa de 40 a 45% da altura da cena. As cores dos estilos novos vêm de `src/styles/tokens.css`.
+- Navegação global inferior: Central, História, Quiz, Biblioteca e Perfil (oculta nos mapas, perguntas, cenas e resultados). No computador, por enquanto, aparece só na Central; as demais telas mantêm a barra superior até serem migradas.
 
 **Acessibilidade**
 
@@ -184,7 +186,7 @@ npm run dev
     ├── state/               Estado global do jogo (GameContext)
     ├── character3d/         Motor 3D: personagem, palco, miniaturas e cena do acampamento
     ├── components/          Peças de interface
-    │   ├── layout/          Estrutura das páginas, topo e menu inferior
+    │   ├── layout/          Estrutura das páginas, topo e navegação global (NavegacaoGlobal)
     │   ├── camp/            Cena do acampamento (3D ou 2D)
     │   ├── character/       Personagem, editor e tela de recompensa
     │   ├── map/             Mapas de aventura (aventura/: cenário, elementos, cabeçalho e janelas)
@@ -197,7 +199,7 @@ npm run dev
     │   ├── library/         Biblioteca e linha do tempo
     │   └── *.tsx            Acampamento (Dashboard), diário, resultado, perfil, configurações e outras
     ├── admin/               Painel administrativo (carregado sob demanda)
-    ├── styles/global.css    Visual do jogo
+    ├── styles/              Visual: global.css (telas antigas), tokens.css (paleta), componentes/ e telas/ (Etapa 2)
     └── test/                Testes automatizados
 ```
 
@@ -222,7 +224,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 144 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src/test/`:
+São 150 testes automatizados (Vitest e Testing Library), em 12 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -232,6 +234,7 @@ São 144 testes automatizados (Vitest e Testing Library), em 11 arquivos de `src
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
+| `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
 | `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
@@ -282,7 +285,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.17.0** (14/11/2026): Central do Jogador como Acampamento de Aventura (tela piloto da Etapa 2) e navegação global inferior.
 - **0.16.6** (14/11/2026): versão em texto (Markdown) do plano técnico da Central em `docs/relatorios/`.
 - **0.16.5** (14/11/2026): plano técnico consolidado da Central do Jogador em `docs/relatorios/`, aguardando aprovação para implementar.
 - **0.16.4** (14/11/2026): relatório da Etapa 2 (direção artística aprovada e plano da Central do Jogador) em `docs/relatorios/`.
-- **0.16.3** (14/11/2026): relatórios em PDF (auditoria geral, Etapa 1 e proposta da Etapa 2A) em `docs/relatorios/`.

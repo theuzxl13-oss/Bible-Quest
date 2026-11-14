@@ -2,6 +2,35 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.0 — 14/11/2026 — Central do Jogador: Acampamento de Aventura (Etapa 2, tela piloto)
+
+Implementação do plano `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.md`, aprovado. Relatório completo: `docs/relatorios/ETAPA_2_CENTRAL_IMPLEMENTACAO.pdf` (e `.md`).
+
+- **Cena 3D** (`src/character3d/acampamento.ts`):
+  - sem as duas cidades; no lugar, uma cordilheira média com névoa, florestas em instâncias (ciprestes e árvores de copa redonda) e formações rochosas;
+  - céu de fim de tarde mais profundo e névoa quente;
+  - texturas geradas em código (terra com cascalho, veios de madeira, grão em pedra e lona);
+  - câmera mais próxima e quase nivelada: o personagem ocupa de 41 a 43% da altura da cena (fica à direita do centro no computador) e a paisagem aparece atrás dele;
+  - rótulos presos à borda quando o objeto sai do quadro.
+- **Os 13 elementos de evolução** continuam iguais: quantidade, regras, requisitos, dados e recompensas (`src/data/acampamento.ts` e `src/services/game/acampamento.ts` não mudaram). As posições de alguns foram trazidas para dentro do quadro, para continuarem visíveis com a câmera nova.
+- **Cena 2D:** sem a cidade; cordilheira, florestas, rochas, brilho da fogueira e vinheta; personagem maior; objetos nas bordas no celular.
+- **Interface:**
+  - HUD com retrato, nível, XP, estrelas, sequência e configurações;
+  - placa "Missões", que abre um painel (`PainelMissoes`) com desafio diário, continuar jornada, baús, revisão inteligente, próximo no acampamento e progresso geral;
+  - ações (`AcoesAcampamento`): "Começar/Continuar" (marca a fase como visitada e abre a cena narrativa, como "Começar fase" no mapa) entre as placas do Modo História (floresta) e do Modo Quiz (azul profundo).
+- **Diário de viagem** retirado da Central. Revisão no painel de missões; Estatísticas, Ranking, Conquistas e Revisão em novos atalhos do Perfil. Histórico e aviso de perfil local continuam no Perfil. Nenhuma tela, rota ou dado removido.
+- **Navegação global** (`NavegacaoGlobal`): Central, História, Quiz, Biblioteca e Perfil; continua oculta nos mapas, perguntas, cenas e resultados.
+- **Estilos novos:**
+  - `src/styles/tokens.css`, com a paleta "Crônicas da Jornada" (o único arquivo com HEX dos estilos novos);
+  - `componentes/` (navegação, HUD, placas e painel);
+  - `telas/acampamento.css`.
+  
+  O bloco antigo da Central e da barra inferior saiu de `global.css`.
+- **Testes:** 150 (6 novos em `src/test/central.test.tsx`); o teste da Central e o do menu foram atualizados.
+- **Desempenho** (Chromium com vídeo por software, mediana de 3 medições, mesmo ambiente):
+  - tempo até a cena ficar pronta: celular −3%, tablet +5%, computador +5%, notebook +8%;
+  - quadros por segundo: de 10 a 20% menores.
+
 ## 0.16.6 — 14/11/2026 — Plano da Central em texto
 
 Sem mudança no jogo.

@@ -1,0 +1,99 @@
+/* =========================================================
+   Bible Quest — tokens da identidade "Crônicas da Jornada" (Etapa 2)
+   Único arquivo com cores HEX dos estilos novos (há um teste que confere).
+   Primitivos (paleta) → semânticos (significado) → modos (História × Quiz).
+   As telas ainda não migradas continuam usando os tokens antigos de global.css.
+   ========================================================= */
+:root {
+  /* primitivos: terra e madeira */
+  --terra-900: #22160D;
+  --terra-800: #2E1E12;
+  --terra-700: #4A2F1C;
+  --terra-600: #5C3B23;
+  --terra-500: #7A5234;
+  /* pergaminho, areia, tinta e marfim */
+  --pergaminho: #F4EAD2;
+  --pergaminho-escuro: #EBDDB9;
+  --areia: #E8D5A8;
+  --tinta: #2B1D10;
+  --tinta-suave: #5C4630;
+  --marfim: #F3EBDA;
+  --marfim-suave: #C9BBA0;
+  /* ouro envelhecido */
+  --ouro-300: #E6C77E;
+  --ouro-500: #C9A24E;
+  --ouro-700: #8C6A2A;
+  /* modos */
+  --floresta-700: #234A33;
+  --floresta-500: #3E6B47;
+  --musgo-600: #5E6B3A;
+  --azul-900: #13253D;
+  --azul-700: #1D3554;
+  --azul-500: #2F5378;
+  --pedra-300: #8FA3B8;
+  /* fogueira */
+  --fogueira-300: #F2A955;
+  --fogueira-500: #E08A2E;
+  --fogueira-700: #B9671C;
+  --fogueira-borda: #6E3A0E;
+  /* estados */
+  --acerto: #356B3B;
+  --erro: #A63D2A;
+  --bloqueado: #6E6A62;
+  --foco: #7FB2E5;
+  --aviso: #C9452F;
+
+  /* semânticos */
+  --superficie-escura: var(--terra-900);
+  --superficie-madeira: linear-gradient(180deg, var(--terra-600), var(--terra-700) 60%, var(--terra-800));
+  --superficie-leitura: linear-gradient(180deg, var(--pergaminho), var(--pergaminho-escuro));
+  --texto-sobre-leitura: var(--tinta);
+  --texto-suave-sobre-leitura: var(--tinta-suave);
+  --texto-sobre-escuro: var(--marfim);
+  --texto-suave-sobre-escuro: var(--marfim-suave);
+  --destaque: var(--ouro-300);
+  --moldura: var(--ouro-500);
+  --acao-principal: linear-gradient(180deg, var(--fogueira-300), var(--fogueira-500) 60%, var(--fogueira-700));
+  --texto-sobre-acao: var(--tinta);
+  --vidro-escuro: rgba(34, 22, 13, 0.86);
+
+  /* modos (padrão: História) */
+  --modo-cor: var(--floresta-700);
+  --modo-cor-clara: var(--floresta-500);
+  --modo-borda: var(--ouro-500);
+
+  /* escalas */
+  --esp-1: 4px; --esp-2: 8px; --esp-3: 12px; --esp-4: 16px; --esp-5: 24px; --esp-6: 32px; --esp-7: 48px;
+  --raio-p: 6px; --raio-m: 10px; --raio-g: 16px; --raio-pilula: 999px;
+  --fonte-12: 0.75rem; --fonte-14: 0.875rem; --fonte-16: 1rem; --fonte-18: 1.125rem; --fonte-22: 1.375rem; --fonte-28: 1.75rem; --fonte-36: 2.25rem;
+  --elevacao-1: 0 3px 0 rgba(20, 11, 5, 0.7), 0 5px 10px rgba(0, 0, 0, 0.3);
+  --elevacao-2: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --elevacao-3: 0 18px 44px rgba(0, 0, 0, 0.5);
+  --brilho-interno: inset 0 1px 0 rgba(255, 240, 210, 0.35);
+  --dur-toque: 120ms; --dur-estado: 200ms; --dur-janela: 320ms; --dur-recompensa: 600ms;
+  --curva-saida: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --curva-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --nav-altura: 64px;
+}
+
+[data-modo='quiz'] {
+  --modo-cor: var(--azul-700);
+  --modo-cor-clara: var(--azul-500);
+  --modo-borda: var(--pedra-300);
+}
+
+/* alto contraste: superfícies lisas e bordas claras */
+html[data-contrast='alto'] {
+  --superficie-madeira: var(--terra-900);
+  --superficie-leitura: var(--pergaminho);
+  --vidro-escuro: var(--terra-900);
+  --moldura: var(--marfim);
+  --texto-suave-sobre-escuro: var(--marfim);
+  --texto-suave-sobre-leitura: var(--tinta);
+}
+
+/* reduzir animações: as durações viram zero */
+html[data-motion='reduzido'] { --dur-toque: 0ms; --dur-estado: 0ms; --dur-janela: 0ms; --dur-recompensa: 0ms; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-toque: 0ms; --dur-estado: 0ms; --dur-janela: 0ms; --dur-recompensa: 0ms; }
+}

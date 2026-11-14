@@ -7,10 +7,12 @@ import { createRenderer } from './stage'
 import type { Pose3D, Quality3D, Rig } from './rig'
 
 /*
- * CENA 3D DO ACAMPAMENTO (central do jogo, v0.10)
- * - Tudo é geometria simples, gerada aqui (sem arquivos extras para baixar):
- *   céu, montanhas, cidade ao fundo, caminho, tendas, fogueira, baú, quadro de
- *   missões, mesa de estudos e os elementos que o jogador libera com o progresso.
+ * CENA 3D DO ACAMPAMENTO (Central do Jogador; v0.10, refeita na Etapa 2 / v0.17)
+ * - Acampamento de aventura em meio à natureza, ao entardecer. Tudo é geometria
+ *   e textura geradas aqui (sem arquivos extras para baixar): céu, cordilheiras
+ *   com névoa, florestas, rochas, caminho, tendas, fogueira, baú, quadro de
+ *   missões, mesa de estudos e os elementos que o jogador libera com o progresso
+ *   (src/data/acampamento.ts, sem mudanças). Sem cidades nem construções urbanas.
  * - O personagem é o MESMO modelo 3D do criador (montar), no centro.
  * - Um único renderizador. Na qualidade "leve": sem sombras, 30 quadros por
  *   segundo e menos partículas. A animação para quando a cena não está visível.
@@ -47,16 +49,67 @@ const lerp = THREE.MathUtils.lerp
 
 function criarMateriais(quality: Quality3D) {
   const cache = new Map<string, THREE.Material>()
+  // texturas geradas em código (nenhum arquivo novo); na qualidade "leve", sem textura
+  const grao = quality === 'leve' ? null : texturaGrao()
+  const veios = quality === 'leve' ? null : texturaVeios()
+  const hsl = { h: 0, s: 0, l: 0 }
   const std = (cor: string, extra: THREE.MeshStandardMaterialParameters = {}) => {
     const k = cor + JSON.stringify(extra)
     let m = cache.get(k)
     if (!m) {
-      m = new THREE.MeshStandardMaterial({ color: cor, roughness: 0.85, metalness: 0, flatShading: quality === 'alta', ...extra })
+      new THREE.Color(cor).getHSL(hsl)
+      // marrons médios e escuros = madeira (veios); o resto ganha só um grão discreto
+      const madeira = hsl.h > 0.04 && hsl.h < 0.13 && hsl.s > 0.25 && hsl.l < 0.5
+      // grão só em superfícies grandes de pedra e lona (claras); o resto, cor lisa
+      const pedraOuLona = !madeira && hsl.s < 0.22 && hsl.l > 0.45
+      const map = extra.map ?? (madeira ? veios : pedraOuLona ? grao : null)
+      m = new THREE.MeshStandardMaterial({ color: cor, roughness: 0.88, metalness: 0, flatShading: quality === 'alta', ...extra, map })
       cache.set(k, m)
     }
     return m
   }
   return { std, cache }
+}
+
+/** Grão discreto (terra, pedra, tecido): variação de tom em manchas pequenas. */
+function texturaGrao() {
+  const c = document.createElement('canvas')
+  c.width = c.height = 128
+  const g = c.getContext('2d')!
+  g.fillStyle = '#ffffff'
+  g.fillRect(0, 0, 128, 128)
+  let semente = 7
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  for (let i = 0; i < 900; i++) {
+    const v = 200 + Math.floor(aleatorio() * 55)
+    g.fillStyle = `rgb(${v},${v},${v})`
+    g.fillRect(aleatorio() * 128, aleatorio() * 128, 1 + aleatorio() * 3, 1 + aleatorio() * 3)
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  return t
+}
+
+/** Veios de madeira: faixas onduladas em tons próximos. */
+function texturaVeios() {
+  const c = document.createElement('canvas')
+  c.width = c.height = 128
+  const g = c.getContext('2d')!
+  g.fillStyle = '#ffffff'
+  g.fillRect(0, 0, 128, 128)
+  for (let y = 0; y < 128; y += 2) {
+    const v = 205 + Math.round(Math.sin(y * 0.45) * 22 + Math.sin(y * 0.13) * 14)
+    g.strokeStyle = `rgb(${v},${v},${v})`
+    g.lineWidth = 1.5
+    g.beginPath()
+    for (let x = 0; x <= 128; x += 8) g.lineTo(x, y + Math.sin(x * 0.08 + y * 0.3) * 1.6)
+    g.stroke()
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  return t
 }
 
 type Mats = ReturnType<typeof criarMateriais>
@@ -110,7 +163,7 @@ function construirCeu() {
     side: THREE.BackSide,
     depthWrite: false,
     fog: false,
-    uniforms: { topo: { value: new THREE.Color('#3f74b8') }, meio: { value: new THREE.Color('#93bfe6') }, horizonte: { value: new THREE.Color('#f3e2c2') } },
+    uniforms: { topo: { value: new THREE.Color('#2f5a8c') }, meio: { value: new THREE.Color('#9dbbd2') }, horizonte: { value: new THREE.Color('#f2d2a0') } },
     vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
     fragmentShader:
       'uniform vec3 topo; uniform vec3 meio; uniform vec3 horizonte; varying vec3 vP; void main(){ float h = clamp(vP.y, -0.1, 1.0); vec3 c = mix(horizonte, meio, smoothstep(0.0, 0.18, h)); c = mix(c, topo, smoothstep(0.18, 0.75, h)); gl_FragColor = vec4(c, 1.0); }',
@@ -122,7 +175,7 @@ function construirCeu() {
 
 function construirNuvens(m: Mats) {
   const g = new THREE.Group()
-  const mat = new THREE.MeshStandardMaterial({ color: '#ffffff', roughness: 1, emissive: '#fff4e2', emissiveIntensity: 0.35, fog: false, flatShading: true })
+  const mat = new THREE.MeshStandardMaterial({ color: '#fff4e6', roughness: 1, emissive: '#ffe2bd', emissiveIntensity: 0.4, fog: false, flatShading: true })
   m.cache.set('nuvem', mat)
   const geo = new THREE.IcosahedronGeometry(1, 1)
   const nuvens: [number, number, number, number][] = [
@@ -158,10 +211,10 @@ function construirChao() {
   geo.rotateX(-Math.PI / 2)
   const pos = geo.attributes.position
   const cores: number[] = []
-  const terra = new THREE.Color('#c7a06c')
-  const caminho = new THREE.Color('#b48a5a')
-  const grama = new THREE.Color('#86a24e')
-  const gramaLonge = new THREE.Color('#5f8a43')
+  const terra = new THREE.Color('#b9946a')
+  const caminho = new THREE.Color('#a8865c')
+  const grama = new THREE.Color('#7f9450')
+  const gramaLonge = new THREE.Color('#566f3c')
   const c = new THREE.Color()
   for (let i = 0; i < pos.count; i++) {
     const x = pos.getX(i)
@@ -179,9 +232,34 @@ function construirChao() {
   }
   geo.setAttribute('color', new THREE.Float32BufferAttribute(cores, 3))
   geo.computeVertexNormals()
-  const chao = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1 }))
+  const mapa = texturaChao()
+  const chao = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, map: mapa }))
   chao.receiveShadow = true
   return chao
+}
+
+/** Terra com cascalho e tufos (repetida no chão). */
+function texturaChao() {
+  const c = document.createElement('canvas')
+  c.width = c.height = 256
+  const g = c.getContext('2d')!
+  g.fillStyle = '#ffffff'
+  g.fillRect(0, 0, 256, 256)
+  let semente = 11
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  for (let i = 0; i < 2200; i++) {
+    const v = 185 + Math.floor(aleatorio() * 70)
+    g.fillStyle = `rgb(${v},${v - 4},${v - 12})`
+    const r = 0.6 + aleatorio() * 2.2
+    g.beginPath()
+    g.arc(aleatorio() * 256, aleatorio() * 256, r, 0, Math.PI * 2)
+    g.fill()
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  t.repeat.set(40, 40)
+  return t
 }
 
 function construirPedrasDoCaminho(m: Mats) {
@@ -212,11 +290,11 @@ function construirMontanhas(m: Mats) {
     [150, -140, 30, 24],
   ]
   picos.forEach(([x, z, r, h], i) => {
-    const monte = malha(new THREE.ConeGeometry(r, h, 7), m.std(i % 2 ? '#8e8fae' : '#7f84a6'), x, h / 2 - 2, z)
+    const monte = malha(new THREE.ConeGeometry(r, h, 7), m.std(i % 2 ? '#6f8199' : '#62748d'), x, h / 2 - 2, z)
     monte.rotation.y = i
     monte.castShadow = false
     g.add(monte)
-    const neve = malha(new THREE.ConeGeometry(r * 0.32, h * 0.32, 7), m.std('#f2f0ec'), x, h - 2 - h * 0.16 + 0.2, z)
+    const neve = malha(new THREE.ConeGeometry(r * 0.32, h * 0.32, 7), m.std('#ece6da'), x, h - 2 - h * 0.16 + 0.2, z)
     neve.rotation.y = i
     neve.castShadow = false
     g.add(neve)
@@ -224,39 +302,90 @@ function construirMontanhas(m: Mats) {
   return g
 }
 
-function construirCidade(m: Mats, x0: number, z0: number, escala: number) {
+/** Cordilheira média em musgo, com névoa (ocupa o lugar das antigas cidades). */
+function construirCordilheira(m: Mats) {
   const g = new THREE.Group()
-  const morro = malha(new THREE.SphereGeometry(9, 12, 8), m.std('#8a8a5a'), 0, -3.5, 0)
-  morro.scale.set(1.4, 0.75, 1)
-  morro.castShadow = false
-  g.add(morro)
-  const paredes = ['#e6d3ad', '#dcc49a', '#ead9b8', '#d2b98c']
-  let k = 0
-  for (let anel = 0; anel < 3; anel++) {
-    const n = 8 - anel * 2
-    for (let i = 0; i < n; i++) {
-      const a = (i / n) * Math.PI * 1.1 - 0.2 + anel * 0.3
-      const r = 8 - anel * 3
-      const x = Math.cos(a) * r * 1.2
-      const z = Math.sin(a) * r * 0.6
-      const w = 1.6 + ((k * 37) % 10) / 10
-      const h = 1.4 + ((k * 53) % 10) / 6 + anel * 0.6
-      const casa = malha(new THREE.BoxGeometry(w, h, w * 0.9), m.std(paredes[k % 4]), x, 0.8 + anel * 1.6 + h / 2, z)
-      casa.castShadow = false
-      g.add(casa)
-      if (k % 4 === 0) {
-        const cupula = malha(new THREE.SphereGeometry(w * 0.35, 8, 6, 0, Math.PI * 2, 0, Math.PI / 2), m.std('#c9a46a'), x, 0.8 + anel * 1.6 + h, z)
-        cupula.castShadow = false
-        g.add(cupula)
-      }
-      k++
-    }
+  const morros: [number, number, number, number, string][] = [
+    [-70, -95, 26, 16, '#5d6e45'],
+    [-35, -88, 22, 13, '#56683f'],
+    [0, -100, 30, 18, '#617349'],
+    [34, -86, 24, 14, '#5a6b43'],
+    [72, -96, 28, 17, '#56683f'],
+    [-105, -80, 22, 12, '#5d6e45'],
+    [108, -78, 22, 12, '#5a6b43'],
+  ]
+  morros.forEach(([x, z, r, h, cor], i) => {
+    const morro = malha(new THREE.SphereGeometry(r, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), m.std(cor), x, -1, z)
+    morro.scale.set(1.5, h / r, 1)
+    morro.rotation.y = i
+    morro.castShadow = false
+    g.add(morro)
+  })
+  return g
+}
+
+/** Florestas em instâncias (uma malha por tipo): ciprestes e árvores de copa redonda. */
+function construirFlorestas(m: Mats, quality: Quality3D) {
+  const g = new THREE.Group()
+  let semente = 3
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  const pontos: [number, number, number][] = []
+  // laterais e fundo do acampamento, longe do caminho (x ≈ 0) e do centro
+  const total = quality === 'leve' ? 60 : 110
+  for (let i = 0; i < total * 3 && pontos.length < total; i++) {
+    const x = (aleatorio() * 2 - 1) * 46
+    const z = -6 - aleatorio() * 52
+    const corredor = Math.abs(x + Math.sin(z * 0.25) * 1.2) < 3.2 + Math.max(0, -z) * 0.05
+    if (corredor || Math.hypot(x, z) < 9) continue
+    pontos.push([x, z, 0.8 + aleatorio() * 0.9])
   }
-  const torre = malha(new THREE.BoxGeometry(1.6, 6, 1.6), m.std('#e2cfa6'), 0, 6, -1)
-  torre.castShadow = false
-  g.add(torre)
-  g.position.set(x0, alturaTerreno(x0, z0) - 0.5, z0)
-  g.scale.setScalar(escala)
+  const tronco = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.1, 0.14, 0.7, 5), m.std('#4e3420'), pontos.length)
+  const ciprestes = pontos.filter((_, i) => i % 3 !== 0)
+  const redondas = pontos.filter((_, i) => i % 3 === 0)
+  const copaC = new THREE.InstancedMesh(new THREE.ConeGeometry(0.55, 2.8, 7), m.std('#2f5233'), ciprestes.length)
+  const copaR = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.9, 0), m.std('#4b6a35'), redondas.length)
+  const mt = new THREE.Matrix4()
+  const q = new THREE.Quaternion()
+  const esc = new THREE.Vector3()
+  const pos = new THREE.Vector3()
+  pontos.forEach(([x, z, s], i) => {
+    const y = alturaTerreno(x, z)
+    tronco.setMatrixAt(i, mt.compose(pos.set(x, y + 0.35 * s, z), q.identity(), esc.set(s, s, s)))
+  })
+  ciprestes.forEach(([x, z, s], i) => {
+    const y = alturaTerreno(x, z)
+    copaC.setMatrixAt(i, mt.compose(pos.set(x, y + 1.7 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), x), esc.set(s, s * (0.9 + (i % 4) * 0.08), s)))
+  })
+  redondas.forEach(([x, z, s], i) => {
+    const y = alturaTerreno(x, z)
+    copaR.setMatrixAt(i, mt.compose(pos.set(x, y + 1.25 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), z), esc.set(s * 1.1, s * 0.85, s * 1.1)))
+  })
+  for (const im of [tronco, copaC, copaR]) {
+    im.castShadow = false
+    im.receiveShadow = true
+    im.instanceMatrix.needsUpdate = true
+    g.add(im)
+  }
+  return g
+}
+
+/** Formações rochosas nas laterais (emolduram o acampamento). */
+function construirRochedos(m: Mats) {
+  const g = new THREE.Group()
+  const grupos: [number, number, number][] = [
+    [-8.5, -1.5, 1.4], [-11, -6.5, 1.8], [9.2, -2.5, 1.5], [12, -8, 2], [-6.8, 3.2, 0.9], [7.2, 3.4, 1],
+  ]
+  grupos.forEach(([x, z, s], i) => {
+    for (let k = 0; k < 3; k++) {
+      const r = malha(new THREE.DodecahedronGeometry(0.6, 0), m.std(k % 2 ? '#8a8172' : '#9a9080'), x + (k - 1) * 0.55 * s, 0, z + Math.sin(i + k) * 0.4)
+      const sk = s * (1 - k * 0.22)
+      r.scale.set(sk, sk * (0.75 + (k % 2) * 0.3), sk * 0.85)
+      r.position.y = alturaTerreno(r.position.x, r.position.z) + 0.25 * sk
+      r.rotation.set(i * 0.7 + k, i + k * 1.3, 0)
+      r.castShadow = false
+      g.add(r)
+    }
+  })
   return g
 }
 
@@ -672,40 +801,46 @@ function jardim(m: Mats) {
 
 // ---------- disposição (larga no computador, compacta no celular) ----------
 
-/** [x, z] na tela larga e [x, z] na tela estreita. */
+/**
+ * [x, z] na tela larga e [x, z] na tela estreita.
+ * Etapa 2: com a câmera mais próxima do personagem, as posições foram trazidas
+ * para dentro do quadro, para que os 13 elementos continuem visíveis (só a
+ * posição mudou; quais são e quando são liberados continua igual).
+ */
 const POSICOES: Record<string, [number, number, number, number]> = {
-  tenda: [-3.3, -2.3, -1.9, -3.1],
-  fogueira: [-1.6, 0.25, -1.15, 0.35],
-  mesa: [-3.05, -0.35, -1.75, -1.0],
-  quadro: [1.7, -3.4, 1.65, -2.9],
-  bau: [1.2, 1.45, 1.15, 0.55],
-  barris: [-4.9, -1.9, -2.55, -2.2],
-  jarros: [-2.2, -1.5, -2.2, -1.7],
-  palmeiras: [5.2, -3.8, 3.0, -4.6],
+  tenda: [-3.3, -2.3, -1.6, -3.4],
+  fogueira: [-1.6, 0.25, -0.75, 1.1],
+  mesa: [-3.05, -0.35, -1.45, -2.2],
+  quadro: [1.7, -3.4, 1.45, -3.2],
+  bau: [1.2, 1.45, 0.85, 0.9],
+  barris: [-4.9, -1.9, -1.9, -4.5],
+  jarros: [-2.2, -1.5, -1.2, -1.9],
+  palmeiras: [4.0, -6.0, 1.9, -6.5],
   lanternas: [1.0, -1.6, 0.9, -1.9],
-  'tenda-grande': [-6.4, -5.2, -3.9, -5.8],
+  'tenda-grande': [-5.2, -6.8, -2.0, -8.0],
   estandarte: [-1.0, -3.6, -0.8, -3.9],
-  poco: [4.6, -1.2, 2.6, -1.6],
-  ovelhas: [6.8, -7.0, 3.6, -7.8],
+  poco: [2.9, -1.6, 1.6, -5.0],
+  ovelhas: [4.8, -9.0, 0.9, -10.0],
 }
 
 export function createCamp(container: HTMLElement, appearance: CharacterAppearance, opts: CampOptions): CampHandle {
   const { quality, reduced } = opts
   const renderer = createRenderer(quality)
-  renderer.setClearColor('#93bfe6', 1)
+  renderer.setClearColor('#9dbbd2', 1)
   renderer.toneMappingExposure = 1.0
   const canvas = renderer.domElement
   canvas.className = 'camp-canvas'
   container.appendChild(canvas)
 
   const scene = new THREE.Scene()
-  scene.fog = new THREE.Fog('#dfe3e4', 30, 330)
+  // névoa quente de fim de tarde: dá profundidade às cordilheiras
+  scene.fog = new THREE.Fog('#d8c7a8', 24, 360)
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 400)
   const m = criarMateriais(quality)
   const animacoes: ((t: number) => void)[] = []
 
   // luz de fim de tarde
-  const sol = new THREE.DirectionalLight('#ffe2b8', 2.6)
+  const sol = new THREE.DirectionalLight('#ffd49a', 2.7)
   sol.position.set(7, 9, 5)
   if (quality === 'alta') {
     sol.castShadow = true
@@ -717,10 +852,12 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   // preenchimento vindo da câmera, para o rosto do personagem não ficar escuro
   const frente = new THREE.DirectionalLight('#fff0dc', 0.9)
   frente.position.set(-1, 3, 8)
-  scene.add(sol, sol.target, frente, new THREE.HemisphereLight('#d6e6ff', '#7a5a3a', 1.35))
+  // (sem luz extra de contorno: custava cerca de 10% dos quadros em aparelhos
+  // sem placa de vídeo; o céu mais frio da luz hemisférica faz esse papel)
+  scene.add(sol, sol.target, frente, new THREE.HemisphereLight('#c2d6f0', '#6b4a2b', 1.2))
 
   scene.add(construirCeu(), construirNuvens(m), construirChao(), construirPedrasDoCaminho(m), construirMontanhas(m))
-  scene.add(construirCidade(m, 26, -62, 1.25), construirCidade(m, -34, -78, 0.9))
+  scene.add(construirCordilheira(m), construirFlorestas(m, quality), construirRochedos(m))
   for (const [x, z, s] of [[-7, -6, 1.1], [-8.5, -3, 0.9], [7.5, -7, 1.2], [9, -4, 0.9], [-10, -9, 1.3], [11, -10, 1.1], [-5, -10, 1], [6, -12, 1.2], [-13, -6, 1], [13, -6, 1.2]]) scene.add(cipreste(m, x, z, s))
   for (const [x, z, s] of [[-5, 1.6, 0.9], [4.4, 1.8, 0.8], [-6.5, -1.2, 1.1], [6.4, -2.2, 1], [3.4, 2.6, 0.7]]) scene.add(arbusto(m, x, z, s))
   for (const [x, z, s] of [[3.7, 1.2, 0.8], [-4.4, 2.2, 0.7], [5.4, 0.2, 1.1], [-2.6, 2.6, 0.5]]) scene.add(pedra(m, x, z, s, x))
@@ -882,8 +1019,13 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
       const p = POSICOES[id]
       if (p) o.position.set(lerp(p[0], p[2], estreita), 0, lerp(p[1], p[3], estreita))
     }
-    alvoCamera.set(0, lerp(1.05, 1.25, estreita), lerp(-0.6, -0.8, estreita))
-    posCamera.set(0, lerp(1.85, 2.3, estreita), lerp(7.6, 7.4, estreita))
+    // Etapa 2: câmera mais próxima, para o personagem ocupar cerca de 40–45% da
+    // altura da cena; no computador ele fica um pouco à direita do centro.
+    // Câmera quase nivelada: o horizonte fica perto do meio da tela e a paisagem
+    // (céu, cordilheiras, florestas) aparece atrás do personagem.
+    const lado = lerp(-0.85, 0, estreita)
+    alvoCamera.set(lado, lerp(1.12, 1.08, estreita), lerp(-0.4, -0.5, estreita))
+    posCamera.set(lado, lerp(1.2, 1.18, estreita), lerp(6.4, 4.7, estreita))
     camera.position.copy(posCamera)
     camera.lookAt(alvoCamera)
   }
@@ -909,7 +1051,9 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
       const el = opts.rotulos.get(a.id)
       if (!el) continue
       v.copy(a.ancora()).project(camera)
-      const dentro = v.z < 1 && Math.abs(v.x) < 0.98 && v.y < 0.98 && v.y > -0.98
+      // Etapa 2: se o objeto sai do quadro pelos lados (telas estreitas), o rótulo
+      // continua visível, preso à borda — nenhum acesso da cena se perde
+      const dentro = v.z < 1 && v.y < 0.98 && v.y > -0.98
       // o rótulo nunca sai da tela: fica preso às bordas
       const meia = el.offsetWidth / 2 + 6
       const x = Math.min(w - meia, Math.max(meia, ((v.x + 1) / 2) * w))
@@ -917,6 +1061,24 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
       el.dataset.visivel = dentro ? 'sim' : 'nao'
     }
   }
+  // medição do personagem na tela (fração da altura e da largura), usada nas
+  // conferências de composição: data-personagem="topo,base,esquerda,direita"
+  // (do chão ao topo da cabeça, sem contar o cajado erguido)
+  let quadros = 0
+  const canto = new THREE.Vector3()
+  const medirPersonagem = () => {
+    if (!rig) return
+    const cabeca = rig.root.getObjectByName('head')
+    rig.root.updateWorldMatrix(true, true)
+    const topoY = cabeca ? cabeca.getWorldPosition(canto).y + 0.16 : 1.75
+    const pts = [[0, 0], [0, topoY], [-0.32, topoY * 0.6], [0.32, topoY * 0.6]].map(([x, y]) => {
+      canto.set(x, y, 0).project(camera)
+      return [(canto.x + 1) / 2, (1 - canto.y) / 2]
+    })
+    const xs = pts.map((q) => q[0])
+    container.dataset.personagem = [pts[1][1], pts[0][1], Math.min(...xs), Math.max(...xs)].map((n) => n.toFixed(3)).join(',')
+  }
+  const medidor = window.setInterval(medirPersonagem, 1000)
   const tick = () => {
     const agora = performance.now()
     const passou = (agora - ultimo) / 1000
@@ -938,6 +1100,7 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     }
     renderer.render(scene, camera)
     posicionarRotulos()
+    if (++quadros % 30 === 0) medirPersonagem()
   }
   const laco = () => renderer.setAnimationLoop(!disposed && visivel && document.visibilityState !== 'hidden' ? tick : null)
   const onVis = () => laco()
@@ -947,12 +1110,14 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   laco()
   renderer.render(scene, camera)
   posicionarRotulos()
+  medirPersonagem()
 
   return {
     setAppearance,
     gesto,
     dispose() {
       disposed = true
+      window.clearInterval(medidor)
       renderer.setAnimationLoop(null)
       document.removeEventListener('visibilitychange', onVis)
       canvas.removeEventListener('pointerdown', onDown)

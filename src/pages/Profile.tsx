@@ -64,6 +64,13 @@ export default function ProfilePage() {
         </button>
       </header>
 
+      <nav className="row-actions" aria-label="Atalhos do perfil">
+        <Link to="/conquistas" className="btn btn-outline btn-sm">Conquistas</Link>
+        <Link to="/estatisticas" className="btn btn-outline btn-sm">Estatísticas</Link>
+        <Link to="/ranking" className="btn btn-outline btn-sm">Ranking</Link>
+        <Link to="/revisao" className="btn btn-outline btn-sm">Revisão</Link>
+      </nav>
+
       {editing && (
         <section className="panel stack" aria-label="Editar perfil">
           <label className="field">

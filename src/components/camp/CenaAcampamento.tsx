@@ -88,20 +88,27 @@ export const CenaAcampamento = forwardRef<CenaApi, Props>(function CenaAcampamen
   }, [chave]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const em2d = estado === '2d'
+  // no 2D o personagem também é o protagonista: cerca de 42% da altura da tela
+  const [tamanho2d] = useState(() => (typeof window === 'undefined' ? 260 : Math.round(Math.min(320, Math.max(180, window.innerHeight * 0.31)))))
   return (
     <div className={`camp-scene ${em2d ? 'is-2d' : 'is-3d'} ${estado === 'carregando' ? 'is-loading' : ''} ${bauPronto ? 'has-chest' : ''}`}>
       {em2d ? (
         <div className="camp-paint" aria-hidden="true">
           <span className="camp-paint-sun" />
           <span className="camp-paint-mountains" />
-          <span className="camp-paint-city" />
+          <span className="camp-paint-ridge" />
+          <span className="camp-paint-forest is-left" />
+          <span className="camp-paint-forest is-right" />
           <span className="camp-paint-hills" />
           <span className="camp-paint-ground" />
+          <span className="camp-paint-rocks" />
+          <span className="camp-paint-glow" />
           <span className="camp-paint-tent" />
           <span className="camp-paint-fire"><i /><i /><i /></span>
           <span className="camp-paint-table" />
           <span className="camp-paint-board" />
           <span className={`camp-paint-chest ${bauPronto ? 'is-open' : ''}`} />
+          <span className="camp-paint-vignette" />
         </div>
       ) : (
         <div ref={palco} className="camp-canvas-host" />
@@ -109,7 +116,7 @@ export const CenaAcampamento = forwardRef<CenaApi, Props>(function CenaAcampamen
 
       <div className="home-char camp-hero">
         {em2d ? (
-          <Character appearance={appearance} size={230} pose="idle" title={`${appearance.name}, seu personagem`} />
+          <Character appearance={appearance} size={tamanho2d} pose="idle" title={`${appearance.name}, seu personagem`} />
         ) : (
           <span className="character sr-only" role="img" aria-label={`${appearance.name}, seu personagem`} data-appearance={chave} />
         )}

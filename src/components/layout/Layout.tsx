@@ -6,6 +6,7 @@ import { Avatar } from '../ui'
 import { levelFromXp } from '../../services/game/levels'
 import { PlayerCharacter } from '../character/PlayerCharacter'
 import { ItemReward } from '../character/ItemReward'
+import { NavegacaoGlobal } from './NavegacaoGlobal'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/painel', label: 'Início', short: 'Início', icon: 'home' },
@@ -13,15 +14,6 @@ const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/quiz', label: 'Modo Quiz', short: 'Quiz', icon: 'shield' },
   { to: '/biblioteca', label: 'Biblioteca', short: 'Biblioteca', icon: 'book' },
   { to: '/perfil', label: 'Perfil', short: 'Perfil', icon: 'user' },
-]
-
-/** Menu inferior no estilo de jogo (celular; no acampamento também no computador). */
-const TABS: { to: string; label: string; icon: IconName; end?: boolean }[] = [
-  { to: '/painel', label: 'Início', icon: 'tenda', end: true },
-  { to: '/guarda-roupa', label: 'Personagem', icon: 'tunica' },
-  { to: '/conquistas', label: 'Conquistas', icon: 'trophy' },
-  { to: '/biblioteca', label: 'Biblioteca', icon: 'book' },
-  { to: '/perfil', label: 'Perfil', icon: 'user' },
 ]
 
 const SECONDARY: { to: string; label: string }[] = [
@@ -112,22 +104,13 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.16 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão 0.17 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>
       )}
 
-      {showTabs && (
-        <nav className="tabbar" aria-label="Navegação rápida">
-          {TABS.map((n) => (
-            <NavLink key={n.to} to={n.to} end={n.end} className="tabbar-link">
-              <span className="tabbar-icon" aria-hidden="true"><GameIcon name={n.icon} size={30} /></span>
-              <span>{n.label}</span>
-            </NavLink>
-          ))}
-        </nav>
-      )}
+      {showTabs && <NavegacaoGlobal />}
     </div>
   )
 }
