@@ -12,6 +12,7 @@
 | [`auditorias/AUDITORIA-v0.7.md`](auditorias/AUDITORIA-v0.7.md) | Diagnóstico do modelo GLB e escolha das ferramentas (v0.7) |
 | [`relatorios/BIBLE_QUEST_AUDITORIA_GERAL.pdf`](relatorios/BIBLE_QUEST_AUDITORIA_GERAL.pdf) | Relatório Geral de Auditoria Técnica (v0.16.1), em PDF |
 | [`relatorios/ETAPA_1_BACKUP_E_PUBLICACAO.pdf`](relatorios/ETAPA_1_BACKUP_E_PUBLICACAO.pdf) | Relatório da Etapa 1: ponto de retorno e publicação (v0.16.2), em PDF |
+| [`relatorios/ETAPA_2_CENTRAL_IMPLEMENTACAO.pdf`](relatorios/ETAPA_2_CENTRAL_IMPLEMENTACAO.pdf) e [`.md`](relatorios/ETAPA_2_CENTRAL_IMPLEMENTACAO.md) | Central do Jogador (v0.17.0): o que foi implementado, arquivos, testes, medições, problemas, desvios e critérios de aceitação |
 | [`relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.pdf`](relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.pdf) | Central do Jogador: plano técnico consolidado (decisões 1–6 aprovadas; aguardando aprovação para implementar), em PDF |
 | [`relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.md`](relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.md) | O mesmo plano da Central em texto (Markdown), para leitura em outras ferramentas |
 | [`relatorios/ETAPA_2_DIRECAO_ARTISTICA_E_PLANO.pdf`](relatorios/ETAPA_2_DIRECAO_ARTISTICA_E_PLANO.pdf) | Etapa 2: decisões G1–G8 aprovadas e plano técnico da Central do Jogador (plano aguardando aprovação), em PDF |
