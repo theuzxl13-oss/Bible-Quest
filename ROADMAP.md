@@ -3,6 +3,7 @@
 ## Fase 1 — Versão estática (concluída)
 
 - **0.1:** primeira versão jogável, com 5 jornadas, perfil local, ranking e multiplayer de demonstração, e protótipo administrativo.
+- **Plano oficial de evolução (v0.16.1):** etapas E0 a E10 em `docs/auditorias/AUDITORIA-GERAL-v0.16.md` (aguardando aprovação).
 - **Em andamento (v0.14):** redesign de aventura (plano e auditoria em `docs/auditorias/AUDITORIA-v0.14.md`).
   - Feito: mapa de Gênesis completo em regiões ilustradas, trilha do Quiz com seletor de dificuldade, janela de apresentação das fases (v0.14), perguntas e resultado no mesmo visual (v0.15), e cena da fase, cenário de Êxodo e Biblioteca, Conquistas e Perfil (v0.16).
   - Próximos: cenário próprio para os mundos seguintes quando tiverem fases, fichas da Biblioteca, guarda-roupa, estatísticas e configurações no mesmo padrão.
@@ -14,7 +15,7 @@
 - **0.4:** personagem por itens com guarda-roupa e tela de recompensa, entrada em 5 passos, Home em cena, Modo Quiz com mapa próprio (4 regiões, 24 desafios), estatísticas, Biblioteca com acontecimentos e temas.
 - **0.3:** aventura, com personagem do jogador, mapa de fases com avatar e baús, Gênesis em 20 fases, Biblioteca Bíblica, linha do tempo, revisão inteligente e Modo Livre com 10 modalidades.
 - **0.2:** dois modos de jogo.
-  - **Modo História:** cânon de 66 livros; Gênesis com 19 experiências e Êxodo com 4.
+  - **Modo História:** cânon de 66 livros; Gênesis com 20 experiências e Êxodo com 4.
   - **Modo Livre:** 7 modalidades, desafio diário e multiplayer de demonstração.
   - **Progressão:** única entre os modos, com limites contra acúmulo de XP.
   - **Painel administrativo:** editor local de conteúdo.

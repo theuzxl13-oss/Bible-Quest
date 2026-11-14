@@ -276,7 +276,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.16.1** (14/11/2026): auditoria geral do projeto e plano oficial de evolução (`docs/auditorias/AUDITORIA-GERAL-v0.16.md`), aguardando aprovação.
 - **0.16.0** (14/11/2026): cena narrativa da fase, cenário próprio de Êxodo e Biblioteca, Conquistas e Perfil no visual de aventura.
 - **0.15.0** (14/11/2026): telas de perguntas e de resultado no visual de aventura, com o cenário da região da fase ao fundo.
 - **0.14.0** (14/11/2026): mapas de aventura: Gênesis completo em regiões ilustradas, trilha própria do Quiz com seletor de dificuldade e janela de apresentação das fases.
-- **0.13.3** (14/11/2026): referências de penteados e véu para o editor de personagens por peças.

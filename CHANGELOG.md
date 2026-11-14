@@ -2,6 +2,14 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.16.1 — 14/11/2026 — Auditoria geral e plano oficial de evolução
+
+- Novo documento `docs/auditorias/AUDITORIA-GERAL-v0.16.md`, com:
+  - diagnóstico de arquitetura, telas, estado, persistência, mapas, personagens, conteúdo, testes, build e publicação, com evidências e classificação de cada funcionalidade;
+  - pontos fortes, problemas por gravidade, arquitetura recomendada (mapas em camadas e esqueleto padrão para o 3D), roadmap E0–E10, dependências, critérios de aceitação, esforço e riscos.
+- Sem mudança no jogo: o plano aguarda aprovação.
+- `ROADMAP.md`: contagem de fases de Gênesis corrigida (20) e referência ao novo plano.
+
 ## 0.16.0 — 14/11/2026 — Cena da fase, cenário de Êxodo e telas do acampamento no visual de aventura
 
 - **Cena narrativa da fase** (a história antes das perguntas):
