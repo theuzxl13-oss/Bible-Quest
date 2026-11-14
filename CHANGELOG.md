@@ -13,7 +13,7 @@ Implementação do plano `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.md
   - câmera mais próxima e quase nivelada: o personagem ocupa de 41 a 43% da altura da cena (fica à direita do centro no computador) e a paisagem aparece atrás dele;
   - rótulos presos à borda quando o objeto sai do quadro.
 - **Os 13 elementos de evolução** continuam iguais: quantidade, regras, requisitos, dados e recompensas (`src/data/acampamento.ts` e `src/services/game/acampamento.ts` não mudaram). As posições de alguns foram trazidas para dentro do quadro, para continuarem visíveis com a câmera nova.
-- **Cena 2D:** sem a cidade; cordilheira, florestas, rochas, brilho da fogueira e vinheta; personagem maior; objetos nas bordas no celular.
+- **Cena 2D:** sem a cidade; cordilheira, florestas, rochas, brilho da fogueira e vinheta; o personagem passa a ocupar cerca de 41% da altura da cena (medido pela área desenhada); objetos nas bordas no celular, onde o rótulo do baú mostra só o ícone (o nome continua no rótulo acessível) para não encostar no cajado.
 - **Interface:**
   - HUD com retrato, nível, XP, estrelas, sequência e configurações;
   - placa "Missões", que abre um painel (`PainelMissoes`) com desafio diário, continuar jornada, baús, revisão inteligente, próximo no acampamento e progresso geral;

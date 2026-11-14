@@ -58,10 +58,13 @@
   .camp-paint-chest { right: 2%; top: 72%; transform: scale(0.8); transform-origin: right; }
   .camp-paint-table { left: 1%; top: 74%; transform: scale(0.8); transform-origin: left; }
   .camp-paint-fire { left: 18%; top: 70%; }
-  .camp-scene.is-2d .camp-label-tenda { left: 21%; top: 42%; }
+  .camp-scene.is-2d .camp-label-tenda { left: 22%; top: 36%; }
   .camp-scene.is-2d .camp-label-mesa { left: 16%; top: 73%; }
   .camp-scene.is-2d .camp-label-quadro { left: 84%; top: 39%; }
   .camp-scene.is-2d .camp-label-bau { left: 84%; top: 70%; }
+  /* no 2D do celular, o rótulo do baú mostra só o ícone (o nome segue no aria-label) para não encostar no cajado */
+  .camp-scene.is-2d .camp-label-bau { left: 90%; padding-right: 6px; }
+  .camp-scene.is-2d .camp-label-bau .camp-label-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 }
 @media (prefers-reduced-motion: reduce) { .camp-badge, .camp-paint-fire i, .camp-loading-fire, .camp-painel { animation: none !important; } }
 html[data-motion='reduzido'] .camp-badge, html[data-motion='reduzido'] .camp-paint-fire i, html[data-motion='reduzido'] .camp-painel { animation: none !important; }

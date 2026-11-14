@@ -88,8 +88,8 @@ export const CenaAcampamento = forwardRef<CenaApi, Props>(function CenaAcampamen
   }, [chave]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const em2d = estado === '2d'
-  // no 2D o personagem também é o protagonista: cerca de 42% da altura da tela
-  const [tamanho2d] = useState(() => (typeof window === 'undefined' ? 260 : Math.round(Math.min(320, Math.max(180, window.innerHeight * 0.31)))))
+  // no 2D o personagem também é o protagonista: o desenho ocupa cerca de 40% da altura da cena
+  const [tamanho2d] = useState(() => (typeof window === 'undefined' ? 260 : Math.round(Math.min(400, Math.max(190, (window.innerHeight - 64) * 0.37)))))
   return (
     <div className={`camp-scene ${em2d ? 'is-2d' : 'is-3d'} ${estado === 'carregando' ? 'is-loading' : ''} ${bauPronto ? 'has-chest' : ''}`}>
       {em2d ? (
