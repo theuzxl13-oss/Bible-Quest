@@ -18,6 +18,7 @@ Só a Central do Jogador. Os 13 elementos continuam com os mesmos ids, requisito
 - **2D:** o rótulo "Desafio diário" voltou ao quadro, sem passar da borda no celular.
 - **Computador:** a lanterna da frente saiu de diante do quadro e foi para a direita do baú; agora o papel do quadro fica inteiro à vista.
 - **Testes:** 151, todos passando. Um teste novo confere o Desafio diário pelos dois caminhos (rótulo na cena e painel de missões).
+- **Evidências visuais** (acrescentadas depois, sem mudança no jogo e sem nova versão): as capturas originais do relatório estão em `docs/relatorios/evidencias/etapa-2-central-0.17.3/`, com a galeria `GALERIA_EVIDENCIAS.md`. O relatório em texto aponta para ela.
 
 ## 0.17.2 — 16/11/2026 — Refinamento final da Central (aguardando avaliação; não publicada no `main`)
 

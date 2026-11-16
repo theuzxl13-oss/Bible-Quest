@@ -2,7 +2,7 @@
 
 **Kzann Tech** · Etapa 2 (tela piloto) · versão 0.17.3 (não publicada no `main`) · 16/11/2026 · aguardando aprovação.
 
-Versão em texto de `ETAPA_2_CENTRAL_AJUSTES_FINAIS.pdf` (mesmo conteúdo; as capturas de tela estão no PDF).
+Versão em texto de `ETAPA_2_CENTRAL_AJUSTES_FINAIS.pdf` (mesmo conteúdo). **As capturas de tela estão na [galeria de evidências](evidencias/etapa-2-central-0.17.3/GALERIA_EVIDENCIAS.md)**, com as imagens originais identificadas por dispositivo e situação.
 
 ### Sobre este relatório
 
