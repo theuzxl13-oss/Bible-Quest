@@ -2,6 +2,19 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Documentação — 16/11/2026 — Diagnóstico visual das demais telas (sem nova versão do jogo)
+
+Etapa de análise. Não houve mudança em código, estilos, componentes ou funcionalidades; a versão do jogo continua 0.17.3.
+
+- `docs/relatorios/ETAPA_2_DIAGNOSTICO_VISUAL_TELAS.pdf` (e `.md`): diagnóstico de 38 telas e funcionalidades (História, Quiz, Biblioteca, Perfil, personagens e conquistas, telas complementares), usando a Central 0.17.3 como referência.
+  - **Classificação:** 3 aprovadas, 25 precisam de refinamento, 8 precisam de reformulação e 2 não verificáveis.
+  - **Cada item traz:** como funciona, evidências no código, avaliação, problemas, o que preservar, direção visual, prioridade, complexidade e critérios de aceitação.
+  - **Sequência de implementação** em 6 fases, de 0 a 5.
+- 84 capturas reais (celular 390 × 844 e computador 1280 × 800) e 5 recortes de detalhe em `docs/relatorios/evidencias/etapa-2-diagnostico-visual/`.
+- Principais achados:
+  - três estilos visuais convivendo, e só a Central usa `tokens.css`;
+  - cinco defeitos de leitura de correção simples: título dos avisos, introdução do mundo, tabela do Perfil, link da linha do tempo e nomes da barra do computador.
+
 ## 0.17.3 — 16/11/2026 — Ajustes finais da Central (aprovada e publicada)
 
 **Publicação oficial (16/11/2026):**

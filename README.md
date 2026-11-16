@@ -285,7 +285,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **Documentação** (16/11/2026): diagnóstico visual das demais telas, com a Central como referência, aguardando avaliação (sem nova versão do jogo).
 - **0.17.3** (16/11/2026): ajustes finais da Central (atalho "Desafio diário" de volta à cena, tablet com o poço inteiro, rótulos mais espaçados no celular, quadro sem texto); aprovada e publicada no GitHub Pages; capturas e verificação da publicação em `docs/relatorios/evidencias/`.
 - **0.17.2** (16/11/2026): refinamento final da Central (composição própria no celular, rótulos longe do HUD, atalho "Diário" fora da cena), aguardando avaliação antes de publicar.
 - **0.17.1** (16/11/2026): revisão visual da Central (poço e baú separados, rótulos discretos, cenário e celular), aguardando avaliação antes de publicar.
-- **0.17.0** (14/11/2026): Central do Jogador como Acampamento de Aventura (tela piloto da Etapa 2) e navegação global inferior.
