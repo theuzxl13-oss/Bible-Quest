@@ -48,5 +48,5 @@ implementada ainda.
 | Fase | O que entra | Situação |
 | --- | --- | --- |
 | 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
-| 1 | Base visual comum com os tokens | Aguardando autorização |
+| 1 | Base visual comum com os tokens | Auditoria e proposta prontas (`docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md`), aguardando aprovação |
 | 2 a 5 | Conforme o diagnóstico | — |

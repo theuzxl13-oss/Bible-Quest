@@ -2,6 +2,28 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Documentação — 16/11/2026 — Fase 1 da Etapa 2: auditoria visual e proposta da base comum (sem nova versão do jogo)
+
+Etapa de análise. Não houve mudança em código, estilos, componentes ou funcionalidades; a versão do jogo continua 0.17.4. A auditoria não foi publicada no `main` e aguarda aprovação.
+
+- `docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md` (e `.pdf`):
+  - **Inventário:** 251 cores HEX diferentes nos estilos (259 pares quase iguais), 57 tamanhos de fonte, 85 sombras, 19 raios, 33 espaços, 20 pontos de quebra, 173 seletores redefinidos e 0 usos dos tokens da Central em `global.css`; 18 variantes de botão medidas nas telas.
+  - **Proposta de tokens em quatro camadas:**
+    - paleta;
+    - significado;
+    - componentes;
+    - ambientes (`[data-ambiente]` para História, Quiz, Biblioteca, Perfil e Conquistas).
+
+    Inclui a ponte de compatibilidade das variáveis antigas e o contraste calculado de cada combinação.
+  - **Componentes a padronizar:** botão, painel, cartão, janela, aviso, mensagem rápida, campo, progresso, abas, cabeçalho e "voltar".
+  - **Fechamento:** riscos, ordem de migração (passos 1.1 a 1.8), critérios de aceitação e esforço estimado.
+- Pontos de acessibilidade encontrados (a correção depende de aprovação):
+  - foco azul claro sobre pergaminho (1,87:1, abaixo de 3:1);
+  - selo de aviso da Central (4,05:1);
+  - elementos interativos entre 30 e 40 px, abaixo da meta de 44 px;
+  - dois sistemas de alto contraste.
+- Amostras reais de botões, painéis e outros componentes em `docs/relatorios/evidencias/etapa-2-fase1-auditoria/`.
+
 ## 0.17.4 — 16/11/2026 — Fase 0 da Etapa 2: legibilidade e navegação (aprovada e publicada)
 
 **Publicação oficial (16/11/2026):**
