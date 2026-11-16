@@ -2,7 +2,20 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
-## 0.17.3 — 16/11/2026 — Ajustes finais da Central (aguardando aprovação; não publicada no `main`)
+## 0.17.3 — 16/11/2026 — Ajustes finais da Central (aprovada e publicada)
+
+**Publicação oficial (16/11/2026):**
+- A Central 0.17.3 foi aprovada visualmente e integrada ao `main` por avanço direto (fast-forward) de `3a87c93` para `a983e98`, sem conflitos e com o histórico preservado.
+- O CI do `main` (run 69) passou e publicou no GitHub Pages. O site serve `assets/index-B16ZFxcQ.js`, o mesmo pacote do build local.
+- Verificação no site publicado, no celular e no computador:
+  - Central em 3D, 13 elementos, jogador novo e alternativa 2D;
+  - painel de missões e navegação inferior;
+  - Desafio diário pela cena e pelo painel;
+  - sem erros no console e sem rolagem horizontal.
+
+  Registro completo: `docs/relatorios/evidencias/etapa-2-central-0.17.3/VERIFICACAO_PUBLICACAO.md`.
+- O número do pacote (`package.json`) passou de 0.17.0 para 0.17.3, para acompanhar a versão oficial. Não houve versão nova.
+
 
 Só a Central do Jogador. Os 13 elementos continuam com os mesmos ids, requisitos e regras de desbloqueio. XP, níveis, conquistas, recompensas, progressão, mapas, perguntas, conteúdo bíblico e as outras telas não mudaram. Relatório: `docs/relatorios/ETAPA_2_CENTRAL_AJUSTES_FINAIS.pdf` (e `.md`).
 
