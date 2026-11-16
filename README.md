@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.17.4 em avaliação (a versão publicada continua a 0.17.3, com a Central do Jogador: Acampamento de Aventura) |
+| **Versão** | 0.17.4 (Central do Jogador: Acampamento de Aventura, e Fase 0 da identidade nas demais telas) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -286,7 +286,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
-- **0.17.4** (16/11/2026): Fase 0 da Etapa 2 (avisos, introdução do mundo, tabela do Perfil, link da linha do tempo, nomes oficiais da navegação e versão vinda do pacote), aguardando aprovação antes de publicar.
+- **0.17.4** (16/11/2026): Fase 0 da Etapa 2 (avisos, introdução do mundo, tabela do Perfil, link da linha do tempo, nomes oficiais da navegação e versão vinda do pacote); aprovada e publicada no GitHub Pages.
 - **Documentação** (16/11/2026): diagnóstico visual das demais telas, com a Central como referência, aguardando avaliação (sem nova versão do jogo).
 - **0.17.3** (16/11/2026): ajustes finais da Central (atalho "Desafio diário" de volta à cena, tablet com o poço inteiro, rótulos mais espaçados no celular, quadro sem texto); aprovada e publicada no GitHub Pages; capturas e verificação da publicação em `docs/relatorios/evidencias/`.
 - **0.17.2** (16/11/2026): refinamento final da Central (composição própria no celular, rótulos longe do HUD, atalho "Diário" fora da cena), aguardando avaliação antes de publicar.

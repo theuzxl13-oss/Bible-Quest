@@ -2,7 +2,19 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
-## 0.17.4 — 16/11/2026 — Fase 0 da Etapa 2: legibilidade e navegação (aguardando aprovação; não publicada no `main`)
+## 0.17.4 — 16/11/2026 — Fase 0 da Etapa 2: legibilidade e navegação (aprovada e publicada)
+
+**Publicação oficial (16/11/2026):**
+- Aprovada e integrada ao `main` por fast-forward (`64f2b1f` → `058baa6`), sem conflitos e com o histórico preservado.
+- O fluxo oficial (run 76) passou e publicou no GitHub Pages. O site serve `assets/index-DWTM3Srj.js`, o mesmo pacote do build local.
+- Verificação no site publicado, no celular e no computador:
+  - as cinco correções, com os mesmos contrastes medidos antes da publicação;
+  - a navegação oficial e o Desafio diário pelos dois caminhos;
+  - "Versão 0.17.4" no rodapé e na página Sobre;
+  - a Central em 3D e 2D preservada;
+  - 80 capturas sem erros de JavaScript, sem falhas de carregamento e sem rolagem horizontal.
+- Registro completo: `docs/relatorios/evidencias/etapa-2-fase0-0.17.4/VERIFICACAO_PUBLICACAO.md`.
+
 
 Correções pontuais aprovadas a partir do diagnóstico visual, sem reformular telas. A Central 0.17.3 não mudou: os arquivos dela estão intactos, e as capturas em 3D e 2D, no celular e no computador, são idênticas pixel a pixel. Também não mudaram regras, dados, pontuação, progresso, desbloqueios, rotas, links nem dependências. Relatório: `docs/relatorios/ETAPA_2_FASE_0_CORRECOES.pdf` (e `.md`).
 

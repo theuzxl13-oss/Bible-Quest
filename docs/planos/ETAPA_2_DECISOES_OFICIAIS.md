@@ -47,6 +47,6 @@ implementada ainda.
 
 | Fase | O que entra | Situação |
 | --- | --- | --- |
-| 0 | Correções de legibilidade e navegação | Versão 0.17.4, aguardando aprovação |
-| 1 | Base visual comum com os tokens | Começa só depois da aprovação da 0.17.4 |
+| 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
+| 1 | Base visual comum com os tokens | Aguardando autorização |
 | 2 a 5 | Conforme o diagnóstico | — |
