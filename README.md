@@ -234,7 +234,7 @@ São 150 testes automatizados (Vitest e Testing Library), em 12 arquivos de `src
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
-| `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
+| `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
 | `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
@@ -285,7 +285,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.17.1** (16/11/2026): revisão visual da Central (poço e baú separados, rótulos discretos, cenário e celular), aguardando avaliação antes de publicar.
 - **0.17.0** (14/11/2026): Central do Jogador como Acampamento de Aventura (tela piloto da Etapa 2) e navegação global inferior.
 - **0.16.6** (14/11/2026): versão em texto (Markdown) do plano técnico da Central em `docs/relatorios/`.
 - **0.16.5** (14/11/2026): plano técnico consolidado da Central do Jogador em `docs/relatorios/`, aguardando aprovação para implementar.
-- **0.16.4** (14/11/2026): relatório da Etapa 2 (direção artística aprovada e plano da Central do Jogador) em `docs/relatorios/`.

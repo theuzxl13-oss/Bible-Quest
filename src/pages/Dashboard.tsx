@@ -103,7 +103,7 @@ export default function Dashboard() {
               <span className="hud-name">
                 <h1 id="home-name">{character.name}</h1>
               </span>
-              <span className="hud-level"><GameIcon name="shield" size={18} /> Nível {lp.level} · {levelTitle(lp.level)}</span>
+              <span className="hud-level"><GameIcon name="shield" size={18} /> <span className="hud-level-texto">Nível {lp.level} · {levelTitle(lp.level)}</span></span>
               <span className="hud-xp">
                 <ProgressBar value={lp.current} max={lp.needed} label="Progresso para o próximo nível" />
                 <span className="hud-xp-text">{lp.current} / {lp.needed} XP</span>

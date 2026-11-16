@@ -175,22 +175,21 @@ function construirCeu() {
 
 function construirNuvens(m: Mats) {
   const g = new THREE.Group()
-  const mat = new THREE.MeshStandardMaterial({ color: '#fff4e6', roughness: 1, emissive: '#ffe2bd', emissiveIntensity: 0.4, fog: false, flatShading: true })
+  const mat = new THREE.MeshStandardMaterial({ color: '#fff1df', roughness: 1, emissive: '#ffd9ae', emissiveIntensity: 0.45, fog: false, flatShading: false, transparent: true, opacity: 0.9 })
   m.cache.set('nuvem', mat)
   const geo = new THREE.IcosahedronGeometry(1, 1)
   const nuvens: [number, number, number, number][] = [
-    [-60, 38, -150, 9],
-    [-20, 46, -170, 7],
-    [35, 42, -160, 10],
-    [80, 36, -140, 8],
-    [-95, 30, -120, 7],
+    [-70, 58, -170, 8],
+    [-15, 66, -190, 6],
+    [45, 62, -180, 9],
+    [100, 54, -160, 7],
   ]
   for (const [x, y, z, s] of nuvens) {
     const n = new THREE.Group()
     for (let i = 0; i < 5; i++) {
       const b = new THREE.Mesh(geo, mat)
       b.position.set((i - 2) * s * 0.75, Math.sin(i * 1.7) * s * 0.25, Math.cos(i) * s * 0.3)
-      b.scale.set(s * (1 - Math.abs(i - 2) * 0.18), s * 0.55, s * 0.6)
+      b.scale.set(s * (1 - Math.abs(i - 2) * 0.18), s * 0.32, s * 0.5)
       n.add(b)
     }
     n.position.set(x, y, z)
@@ -290,11 +289,11 @@ function construirMontanhas(m: Mats) {
     [150, -140, 30, 24],
   ]
   picos.forEach(([x, z, r, h], i) => {
-    const monte = malha(new THREE.ConeGeometry(r, h, 7), m.std(i % 2 ? '#6f8199' : '#62748d'), x, h / 2 - 2, z)
+    const monte = malha(new THREE.ConeGeometry(r, h, 10), m.std(i % 2 ? '#71849b' : '#64778f'), x, h / 2 - 2, z)
     monte.rotation.y = i
     monte.castShadow = false
     g.add(monte)
-    const neve = malha(new THREE.ConeGeometry(r * 0.32, h * 0.32, 7), m.std('#ece6da'), x, h - 2 - h * 0.16 + 0.2, z)
+    const neve = malha(new THREE.ConeGeometry(r * 0.24, h * 0.24, 10), m.std('#eadfcf'), x, h - 2 - h * 0.12 + 0.2, z)
     neve.rotation.y = i
     neve.castShadow = false
     g.add(neve)
@@ -343,6 +342,8 @@ function construirFlorestas(m: Mats, quality: Quality3D) {
   const ciprestes = pontos.filter((_, i) => i % 3 !== 0)
   const redondas = pontos.filter((_, i) => i % 3 === 0)
   const copaC = new THREE.InstancedMesh(new THREE.ConeGeometry(0.55, 2.8, 7), m.std('#2f5233'), ciprestes.length)
+  // segunda camada, mais clara e menor, na ponta: dá volume sem malha nova
+  const copaC2 = new THREE.InstancedMesh(new THREE.ConeGeometry(0.4, 1.5, 7), m.std('#46703f'), ciprestes.length)
   const copaR = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.9, 0), m.std('#4b6a35'), redondas.length)
   const mt = new THREE.Matrix4()
   const q = new THREE.Quaternion()
@@ -354,19 +355,49 @@ function construirFlorestas(m: Mats, quality: Quality3D) {
   })
   ciprestes.forEach(([x, z, s], i) => {
     const y = alturaTerreno(x, z)
-    copaC.setMatrixAt(i, mt.compose(pos.set(x, y + 1.7 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), x), esc.set(s, s * (0.9 + (i % 4) * 0.08), s)))
+    const alto = 0.9 + (i % 4) * 0.08
+    copaC.setMatrixAt(i, mt.compose(pos.set(x, y + 1.7 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), x), esc.set(s, s * alto, s)))
+    copaC2.setMatrixAt(i, mt.compose(pos.set(x + 0.08 * s, y + (1.7 + 0.85 * alto) * s, z + 0.08 * s), q.setFromAxisAngle(pos.clone().set(0, 1, 0), x + 1), esc.set(s, s * alto, s)))
   })
   redondas.forEach(([x, z, s], i) => {
     const y = alturaTerreno(x, z)
     copaR.setMatrixAt(i, mt.compose(pos.set(x, y + 1.25 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), z), esc.set(s * 1.1, s * 0.85, s * 1.1)))
   })
-  for (const im of [tronco, copaC, copaR]) {
+  for (const im of [tronco, copaC, copaC2, copaR]) {
     im.castShadow = false
     im.receiveShadow = true
     im.instanceMatrix.needsUpdate = true
     g.add(im)
   }
   return g
+}
+
+/** Tufos de grama em volta do acampamento, fora do caminho e da área central. */
+function construirTufos(m: Mats, quality: Quality3D) {
+  let semente = 19
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  const total = quality === 'leve' ? 60 : 140
+  const geo = new THREE.ConeGeometry(0.09, 0.32, 4)
+  const tufos = new THREE.InstancedMesh(geo, m.std('#6d8a3e'), total)
+  const mt = new THREE.Matrix4()
+  const q = new THREE.Quaternion()
+  const pos = new THREE.Vector3()
+  const esc = new THREE.Vector3()
+  let n = 0
+  for (let i = 0; i < total * 4 && n < total; i++) {
+    const a = aleatorio() * Math.PI * 2
+    const r = 3.6 + aleatorio() * 7
+    const x = Math.cos(a) * r
+    const z = Math.sin(a) * r * 0.9 - 1.5
+    if (z > 0.6 || Math.abs(x + Math.sin(z * 0.25) * 1.2) < 1.3) continue
+    const k = 0.55 + aleatorio() * 0.6
+    tufos.setMatrixAt(n++, mt.compose(pos.set(x, alturaTerreno(x, z) + 0.12 * k, z), q.setFromAxisAngle(esc.set(0, 1, 0), a), esc.set(k, k, k)))
+  }
+  tufos.count = n
+  tufos.castShadow = false
+  tufos.receiveShadow = true
+  tufos.instanceMatrix.needsUpdate = true
+  return tufos
 }
 
 /** Formações rochosas nas laterais (emolduram o acampamento). */
@@ -491,6 +522,15 @@ function construirFogueira(m: Mats, quality: Quality3D) {
   const luz = new THREE.PointLight('#ff9a3c', quality === 'alta' ? 9 : 6, 7, 1.6)
   luz.position.set(0, 0.7, 0)
   g.add(luz)
+  const brilhoTex = texturaMancha('255,170,90')
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: brilhoTex, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }))
+  halo.scale.set(2.2, 2.2, 1)
+  halo.position.set(0, 0.55, 0)
+  g.add(halo)
+  const chaoQuente = new THREE.Mesh(new THREE.CircleGeometry(1.7, 24), new THREE.MeshBasicMaterial({ map: brilhoTex, transparent: true, opacity: 0.45, depthWrite: false, blending: THREE.AdditiveBlending }))
+  chaoQuente.rotation.x = -Math.PI / 2
+  chaoQuente.position.y = 0.015
+  g.add(chaoQuente)
   // fumaça e faíscas
   const fumacaTex = texturaMancha('200,190,180')
   const fumaca: THREE.Sprite[] = []
@@ -808,19 +848,19 @@ function jardim(m: Mats) {
  * posição mudou; quais são e quando são liberados continua igual).
  */
 const POSICOES: Record<string, [number, number, number, number]> = {
-  tenda: [-3.3, -2.3, -1.6, -3.4],
-  fogueira: [-1.6, 0.25, -0.75, 1.1],
-  mesa: [-3.05, -0.35, -1.45, -2.2],
-  quadro: [1.7, -3.4, 1.45, -3.2],
-  bau: [1.2, 1.45, 0.85, 0.9],
-  barris: [-4.9, -1.9, -1.9, -4.5],
-  jarros: [-2.2, -1.5, -1.2, -1.9],
-  palmeiras: [4.0, -6.0, 1.9, -6.5],
+  tenda: [-3.3, -2.3, -1.5, -6.2],
+  fogueira: [-1.6, 0.25, -0.75, 0.2],
+  mesa: [-3.05, -0.35, -1.0, -1.6],
+  quadro: [1.7, -3.4, 1.4, -3.6],
+  bau: [0.9, -0.6, 0.62, -0.6],
+  barris: [-4.9, -1.9, -1.7, -3.6],
+  jarros: [-2.2, -1.5, -0.55, -1.0],
+  palmeiras: [3.3, -7.4, 0.6, -9.5],
   lanternas: [1.0, -1.6, 0.9, -1.9],
-  'tenda-grande': [-5.2, -6.8, -2.0, -8.0],
+  'tenda-grande': [-5.2, -6.8, -2.6, -11.0],
   estandarte: [-1.0, -3.6, -0.8, -3.9],
-  poco: [2.9, -1.6, 1.6, -5.0],
-  ovelhas: [4.8, -9.0, 0.9, -10.0],
+  poco: [3.9, -5.4, -0.95, -3.0],
+  ovelhas: [4.8, -9.0, 0.9, -8.5],
 }
 
 export function createCamp(container: HTMLElement, appearance: CharacterAppearance, opts: CampOptions): CampHandle {
@@ -857,7 +897,7 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   scene.add(sol, sol.target, frente, new THREE.HemisphereLight('#c2d6f0', '#6b4a2b', 1.2))
 
   scene.add(construirCeu(), construirNuvens(m), construirChao(), construirPedrasDoCaminho(m), construirMontanhas(m))
-  scene.add(construirCordilheira(m), construirFlorestas(m, quality), construirRochedos(m))
+  scene.add(construirCordilheira(m), construirFlorestas(m, quality), construirRochedos(m), construirTufos(m, quality))
   for (const [x, z, s] of [[-7, -6, 1.1], [-8.5, -3, 0.9], [7.5, -7, 1.2], [9, -4, 0.9], [-10, -9, 1.3], [11, -10, 1.1], [-5, -10, 1], [6, -12, 1.2], [-13, -6, 1], [13, -6, 1.2]]) scene.add(cipreste(m, x, z, s))
   for (const [x, z, s] of [[-5, 1.6, 0.9], [4.4, 1.8, 0.8], [-6.5, -1.2, 1.1], [6.4, -2.2, 1], [3.4, 2.6, 0.7]]) scene.add(arbusto(m, x, z, s))
   for (const [x, z, s] of [[3.7, 1.2, 0.8], [-4.4, 2.2, 0.7], [5.4, 0.2, 1.1], [-2.6, 2.6, 0.5]]) scene.add(pedra(m, x, z, s, x))
@@ -1024,8 +1064,10 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     // Câmera quase nivelada: o horizonte fica perto do meio da tela e a paisagem
     // (céu, cordilheiras, florestas) aparece atrás do personagem.
     const lado = lerp(-0.85, 0, estreita)
-    alvoCamera.set(lado, lerp(1.12, 1.08, estreita), lerp(-0.4, -0.5, estreita))
-    posCamera.set(lado, lerp(1.2, 1.18, estreita), lerp(6.4, 4.7, estreita))
+    // nas telas estreitas a câmera sobe um pouco e olha levemente para baixo:
+    // os objetos do fundo aparecem acima dos da frente, em vez de atrás deles
+    alvoCamera.set(lado, lerp(1.12, 0.92, estreita), lerp(-0.4, -0.5, estreita))
+    posCamera.set(lado, lerp(1.2, 1.95, estreita), lerp(6.4, 4.6, estreita))
     camera.position.copy(posCamera)
     camera.lookAt(alvoCamera)
   }
@@ -1077,6 +1119,19 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     })
     const xs = pts.map((q) => q[0])
     container.dataset.personagem = [pts[1][1], pts[0][1], Math.min(...xs), Math.max(...xs)].map((n) => n.toFixed(3)).join(',')
+    // área de cada objeto do acampamento na tela (esquerda, topo, direita, base), para conferir composição
+    const areas: Record<string, number[]> = {}
+    const caixaObj = new THREE.Box3()
+    for (const [id, o] of posicionaveis) {
+      caixaObj.setFromObject(o)
+      let e = 9, t = 9, d = -9, b = -9
+      for (let i = 0; i < 8; i++) {
+        canto.set(i & 1 ? caixaObj.max.x : caixaObj.min.x, i & 2 ? caixaObj.max.y : caixaObj.min.y, i & 4 ? caixaObj.max.z : caixaObj.min.z).project(camera)
+        e = Math.min(e, (canto.x + 1) / 2); d = Math.max(d, (canto.x + 1) / 2); t = Math.min(t, (1 - canto.y) / 2); b = Math.max(b, (1 - canto.y) / 2)
+      }
+      areas[id] = [e, t, d, b].map((n) => +n.toFixed(3))
+    }
+    container.dataset.objetos = JSON.stringify(areas)
   }
   const medidor = window.setInterval(medirPersonagem, 1000)
   const tick = () => {

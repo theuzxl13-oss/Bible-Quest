@@ -23,7 +23,8 @@
   margin: 0; font-family: var(--font-display); font-weight: 700; font-size: var(--fonte-18); line-height: 1.15;
   color: var(--texto-sobre-escuro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
-.hud-level { display: inline-flex; align-items: center; gap: 5px; font-size: var(--fonte-14); font-weight: 750; color: var(--destaque); }
+.hud-level { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: var(--fonte-14); font-weight: 750; color: var(--destaque); white-space: nowrap; }
+.hud-level-texto { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .hud-level .game-icon { filter: none; }
 .hud-xp { position: relative; display: block; width: clamp(150px, 22vw, 230px); }
 .hud-xp .progress { height: 16px; border-radius: var(--raio-pilula); background: rgba(0, 0, 0, 0.55); border: 1px solid var(--ouro-700); box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.5); }

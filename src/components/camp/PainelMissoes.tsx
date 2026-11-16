@@ -1,7 +1,7 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { GameIcon } from '../GameIcon'
-import type { IconName } from '../Icon'
+import { Icon, type IconName } from '../Icon'
 import { ProgressBar } from '../ui'
 
 export interface ItemMissao {
@@ -51,7 +51,12 @@ export function PainelMissoes({ itens, pendentes, rodape }: { itens: ItemMissao[
         {pendentes > 0 && <span className="camp-badge" aria-label={`${pendentes} ${pendentes === 1 ? 'missão disponível' : 'missões disponíveis'}`}>{pendentes}</span>}
       </button>
       <section id={id} className="camp-painel" aria-label="Missões" hidden={!aberto}>
-        <h2>Missões</h2>
+        <div className="camp-painel-topo">
+          <h2>Missões</h2>
+          <button type="button" className="camp-painel-fechar" aria-label="Fechar missões" onClick={() => { setAberto(false); botao.current?.focus() }}>
+            <Icon name="x" size={20} />
+          </button>
+        </div>
         <ul className="board-list">
           {itens.map((it) => {
             const conteudo = (

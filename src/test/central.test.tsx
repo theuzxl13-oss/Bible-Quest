@@ -79,6 +79,11 @@ describe('Central do Jogador', () => {
     await user.keyboard('{Escape}')
     expect(botao).toHaveAttribute('aria-expanded', 'false')
     expect(botao).toHaveFocus()
+    // o botão "Fechar missões" dentro do painel também fecha e devolve o foco
+    await user.click(botao)
+    await user.click(screen.getByRole('button', { name: 'Fechar missões' }))
+    expect(botao).toHaveAttribute('aria-expanded', 'false')
+    expect(botao).toHaveFocus()
   })
 
   it('3. "Começar/Continuar" abre a próxima fase calculada e a marca como visitada', async () => {

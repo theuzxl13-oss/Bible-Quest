@@ -20,7 +20,11 @@
   animation: camp-painel-entra var(--dur-janela) var(--curva-saida) both;
 }
 @keyframes camp-painel-entra { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
-.camp-painel h2 { margin: 2px 6px 8px; font-family: var(--font-display); font-size: var(--fonte-18); color: var(--texto-sobre-leitura); }
+.camp-painel-topo { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-2); margin: 0 2px 8px 6px; }
+.camp-painel h2 { margin: 0; font-family: var(--font-display); font-size: var(--fonte-18); color: var(--texto-sobre-leitura); }
+.camp-painel-fechar { display: grid; place-items: center; width: 44px; height: 44px; margin: -6px -2px -6px 0; border: 0; border-radius: 50%; background: transparent; color: var(--texto-sobre-leitura); cursor: pointer; }
+.camp-painel-fechar:hover { background: rgba(122, 82, 52, 0.15); }
+.camp-painel-fechar:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px; }
 .board-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .board-item {
   display: flex; align-items: flex-start; gap: var(--esp-3); padding: 8px 10px; border-radius: var(--raio-m);
@@ -39,8 +43,10 @@ a.board-item:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px
 .board-upgrade, .board-geral { background: rgba(94, 107, 58, 0.12); }
 
 @media (max-width: 599px) {
-  .camp-missoes { left: max(12px, env(safe-area-inset-left)); right: auto; top: 76px; justify-items: start; }
-  .camp-missoes-botao { font-size: var(--fonte-14); min-height: 40px; padding: 4px 12px; }
-  .camp-painel { position: fixed; left: 12px; right: 12px; width: auto; top: auto; bottom: calc(var(--nav-altura) + env(safe-area-inset-bottom) + 84px); max-height: 58vh; }
+  .camp-missoes { left: max(12px, env(safe-area-inset-left)); right: auto; top: 88px; justify-items: start; }
+  .camp-missoes-botao { font-size: var(--fonte-14); min-height: 44px; padding: 4px 12px; }
+  /* celular: folha que sobe de baixo, por cima das ações; a cabeça e o tronco do personagem continuam à vista */
+  .camp-painel { position: fixed; left: 8px; right: 8px; width: auto; top: auto; bottom: calc(var(--nav-altura) + env(safe-area-inset-bottom) + 8px); max-height: 46vh; border-radius: var(--raio-g) var(--raio-g) var(--raio-m) var(--raio-m); animation-name: camp-painel-sobe; }
+  @keyframes camp-painel-sobe { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 }
 html[data-contrast='alto'] .camp-painel, html[data-contrast='alto'] .camp-missoes-botao { background: var(--pergaminho); color: var(--tinta); border-color: var(--tinta); box-shadow: none; }

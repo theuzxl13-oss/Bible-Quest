@@ -2,6 +2,22 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.1 — 16/11/2026 — Revisão visual da Central (aguardando avaliação; ainda não publicada no `main`)
+
+Só a Central do Jogador. Mapas, perguntas, conteúdo bíblico, progressão e as outras telas não mudaram. Os 13 elementos do acampamento continuam com os mesmos ids, regras, requisitos e dados (`src/data/acampamento.ts` e `src/services/game/acampamento.ts` sem mudanças); só a posição de alguns na cena mudou. Relatório: `docs/relatorios/ETAPA_2_CENTRAL_REVISAO_VISUAL.pdf` (e `.md`).
+
+- **Poço e baú:** o baú foi para perto do personagem e o poço para o fundo, à direita, junto das palmeiras; no computador os dois não se sobrepõem mais. Outros elementos foram reposicionados para não se cobrirem.
+- **Rótulos flutuantes:** mais discretos (fundo escuro translúcido, borda fina, texto de 12 px, opacidade 88%), voltando ao destaque no foco e ao passar o mouse. A área de toque continua com 44 px.
+- **Cenário:** nuvens mais altas e achatadas, montanhas com menos facetas e neve quente, ciprestes em dois tons, tufos de capim no chão, brilho da fogueira no ar e no chão. Nada escurecido; nenhum modelo 3D ou dependência nova.
+- **Celular:**
+  - câmera mais alta, para separar os objetos de perto dos de longe;
+  - painel de missões abre de baixo para cima, sem cobrir a cabeça e o tronco do personagem, com botão "Fechar missões" (também no computador);
+  - placa "Missões" abaixo da barra de XP, e o título do nível cortado com reticências em vez de quebrar a linha.
+- **Cena 2D** (alternativa sem 3D): sem mudanças, conferida.
+- **Testes:** 150, todos passando; o teste do painel de missões agora também confere o botão de fechar.
+- **Desempenho** (vídeo por software, mediana de 3 medições, comparado com a 0.17.0 no mesmo ambiente): tempo até a cena ficar pronta de −6% (celular) a +4% (notebook); quadros por segundo iguais.
+- **Problema conhecido:** no celular a cena ainda fica cheia; a fogueira aparece cortada à esquerda e alguns objetos de perto cobrem os de longe.
+
 ## 0.17.0 — 14/11/2026 — Central do Jogador: Acampamento de Aventura (Etapa 2, tela piloto)
 
 Implementação do plano `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.md`, aprovado. Relatório completo: `docs/relatorios/ETAPA_2_CENTRAL_IMPLEMENTACAO.pdf` (e `.md`).
