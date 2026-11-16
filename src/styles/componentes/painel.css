@@ -46,7 +46,7 @@ a.board-item:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px
   .camp-missoes { left: max(12px, env(safe-area-inset-left)); right: auto; top: 88px; justify-items: start; }
   .camp-missoes-botao { font-size: var(--fonte-14); min-height: 44px; padding: 4px 12px; }
   /* celular: folha que sobe de baixo, por cima das ações; a cabeça e o tronco do personagem continuam à vista */
-  .camp-painel { position: fixed; left: 8px; right: 8px; width: auto; top: auto; bottom: calc(var(--nav-altura) + env(safe-area-inset-bottom) + 8px); max-height: 46vh; border-radius: var(--raio-g) var(--raio-g) var(--raio-m) var(--raio-m); animation-name: camp-painel-sobe; }
+  .camp-painel { position: fixed; left: 8px; right: 8px; width: auto; top: auto; bottom: calc(var(--nav-altura) + env(safe-area-inset-bottom) + 20px); max-height: 44vh; border-radius: var(--raio-g) var(--raio-g) var(--raio-m) var(--raio-m); animation-name: camp-painel-sobe; }
   @keyframes camp-painel-sobe { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 }
 html[data-contrast='alto'] .camp-painel, html[data-contrast='alto'] .camp-missoes-botao { background: var(--pergaminho); color: var(--tinta); border-color: var(--tinta); box-shadow: none; }

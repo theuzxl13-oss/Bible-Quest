@@ -21,7 +21,7 @@ import type { Pose3D, Quality3D, Rig } from './rig'
  *   tem o mesmo efeito.
  */
 
-export type AlvoAcampamento = 'personagem' | 'tenda' | 'mesa' | 'quadro' | 'bau'
+export type AlvoAcampamento = 'personagem' | 'tenda' | 'mesa' | 'bau'
 
 export interface CampOptions {
   quality: Quality3D
@@ -842,25 +842,31 @@ function jardim(m: Mats) {
 // ---------- disposição (larga no computador, compacta no celular) ----------
 
 /**
- * [x, z] na tela larga e [x, z] na tela estreita.
- * Etapa 2: com a câmera mais próxima do personagem, as posições foram trazidas
- * para dentro do quadro, para que os 13 elementos continuem visíveis (só a
- * posição mudou; quais são e quando são liberados continua igual).
+ * [x, z] na tela larga, [x, z] na tela estreita e, opcionalmente, a escala na
+ * tela estreita. Só a posição e o tamanho na cena mudam; quais são os elementos
+ * e quando são liberados continua igual (src/data/acampamento.ts).
+ *
+ * Tela estreita (0.17.2): composição própria em três planos, para que nada
+ * dispute o espaço do personagem, que fica no centro:
+ * - perto, nas laterais: fogueira (à esquerda) e baú (à direita);
+ * - meio: mesa (esquerda), jarros e quadro (direita), lanternas no caminho;
+ * - fundo: tendas, barris e estandarte à esquerda; poço, palmeiras e ovelhas
+ *   à direita, aparecendo acima dos objetos da frente.
  */
-const POSICOES: Record<string, [number, number, number, number]> = {
-  tenda: [-3.3, -2.3, -1.5, -6.2],
-  fogueira: [-1.6, 0.25, -0.75, 0.2],
-  mesa: [-3.05, -0.35, -1.0, -1.6],
-  quadro: [1.7, -3.4, 1.4, -3.6],
-  bau: [0.9, -0.6, 0.62, -0.6],
-  barris: [-4.9, -1.9, -1.7, -3.6],
-  jarros: [-2.2, -1.5, -0.55, -1.0],
-  palmeiras: [3.3, -7.4, 0.6, -9.5],
-  lanternas: [1.0, -1.6, 0.9, -1.9],
-  'tenda-grande': [-5.2, -6.8, -2.6, -11.0],
-  estandarte: [-1.0, -3.6, -0.8, -3.9],
-  poco: [3.9, -5.4, -0.95, -3.0],
-  ovelhas: [4.8, -9.0, 0.9, -8.5],
+const POSICOES: Record<string, [number, number, number, number, number?]> = {
+  tenda: [-3.3, -2.3, -1.75, -6.6, 0.85],
+  fogueira: [-1.6, 0.25, -0.7, -1.0, 0.72],
+  mesa: [-3.05, -0.35, -1.1, -3.1, 0.8],
+  quadro: [1.7, -3.4, 1.5, -6.6, 0.95],
+  bau: [0.9, -0.6, 0.76, -0.9, 0.72],
+  barris: [-4.9, -1.9, -2.1, -4.6, 0.85],
+  jarros: [-2.2, -1.5, 0.82, -2.1, 0.8],
+  palmeiras: [3.3, -7.4, 1.3, -10.0],
+  lanternas: [1.0, -1.6, 1.7, -4.3],
+  'tenda-grande': [-5.2, -6.8, -3.0, -11.5],
+  estandarte: [-1.0, -3.6, -0.65, -7.5],
+  poco: [3.9, -5.4, 1.15, -3.5, 0.75],
+  ovelhas: [4.8, -9.0, 2.4, -12.5],
 }
 
 export function createCamp(container: HTMLElement, appearance: CharacterAppearance, opts: CampOptions): CampHandle {
@@ -915,7 +921,7 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   colocar('fogueira', fogo.grupo)
   if (!reduced) animacoes.push(fogo.animar)
   const mesa = colocar('mesa', construirMesa(m), 0.6)
-  const quadro = colocar('quadro', construirQuadro(m), -0.45)
+  colocar('quadro', construirQuadro(m), -0.45)
   const bau = construirBau(m, opts.bauPronto)
   colocar('bau', bau.grupo, -0.35)
   if (!reduced) animacoes.push(bau.animar)
@@ -1000,10 +1006,9 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
 
   // ---------- alvos clicáveis ----------
   const alvos: { id: AlvoAcampamento; obj: THREE.Object3D; ancora: () => THREE.Vector3 }[] = [
-    { id: 'tenda', obj: tenda, ancora: () => tenda.localToWorld(new THREE.Vector3(0, 2.25, 0)) },
+    { id: 'tenda', obj: tenda, ancora: () => tenda.localToWorld(new THREE.Vector3(0, lerp(2.25, 1.5, estreita), 0)) },
     { id: 'mesa', obj: mesa, ancora: () => mesa.localToWorld(new THREE.Vector3(0, 1.15, 0)) },
-    { id: 'quadro', obj: quadro, ancora: () => quadro.localToWorld(new THREE.Vector3(0, 2.2, 0)) },
-    { id: 'bau', obj: bau.grupo, ancora: () => bau.grupo.localToWorld(new THREE.Vector3(0, 1.0, 0)) },
+    { id: 'bau', obj: bau.grupo, ancora: () => bau.grupo.localToWorld(new THREE.Vector3(0, 0.85, 0)) },
     { id: 'personagem', obj: sombra, ancora: () => new THREE.Vector3(0, 1.95, 0) },
   ]
   const raycaster = new THREE.Raycaster()
@@ -1041,6 +1046,19 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   canvas.addEventListener('pointerup', onUp)
   canvas.addEventListener('pointermove', onMove)
 
+  // áreas da interface que os rótulos não podem cobrir nem encostar (HUD, placa
+  // "Missões"): atualizadas a cada segundo, em coordenadas do palco da cena
+  let evitar: { e: number; t: number; d: number; b: number }[] = []
+  const medirInterface = () => {
+    const palco = container.closest('.camp-stage')
+    if (!palco) return
+    const base = container.getBoundingClientRect()
+    evitar = Array.from(palco.querySelectorAll('.camp-hud > *, .camp-missoes-botao')).map((el) => {
+      const r = el.getBoundingClientRect()
+      return { e: r.left - base.left, t: r.top - base.top, d: r.right - base.left, b: r.bottom - base.top }
+    })
+  }
+
   // ---------- câmera e disposição ----------
   let estreita = 0
   const alvoCamera = new THREE.Vector3()
@@ -1057,7 +1075,9 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     camera.updateProjectionMatrix()
     for (const [id, o] of posicionaveis) {
       const p = POSICOES[id]
-      if (p) o.position.set(lerp(p[0], p[2], estreita), 0, lerp(p[1], p[3], estreita))
+      if (!p) continue
+      o.position.set(lerp(p[0], p[2], estreita), 0, lerp(p[1], p[3], estreita))
+      o.scale.setScalar(lerp(1, p[4] ?? 1, estreita))
     }
     // Etapa 2: câmera mais próxima, para o personagem ocupar cerca de 40–45% da
     // altura da cena; no computador ele fica um pouco à direita do centro.
@@ -1072,7 +1092,11 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     camera.lookAt(alvoCamera)
   }
   resize()
-  const ro = new ResizeObserver(resize)
+  window.setTimeout(medirInterface, 0)
+  const ro = new ResizeObserver(() => {
+    resize()
+    medirInterface()
+  })
   ro.observe(container)
 
   // ---------- laço ----------
@@ -1086,6 +1110,7 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   let ultimo = performance.now()
   const minimo = quality === 'leve' ? 1 / 30 : 0
   const v = new THREE.Vector3()
+  const FOLGA = 14
   const posicionarRotulos = () => {
     const w = container.clientWidth
     const h = container.clientHeight
@@ -1099,7 +1124,13 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
       // o rótulo nunca sai da tela: fica preso às bordas
       const meia = el.offsetWidth / 2 + 6
       const x = Math.min(w - meia, Math.max(meia, ((v.x + 1) / 2) * w))
-      el.style.transform = `translate(${x}px, ${((1 - v.y) / 2) * h}px) translate(-50%, -100%)`
+      // se encostar no HUD ou na placa "Missões", desce até ficar com folga abaixo dela
+      let y = ((1 - v.y) / 2) * h
+      const alto = el.offsetHeight
+      for (const r of evitar) {
+        if (x + meia > r.e - FOLGA && x - meia < r.d + FOLGA && y > r.t - FOLGA && y - alto < r.b + FOLGA) y = r.b + FOLGA + alto
+      }
+      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`
       el.dataset.visivel = dentro ? 'sim' : 'nao'
     }
   }
@@ -1133,7 +1164,10 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     }
     container.dataset.objetos = JSON.stringify(areas)
   }
-  const medidor = window.setInterval(medirPersonagem, 1000)
+  const medidor = window.setInterval(() => {
+    medirPersonagem()
+    medirInterface()
+  }, 1000)
   const tick = () => {
     const agora = performance.now()
     const passou = (agora - ultimo) / 1000

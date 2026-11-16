@@ -2,6 +2,21 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.2 — 16/11/2026 — Refinamento final da Central (aguardando avaliação; não publicada no `main`)
+
+Só a Central do Jogador. Os 13 elementos do acampamento continuam com os mesmos ids, regras, requisitos, dados e desbloqueios (`src/data/acampamento.ts` e `src/services/game/acampamento.ts` sem mudanças). Mapas, perguntas, conteúdo bíblico, progressão, XP, conquistas, recompensas, páginas de fases e a estrutura da aplicação também não mudaram. Relatório: `docs/relatorios/ETAPA_2_CENTRAL_REFINAMENTO_FINAL.pdf` (e `.md`).
+
+- **Celular, composição própria em três planos:**
+  - perto, nas laterais: fogueira à esquerda (inteira, sem corte) e baú à direita;
+  - meio: mesa à esquerda; jarros e poço à direita;
+  - fundo: tendas, barris e estandarte à esquerda; quadro, lanternas, palmeiras e ovelhas à direita.
+  
+  O personagem fica sozinho no centro. Alguns objetos ficam um pouco menores só na tela estreita. Nenhum elemento foi retirado. O tablet usa uma mistura das duas composições, e o computador não mudou.
+- **Rótulos:** descem automaticamente quando encostariam no HUD ou na placa "Missões" (folga de 14 px). No celular, o rótulo da tenda fica na altura da porta, e o do baú, logo acima dele.
+- **Atalho "Diário" fora da cena:** era um atalho ativo no quadro de missões, mas levava ao **Desafio diário** (`/diario`), não ao antigo "Diário de viagem". O rótulo e o clique no quadro saíram da cena, que agora tem 3 rótulos. O Desafio diário continua no painel de missões (primeiro item), com a mesma página, rota e dados.
+- **Painel de missões no celular:** termina acima das ações, sem cobri-las pela metade; o rosto do personagem continua à vista.
+- **Testes:** 150, todos passando. O teste da Central confere os 3 rótulos, a ausência do "Diário" na cena e o link do Desafio diário no painel.
+
 ## 0.17.1 — 16/11/2026 — Revisão visual da Central (aguardando avaliação; ainda não publicada no `main`)
 
 Só a Central do Jogador. Mapas, perguntas, conteúdo bíblico, progressão e as outras telas não mudaram. Os 13 elementos do acampamento continuam com os mesmos ids, regras, requisitos e dados (`src/data/acampamento.ts` e `src/services/game/acampamento.ts` sem mudanças); só a posição de alguns na cena mudou. Relatório: `docs/relatorios/ETAPA_2_CENTRAL_REVISAO_VISUAL.pdf` (e `.md`).

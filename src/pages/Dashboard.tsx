@@ -68,14 +68,12 @@ export default function Dashboard() {
   const rotulos: RotuloAcampamento[] = [
     { id: 'tenda', label: 'Personagem', detalhe: 'roupas e acessórios na tenda', icon: 'tunica' },
     { id: 'mesa', label: 'Biblioteca', detalhe: 'mesa de estudos', icon: 'book' },
-    { id: 'quadro', label: 'Diário', detalhe: dailyDone ? 'desafio diário concluído' : 'desafio diário disponível', icon: 'scroll', badge: dailyDone ? undefined : 1 },
     { id: 'bau', label: 'Recompensas', detalhe: baus ? `${baus} baú(s) pronto(s) para abrir no mapa` : 'conquistas e baús', icon: 'bau', badge: baus || undefined },
   ]
   const destino: Record<AlvoAcampamento, string> = {
     personagem: '/guarda-roupa',
     tenda: '/guarda-roupa',
     mesa: '/biblioteca',
-    quadro: '/diario',
     bau: baus ? '/historia' : '/conquistas',
   }
 

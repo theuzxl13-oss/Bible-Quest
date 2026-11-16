@@ -51,8 +51,11 @@ describe('Central do Jogador', () => {
     const hrefs = new Set(Array.from(document.querySelectorAll('a[href]')).map((a) => a.getAttribute('href')))
     // HUD, ações, navegação global e painel de missões (no DOM mesmo recolhido)
     for (const h of ['/perfil', '/configuracoes', '/historia', '/quiz', '/biblioteca', '/painel', '/diario', '/revisao']) expect(hrefs, h).toContain(h)
-    // os objetos da cena levam ao guarda-roupa, à biblioteca, ao diário e às recompensas
-    for (const nome of [/^personagem/i, /^biblioteca/i, /^diário/i, /^recompensas/i]) expect(screen.getByRole('button', { name: nome })).toBeInTheDocument()
+    // os objetos da cena levam ao guarda-roupa, à biblioteca e às recompensas
+    for (const nome of [/^personagem/i, /^biblioteca/i, /^recompensas/i]) expect(screen.getByRole('button', { name: nome })).toBeInTheDocument()
+    // 0.17.2: o rótulo "Diário" saiu da cena; o Desafio diário segue no painel de missões e na rota /diario
+    expect(screen.queryByRole('button', { name: /^diário/i })).not.toBeInTheDocument()
+    expect(document.querySelectorAll('.camp-label')).toHaveLength(3)
     unmount()
 
     setup('/perfil')
@@ -75,6 +78,7 @@ describe('Central do Jogador', () => {
     expect(botao).toHaveAttribute('aria-expanded', 'true')
     const painel = screen.getByRole('region', { name: 'Missões' })
     expect(within(painel).getByRole('link', { name: /revisão inteligente/i })).toHaveAttribute('href', '/revisao')
+    expect(within(painel).getByRole('link', { name: /desafio diário/i })).toHaveAttribute('href', '/diario')
     expect(within(painel).getByRole('progressbar', { name: 'Progresso geral' })).toBeInTheDocument()
     await user.keyboard('{Escape}')
     expect(botao).toHaveAttribute('aria-expanded', 'false')

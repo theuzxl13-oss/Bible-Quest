@@ -46,7 +46,6 @@
 .camp-scene.is-2d .camp-label { transform: translate(-50%, -100%); }
 .camp-scene.is-2d .camp-label-tenda { left: 19%; top: 43%; }
 .camp-scene.is-2d .camp-label-mesa { left: 14%; top: 69%; }
-.camp-scene.is-2d .camp-label-quadro { left: 84%; top: 45%; }
 .camp-scene.is-2d .camp-label-bau { left: 80%; top: 66%; }
 
 @media (max-width: 599px) {
@@ -60,7 +59,6 @@
   .camp-paint-fire { left: 18%; top: 70%; }
   .camp-scene.is-2d .camp-label-tenda { left: 22%; top: 36%; }
   .camp-scene.is-2d .camp-label-mesa { left: 16%; top: 73%; }
-  .camp-scene.is-2d .camp-label-quadro { left: 84%; top: 39%; }
   .camp-scene.is-2d .camp-label-bau { left: 84%; top: 70%; }
   /* no 2D do celular, o rótulo do baú mostra só o ícone (o nome segue no aria-label) para não encostar no cajado */
   .camp-scene.is-2d .camp-label-bau { left: 90%; padding-right: 6px; }
