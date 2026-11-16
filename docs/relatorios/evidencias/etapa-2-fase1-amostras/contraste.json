@@ -1,0 +1,80 @@
+{
+ "amb-central": {
+  "texto do botão secundário": 8.41,
+  "texto da placa": 8.41,
+  "texto do painel de leitura": 13.64,
+  "link no painel de leitura": 7.14,
+  "título da seção": 8.41,
+  "texto do cartão": 13.64,
+  "aba (texto)": 8.41,
+  "título da placa": 6.1,
+  "sobretítulo (sobre terra-900)": 10.8,
+  "título da página (sobre terra-900)": 14.9,
+  "foco sobre claro (3:1)": 5.38
+ },
+ "amb-historia": {
+  "texto do botão secundário": 8.44,
+  "texto da placa": 8.44,
+  "texto do painel de leitura": 12.56,
+  "link no painel de leitura": 6.57,
+  "título da seção": 8.44,
+  "texto do cartão": 12.56,
+  "aba (texto)": 8.44,
+  "título da placa": 7.69,
+  "sobretítulo (sobre terra-900)": 13.59,
+  "título da página (sobre terra-900)": 14.9,
+  "foco sobre claro (3:1)": 4.95
+ },
+ "amb-quiz": {
+  "texto do botão secundário": 10.48,
+  "texto da placa": 10.48,
+  "texto do painel de leitura": 13.26,
+  "link no painel de leitura": 6.94,
+  "título da seção": 10.48,
+  "texto do cartão": 13.26,
+  "aba (texto)": 10.48,
+  "título da placa": 7.6,
+  "sobretítulo (sobre terra-900)": 10.8,
+  "título da página (sobre terra-900)": 14.9,
+  "foco sobre claro (3:1)": 5.23
+ },
+ "amb-biblioteca": {
+  "texto do botão secundário": 10.71,
+  "texto da placa": 10.71,
+  "texto do painel de leitura": 14.37,
+  "link no painel de leitura": 7.52,
+  "título da seção": 10.71,
+  "texto do cartão": 14.37,
+  "aba (texto)": 10.71,
+  "título da placa": 7.92,
+  "sobretítulo (sobre terra-900)": 11.02,
+  "título da página (sobre terra-900)": 14.9,
+  "foco sobre claro (3:1)": 5.67
+ },
+ "amb-perfil": {
+  "texto do botão secundário": 8.41,
+  "texto da placa": 8.41,
+  "texto do painel de leitura": 12.05,
+  "link no painel de leitura": 6.31,
+  "título da seção": 8.41,
+  "texto do cartão": 12.05,
+  "aba (texto)": 8.41,
+  "título da placa": 7.36,
+  "sobretítulo (sobre terra-900)": 13.04,
+  "título da página (sobre terra-900)": 14.9,
+  "foco sobre claro (3:1)": 4.75
+ },
+ "amb-conquistas": {
+  "texto do botão secundário": 13.44,
+  "texto da placa": 13.44,
+  "texto do painel de leitura": 13.64,
+  "link no painel de leitura": 7.14,
+  "título da seção": 13.44,
+  "texto do cartão": 13.64,
+  "aba (texto)": 13.44,
+  "título da placa": 9.74,
+  "sobretítulo (sobre terra-900)": 10.8,
+  "título da página (sobre terra-900)": 14.9,
+  "foco sobre claro (3:1)": 5.38
+ }
+}

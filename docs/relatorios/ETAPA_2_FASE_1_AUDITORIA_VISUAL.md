@@ -1,6 +1,9 @@
 # Bible Quest — Fase 1 da Etapa 2: Auditoria Visual e Proposta da Base Comum
 
-**Kzann Tech** · Etapa 2, Fase 1 · versão do jogo 0.17.4 (publicada) · 16/11/2026 · **só análise e proposta, sem mudança no jogo** · aguardando aprovação.
+**Kzann Tech** · Etapa 2, Fase 1 · 16/11/2026.
+
+- **Seções 1 a 14:** auditoria e proposta, feitas sobre a versão 0.17.4.
+- **Seção 15:** implementação aprovada dos passos 1.1 a 1.3, na versão 0.17.5, ainda não publicada e aguardando aprovação para integrar.
 
 Versão em PDF: `ETAPA_2_FASE_1_AUDITORIA_VISUAL.pdf` (mesmo conteúdo). As evidências desta auditoria estão em [`evidencias/etapa-2-fase1-auditoria/`](evidencias/etapa-2-fase1-auditoria/). As capturas das telas são as do diagnóstico, em [`evidencias/etapa-2-diagnostico-visual/`](evidencias/etapa-2-diagnostico-visual/).
 
@@ -551,3 +554,81 @@ Os números de versão são só sugestão; cada versão depende da sua aprovaç�
 - **Painel administrativo:** não foi analisado em detalhe, porque não faz parte da experiência do jogador.
 
 **Aguardando aprovação:** nenhuma mudança será implementada antes da sua avaliação. Esta auditoria não alterou o jogo, não criou versão e não foi publicada.
+
+---
+
+# 15. Implementação (0.17.5)
+
+Aprovada com as decisões oficiais abaixo, e implementada na branch de desenvolvimento. **Não integrada ao `main` e não publicada.**
+
+- A ponte começa com os valores visuais antigos (HEX, opacidades, gradientes, sombras e medidas iguais).
+- Os novos tons dos ambientes não são aplicados: dependem da folha de amostras.
+- A Central não muda.
+- Os tokens novos ampliam o `tokens.css`; não foi criado um terceiro sistema.
+
+## 15.1 Passo 1.1 — tokens (`src/styles/tokens.css`)
+
+Os blocos da 0.17.3 ficaram **exatamente iguais**. Os tokens novos foram acrescentados depois deles, em quatro camadas:
+
+| Camada | Tokens novos |
+| --- | --- |
+| 1. Paleta | Feedback (`--verde-700`, `--vermelho-700`, `--verde-200`, `--vermelho-200`, `--vermelho-600`); foco sobre claro (`--azul-foco-700`); link (`--marrom-link`); tons propostos dos ambientes, **não aplicados** (`--campo-200`, `--pedra-100`, `--couro-700`, `--lamparina-300`, `--papel`, `--lona`, `--tecido-600`, `--veludo-800`, `--bronze`, `--prata`); paleta legada com os 39 valores exatos das variáveis antigas (`--legado-*`) |
+| 2. Significado | `--feedback-*` (acerto, erro, texto, sobre escuro, info, alerta, selo); `--foco-sobre-escuro`, `--foco-sobre-claro`, `--foco-espessura`, `--foco-afastamento`; `--link-leitura`, `--link-sobre-escuro`; `--borda-ouro`, `--borda-suave`, `--borda-madeira`, `--borda-leitura`, `--borda-espessura`; `--toque-min` (44px), `--opacidade-desativado`, `--brilho-hover`, `--subir-hover`, `--afundar-ativo`; `--z-cena` a `--z-topo`; `--fonte-titulo`, `--fonte-texto`, `--fonte-leitura`, `--peso-*`, `--altura-linha*`; `--raio-janela` (20px); `--sombra-texto-sobre-imagem` |
+| 3. Componentes | `--botao-*`, `--painel-*`, `--cartao-raio`, `--janela-*`, `--aviso-raio`, `--campo-*`, `--progresso-*`, `--aba-altura` |
+| 4. Ambientes | Padrão (`:root`, valores da Central): `--amb-acento`, `--amb-acento-texto`, `--amb-base`, `--amb-leitura`, `--amb-moldura`, `--amb-texto-sobre-base`, `--amb-progresso`. Os mesmos tokens em `[data-ambiente='historia'\|'quiz'\|'biblioteca'\|'perfil'\|'conquistas']`. **Nenhuma tela usa `data-ambiente` ainda**, e um teste garante isso. |
+
+O token `--amb-acento-texto` não estava na proposta da seção 6. Ele nasceu da folha de amostras: a cor de acento de História e do Perfil não serve como texto. Detalhes em `evidencias/etapa-2-fase1-amostras/FOLHA_AMOSTRAS.md`.
+
+## 15.2 Passo 1.2 — ponte de compatibilidade (`src/styles/ponte.css`)
+
+- **O que faz:** as 39 variáveis antigas de `global.css` (`--navy-*`, `--gold*`, `--parchment*`, `--ivory`, `--earth*`, `--text`, `--muted`, `--ink`, `--ok*`, `--err*`, `--border*`, `--panel`, `--shadow`, `--radius*`, `--font-*`, `--tabbar-h`, `--speed`, `--wood*`, `--plank`, `--sky-*`) passam a valer `var(--legado-*)`, com **os mesmos valores**.
+- **Onde fica:** num arquivo próprio, carregado **depois** de `global.css` e de `tokens.css`. Nenhuma regra nova foi colocada dentro das camadas antigas.
+- **Alto contraste e animação reduzida:** os ajustes antigos (`html[data-contrast='alto']` e `html[data-motion='reduzido']`) têm especificidade maior que a ponte e continuam valendo.
+- **Conferência:**
+  - **Por teste:** cada variável antiga é igual ao seu valor legado, com o texto do valor normalizado.
+  - **No navegador:** os 39 valores calculados são iguais nos modos normal, alto contraste e animação reduzida.
+
+## 15.3 Passo 1.3 — componentes base
+
+| Componente | Estilo (`src/styles/componentes/`) | Estrutura (`src/components/base/index.tsx`) | Acessibilidade |
+| --- | --- | --- | --- |
+| Botão | `base-botao.css` (`.bq-botao`, papéis principal, secundário, discreto e perigo; pequeno, padrão e grande) | `Botao`, `BotaoLink` | 44 px (o pequeno amplia a área com `::before`), foco claro ou escuro, `aria-busy` ao carregar |
+| Painel | `base-painel.css` (`.bq-painel--leitura` e `--placa`) | `Painel` | região com nome pelo título |
+| Cartão | `base-cartao.css` | `Cartao` | estado bloqueado ou concluído em texto e ícone, não só por cor; bloqueado não navega |
+| Janela | `base-janela.css` (com variante folha no celular) | `Janela` | `role="dialog"`, foco preso, Esc fecha, o foco volta para quem abriu |
+| Aviso | `base-aviso.css` (info, sucesso, alerta, demo) | `Aviso` | `role="note"`, título com contraste garantido |
+| Mensagem rápida | `base-mensagem.css` | `MensagemRapida` | `role="status"`, some sozinha |
+| Campo | `base-campo.css` | `Campo` | rótulo visível, ajuda e erro ligados por `aria-describedby`, `aria-invalid`, erro com `role="alert"` |
+| Progresso | `base-progresso.css` | `Progresso` | `role="progressbar"` com valor, limite e nome |
+| Abas | `base-abas.css` | `Abas` | setas, Home e End; só a aba ativa entra no Tab |
+| Cabeçalho | `base-cabecalho.css` (e título de seção) | `Cabecalho`, `TituloSecao` | hierarquia de títulos |
+| Voltar | `base-voltar.css` | `Voltar` | 44 px |
+
+**Nenhuma tela usa esses componentes ainda.** As classes têm o prefixo `bq-`, para não colidir com as antigas (`.base-grid` já existia). Os arquivos novos não têm cor HEX, e um teste confere isso.
+
+## 15.4 Testes e verificação
+
+| Verificação | Resultado |
+| --- | --- |
+| Typecheck | Sem erros |
+| Testes | **173 de 173**, em 15 arquivos (eram 155 em 13; 18 novos em `ponte.test.ts` e `base.test.tsx`) |
+| Build | Concluído |
+| Comparação pixel a pixel (88 capturas) | 43 idênticas; 38 só com a linha da versão no rodapé; 2 na página Sobre (versão no rodapé e no texto); 5 variações naturais; **0 mudanças inesperadas**. Com o código novo e a versão ainda 0.17.4: 84 idênticas e 4 variações naturais |
+| Central (3D e 2D, celular e computador) | Idêntica pixel a pixel à 0.17.3 |
+| Variáveis antigas no navegador | 39 de 39 iguais; alto contraste e animação reduzida preservados |
+| Erros de JavaScript, falhas de carregamento e rolagem horizontal | 0 |
+
+Registro completo: `evidencias/etapa-2-fase1-0.17.5/COMPARACAO.md`.
+
+## 15.5 Problemas encontrados
+
+1. **Acento como texto (resolvido):** a folha de amostras mostrou que a cor de acento de História e do Perfil ficava ilegível como texto. Criei o token `--amb-acento-texto`; sem efeito no jogo, porque os ambientes não estão aplicados.
+2. **Colisão de nome (evitada):** o prefixo `base-` já existia no CSS antigo (`.base-grid`). Os componentes novos usam `bq-`.
+3. **Variações naturais na comparação:** o personagem andando no mapa, as telas de carregamento e o retrato da barra carregando. Foram identificadas com duas referências (A e B) e repetições, e não vêm do código novo.
+4. **Versão no rodapé:** a única mudança visível é "Versão 0.17.5", que vem do pacote, como decidido na 0.17.4.
+
+## 15.6 Próximos passos (dependem de aprovação)
+
+- Integrar a 0.17.5 ao `main` e publicar.
+- Aprovar ou ajustar os tons da folha de amostras.
+- Passos 1.4 a 1.8, incluindo as correções do foco e do selo na Central, já autorizadas para a próxima entrega.

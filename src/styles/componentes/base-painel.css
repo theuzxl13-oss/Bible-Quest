@@ -1,0 +1,13 @@
+/* Painel base (bq-painel): leitura (pergaminho do ambiente) ou placa (madeira). */
+.bq-painel { border-radius: var(--painel-raio); padding: var(--painel-padding); border: var(--borda-espessura) solid var(--amb-moldura); }
+.bq-painel--leitura {
+  --foco-atual: var(--foco-sobre-claro); --link-atual: var(--link-leitura);
+  color: var(--texto-sobre-leitura); background: var(--amb-leitura);
+  box-shadow: inset 0 0 0 3px rgba(255, 250, 235, 0.6), var(--elevacao-2);
+}
+.bq-painel--placa { color: var(--amb-texto-sobre-base); background: var(--amb-base); box-shadow: var(--brilho-interno), var(--elevacao-2); }
+.bq-painel__titulo { margin: 0 0 var(--esp-3); font-family: var(--fonte-titulo); font-weight: var(--peso-titulo); font-size: var(--fonte-22); line-height: var(--altura-linha-titulo); }
+.bq-painel--leitura .bq-painel__titulo { color: var(--texto-sobre-leitura); }
+.bq-painel--placa .bq-painel__titulo { color: var(--amb-acento-texto); }
+html[data-contrast='alto'] .bq-painel--leitura { background: var(--pergaminho); box-shadow: none; border-color: var(--tinta); }
+html[data-contrast='alto'] .bq-painel--placa { background: var(--terra-900); box-shadow: none; border-color: var(--marfim); }

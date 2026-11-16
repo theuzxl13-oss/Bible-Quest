@@ -48,5 +48,14 @@ implementada ainda.
 | Fase | O que entra | Situação |
 | --- | --- | --- |
 | 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
-| 1 | Base visual comum com os tokens | Auditoria e proposta prontas (`docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md`), aguardando aprovação |
+| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5 (sem mudança na tela), aguardando aprovação; passos 1.4 a 1.8 depois |
 | 2 a 5 | Conforme o diagnóstico | — |
+
+## Fase 1 — decisões da primeira entrega (16/11/2026)
+
+- **Ponte de compatibilidade:** começa com os valores visuais antigos (HEX, opacidades, gradientes, sombras e medidas preservados).
+- **Tons dos ambientes:** ainda não aplicados; dependem da folha de amostras (`docs/relatorios/evidencias/etapa-2-fase1-amostras/FOLHA_AMOSTRAS.md`) e de aprovação.
+- **Central 0.17.3:** continua sendo a referência visual e não muda nesta entrega.
+- **Tokens:** os novos ampliam o `tokens.css`; não há terceiro sistema visual.
+- **Próxima entrega:** as correções do foco sobre pergaminho e do selo de aviso da Central ficam autorizadas para ela, e não foram aplicadas na 0.17.5.
+- **Escopo:** só os passos 1.1, 1.2 e 1.3 foram autorizados nesta entrega.

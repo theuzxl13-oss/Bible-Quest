@@ -2,6 +2,36 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.5 — 16/11/2026 — Fase 1 da Etapa 2, passos 1.1 a 1.3: tokens, ponte e componentes base (aguardando aprovação; não publicada no `main`)
+
+Base visual comum, **sem mudança na tela**. A Central continua idêntica à 0.17.3. Não mudaram rotas, navegação, dados, regras, funcionalidades nem dependências, e nenhum CSS antigo foi removido. Detalhes na seção 15 de `docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md` (e `.pdf`).
+
+- **Passo 1.1 — tokens:** `src/styles/tokens.css` foi ampliado em quatro camadas (paleta, significado, componentes e ambientes). Entraram tokens de:
+  - feedback, foco sobre fundo claro, links e bordas;
+  - interação (área de toque de 44 px, desativado, passar o mouse e pressionar);
+  - camadas (`z-index`), tipografia e raio de janela;
+  - ambientes (`[data-ambiente]` para História, Quiz, Biblioteca, Perfil e Conquistas).
+
+  Os tons novos dos ambientes **não estão aplicados**, e nenhuma tela usa `data-ambiente`.
+- **Passo 1.2 — ponte de compatibilidade:** `src/styles/ponte.css`, carregado depois de `global.css` e de `tokens.css`, liga as 39 variáveis antigas aos valores legados **exatos** (HEX, opacidade, gradiente, sombra, medida e fonte). O alto contraste e a animação reduzida antigos continuam valendo.
+- **Passo 1.3 — componentes base:** 11 componentes em `src/styles/componentes/base-*.css` (prefixo `bq-`, só tokens, sem HEX), com as estruturas reutilizáveis em `src/components/base/index.tsx`:
+  - Botão, Painel, Cartão, Janela, Aviso, Mensagem rápida;
+  - Campo, Progresso, Abas, Cabeçalho, Voltar.
+
+  Nenhuma tela os usa ainda.
+- **Folha de amostras** (só documento): `docs/relatorios/evidencias/etapa-2-fase1-amostras/`, com os seis ambientes, botões, painéis, cartões, abas e títulos e o contraste medido. Ela mostrou que a cor de acento de História e do Perfil não serve como texto, e foi criado o token `--amb-acento-texto`.
+- **Testes:** 173, em 15 arquivos (18 novos):
+  - `ponte.test.ts`: ponte, valores legados, ordem de importação, tokens da Central, ambientes e ausência de HEX;
+  - `base.test.tsx`: teclado e nomes acessíveis dos componentes.
+- **Comparação visual** (88 capturas, data fixa e animações reduzidas, contra a referência da 0.17.4):
+  - 43 idênticas;
+  - 38 só com a linha da versão no rodapé;
+  - 2 na página Sobre, com a versão;
+  - 5 variações naturais (personagem andando, carregamento e retrato);
+  - **0 mudanças inesperadas**.
+
+  Com o código novo e a versão ainda 0.17.4, 84 idênticas e 4 variações naturais. Registro: `docs/relatorios/evidencias/etapa-2-fase1-0.17.5/COMPARACAO.md`.
+
 ## Documentação — 16/11/2026 — Fase 1 da Etapa 2: auditoria visual e proposta da base comum (sem nova versão do jogo)
 
 Etapa de análise. Não houve mudança em código, estilos, componentes ou funcionalidades; a versão do jogo continua 0.17.4. A auditoria não foi publicada no `main` e aguarda aprovação.

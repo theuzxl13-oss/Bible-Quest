@@ -97,3 +97,217 @@ html[data-motion='reduzido'] { --dur-toque: 0ms; --dur-estado: 0ms; --dur-janela
 @media (prefers-reduced-motion: reduce) {
   :root { --dur-toque: 0ms; --dur-estado: 0ms; --dur-janela: 0ms; --dur-recompensa: 0ms; }
 }
+
+/* =========================================================
+   Fase 1 da Etapa 2 (0.17.5) — base visual comum
+   Os blocos acima continuam exatamente como na 0.17.3 (Central).
+   Daqui para baixo, só tokens NOVOS, organizados em quatro camadas:
+     1. Paleta      — valores brutos (único lugar com HEX)
+     2. Significado — para que serve cada valor
+     3. Componentes — medidas e cores das peças compartilhadas (bq-*)
+     4. Ambientes   — o que muda por ambiente ([data-ambiente])
+   Nenhuma tela usa estes tokens ainda: esta entrega não muda nada na tela.
+   ========================================================= */
+
+/* ---------- 1. Paleta ---------- */
+:root {
+  /* feedback sobre fundo claro e escuro */
+  --verde-700: #2E5E33;   /* acerto como texto em pergaminho: 6,4:1 */
+  --vermelho-700: #8E3020; /* erro como texto em pergaminho: 6,8:1 */
+  --verde-200: #8FD3A2;   /* acerto sobre terra-900: 10,1:1 */
+  --vermelho-200: #F0A08F; /* erro sobre terra-900: 8,5:1 */
+  --vermelho-600: #A8321F; /* selo de aviso legível: marfim sobre ele 5,6:1 (aplicação na Central: próxima entrega) */
+  /* foco e links */
+  --azul-foco-700: #1F5FA8; /* foco sobre fundo claro: 5,4:1 no pergaminho */
+  --marrom-link: #7A3B0A;   /* link em leitura: 7,1:1 no pergaminho */
+
+  /* PROPOSTA de tons dos ambientes — NÃO aplicados no jogo; dependem da
+     aprovação da folha de amostras (docs/relatorios/evidencias/etapa-2-fase1-amostras/) */
+  --campo-200: #DCE6C3;
+  --pedra-100: #E4E8EC;
+  --couro-700: #4B2A22;
+  --lamparina-300: #F0C76E;
+  --papel: #F7F0DE;
+  --lona: #EADCC0;
+  --tecido-600: #7A3A26;
+  --veludo-800: #3A1622;
+  --bronze: #C08A5B;
+  --prata: #C9CED4;
+
+  /* paleta legada: os valores EXATOS das variáveis antigas de global.css,
+     usados pela ponte de compatibilidade (styles/ponte.css). Não mudar sem
+     aprovação: mudar aqui muda todas as telas antigas. */
+  --legado-navy-950: #160e08;
+  --legado-navy-900: #22150d;
+  --legado-navy-850: #2c1b11;
+  --legado-navy-800: #3a2416;
+  --legado-navy-700: #5a3822;
+  --legado-gold: #d4af5a;
+  --legado-gold-strong: #ecc96e;
+  --legado-gold-dim: #9d7f43;
+  --legado-parchment: #efe3c4;
+  --legado-parchment-dark: #e2d2a8;
+  --legado-ivory: #fbf7ec;
+  --legado-earth: #5c3d22;
+  --legado-earth-light: #7d5733;
+  --legado-text: #f1e9d6;
+  --legado-muted: #b8ad94;
+  --legado-ink: #2b1d10;
+  --legado-ok: #73c493;
+  --legado-ok-bg: rgba(115, 196, 147, 0.12);
+  --legado-err: #ec8a78;
+  --legado-err-bg: rgba(236, 138, 120, 0.12);
+  --legado-border: rgba(212, 175, 90, 0.22);
+  --legado-border-strong: rgba(212, 175, 90, 0.5);
+  --legado-panel: linear-gradient(180deg, rgba(84, 52, 31, 0.55), rgba(44, 28, 17, 0.75));
+  --legado-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --legado-radius: 18px;
+  --legado-radius-sm: 12px;
+  --legado-font-display: 'Cinzel', 'Times New Roman', serif;
+  --legado-font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --legado-font-serif: 'Crimson Pro', Georgia, serif;
+  --legado-tabbar-h: 64px;
+  --legado-speed: 180ms;
+  --legado-wood-hi: #7a5030;
+  --legado-wood: #5a3a22;
+  --legado-wood-lo: #3d2716;
+  --legado-wood-edge: #a87a3f;
+  --legado-wood-shadow: #22140a;
+  --legado-plank: linear-gradient(180deg, #6e4729 0%, #563620 55%, #462c19 100%);
+  --legado-sky-top: #1f3c66;
+  --legado-sky-mid: #33608f;
+}
+
+/* ---------- 2. Significado ---------- */
+:root {
+  /* feedback */
+  --feedback-acerto: var(--acerto);
+  --feedback-erro: var(--erro);
+  --feedback-acerto-texto: var(--verde-700);
+  --feedback-erro-texto: var(--vermelho-700);
+  --feedback-acerto-sobre-escuro: var(--verde-200);
+  --feedback-erro-sobre-escuro: var(--vermelho-200);
+  --feedback-info: var(--azul-500);
+  --feedback-alerta: var(--fogueira-700);
+  --feedback-selo: var(--vermelho-600);
+  /* foco: um token para cada tipo de fundo */
+  --foco-sobre-escuro: var(--foco);
+  --foco-sobre-claro: var(--azul-foco-700);
+  --foco-espessura: 3px;
+  --foco-afastamento: 2px;
+  /* links */
+  --link-leitura: var(--marrom-link);
+  --link-sobre-escuro: var(--ouro-300);
+  /* bordas */
+  --borda-ouro: var(--ouro-500);
+  --borda-suave: rgba(201, 162, 78, 0.25);
+  --borda-madeira: var(--terra-500);
+  --borda-leitura: var(--ouro-700);
+  --borda-espessura: 2px;
+  /* interação */
+  --toque-min: 44px;
+  --opacidade-desativado: 0.55;
+  --brilho-hover: 1.08;
+  --subir-hover: -2px;
+  --afundar-ativo: 2px;
+  /* camadas (z-index) */
+  --z-cena: 0;
+  --z-conteudo: 1;
+  --z-hud: 4;
+  --z-navegacao: 30;
+  --z-mensagem: 60;
+  --z-janela: 80;
+  --z-topo: 100;
+  /* tipografia */
+  --fonte-titulo: 'Cinzel', 'Times New Roman', serif;
+  --fonte-texto: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fonte-leitura: 'Crimson Pro', Georgia, serif;
+  --peso-normal: 400;
+  --peso-titulo: 600;
+  --peso-forte: 700;
+  --peso-destaque: 800;
+  --altura-linha: 1.5;
+  --altura-linha-titulo: 1.15;
+  /* raios e sombras */
+  --raio-janela: 20px;
+  --sombra-texto-sobre-imagem: 0 1px 2px rgba(0, 0, 0, 0.8);
+  --superficie-leitura-elevada: var(--superficie-leitura);
+}
+
+/* ---------- 3. Componentes (bq-*, em styles/componentes/base-*.css) ---------- */
+:root {
+  --botao-altura: var(--toque-min);
+  --botao-altura-grande: 56px;
+  --botao-raio: var(--raio-m);
+  --botao-padding: var(--esp-2) var(--esp-4);
+  --botao-fonte: var(--fonte-16);
+  --painel-raio: var(--raio-g);
+  --painel-padding: var(--esp-4);
+  --cartao-raio: var(--raio-m);
+  --janela-raio: var(--raio-janela);
+  --janela-largura: min(94vw, 520px);
+  --aviso-raio: var(--raio-m);
+  --campo-altura: var(--toque-min);
+  --campo-raio: var(--raio-m);
+  --progresso-altura: 10px;
+  --progresso-altura-hud: 16px;
+  --aba-altura: var(--toque-min);
+}
+
+/* ---------- 4. Ambientes ----------
+   Padrão (Central): os mesmos valores que a Central já usa.
+   [data-ambiente] ainda não é usado por nenhuma tela; os tons novos são
+   PROPOSTA e só serão aplicados depois da aprovação da folha de amostras. */
+:root {
+  --amb-acento: var(--ouro-300);
+  --amb-acento-texto: var(--ouro-300); /* acento usado em TEXTO: sempre legível sobre a base e o fundo escuro */
+  --amb-base: var(--terra-600);
+  --amb-leitura: var(--pergaminho);
+  --amb-moldura: var(--ouro-500);
+  --amb-texto-sobre-base: var(--marfim);
+  --amb-progresso: var(--ouro-500);
+}
+[data-ambiente='historia'] {
+  --amb-acento: var(--floresta-500);
+  --amb-acento-texto: var(--campo-200);
+  --amb-base: var(--floresta-700);
+  --amb-leitura: var(--campo-200);
+  --amb-moldura: var(--ouro-500);
+  --amb-progresso: var(--floresta-500);
+}
+[data-ambiente='quiz'] {
+  --amb-acento: var(--ouro-300);
+  --amb-acento-texto: var(--ouro-300);
+  --amb-base: var(--azul-700);
+  --amb-leitura: var(--pedra-100);
+  --amb-moldura: var(--ouro-300);
+  --amb-progresso: var(--azul-500);
+}
+[data-ambiente='biblioteca'] {
+  --amb-acento: var(--lamparina-300);
+  --amb-acento-texto: var(--lamparina-300);
+  --amb-base: var(--couro-700);
+  --amb-leitura: var(--papel);
+  --amb-moldura: var(--terra-500);
+  --amb-progresso: var(--lamparina-300);
+}
+[data-ambiente='perfil'] {
+  --amb-acento: var(--tecido-600);
+  --amb-acento-texto: var(--lona);
+  --amb-base: var(--terra-600);
+  --amb-leitura: var(--lona);
+  --amb-moldura: var(--terra-500);
+  --amb-progresso: var(--tecido-600);
+}
+[data-ambiente='conquistas'] {
+  --amb-acento: var(--ouro-300);
+  --amb-acento-texto: var(--ouro-300);
+  --amb-base: var(--veludo-800);
+  --amb-leitura: var(--pergaminho);
+  --amb-moldura: var(--ouro-500);
+  --amb-progresso: var(--ouro-500);
+}
+html[data-contrast='alto'] {
+  --foco-sobre-claro: var(--azul-foco-700);
+  --borda-suave: var(--marfim);
+}

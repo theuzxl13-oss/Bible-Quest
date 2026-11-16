@@ -1,0 +1,29 @@
+/* Botão base (bq-botao). Fase 1 da Etapa 2: ainda não usado pelas telas.
+   Papéis: principal (fogueira, igual em todo o jogo), secundário (madeira do
+   ambiente), discreto e perigo. Tamanhos: pequeno (área de toque ampliada),
+   padrão (44 px) e grande. Só tokens; nada de HEX. */
+.bq-botao {
+  position: relative; display: inline-flex; align-items: center; justify-content: center; gap: var(--esp-2);
+  min-height: var(--botao-altura); padding: var(--botao-padding); border-radius: var(--botao-raio);
+  font: inherit; font-family: var(--fonte-texto); font-size: var(--botao-fonte); font-weight: var(--peso-forte); line-height: var(--altura-linha-titulo);
+  text-decoration: none; cursor: pointer; border: var(--borda-espessura) solid transparent;
+  transition: transform var(--dur-toque) var(--curva-saida), filter var(--dur-toque) ease;
+}
+.bq-botao:hover { filter: brightness(var(--brilho-hover)); transform: translateY(var(--subir-hover)); }
+.bq-botao:active { transform: translateY(var(--afundar-ativo)); }
+.bq-botao:focus-visible { outline: var(--foco-espessura) solid var(--foco-atual, var(--foco-sobre-escuro)); outline-offset: var(--foco-afastamento); }
+.bq-botao:disabled, .bq-botao[aria-disabled='true'] { opacity: var(--opacidade-desativado); cursor: not-allowed; filter: none; transform: none; }
+.bq-botao[aria-busy='true'] { cursor: progress; }
+
+.bq-botao--principal { color: var(--texto-sobre-acao); background: var(--acao-principal); border-color: var(--fogueira-borda); box-shadow: var(--brilho-interno), var(--elevacao-1); }
+.bq-botao--secundario { color: var(--amb-texto-sobre-base); background: var(--amb-base); border-color: var(--amb-moldura); box-shadow: var(--brilho-interno), var(--elevacao-1); }
+.bq-botao--discreto { color: var(--link-atual, var(--link-sobre-escuro)); background: transparent; text-decoration: underline; text-underline-offset: 3px; }
+.bq-botao--perigo { color: var(--texto-sobre-escuro); background: var(--feedback-erro); border-color: var(--terra-900); box-shadow: var(--elevacao-1); }
+
+/* pequeno: o visual é menor, a área de toque continua com 44 px */
+.bq-botao--pequeno { min-height: 36px; padding: var(--esp-1) var(--esp-3); font-size: var(--fonte-14); }
+.bq-botao--pequeno::before { content: ''; position: absolute; inset: calc((36px - var(--toque-min)) / 2) 0; }
+.bq-botao--grande { min-height: var(--botao-altura-grande); padding: var(--esp-3) var(--esp-5); font-size: var(--fonte-18); }
+.bq-botao--largo { width: 100%; }
+
+html[data-contrast='alto'] .bq-botao--secundario, html[data-contrast='alto'] .bq-botao--perigo { background: var(--terra-900); border-color: var(--marfim); box-shadow: none; }

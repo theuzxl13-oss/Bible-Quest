@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.17.4 (Central do Jogador: Acampamento de Aventura, e Fase 0 da identidade nas demais telas) |
+| **Versão** | 0.17.5 em avaliação (a versão publicada continua a 0.17.4: Central do Jogador e Fase 0 da identidade nas demais telas) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -199,7 +199,7 @@ npm run dev
     │   ├── library/         Biblioteca e linha do tempo
     │   └── *.tsx            Acampamento (Dashboard), diário, resultado, perfil, configurações e outras
     ├── admin/               Painel administrativo (carregado sob demanda)
-    ├── styles/              Visual: global.css (telas antigas), tokens.css (paleta), componentes/ e telas/ (Etapa 2)
+    ├── styles/              Visual: global.css (telas antigas), tokens.css (tokens em 4 camadas), ponte.css (variáveis antigas → tokens), componentes/ (Central e componentes base bq-*) e telas/
     └── test/                Testes automatizados
 ```
 
@@ -224,7 +224,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 155 testes automatizados (Vitest e Testing Library), em 13 arquivos de `src/test/`:
+São 173 testes automatizados (Vitest e Testing Library), em 15 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -235,6 +235,8 @@ São 155 testes automatizados (Vitest e Testing Library), em 13 arquivos de `src
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
 | `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, rótulos da cena, o Desafio diário pelos dois caminhos, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
+| `ponte` | Base visual da Fase 1: variáveis antigas com os valores exatos de antes, ordem de importação, tokens da Central intactos, tokens de ambiente e nenhum HEX nos arquivos novos |
+| `base` | Componentes base (bq-*): botão, painel, cartão, janela (foco preso e Esc), aviso, mensagem rápida, campo, progresso, abas (setas), cabeçalho e voltar |
 | `fase0` | Fase 0 da Etapa 2: nomes oficiais da navegação, Desafio diário como destino secundário, versão vinda do pacote e acesso à linha do tempo |
 | `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
@@ -286,7 +288,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.17.5** (16/11/2026): Fase 1 da Etapa 2, passos 1.1 a 1.3 (tokens em quatro camadas, ponte de compatibilidade com os valores antigos e 11 componentes base), sem mudança na tela; aguardando aprovação antes de publicar.
 - **Documentação** (16/11/2026): auditoria visual da Fase 1 da Etapa 2 e proposta da base comum (tokens e componentes), aguardando aprovação (sem nova versão do jogo).
 - **0.17.4** (16/11/2026): Fase 0 da Etapa 2 (avisos, introdução do mundo, tabela do Perfil, link da linha do tempo, nomes oficiais da navegação e versão vinda do pacote); aprovada e publicada no GitHub Pages.
-- **Documentação** (16/11/2026): diagnóstico visual das demais telas, com a Central como referência, aguardando avaliação (sem nova versão do jogo).
 - **0.17.3** (16/11/2026): ajustes finais da Central (atalho "Desafio diário" de volta à cena, tablet com o poço inteiro, rótulos mais espaçados no celular, quadro sem texto); aprovada e publicada no GitHub Pages; capturas e verificação da publicação em `docs/relatorios/evidencias/`.
