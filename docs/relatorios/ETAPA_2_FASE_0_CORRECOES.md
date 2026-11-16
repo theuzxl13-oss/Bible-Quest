@@ -16,7 +16,7 @@ Versão em texto de `ETAPA_2_FASE_0_CORRECOES.pdf` (mesmo conteúdo). As imagens
 
 **7,2:1 ou mais** — contraste em todos os textos corrigidos (mínimo exigido: 4,5:1)
 
-**154** — testes passando (4 novos); typecheck e build sem erros
+**155** — testes passando (4 novos); typecheck e build sem erros
 
 **Idêntica** — Central 0.17.3, pixel a pixel, em 3D e 2D, no celular e no computador
 
@@ -191,7 +191,7 @@ Não mudaram: `tokens.css`, os estilos e componentes da Central (`styles/compone
 | Verificação         | Resultado                                                                                                                      |
 |---------------------|--------------------------------------------------------------------------------------------------------------------------------|
 | `npm run typecheck` | Sem erros                                                                                                                      |
-| `npm test`          | 154 de 154 testes passando, em 13 arquivos (antes: 151 em 12)                                                                  |
+| `npm test`          | 155 de 155 testes passando, em 13 arquivos (antes: 151 em 12)                                                                  |
 | `npm run build`     | Concluído sem erros                                                                                                            |
 | Os cinco pontos     | Medidos e conferidos visualmente (seções 3 e 4)                                                                                |
 | Varredura de telas  | 84 capturas (42 telas e estados, celular 390 × 844 e computador 1280 × 800): 0 erros de JavaScript, 0 casos de rolagem lateral |

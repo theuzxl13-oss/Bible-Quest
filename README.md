@@ -224,7 +224,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 154 testes automatizados (Vitest e Testing Library), em 13 arquivos de `src/test/`:
+São 155 testes automatizados (Vitest e Testing Library), em 13 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |

@@ -20,7 +20,7 @@ Correções pontuais aprovadas a partir do diagnóstico visual, sem reformular t
   - preservação da página antiga da fase;
   - mapas continuam em 2D;
   - Central intocada.
-- **Testes:** 154, em 13 arquivos (4 novos em `src/test/fase0.test.tsx`).
+- **Testes:** 155, em 13 arquivos (4 novos em `src/test/fase0.test.tsx`).
 - **Varredura:** 84 capturas (42 telas e estados no celular e no computador), sem erros de JavaScript e sem rolagem lateral.
 
 ## Documentação — 16/11/2026 — Diagnóstico visual das demais telas (sem nova versão do jogo)
