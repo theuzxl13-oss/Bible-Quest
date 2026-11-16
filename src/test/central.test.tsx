@@ -51,11 +51,9 @@ describe('Central do Jogador', () => {
     const hrefs = new Set(Array.from(document.querySelectorAll('a[href]')).map((a) => a.getAttribute('href')))
     // HUD, ações, navegação global e painel de missões (no DOM mesmo recolhido)
     for (const h of ['/perfil', '/configuracoes', '/historia', '/quiz', '/biblioteca', '/painel', '/diario', '/revisao']) expect(hrefs, h).toContain(h)
-    // os objetos da cena levam ao guarda-roupa, à biblioteca e às recompensas
-    for (const nome of [/^personagem/i, /^biblioteca/i, /^recompensas/i]) expect(screen.getByRole('button', { name: nome })).toBeInTheDocument()
-    // 0.17.2: o rótulo "Diário" saiu da cena; o Desafio diário segue no painel de missões e na rota /diario
-    expect(screen.queryByRole('button', { name: /^diário/i })).not.toBeInTheDocument()
-    expect(document.querySelectorAll('.camp-label')).toHaveLength(3)
+    // os objetos da cena levam ao guarda-roupa, à biblioteca, ao desafio diário e às recompensas
+    for (const nome of [/^personagem/i, /^biblioteca/i, /^desafio diário/i, /^recompensas/i]) expect(screen.getByRole('button', { name: nome })).toBeInTheDocument()
+    expect(document.querySelectorAll('.camp-label')).toHaveLength(4)
     unmount()
 
     setup('/perfil')
@@ -88,6 +86,17 @@ describe('Central do Jogador', () => {
     await user.click(screen.getByRole('button', { name: 'Fechar missões' }))
     expect(botao).toHaveAttribute('aria-expanded', 'false')
     expect(botao).toHaveFocus()
+  })
+
+  it('2b. o Desafio diário abre pelos dois caminhos: rótulo na cena e painel de missões', async () => {
+    const { user, unmount } = setup('/painel')
+    await user.click(await screen.findByRole('button', { name: /^desafio diário/i }))
+    expect(await screen.findByRole('heading', { name: /desafio diário/i, level: 1 })).toBeInTheDocument()
+    unmount()
+    const s2 = setup('/painel')
+    await s2.user.click(await screen.findByRole('button', { name: /missões/i }))
+    await s2.user.click(within(screen.getByRole('region', { name: 'Missões' })).getByRole('link', { name: /desafio diário/i }))
+    expect(await screen.findByRole('heading', { name: /desafio diário/i, level: 1 })).toBeInTheDocument()
   })
 
   it('3. "Começar/Continuar" abre a próxima fase calculada e a marca como visitada', async () => {

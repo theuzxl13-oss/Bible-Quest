@@ -70,5 +70,6 @@
   .camp-continuar { padding: 6px 8px; min-height: 60px; }
   .camp-continuar-texto strong { font-size: var(--fonte-16); }
   .camp-label { min-height: 28px; padding: 2px 8px 2px 3px; }
+  .camp-label::before { inset: -8px -4px; } /* 28 + 2 × 8 = 44 px de área de toque */
 }
 html[data-contrast='alto'] .camp-label, html[data-contrast='alto'] .camp-modo { background: var(--terra-900); border-color: var(--marfim); }

@@ -55,7 +55,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 - Cabeçalho com retrato, nível, XP, estrelas e sequência de dias. Só dados reais: não há moedas.
 - Painel de missões (placa "Missões"): desafio diário com contagem regressiva, próxima fase, baús prontos, revisão, próxima melhoria do acampamento e progresso geral.
 - **Acampamento evolutivo:** jarros, palmeiras, lamparinas, segunda tenda, estandarte, poço, rebanho e jardim são liberados por nível, fases, conquistas e baús. Nada é vendido.
-- Três objetos clicáveis, com rótulos discretos, levam às funções reais: guarda-roupa (tenda), Biblioteca (mesa) e recompensas (baú). O desafio diário fica no painel de missões.
+- Quatro objetos clicáveis, com rótulos discretos, levam às funções reais: guarda-roupa (tenda), Biblioteca (mesa), Desafio diário (quadro) e recompensas (baú). O Desafio diário também está no painel de missões.
 - Sem WebGL, um cenário ilustrado em 2D.
 
 **Personagem**
@@ -224,7 +224,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 150 testes automatizados (Vitest e Testing Library), em 12 arquivos de `src/test/`:
+São 151 testes automatizados (Vitest e Testing Library), em 12 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -234,7 +234,7 @@ São 150 testes automatizados (Vitest e Testing Library), em 12 arquivos de `src
 | `personagem`, `editor` | Itens, aparência, cores, expressão, salvamento e restauração |
 | `acampamento` | Elementos liberados, próxima melhoria, baús e contagem do diário |
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
-| `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, rótulos da cena (sem o "Diário"), "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
+| `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, rótulos da cena, o Desafio diário pelos dois caminhos, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
 | `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
 
@@ -285,6 +285,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.17.3** (16/11/2026): ajustes finais da Central (atalho "Desafio diário" de volta à cena, tablet com o poço inteiro, rótulos mais espaçados no celular, quadro sem texto), aguardando aprovação antes de publicar.
 - **0.17.2** (16/11/2026): refinamento final da Central (composição própria no celular, rótulos longe do HUD, atalho "Diário" fora da cena), aguardando avaliação antes de publicar.
 - **0.17.1** (16/11/2026): revisão visual da Central (poço e baú separados, rótulos discretos, cenário e celular), aguardando avaliação antes de publicar.
 - **0.17.0** (14/11/2026): Central do Jogador como Acampamento de Aventura (tela piloto da Etapa 2) e navegação global inferior.

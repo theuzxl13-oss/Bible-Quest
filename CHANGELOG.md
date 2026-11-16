@@ -2,6 +2,23 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.3 — 16/11/2026 — Ajustes finais da Central (aguardando aprovação; não publicada no `main`)
+
+Só a Central do Jogador. Os 13 elementos continuam com os mesmos ids, requisitos e regras de desbloqueio. XP, níveis, conquistas, recompensas, progressão, mapas, perguntas, conteúdo bíblico e as outras telas não mudaram. Relatório: `docs/relatorios/ETAPA_2_CENTRAL_AJUSTES_FINAIS.pdf` (e `.md`).
+
+- **Desafio diário:** o atalho direto voltou à cena, preso ao quadro, com o nome "Desafio diário" e o aviso numérico quando o desafio do dia está pendente. Ele também está no painel de missões. A rota `/diario`, as 5 perguntas, os 30 XP e a regra de uma conclusão por dia não mudaram, porque o atalho só abre a página existente.
+- **Quadro de missões:** o papel não mostra mais a palavra "Missões". No lugar, um sol nascente sobre três bilhetes presos por alfinetes, desenhados em código. O quadro e o seu elemento do acampamento continuam.
+- **Tablet (768 × 1024):** o poço, a tenda grande e os barris ganharam uma posição própria para o tablet em pé e agora ficam inteiros no quadro. A posição muda gradualmente entre a tela larga, o tablet e a tela estreita.
+- **Rótulos:**
+  - dois rótulos não ficam mais colados: se encostarem, um desce, com no mínimo 28 px entre eles;
+  - a folga em relação ao HUD e à placa "Missões" passou de 14 para 18 px;
+  - no celular, "Personagem" fica no alto da tenda e "Biblioteca" sobre a mesa, a cerca de 95 px de distância;
+  - no celular, a área invisível de toque cresceu, e todos os rótulos têm pelo menos 44 px de altura, inclusive o do baú só com ícone no 2D;
+  - os rótulos ficam a 12 px da borda, para o número de aviso não ser cortado.
+- **2D:** o rótulo "Desafio diário" voltou ao quadro, sem passar da borda no celular.
+- **Computador:** a lanterna da frente saiu de diante do quadro e foi para a direita do baú; agora o papel do quadro fica inteiro à vista.
+- **Testes:** 151, todos passando. Um teste novo confere o Desafio diário pelos dois caminhos (rótulo na cena e painel de missões).
+
 ## 0.17.2 — 16/11/2026 — Refinamento final da Central (aguardando avaliação; não publicada no `main`)
 
 Só a Central do Jogador. Os 13 elementos do acampamento continuam com os mesmos ids, regras, requisitos, dados e desbloqueios (`src/data/acampamento.ts` e `src/services/game/acampamento.ts` sem mudanças). Mapas, perguntas, conteúdo bíblico, progressão, XP, conquistas, recompensas, páginas de fases e a estrutura da aplicação também não mudaram. Relatório: `docs/relatorios/ETAPA_2_CENTRAL_REFINAMENTO_FINAL.pdf` (e `.md`).

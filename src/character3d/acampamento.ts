@@ -21,7 +21,7 @@ import type { Pose3D, Quality3D, Rig } from './rig'
  *   tem o mesmo efeito.
  */
 
-export type AlvoAcampamento = 'personagem' | 'tenda' | 'mesa' | 'bau'
+export type AlvoAcampamento = 'personagem' | 'tenda' | 'mesa' | 'quadro' | 'bau'
 
 export interface CampOptions {
   quality: Quality3D
@@ -627,6 +627,11 @@ function construirBau(m: Mats, pronto: boolean) {
   return { grupo: g, animar }
 }
 
+/**
+ * Papel do quadro, sem texto (0.17.3): um sol nascente (o desafio de cada dia)
+ * sobre três bilhetes presos por alfinetes. É só decoração; o acesso é o rótulo
+ * "Desafio diário" e a placa "Missões" do HUD.
+ */
 function texturaQuadro() {
   const c = document.createElement('canvas')
   c.width = 256
@@ -634,13 +639,44 @@ function texturaQuadro() {
   const g = c.getContext('2d')!
   g.fillStyle = '#efe0bb'
   g.fillRect(0, 0, 256, 192)
-  g.fillStyle = '#5c3d22'
-  g.font = 'bold 30px Georgia, serif'
-  g.textAlign = 'center'
-  g.fillText('Missões', 128, 44)
-  g.fillRect(40, 58, 176, 3)
-  g.globalAlpha = 0.45
-  for (let i = 0; i < 4; i++) g.fillRect(36, 84 + i * 24, 120 + ((i * 37) % 60), 6)
+  g.strokeStyle = 'rgba(92, 61, 34, 0.35)'
+  g.lineWidth = 3
+  g.strokeRect(8, 8, 240, 176)
+  // sol nascente
+  g.fillStyle = '#d9a441'
+  g.beginPath()
+  g.arc(128, 62, 22, Math.PI, 0)
+  g.fill()
+  g.strokeStyle = '#d9a441'
+  g.lineWidth = 4
+  g.lineCap = 'round'
+  for (let i = 1; i < 8; i++) {
+    const a = Math.PI + (i * Math.PI) / 8
+    g.beginPath()
+    g.moveTo(128 + Math.cos(a) * 30, 62 + Math.sin(a) * 30)
+    g.lineTo(128 + Math.cos(a) * 40, 62 + Math.sin(a) * 40)
+    g.stroke()
+  }
+  g.fillStyle = 'rgba(92, 61, 34, 0.55)'
+  g.fillRect(70, 64, 116, 3)
+  // três bilhetes presos por alfinetes
+  const bilhetes: [number, number, number][] = [[44, 84, -0.06], [104, 80, 0.04], [164, 86, -0.03]]
+  for (const [x, y, r] of bilhetes) {
+    g.save()
+    g.translate(x + 24, y + 30)
+    g.rotate(r)
+    g.fillStyle = 'rgba(0, 0, 0, 0.12)'
+    g.fillRect(-22, -26, 48, 60)
+    g.fillStyle = '#fbf3df'
+    g.fillRect(-24, -30, 48, 60)
+    g.fillStyle = 'rgba(92, 61, 34, 0.4)'
+    for (let i = 0; i < 4; i++) g.fillRect(-16, -12 + i * 11, 32 - (i % 2) * 10, 3)
+    g.fillStyle = '#a63a2a'
+    g.beginPath()
+    g.arc(0, -24, 4, 0, Math.PI * 2)
+    g.fill()
+    g.restore()
+  }
   const t = new THREE.CanvasTexture(c)
   t.colorSpace = THREE.SRGBColorSpace
   return t
@@ -862,11 +898,24 @@ const POSICOES: Record<string, [number, number, number, number, number?]> = {
   barris: [-4.9, -1.9, -2.1, -4.6, 0.85],
   jarros: [-2.2, -1.5, 0.82, -2.1, 0.8],
   palmeiras: [3.3, -7.4, 1.3, -10.0],
-  lanternas: [1.0, -1.6, 1.7, -4.3],
+  lanternas: [2.0, -1.0, 1.7, -4.3],
   'tenda-grande': [-5.2, -6.8, -3.0, -11.5],
   estandarte: [-1.0, -3.6, -0.65, -7.5],
   poco: [3.9, -5.4, 1.15, -3.5, 0.75],
   ovelhas: [4.8, -9.0, 2.4, -12.5],
+}
+
+/**
+ * Tablet em pé (0.17.3): para alguns objetos, um ponto intermediário [x, z]
+ * entre a tela larga e a estreita, para que fiquem inteiros no quadro. A
+ * posição segue em linha reta da tela larga até este ponto e dele até a tela
+ * estreita (E_MEIO é o fator de tela estreita de um tablet de 768 × 1024).
+ */
+const E_MEIO = 0.64
+const MEIO: Record<string, [number, number]> = {
+  poco: [1.2, -4.0],
+  barris: [-2.2, -3.8],
+  'tenda-grande': [-2.2, -12.5],
 }
 
 export function createCamp(container: HTMLElement, appearance: CharacterAppearance, opts: CampOptions): CampHandle {
@@ -921,7 +970,7 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   colocar('fogueira', fogo.grupo)
   if (!reduced) animacoes.push(fogo.animar)
   const mesa = colocar('mesa', construirMesa(m), 0.6)
-  colocar('quadro', construirQuadro(m), -0.45)
+  const quadro = colocar('quadro', construirQuadro(m), -0.45)
   const bau = construirBau(m, opts.bauPronto)
   colocar('bau', bau.grupo, -0.35)
   if (!reduced) animacoes.push(bau.animar)
@@ -1006,8 +1055,9 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
 
   // ---------- alvos clicáveis ----------
   const alvos: { id: AlvoAcampamento; obj: THREE.Object3D; ancora: () => THREE.Vector3 }[] = [
-    { id: 'tenda', obj: tenda, ancora: () => tenda.localToWorld(new THREE.Vector3(0, lerp(2.25, 1.5, estreita), 0)) },
-    { id: 'mesa', obj: mesa, ancora: () => mesa.localToWorld(new THREE.Vector3(0, 1.15, 0)) },
+    { id: 'tenda', obj: tenda, ancora: () => tenda.localToWorld(new THREE.Vector3(0, lerp(2.25, 1.75, estreita), 0)) },
+    { id: 'mesa', obj: mesa, ancora: () => mesa.localToWorld(new THREE.Vector3(0, lerp(1.15, 0.8, estreita), 0)) },
+    { id: 'quadro', obj: quadro, ancora: () => quadro.localToWorld(new THREE.Vector3(0, 2.05, 0)) },
     { id: 'bau', obj: bau.grupo, ancora: () => bau.grupo.localToWorld(new THREE.Vector3(0, 0.85, 0)) },
     { id: 'personagem', obj: sombra, ancora: () => new THREE.Vector3(0, 1.95, 0) },
   ]
@@ -1071,12 +1121,16 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
     const aspect = w / h
     camera.aspect = aspect
     estreita = THREE.MathUtils.clamp((1.25 - aspect) / 0.7, 0, 1)
+    container.dataset.estreita = estreita.toFixed(2)
     camera.fov = lerp(32, 44, estreita)
     camera.updateProjectionMatrix()
     for (const [id, o] of posicionaveis) {
       const p = POSICOES[id]
       if (!p) continue
-      o.position.set(lerp(p[0], p[2], estreita), 0, lerp(p[1], p[3], estreita))
+      const meio = MEIO[id]
+      if (meio && estreita <= E_MEIO) o.position.set(lerp(p[0], meio[0], estreita / E_MEIO), 0, lerp(p[1], meio[1], estreita / E_MEIO))
+      else if (meio) o.position.set(lerp(meio[0], p[2], (estreita - E_MEIO) / (1 - E_MEIO)), 0, lerp(meio[1], p[3], (estreita - E_MEIO) / (1 - E_MEIO)))
+      else o.position.set(lerp(p[0], p[2], estreita), 0, lerp(p[1], p[3], estreita))
       o.scale.setScalar(lerp(1, p[4] ?? 1, estreita))
     }
     // Etapa 2: câmera mais próxima, para o personagem ocupar cerca de 40–45% da
@@ -1110,10 +1164,12 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
   let ultimo = performance.now()
   const minimo = quality === 'leve' ? 1 / 30 : 0
   const v = new THREE.Vector3()
-  const FOLGA = 14
+  const FOLGA = 18
+  const ENTRE = 28
   const posicionarRotulos = () => {
     const w = container.clientWidth
     const h = container.clientHeight
+    const postos: { e: number; t: number; d: number; b: number }[] = []
     for (const a of alvos) {
       const el = opts.rotulos.get(a.id)
       if (!el) continue
@@ -1122,7 +1178,7 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
       // continua visível, preso à borda — nenhum acesso da cena se perde
       const dentro = v.z < 1 && v.y < 0.98 && v.y > -0.98
       // o rótulo nunca sai da tela: fica preso às bordas
-      const meia = el.offsetWidth / 2 + 6
+      const meia = el.offsetWidth / 2 + 12
       const x = Math.min(w - meia, Math.max(meia, ((v.x + 1) / 2) * w))
       // se encostar no HUD ou na placa "Missões", desce até ficar com folga abaixo dela
       let y = ((1 - v.y) / 2) * h
@@ -1130,6 +1186,11 @@ export function createCamp(container: HTMLElement, appearance: CharacterAppearan
       for (const r of evitar) {
         if (x + meia > r.e - FOLGA && x - meia < r.d + FOLGA && y > r.t - FOLGA && y - alto < r.b + FOLGA) y = r.b + FOLGA + alto
       }
+      // dois rótulos nunca ficam colados: se encostar num rótulo já posto, desce
+      for (const r of postos) {
+        if (x + meia > r.e - ENTRE && x - meia < r.d + ENTRE && y > r.t - ENTRE && y - alto < r.b + ENTRE) y = r.b + ENTRE + alto
+      }
+      if (dentro) postos.push({ e: x - meia, t: y - alto, d: x + meia, b: y })
       el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`
       el.dataset.visivel = dentro ? 'sim' : 'nao'
     }
