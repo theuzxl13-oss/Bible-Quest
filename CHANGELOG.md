@@ -2,6 +2,27 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.4 — 16/11/2026 — Fase 0 da Etapa 2: legibilidade e navegação (aguardando aprovação; não publicada no `main`)
+
+Correções pontuais aprovadas a partir do diagnóstico visual, sem reformular telas. A Central 0.17.3 não mudou: os arquivos dela estão intactos, e as capturas em 3D e 2D, no celular e no computador, são idênticas pixel a pixel. Também não mudaram regras, dados, pontuação, progresso, desbloqueios, rotas, links nem dependências. Relatório: `docs/relatorios/ETAPA_2_FASE_0_CORRECOES.pdf` (e `.md`).
+
+- **Avisos (X4):** o título dos avisos sobre pergaminho estava em marfim, ilegível (cerca de 1,2:1). Agora fica em marrom, de 8,2:1 a 8,3:1 nos 9 avisos conferidos: Ranking, Multiplayer (2), Desafio diário (2), Entrar, Perfil local e painel administrativo.
+- **Introdução do mundo (H2):** o subtítulo, a chamada e os nomes dos personagens herdavam o marrom do mapa sobre o fundo escuro (de 1,07:1 a 4,22:1). Agora ficam em texto claro com sombra, de 8,1:1 a 14,4:1. Conteúdo, pintura, botão e a regra `markWorldSeen` não mudaram.
+- **Perfil (P1):** as tabelas ganharam um painel próprio de pergaminho, em vez de ficar sobre o cenário. O cabeçalho passou de 2,25:1 para 7,2–7,5:1 e as linhas ficaram acima de 11:1. Dados e categorias não mudaram.
+- **Biblioteca (B1):** o link "Linha do tempo" na barra de abas passou de 1,33:1 para 7,27:1. As abas e os destinos não mudaram.
+- **Navegação no computador (X5):**
+  - a barra superior usa os nomes oficiais: Central, História, Quiz, Biblioteca e Perfil;
+  - o "Desafio diário" saiu da fila principal e virou um destino secundário, com esse nome, junto das ações da barra (a Central não recebe esse link);
+  - a versão exibida no rodapé e na página Sobre vem do `package.json` (`src/versao.ts` e `define` no `vite.config.ts`); antes era "0.17" fixo no rodapé e "Versão 0.3" na página Sobre.
+- **Decisões oficiais registradas** em `docs/planos/ETAPA_2_DECISOES_OFICIAIS.md`:
+  - nomes da navegação e personalidade de cada área;
+  - papel futuro da página do livro;
+  - preservação da página antiga da fase;
+  - mapas continuam em 2D;
+  - Central intocada.
+- **Testes:** 154, em 13 arquivos (4 novos em `src/test/fase0.test.tsx`).
+- **Varredura:** 84 capturas (42 telas e estados no celular e no computador), sem erros de JavaScript e sem rolagem lateral.
+
 ## Documentação — 16/11/2026 — Diagnóstico visual das demais telas (sem nova versão do jogo)
 
 Etapa de análise. Não houve mudança em código, estilos, componentes ou funcionalidades; a versão do jogo continua 0.17.3.

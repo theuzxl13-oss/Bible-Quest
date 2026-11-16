@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { VERSAO } from '../versao'
 import { ArtImage } from '../components/ArtImage'
 import { PageHeader } from '../components/ui'
 import { ART, commonsUrl } from '../data/images'
@@ -85,7 +86,7 @@ export default function About() {
 
       <section className="stack">
         <h2>Kzann Tech</h2>
-        <p>Bible Quest é desenvolvido pela Kzann Tech. Versão 0.3: a aventura, com personagem, mapa de fases e Biblioteca Bíblica.</p>
+        <p>Bible Quest é desenvolvido pela Kzann Tech. Versão {VERSAO}.</p>
         <p className="small">
           <Link to="/admin">Prévia do painel administrativo (protótipo, sem autenticação real)</Link>
         </p>

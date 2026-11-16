@@ -7,11 +7,12 @@ import { levelFromXp } from '../../services/game/levels'
 import { PlayerCharacter } from '../character/PlayerCharacter'
 import { ItemReward } from '../character/ItemReward'
 import { NavegacaoGlobal } from './NavegacaoGlobal'
+import { VERSAO } from '../../versao'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
-  { to: '/painel', label: 'Início', short: 'Início', icon: 'home' },
-  { to: '/historia', label: 'Modo História', short: 'História', icon: 'map' },
-  { to: '/quiz', label: 'Modo Quiz', short: 'Quiz', icon: 'shield' },
+  { to: '/painel', label: 'Central', short: 'Central', icon: 'home' },
+  { to: '/historia', label: 'História', short: 'História', icon: 'map' },
+  { to: '/quiz', label: 'Quiz', short: 'Quiz', icon: 'shield' },
   { to: '/biblioteca', label: 'Biblioteca', short: 'Biblioteca', icon: 'book' },
   { to: '/perfil', label: 'Perfil', short: 'Perfil', icon: 'user' },
 ]
@@ -61,10 +62,15 @@ export function Layout() {
                   {n.label}
                 </NavLink>
               ))}
-              <NavLink to="/diario" className="topnav-link"><GameIcon name="calendar" size={22} />Diário</NavLink>
             </nav>
           )}
           <div className="topbar-actions">
+            {/* destino secundário (não é um sexto destino principal): aparece junto das ações, no computador; a Central (que esconde esta barra) não muda */}
+            {profile && !camp && (
+              <NavLink to="/diario" className="topbar-secundario">
+                <GameIcon name="calendar" size={20} />Desafio diário
+              </NavLink>
+            )}
             {profile ? (
               <Link to="/perfil" className="topbar-profile" aria-label={`Perfil de ${profile.nickname}, nível ${levelFromXp(progress.xp)}`}>
                 <span className="topbar-level">Nv {levelFromXp(progress.xp)}</span>
@@ -104,7 +110,7 @@ export function Layout() {
               ))}
             </nav>
             <p className="muted small">
-              Versão 0.17 · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
+              Versão {VERSAO} · perfil local · Obras de arte em domínio público · Texto bíblico: Almeida RC 1911 (domínio público)
             </p>
           </div>
         </footer>
