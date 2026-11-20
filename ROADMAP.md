@@ -63,6 +63,7 @@
 - Mais itens de vestuário de época e novas regiões do Modo Quiz conforme o banco de perguntas crescer.
 - Animações extras do personagem (gestos por tipo de resposta).
 - Personagem 3D: rostos com mais variações (formato de olhos, nariz e boca), simulação simples de tecido no manto, roupas com costuras e mais estilos de cabelo.
+- **Cabelos 3D novos (decisão de 20/11/2026): ficam para a Etapa 4.** Na Etapa 2 não haverá geração nem prévias. Entram na Etapa 4: o longo ondulado (feminino), o cacheado (masculino) e os demais das imagens de referência. A sexta referência (cabelo médio com barba) ainda falta como arquivo.
 - Personagem: encomendar a um artista um modelo estilizado seguindo o "contrato do modelo" (`tools/personagem/README.md`), sardas na pele 3D, mais cortes de cabelo e simulação de tecido em tempo real nas poses extremas.
 - Avaliar modelos GLB de artistas contratados (com licença de redistribuição) se for necessário um acabamento de nível profissional acima do modelo procedural.
 - PWA com funcionamento offline (service worker) e testes E2E com Playwright no CI.

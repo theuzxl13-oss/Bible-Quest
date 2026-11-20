@@ -2,6 +2,11 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Documentação — 20/11/2026 — Cabelos 3D ficam para a Etapa 4 (sem nova versão do jogo)
+
+- **Decisão registrada** no ROADMAP e em `docs/planos/ETAPA_2_DECISOES_OFICIAIS.md`: os cabelos 3D novos ficam para a Etapa 4, sem geração nem prévias na Etapa 2.
+- **Pendência:** a sexta imagem de referência (cabelo médio com barba) ainda precisa ser enviada como arquivo.
+
 ## 0.17.5 — 16/11/2026 — Fase 1 da Etapa 2, passos 1.1 a 1.3: tokens, ponte e componentes base (aguardando aprovação; não publicada no `main`)
 
 Base visual comum, **sem mudança na tela**. A Central continua idêntica à 0.17.3. Não mudaram rotas, navegação, dados, regras, funcionalidades nem dependências, e nenhum CSS antigo foi removido. Detalhes na seção 15 de `docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md` (e `.pdf`).

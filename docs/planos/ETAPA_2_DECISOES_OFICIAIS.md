@@ -59,3 +59,8 @@ implementada ainda.
 - **Tokens:** os novos ampliam o `tokens.css`; não há terceiro sistema visual.
 - **Próxima entrega:** as correções do foco sobre pergaminho e do selo de aviso da Central ficam autorizadas para ela, e não foram aplicadas na 0.17.5.
 - **Escopo:** só os passos 1.1, 1.2 e 1.3 foram autorizados nesta entrega.
+
+## Personagens 3D (20/11/2026)
+
+- **Cabelos 3D novos:** ficam para a Etapa 4. Durante a Etapa 2 não há geração de modelos nem prévias de cabelo.
+- **Sexta imagem de referência** (cabelo médio com barba): ainda precisa ser enviada como arquivo antes da Etapa 4.
