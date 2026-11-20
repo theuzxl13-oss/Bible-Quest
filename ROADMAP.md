@@ -8,7 +8,7 @@
     - Personalidade de cada área: História = Trilha da Jornada; Quiz = Templo do Saber; Biblioteca = Sala de Estudos; Perfil = Tenda do Personagem; Conquistas = Sala dos Troféus.
     - Mapas continuam em 2D; a página do livro e a página antiga da fase ficam preservadas; a Central 0.17.3 não muda.
   - **Etapa 2, Fase 0 (v0.17.4), aprovada e publicada:** correções de legibilidade e navegação integradas ao `main` em 16/11/2026 e verificadas no site (`docs/relatorios/evidencias/etapa-2-fase0-0.17.4/VERIFICACAO_PUBLICACAO.md`).
-  - **Etapa 2, Fase 1 (base visual comum):** auditoria e proposta técnica feitas em 16/11/2026 (`docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md`), com a ordem de migração proposta em 8 passos (1.1 a 1.8) e as entregas sugeridas de 0.17.5 a 0.17.8. Passos 1.1 a 1.3 implementados na versão 0.17.5 (tokens, ponte e componentes base, sem mudança na tela), aguardando aprovação; não publicada.
+  - **Etapa 2, Fase 1 (base visual comum):** auditoria e proposta técnica feitas em 16/11/2026 (`docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md`), com a ordem de migração proposta em 8 passos (1.1 a 1.8) e as entregas sugeridas de 0.17.5 a 0.17.8. Passos 1.1 a 1.3 implementados na versão 0.17.5 (tokens, ponte e componentes base, sem mudança na tela), aprovada e publicada em 20/11/2026 (`docs/relatorios/evidencias/etapa-2-fase1-0.17.5/VERIFICACAO_PUBLICACAO.md`).
     - Folha de amostras dos ambientes em `docs/relatorios/evidencias/etapa-2-fase1-amostras/`, aguardando aprovação dos tons.
     - Próximos: os passos 1.4 a 1.8 (incluindo as correções do foco e do selo na Central, autorizadas para a próxima entrega).
     - A Etapa 3 ainda não começou.
