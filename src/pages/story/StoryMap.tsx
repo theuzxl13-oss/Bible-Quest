@@ -10,6 +10,7 @@ import { STORY_SEQUENCE } from '../../data/story'
 import { WORLDS } from '../../data/worlds'
 import { avatarPhaseId, allChests, chestState, phaseState, worldSections, type PhaseNode } from '../../services/game/journeyMap'
 import { useGame } from '../../state/GameContext'
+import { usePrenderFoco } from '../../components/usePrenderFoco'
 
 const STEP_MS = 700
 
@@ -28,6 +29,10 @@ export default function StoryMap() {
   const [ajuda, setAjuda] = useState(false)
   const [mundoVisivel, setMundoVisivel] = useState<string | null>(null)
   const timers = useRef<number[]>([])
+  const caixaBau = useRef<HTMLDivElement>(null)
+  const caixaMundo = useRef<HTMLDivElement>(null)
+  usePrenderFoco(caixaBau, Boolean(chest))
+  usePrenderFoco(caixaMundo, Boolean(worldIntro))
   const reduceMotion = settings.reduceMotion || (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
   const contentWorlds = new Set(sections.map((s) => s.world.id))
 
@@ -160,7 +165,7 @@ export default function StoryMap() {
 
       {chest && (
         <div className="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="chest-t">
-          <div className={`modal chest-modal ${chest.opened ? 'is-opened' : ''}`}>
+          <div className={`modal chest-modal ${chest.opened ? 'is-opened' : ''}`} ref={caixaBau}>
             <div className="chest-stage">
               {chest.opened && <div className="chest-burst" aria-hidden="true">{Array.from({ length: 12 }, (_, i) => <span key={i} style={{ ['--i' as string]: i }} />)}</div>}
               <ChestIcon open={chest.opened} size={120} />
@@ -187,7 +192,7 @@ export default function StoryMap() {
       )}
 
       {intro && (
-        <div className="modal-backdrop world-intro" role="dialog" aria-modal="true" aria-labelledby="wi-t">
+        <div className="modal-backdrop world-intro" role="dialog" aria-modal="true" aria-labelledby="wi-t" ref={caixaMundo}>
           <ArtImage art={intro.art} className="hero-bg" decorative />
           <div className="hero-shade" />
           <div className="world-intro-body">

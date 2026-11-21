@@ -8,6 +8,7 @@ import { PlayerCharacter } from '../character/PlayerCharacter'
 import { ItemReward } from '../character/ItemReward'
 import { NavegacaoGlobal } from './NavegacaoGlobal'
 import { VERSAO } from '../../versao'
+import { ambienteDaRota } from './ambiente'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
   { to: '/painel', label: 'Central', short: 'Central', icon: 'home' },
@@ -34,15 +35,17 @@ const SECONDARY: { to: string; label: string }[] = [
 const IMMERSIVE = [/^\/$/, /^\/historia$/, /^\/quiz$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/quiz\/treino\/[^/]+$/, /^\/quiz\/desafio\/[^/]+$/, /^\/diario$/, /^\/boas-vindas$/, /^\/resultado$/]
 
 export function Layout() {
-  const { profile, progress } = useGame()
+  const { profile, progress, lastOutcome } = useGame()
   const { pathname } = useLocation()
   const immersive = IMMERSIVE.some((r) => r.test(pathname))
   const showTabs = Boolean(profile) && !immersive
   const camp = pathname === '/painel' && Boolean(profile?.character)
   const mapa = (pathname === '/historia' || pathname === '/quiz') && Boolean(profile?.character)
+  // passo 1.5: só identificação do ambiente; não muda nada na tela nesta versão
+  const ambiente = ambienteDaRota(pathname, lastOutcome?.record.mode)
 
   return (
-    <div className={`app ${showTabs ? 'has-tabs' : ''} ${camp ? 'is-camp' : ''} ${mapa ? 'is-mapa' : ''}`}>
+    <div className={`app ${showTabs ? 'has-tabs' : ''} ${camp ? 'is-camp' : ''} ${mapa ? 'is-mapa' : ''}`} data-ambiente={ambiente}>
       <a className="skip-link" href="#conteudo" onClick={(e) => { e.preventDefault(); document.getElementById('conteudo')?.focus() }}>
         Pular para o conteúdo
       </a>

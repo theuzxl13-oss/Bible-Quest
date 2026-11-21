@@ -2,6 +2,38 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (em avaliação, não publicada)
+
+Desenvolvida só na branch `claude/loving-carson-8mrbjo`. Não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSOS_1_4_E_1_5.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.6/`.
+
+- **Passo 1.4 — acessibilidade base** (`src/styles/acessibilidade.css`, só tokens):
+  - **Áreas de toque de 44 × 44 px** com área invisível (pseudo-elemento centralizado) em links da barra superior, "Voltar", botões pequenos e de ícone, fichas, amostras de cor, links do rodapé e soltos, interruptores e baú do topo. Elementos abaixo de 44 px: de 417 para 4 de 815. Os 4 restantes são links dentro de frases, isentos pela WCAG.
+  - **Única mudança visível de tamanho:** o seletor de dificuldade do mapa do Quiz passa de 36 para 44 px de altura, porque um `<select>` não aceita área invisível.
+  - **Foco com contraste:**
+    - sobre pergaminho e fundos claros, azul de foco sobre claro (5,4:1);
+    - nas páginas de aventura, tinta escura;
+    - sobre madeira, marfim;
+    - nos controles sobre cenários, anel duplo de tinta e marfim;
+    - nos campos, contorno sólido.
+
+    Elementos sem foco suficiente: de 73 para 13, todos na Central e fora da autorização.
+  - **Teclado:** o foco fica preso nas janelas da fase, da ajuda, do baú, da introdução do mundo e da recompensa de item (novo hook `usePrenderFoco`). A ajuda do mapa passa a fechar com Esc.
+- **Passo 1.5 — identificação dos ambientes:** o Layout marca a aplicação com `data-ambiente`:
+  - `central`, `historia`, `quiz`, `biblioteca`, `perfil` e `conquistas` (`src/components/layout/ambiente.ts`);
+  - telas de serviço ficam neutras;
+  - **nenhum fundo, cor, gradiente ou componente temático foi ativado**: só `tokens.css` seleciona o atributo, e os tokens de ambiente só são lidos pelos componentes base, que nenhuma tela usa.
+- **Central:** só as duas correções autorizadas.
+  - Foco do painel de missões: anel duplo no botão Missões e azul escuro no botão de fechar e nos itens.
+  - Selo de aviso: `--feedback-selo`, com o marfim sobre ele passando de 4,05:1 para 5,64:1.
+  - Pixel a pixel, só os dois selos mudaram.
+- **Correção durante a validação:** a área invisível do `li.chip` (Biblioteca) cobria o link de dentro. Agora a regra vale só para elementos clicáveis, e o clique no centro de todos os elementos chega aonde chegava na 0.17.5.
+- **Preservado:**
+  - funcionalidades, rotas, dados e progressão;
+  - estilos antigos (nenhum removido);
+  - os dois sistemas de alto contraste (separados);
+  - a animação reduzida.
+- **Testes:** 181, em 16 arquivos (8 novos em `acessibilidade.test.tsx`).
+
 ## Documentação — 20/11/2026 — Cabelos 3D ficam para a Etapa 4 (sem nova versão do jogo)
 
 - **Decisão registrada** no ROADMAP e em `docs/planos/ETAPA_2_DECISOES_OFICIAIS.md`: os cabelos 3D novos ficam para a Etapa 4, sem geração nem prévias na Etapa 2.

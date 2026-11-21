@@ -5,6 +5,7 @@ import { equipItem, isEquipped, requirementLabel } from '../../services/game/ite
 import { useGame } from '../../state/GameContext'
 import { Icon } from '../Icon'
 import { Character } from './Character'
+import { usePrenderFoco } from '../usePrenderFoco'
 
 /** Telas em que a recompensa pode aparecer (nunca no meio de uma partida). */
 const SHOW_ON = [/^\/painel$/, /^\/resultado$/, /^\/historia$/, /^\/quiz$/, /^\/guarda-roupa$/]
@@ -26,6 +27,8 @@ export function ItemReward() {
   useEffect(() => {
     if (active) btn.current?.focus()
   }, [active, id])
+  const caixa = useRef<HTMLDivElement>(null)
+  usePrenderFoco(caixa, active)
 
   if (!active || !item || !profile?.character) return null
   const character = profile.character
@@ -33,7 +36,7 @@ export function ItemReward() {
 
   return (
     <div className="modal-backdrop item-reward" role="dialog" aria-modal="true" aria-labelledby="ir-t" aria-describedby="ir-why">
-      <div className="modal item-reward-modal">
+      <div className="modal item-reward-modal" ref={caixa}>
         <p className="eyebrow">Novo item desbloqueado{queue.length > 1 ? ` · 1 de ${queue.length}` : ''}</p>
         <div className="item-reward-stage">
           <div className="item-reward-burst" aria-hidden="true" />

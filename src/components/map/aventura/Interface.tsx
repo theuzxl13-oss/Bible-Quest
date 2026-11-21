@@ -2,6 +2,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { GameIcon } from '../../GameIcon'
 import { Icon, type IconName } from '../../Icon'
+import { usePrenderFoco } from '../../usePrenderFoco'
 
 /*
  * Peças de interface dos mapas de aventura: cabeçalho em pergaminho, botões
@@ -73,6 +74,7 @@ export function Medalhao({ numero, estado, estrelas, icone }: { numero: number; 
 /** Janela de apresentação de uma fase (pergaminho sobre o mapa). */
 export function JanelaFase({ titulo, numero, rotulo, onFechar, imagem, children, acoes }: { titulo: string; numero: number; rotulo: string; onFechar: () => void; imagem?: ReactNode; children: ReactNode; acoes: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null)
+  usePrenderFoco(ref)
   useEffect(() => {
     const anterior = document.activeElement as HTMLElement | null
     ref.current?.querySelector<HTMLElement>('[data-foco]')?.focus({ preventScroll: true })
@@ -114,9 +116,11 @@ export function Estrelinhas({ n }: { n: number }) {
 }
 
 export function AjudaMapa({ onFechar, itens }: { onFechar: () => void; itens: { icone: IconName; texto: string }[] }) {
+  const ref = useRef<HTMLDivElement>(null)
+  usePrenderFoco(ref, true, onFechar)
   return (
     <div className="modal-backdrop av-janela-fundo" role="dialog" aria-modal="true" aria-labelledby="av-ajuda-t" onClick={(e) => e.target === e.currentTarget && onFechar()}>
-      <div className="av-janela">
+      <div className="av-janela" ref={ref}>
         <button type="button" className="av-fechar" aria-label="Fechar" onClick={onFechar}><Icon name="x" size={20} /></button>
         <h2 id="av-ajuda-t" className="av-ajuda-titulo">Como funciona</h2>
         <ul className="av-ajuda">

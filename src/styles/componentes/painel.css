@@ -8,7 +8,8 @@
   color: var(--texto-sobre-leitura); background: var(--superficie-leitura);
   border: 1.5px solid var(--terra-500); box-shadow: var(--brilho-interno), var(--elevacao-1);
 }
-.camp-missoes-botao:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+/* 0.17.6 (autorizado): anel duplo, visível sobre qualquer parte do cenário */
+.camp-missoes-botao:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; box-shadow: 0 0 0 3px var(--marfim), var(--brilho-interno), var(--elevacao-1); }
 .camp-missoes-botao[aria-expanded='true'] { background: var(--areia); }
 .camp-missoes-botao .game-icon { filter: none; }
 .camp-painel {
@@ -24,7 +25,8 @@
 .camp-painel h2 { margin: 0; font-family: var(--font-display); font-size: var(--fonte-18); color: var(--texto-sobre-leitura); }
 .camp-painel-fechar { display: grid; place-items: center; width: 44px; height: 44px; margin: -6px -2px -6px 0; border: 0; border-radius: 50%; background: transparent; color: var(--texto-sobre-leitura); cursor: pointer; }
 .camp-painel-fechar:hover { background: rgba(122, 82, 52, 0.15); }
-.camp-painel-fechar:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px; }
+/* 0.17.6 (autorizado): dentro do pergaminho, foco azul escuro (5,4:1), no lugar do azul claro (1,87:1) */
+.camp-painel-fechar:focus-visible { outline: 3px solid var(--foco-sobre-claro); outline-offset: 1px; }
 .board-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
 .board-item {
   display: flex; align-items: flex-start; gap: var(--esp-3); padding: 8px 10px; border-radius: var(--raio-m);
@@ -32,7 +34,7 @@
   background: rgba(255, 250, 235, 0.55); border: 1px solid rgba(122, 82, 52, 0.3);
 }
 a.board-item:hover { background: rgba(255, 250, 235, 0.95); }
-a.board-item:focus-visible { outline: 3px solid var(--foco); outline-offset: 1px; }
+a.board-item:focus-visible { outline: 3px solid var(--foco-sobre-claro); outline-offset: 1px; }
 .board-item strong { display: block; font-size: var(--fonte-14); }
 .board-item small { display: block; color: var(--texto-suave-sobre-leitura); font-size: var(--fonte-12); line-height: 1.35; }
 .board-item .progress { margin-top: 4px; height: 6px; background: rgba(90, 58, 28, 0.2); }

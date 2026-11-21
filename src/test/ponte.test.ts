@@ -78,7 +78,7 @@ describe('tokens de ambiente (0.17.5)', () => {
     }
     const padrao = declaracoes(tokens, /(?:^|\n):root/)
     for (const n of nomes) expect(padrao.has(n), n).toBe(true)
-    // os tons novos não estão aplicados: nenhuma tela marca o ambiente nesta entrega
+    // 0.17.6: só o Layout marca o ambiente (pela rota); as páginas não
     const telas = readdirSync(join(raiz, 'src/pages'), { recursive: true }).filter((f) => String(f).endsWith('.tsx')).map((f) => ler(`src/pages/${f}`)).join('\n')
     expect(telas).not.toMatch(/data-ambiente/)
   })
@@ -88,10 +88,11 @@ describe('arquivos novos sem cor HEX (0.17.5)', () => {
   it('ponte.css, os componentes base e as estruturas em components/base não têm HEX', () => {
     const arquivos = [
       'src/styles/ponte.css',
+      'src/styles/acessibilidade.css',
       ...readdirSync(join(raiz, 'src/styles/componentes')).filter((f) => f.startsWith('base-')).map((f) => `src/styles/componentes/${f}`),
       'src/components/base/index.tsx',
     ]
-    expect(arquivos.length).toBe(13)
+    expect(arquivos.length).toBe(14)
     for (const f of arquivos) expect(semComentarios(ler(f)).match(/#[0-9a-fA-F]{3,8}\b/g), f).toBeNull()
   })
 

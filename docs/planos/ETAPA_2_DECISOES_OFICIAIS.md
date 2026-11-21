@@ -48,7 +48,7 @@ implementada ainda.
 | Fase | O que entra | Situação |
 | --- | --- | --- |
 | 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
-| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 a 1.8 aguardando autorização |
+| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, em avaliação; passos 1.6 a 1.8 aguardando autorização |
 | 2 a 5 | Conforme o diagnóstico | — |
 
 ## Fase 1 — decisões da primeira entrega (16/11/2026)
@@ -59,6 +59,14 @@ implementada ainda.
 - **Tokens:** os novos ampliam o `tokens.css`; não há terceiro sistema visual.
 - **Próxima entrega:** as correções do foco sobre pergaminho e do selo de aviso da Central ficam autorizadas para ela, e não foram aplicadas na 0.17.5.
 - **Escopo:** só os passos 1.1, 1.2 e 1.3 foram autorizados nesta entrega.
+
+## Fase 1 — segunda entrega, versão 0.17.6 (21/11/2026)
+
+- **Escopo:** só os passos 1.4 (acessibilidade base) e 1.5 (identificação dos ambientes).
+- **Central:** continua idêntica à 0.17.5, exceto pelas duas correções autorizadas (foco do painel de missões e contraste do selo de aviso).
+- **`data-ambiente`:** só identificação; nenhum fundo, cor, gradiente ou componente temático novo foi ativado.
+- **Preservado:** funcionalidades, rotas, dados, progressão, estilos antigos e os dois sistemas de alto contraste (não unificados).
+- **Entrega:** só na branch de desenvolvimento, sem integração ao `main` nem publicação até a aprovação.
 
 ## Personagens 3D (20/11/2026)
 

@@ -10,7 +10,9 @@
   - **Etapa 2, Fase 0 (v0.17.4), aprovada e publicada:** correções de legibilidade e navegação integradas ao `main` em 16/11/2026 e verificadas no site (`docs/relatorios/evidencias/etapa-2-fase0-0.17.4/VERIFICACAO_PUBLICACAO.md`).
   - **Etapa 2, Fase 1 (base visual comum):** auditoria e proposta técnica feitas em 16/11/2026 (`docs/relatorios/ETAPA_2_FASE_1_AUDITORIA_VISUAL.md`), com a ordem de migração proposta em 8 passos (1.1 a 1.8) e as entregas sugeridas de 0.17.5 a 0.17.8. Passos 1.1 a 1.3 implementados na versão 0.17.5 (tokens, ponte e componentes base, sem mudança na tela), aprovada e publicada em 20/11/2026 (`docs/relatorios/evidencias/etapa-2-fase1-0.17.5/VERIFICACAO_PUBLICACAO.md`).
     - Folha de amostras dos ambientes em `docs/relatorios/evidencias/etapa-2-fase1-amostras/`, aguardando aprovação dos tons.
-    - Próximos: os passos 1.4 a 1.8 (incluindo as correções do foco e do selo na Central, autorizadas para a próxima entrega).
+    - Passos 1.4 (acessibilidade base) e 1.5 (`data-ambiente` só como identificação) implementados na versão 0.17.6, em 21/11/2026, só na branch de desenvolvimento e aguardando avaliação (`docs/relatorios/ETAPA_2_FASE_1_PASSOS_1_4_E_1_5.md`). Na Central entraram só as duas correções autorizadas (foco do painel de missões e selo de aviso).
+    - Pendentes de autorização na Central: foco dos rótulos da cena, do topo, das placas dos modos e do "Continuar", e altura de toque dos rótulos no celular (42–43 px).
+    - Próximos: os passos 1.6 a 1.8, depois da avaliação da 0.17.6. Os tons dos ambientes continuam sem aplicação.
     - A Etapa 3 ainda não começou.
   - **Etapa 2 (v0.16.5), direção artística:** decisões G1–G8 e as seis decisões da Central aprovadas; plano técnico da Central do Jogador (tela piloto) em `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.pdf`, aguardando aprovação para implementar (versão 0.17.0).
   - **Etapa 1 (v0.16.2), auditoria técnica e backup:** tag de retorno `v0.16.1` e publicação só pelo `main` (`docs/planos/PUBLICACAO-E-BACKUP.md`). **Concluída:** duas publicações seguidas pelo `main` verificadas (execuções 45 e 46) e tag `v0.16.1` confirmada no GitHub.

@@ -21,7 +21,8 @@
 .camp-label-icon .game-icon { width: 20px; height: 20px; }
 .camp-badge {
   display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px;
-  border-radius: var(--raio-pilula); background: var(--aviso); color: var(--marfim);
+  /* 0.17.6 (autorizado): vermelho mais escuro, marfim sobre ele 5,6:1 (antes 4,05:1) */
+  border-radius: var(--raio-pilula); background: var(--feedback-selo); color: var(--marfim);
   font-size: var(--fonte-12); font-weight: 800; box-shadow: 0 0 0 2px var(--terra-900);
   animation: unlock-pop var(--dur-janela) var(--curva-mola) both;
 }
