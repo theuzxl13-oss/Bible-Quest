@@ -1,8 +1,8 @@
 # Bible Quest 0.17.6 — Etapa 2, Fase 1, passos 1.4 e 1.5
 
-**Data:** 21/11/2026
+**Data:** 21/11/2026 (finalização da Central na mesma data, seção 14)
 **Branch:** `claude/loving-carson-8mrbjo`
-**Situação:** em avaliação. Não foi integrada ao `main` nem publicada.
+**Situação:** passos 1.4 e 1.5 aprovados na avaliação técnica. A finalização da Central (autorização adicional) está em avaliação. Não foi integrada ao `main` nem publicada.
 
 ## 1. Resumo
 
@@ -15,8 +15,9 @@
   - a aplicação recebe `data-ambiente` conforme a rota;
   - os fundos, cores, gradientes e componentes temáticos novos **não** foram ativados.
 - **Central:**
-  - só as duas correções autorizadas: o foco do painel de missões e o contraste do selo de aviso;
-  - a comparação pixel a pixel mostra diferença apenas nos selos.
+  - primeira entrega: só as duas correções autorizadas, o foco do painel de missões e o contraste do selo de aviso;
+  - finalização (autorização adicional, seção 14): anel duplo no foco dos rótulos da cena, do Perfil e das Configurações no topo, das placas dos modos e do "Continuar", e área de toque invisível de 46 px nos rótulos;
+  - sem foco, a comparação pixel a pixel mostra diferença apenas nos selos.
 - **O que não mudou:**
   - funcionalidades, rotas, dados e progressão;
   - estilos antigos (nenhum foi removido);
@@ -27,7 +28,7 @@
   | Medição | 0.17.5 | 0.17.6 |
   | --- | --- | --- |
   | Elementos abaixo de 44 × 44 | 417 de 815 | 4 de 815 (links dentro de frases, exceção da WCAG) |
-  | Elementos sem foco com contraste suficiente | 73 | 13 (todos na Central, fora da autorização) |
+  | Elementos sem foco com contraste suficiente | 73 | 13 na primeira entrega; **0** depois da finalização da Central (seção 14) |
 
 ## 2. Arquivos alterados
 
@@ -42,8 +43,9 @@
 | `src/components/layout/ambiente.ts` (novo) | Função `ambienteDaRota`, que mapeia rotas para ambientes. |
 | `src/components/layout/Layout.tsx` | Marca a aplicação (`.app`) com `data-ambiente`. |
 | `src/styles/componentes/painel.css` | Central, autorizado: foco do botão Missões, do botão de fechar e dos itens do painel. |
-| `src/styles/componentes/placa.css` | Central, autorizado: fundo do selo de aviso (`--aviso` → `--feedback-selo`). |
-| `src/test/acessibilidade.test.tsx` (novo) | 8 testes dos passos 1.4 e 1.5. |
+| `src/styles/componentes/placa.css` | Central, autorizado: fundo do selo de aviso (`--aviso` → `--feedback-selo`); na finalização, anel duplo no foco dos rótulos, das placas dos modos e do "Continuar", e área invisível dos rótulos ampliada. |
+| `src/styles/componentes/hud.css` | Central, finalização autorizada: anel duplo no foco do Perfil e das Configurações no topo. |
+| `src/test/acessibilidade.test.tsx` (novo) | 9 testes: 8 dos passos 1.4 e 1.5 e 1 da finalização da Central. |
 | `src/test/ponte.test.ts` | `acessibilidade.css` entra na lista de arquivos sem HEX; comentário atualizado. |
 | `package.json`, `package-lock.json` | Versão 0.17.6. |
 | Documentação | CHANGELOG, README, ROADMAP, `docs/README.md`, `docs/planos/ETAPA_2_DECISOES_OFICIAIS.md`, este relatório e `docs/relatorios/evidencias/etapa-2-fase1-0.17.6/`. |
@@ -99,7 +101,7 @@ Método:
 
 Os 4 restantes são 2 links dentro de frases, no celular e no computador: "Ver a linha do tempo", na Biblioteca, e "Perfil", nas Configurações. A WCAG (2.5.8) isenta links dentro de texto corrido. Ampliá-los sobreporia as linhas vizinhas.
 
-Os rótulos da cena da Central (`.camp-label`) medem 42–43 px de altura no celular. Eles **não** foram alterados, porque a Central está congelada fora das duas correções autorizadas (seção 11).
+Os rótulos da cena da Central (`.camp-label`) mediam 42–43 px de altura no celular. Na primeira entrega eles não foram alterados, porque a Central estava congelada. Na finalização autorizada, a área invisível passou a 46 px de altura (medidos 45 px, com 1 px perdido no arredondamento), sem mudar o tamanho visual (seção 14).
 
 ## 5. Foco e teclado
 
@@ -111,7 +113,7 @@ Os rótulos da cena da Central (`.camp-label`) medem 42–43 px de altura no cel
 | --- | --- | --- |
 | Elementos sem indicador suficiente | 73 | 13 |
 
-- Os 13 restantes estão todos na Central e fora da autorização (seção 11).
+- Os 13 restantes estavam todos na Central, fora da autorização da primeira entrega. Foram corrigidos na finalização (seção 14).
 - Na 0.17.5 foram medidos mais elementos (455 contra 439) porque o Tab escapava da janela do mapa do Quiz para os nós escondidos do mapa.
 - 46 elementos que falhavam passaram a ter contraste suficiente. Alguns exemplos estão na tabela abaixo; a folha completa é `evidencias/etapa-2-fase1-0.17.6/foco-antes-depois.png`.
 
@@ -211,7 +213,7 @@ A Central final ficou idêntica pixel a pixel à rodada anterior: só os dois se
 ## 9. Testes e build
 
 - `npm run typecheck`: sem erros.
-- `npm test`: 181 testes, 16 arquivos, todos passando (8 novos em `acessibilidade.test.tsx`).
+- `npm test`: 182 testes, 16 arquivos, todos passando (9 novos em `acessibilidade.test.tsx`).
 - `npm run build`: concluído (`index-D5ccq1Tw.js` e `index-CBDjEZSH.css`).
 
 ## 10. Limitações
@@ -227,9 +229,9 @@ A Central final ficou idêntica pixel a pixel à rodada anterior: só os dois se
 - O seletor de dificuldade ficou visualmente mais alto (36 → 44 px), porque um `<select>` nativo não aceita área invisível.
 - Os componentes base e os tokens de ambiente continuam sem uso nas telas: a ativação dos tons aprovados depende de nova autorização.
 
-## 11. Problemas não resolvidos (dependem de autorização)
+## 11. Problemas não resolvidos
 
-Todos ficam na **Central**, que só podia receber as duas correções autorizadas:
+**Resolvidos na finalização autorizada (seção 14).** Esta tabela registra a situação da primeira entrega. Todos ficavam na **Central**, que só podia receber as duas correções autorizadas:
 
 | Elemento | Problema | Medida |
 | --- | --- | --- |
@@ -239,7 +241,9 @@ Todos ficam na **Central**, que só podia receber as duas correções autorizada
 | Placas dos modos (`.camp-modo`, 2) | Foco azul-claro | 1,51:1 e 1,45:1 |
 | "Continuar" (`.camp-continuar`) | Foco azul-claro | 1,43:1 |
 
-**Sugestão, se autorizada:** o mesmo anel duplo (tinta e marfim) usado no botão Missões. A altura dos rótulos pode crescer com área invisível, sem mudar o visual.
+A sugestão (anel duplo do botão Missões e área invisível nos rótulos) foi autorizada e aplicada.
+
+Nada da Central fica pendente.
 
 Fora da Central:
 - os 2 links dentro de frases ficam como estão, pela exceção da WCAG;
@@ -257,17 +261,94 @@ Pasta `docs/relatorios/evidencias/etapa-2-fase1-0.17.6/`:
 | `central-0.17.6-{cel,pc}-{3d,2d}.png` | A Central inteira na 0.17.6 |
 | `teclado-175.txt`, `teclado-176.txt` | Tab, Shift+Tab e Esc nas janelas dos mapas |
 | `centro-175.txt`, `centro-176.txt` | Onde cai o clique no centro de cada elemento interativo (listas idênticas) |
+| `central-foco-{cel,pc}-{3d,2d}.png` | Finalização: foco dos rótulos, do topo, das placas e do "Continuar", antes e depois |
+| `tab-central-aprovada.json`, `tab-central-final.json` | Finalização: ordem do Tab e do Shift+Tab na Central, nas quatro situações |
+| `centro-176-final.txt` | Finalização: clique no centro dos 1.082 elementos, igual à 0.17.6 aprovada |
 
 ## 13. Verificação final
 
 | Verificação | Resultado |
 | --- | --- |
-| Tipos, testes e build | Sem erros; 181 testes em 16 arquivos; build concluído |
+| Tipos, testes e build | Sem erros; 182 testes em 16 arquivos; build concluído |
 | 88 capturas | 41 idênticas; as demais só com as diferenças esperadas (seção 7.1) |
-| Central (3D e 2D, celular e computador) | Só os dois selos diferem |
+| Central (3D e 2D, celular e computador) | Sem foco, só os dois selos diferem da 0.17.3 |
 | Alto contraste e animação reduzida | Sem mudança além das diferenças esperadas |
 | Toque | 4 de 815 abaixo de 44 × 44, todos links dentro de frases |
-| Foco | 13 sem contraste suficiente, todos na Central, fora da autorização |
+| Foco | 0 sem contraste suficiente (depois da finalização da Central) |
 | Teclado | Foco preso e Esc nas janelas dos mapas |
 | Clique no centro dos elementos | Igual à 0.17.5 (nenhum clique novo desviado) |
 | Integração e publicação | **Não feitas:** a versão está só na branch de desenvolvimento, aguardando avaliação |
+
+## 14. Finalização autorizada da Central
+
+Na avaliação técnica, os passos 1.4 e 1.5 foram aprovados, com autorização adicional para corrigir o foco dos elementos que restavam na Central e a área de toque dos rótulos. A correção pertence à 0.17.6; não foi criada uma nova versão.
+
+### 14.1 Mudanças
+
+| Elemento | Foco antes | Foco agora |
+| --- | --- | --- |
+| Rótulos da cena (`.camp-label`), 3D e 2D | Contorno azul-claro (`--foco`) | Anel duplo: tinta por fora (`outline` 3 px, afastado 3 px) e marfim por dentro (`box-shadow` de 3 px) |
+| Perfil (`.hud-player`) e Configurações (`.hud-settings`) no topo | Azul-claro, afastado 2 px | O mesmo anel duplo, afastado 3 px |
+| Placas dos modos (`.camp-modo`) | Azul-claro | O mesmo anel duplo |
+| "Continuar" (`.camp-continuar`) | Azul-claro | O mesmo anel duplo |
+
+- O anel é o mesmo já aprovado no botão Missões.
+- As sombras originais de cada elemento continuam por trás do anel.
+- O anel aparece **só** com foco pelo teclado (`:focus-visible`).
+
+**Área de toque dos rótulos:**
+- o pseudo-elemento invisível passou de `inset: -7px -4px` para `-8px -5px` (30 + 16 = 46 px);
+- no celular, de `-8px -4px` para `-9px -5px` (28 + 18 = 46 px);
+- os 2 px de folga cobrem o arredondamento de posição que fazia a medida cair para 42–43 px.
+
+**O que não mudou:** cenário, personagem, câmera, iluminação, posição, composição, textos, tamanho visual e funcionalidades.
+
+### 14.2 Validação
+
+1. **Contraste do foco** (Central com o painel de missões fechado; celular e computador, 3D e 2D; 32 elementos por largura):
+
+   | Situação | Elementos sem indicador suficiente |
+   | --- | --- |
+   | 0.17.6 aprovada | 13 no celular, 13 no computador |
+   | Finalizada | **0 no celular, 0 no computador** |
+
+   Na medição geral (com o painel aberto no computador), os rótulos "Desafio diário" e "Recompensas" ficam atrás do painel e por isso não podem ser medidos ali. Com o painel fechado, todos passam.
+2. **Fundos diferentes:**
+   - os rótulos ficam sobre céu, folhagem, tenda e madeira;
+   - o topo, sobre o céu do 3D (escuro) e do 2D (claro);
+   - as placas e o "Continuar", sobre o chão e a madeira.
+
+   Em todos, pelo menos uma das duas cores do anel tem 3:1 com o fundo numa faixa de 2 px em todo o contorno (critério da WCAG 2.4.13). A mediana varia de 1,3:1 a 4,6:1 conforme o fundo, porque, num anel duplo, uma das cores sempre se confunde com o fundo e a outra contrasta. Imagens: `central-foco-{cel,pc}-{3d,2d}.png`.
+3. **Tab e Shift+Tab:**
+   - nas quatro situações, a ordem é idêntica à da 0.17.6 aprovada;
+   - o Shift+Tab percorre exatamente a ordem inversa;
+   - os 10 elementos-alvo recebem foco visível, com contorno;
+   - arquivos: `tab-central-aprovada.json` e `tab-central-final.json`.
+4. **Área de toque dos rótulos:** todos medem 45 px efetivos no celular e no computador (46 px reais). O total geral continua em 4 de 815 abaixo de 44 px, todos links dentro de frases.
+5. **Central antes e depois, sem foco:**
+   - em 3D e 2D, no celular e no computador, idêntica pixel a pixel à 0.17.6 aprovada;
+   - numa rodada apareceu 1 ponto de 1 × 2 px no 3D do computador, que sumiu ao repetir (variação do 3D);
+   - em relação à 0.17.3, continuam diferentes só os dois selos.
+6. **Sem foco, nada muda:**
+   - as regras novas estão todas em `:focus-visible`;
+   - a ampliação dos rótulos é transparente;
+   - a comparação do item 5 confirma isso.
+7. **1.082 elementos interativos:**
+   - o clique no centro de cada um chega aonde chegava na 0.17.6 aprovada;
+   - as listas são idênticas: 88 ocorrências que já existiam, de cabeçalhos fixos e sobreposições;
+   - numa rodada com duas medições em paralelo, 4 elementos não chegaram a carregar; em rodadas separadas, as duas versões deram 1.082.
+8. **88 capturas** (comparadas com a 0.17.6 aprovada):
+   - 75 idênticas;
+   - as 13 restantes vêm do carregamento do personagem 3D, do retrato no topo, da janela da fase aberta ou não na captura, da tela de carregamento e de 1 a 10 pixels de antisserrilhado;
+   - as classes alteradas só existem nos componentes da Central (`CenaAcampamento`, `AcoesAcampamento` e a página da Central).
+9. **Typecheck, testes e build:** sem erros; 182 testes em 16 arquivos; build concluído (`index-CAU2Jrfx.js` e `index-oSlaMjt9.css`).
+
+### 14.3 Testes novos
+
+Em `acessibilidade.test.tsx`, um teste confere:
+- o anel duplo nos rótulos, no topo, nas placas e no "Continuar";
+- que nenhum foco da Central usa mais o azul-claro;
+- a área invisível dos rótulos (−8 px, e −9 px no celular).
+
+O teste da primeira entrega, que exigia esses focos inalterados, foi atualizado de acordo com a autorização.
+

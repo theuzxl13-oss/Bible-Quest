@@ -12,7 +12,8 @@
   color: var(--texto-sobre-escuro); background: var(--vidro-escuro);
   border: 1.5px solid var(--moldura); box-shadow: var(--elevacao-2);
 }
-.hud-player:focus-visible, .hud-settings:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+/* 0.17.6 (autorizado): anel duplo como o do botão Missões */
+.hud-player:focus-visible, .hud-settings:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; box-shadow: 0 0 0 3px var(--marfim), var(--elevacao-2); }
 .hud-portrait {
   flex-shrink: 0; display: grid; place-items: center; width: 60px; height: 60px; overflow: hidden;
   border-radius: var(--raio-m); border: 2px solid var(--ouro-300);

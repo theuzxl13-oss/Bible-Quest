@@ -12,10 +12,11 @@
   transition: opacity var(--dur-estado) ease, background var(--dur-estado) ease, border-color var(--dur-estado) ease;
 }
 /* área de toque de 44 px, maior que a placa visível (que fica discreta) */
-.camp-label::before { content: ''; position: absolute; inset: -7px -4px; }
+.camp-label::before { content: ''; position: absolute; inset: -8px -5px; } /* 0.17.6 (autorizado): 30 + 2 × 8 = 46 px, folga para o arredondamento */
 .camp-label::after { content: ''; position: absolute; left: 50%; bottom: -5px; translate: -50% 0; border: 4px solid transparent; border-top-color: rgba(201, 162, 78, 0.55); border-bottom: 0; }
 .camp-label:hover, .camp-label:focus-visible { opacity: 1; background: var(--terra-700); border-color: var(--moldura); }
-.camp-label:focus-visible { outline: 3px solid var(--foco); outline-offset: 3px; }
+/* 0.17.6 (autorizado): anel duplo como o do botão Missões — tinta por fora, marfim por dentro */
+.camp-label:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; box-shadow: 0 0 0 3px var(--marfim), 0 2px 8px rgba(0, 0, 0, 0.25); }
 .camp-label[data-visivel='nao'] { opacity: 0; pointer-events: none; }
 .camp-label-icon { display: grid; place-items: center; width: 22px; height: 22px; margin: -2px 0; }
 .camp-label-icon .game-icon { width: 20px; height: 20px; }
@@ -60,7 +61,10 @@
 .camp-continuar-texto small { font-size: var(--fonte-12); font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .camp-modo:hover, .camp-continuar:hover { filter: brightness(1.08); transform: translateY(-2px); }
 .camp-modo:active, .camp-continuar:active { transform: translateY(2px); }
-.camp-modo:focus-visible, .camp-continuar:focus-visible { outline: 3px solid var(--foco); outline-offset: 3px; }
+/* 0.17.6 (autorizado): anel duplo; as sombras originais continuam por trás */
+.camp-modo:focus-visible, .camp-continuar:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+.camp-modo:focus-visible { box-shadow: 0 0 0 3px var(--marfim), var(--brilho-interno), var(--elevacao-1); }
+.camp-continuar:focus-visible { box-shadow: 0 0 0 3px var(--marfim), inset 0 1px 0 rgba(255, 236, 200, 0.6), 0 3px 0 var(--fogueira-borda), 0 8px 16px rgba(0, 0, 0, 0.35); }
 
 @media (max-width: 599px) {
   .camp-acoes { gap: var(--esp-2); grid-template-columns: 1fr minmax(0, 1.2fr) 1fr; }
@@ -71,6 +75,6 @@
   .camp-continuar { padding: 6px 8px; min-height: 60px; }
   .camp-continuar-texto strong { font-size: var(--fonte-16); }
   .camp-label { min-height: 28px; padding: 2px 8px 2px 3px; }
-  .camp-label::before { inset: -8px -4px; } /* 28 + 2 × 8 = 44 px de área de toque */
+  .camp-label::before { inset: -9px -5px; } /* 0.17.6 (autorizado): 28 + 2 × 9 = 46 px; antes media 42–43 px */
 }
 html[data-contrast='alto'] .camp-label, html[data-contrast='alto'] .camp-modo { background: var(--terra-900); border-color: var(--marfim); }

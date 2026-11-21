@@ -2,7 +2,19 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
-## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (em avaliação, não publicada)
+## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (passos aprovados; finalização da Central em avaliação; não publicada)
+
+**Finalização da Central (autorização adicional, 21/11/2026):**
+- **Foco:** anel duplo do botão Missões (tinta por fora, marfim por dentro) nos rótulos da cena (3D e 2D), no Perfil e nas Configurações do topo, nas placas dos modos e no "Continuar". Na Central, os elementos sem indicador suficiente passaram de 13 para 0, no celular e no computador.
+- **Toque:** a área invisível dos rótulos da cena passou a 46 px de altura; antes media 42–43 px no celular. O tamanho visual não mudou.
+- **Validação:**
+  - sem foco, a Central é idêntica pixel a pixel à 0.17.6 aprovada;
+  - a ordem do Tab e do Shift+Tab é a mesma;
+  - os 1.082 elementos interativos mantêm o clique no mesmo lugar;
+  - 182 testes passando.
+- Relatório atualizado (seção 14).
+
+**Primeira entrega:**
 
 Desenvolvida só na branch `claude/loving-carson-8mrbjo`. Não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSOS_1_4_E_1_5.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.6/`.
 
@@ -32,7 +44,7 @@ Desenvolvida só na branch `claude/loving-carson-8mrbjo`. Não foi integrada ao 
   - estilos antigos (nenhum removido);
   - os dois sistemas de alto contraste (separados);
   - a animação reduzida.
-- **Testes:** 181, em 16 arquivos (8 novos em `acessibilidade.test.tsx`).
+- **Testes:** 181, em 16 arquivos (8 novos em `acessibilidade.test.tsx`); 182 depois da finalização da Central.
 
 ## Documentação — 20/11/2026 — Cabelos 3D ficam para a Etapa 4 (sem nova versão do jogo)
 

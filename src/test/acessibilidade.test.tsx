@@ -157,8 +157,21 @@ describe('passo 1.4: estilos de acessibilidade', () => {
     expect(painel).toMatch(/\.camp-missoes-botao:focus-visible\s*\{\s*outline:\s*3px solid var\(--tinta\)/)
     const placa = semComentarios(ler('src/styles/componentes/placa.css'))
     expect(placa).toMatch(/\.camp-badge\s*\{[^}]*background:\s*var\(--feedback-selo\)/)
-    // o resto do foco da Central continua como na 0.17.5
-    expect(placa).toMatch(/\.camp-label:focus-visible\s*\{\s*outline:\s*3px solid var\(--foco\)/)
-    expect(placa).toMatch(/\.camp-modo:focus-visible, \.camp-continuar:focus-visible\s*\{\s*outline:\s*3px solid var\(--foco\)/)
+  })
+
+  it('Central, autorização adicional: anel duplo nos rótulos, topo, placas e Continuar, e toque dos rótulos ≥ 44 px', () => {
+    const placa = semComentarios(ler('src/styles/componentes/placa.css'))
+    const hud = semComentarios(ler('src/styles/componentes/hud.css'))
+    const anel = /outline:\s*3px solid var\(--tinta\);\s*outline-offset:\s*3px;\s*box-shadow:\s*0 0 0 3px var\(--marfim\)/
+    expect(placa).toMatch(new RegExp('\\.camp-label:focus-visible\\s*\\{\\s*' + anel.source))
+    expect(hud).toMatch(new RegExp('\\.hud-player:focus-visible, \\.hud-settings:focus-visible\\s*\\{\\s*' + anel.source))
+    expect(placa).toMatch(/\.camp-modo:focus-visible, \.camp-continuar:focus-visible\s*\{\s*outline:\s*3px solid var\(--tinta\)/)
+    expect(placa).toMatch(/\.camp-modo:focus-visible\s*\{\s*box-shadow:\s*0 0 0 3px var\(--marfim\)/)
+    expect(placa).toMatch(/\.camp-continuar:focus-visible\s*\{\s*box-shadow:\s*0 0 0 3px var\(--marfim\)/)
+    // nenhum foco da Central usa mais o azul-claro (--foco), que tinha contraste baixo sobre o cenário
+    for (const css of [placa, hud, semComentarios(ler('src/styles/componentes/painel.css'))]) expect(css).not.toMatch(/focus-visible[^}]*var\(--foco\)/)
+    // área de toque: 30 + 2 × 8 e 28 + 2 × 9 (celular), acima de 44 px
+    expect(placa).toMatch(/\.camp-label::before\s*\{[^}]*inset:\s*-8px -5px/)
+    expect(placa).toMatch(/\.camp-label::before\s*\{\s*inset:\s*-9px -5px/)
   })
 })
