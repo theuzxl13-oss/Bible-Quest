@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.17.6 com passos aprovados, ainda não publicada (acessibilidade base e identificação dos ambientes); publicada: 0.17.5 (Central do Jogador, Fase 0 da identidade nas demais telas e base visual comum da Fase 1) |
+| **Versão** | 0.17.6 (Central do Jogador, Fase 0 da identidade nas demais telas, base visual comum, acessibilidade base e identificação dos ambientes da Fase 1) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -290,7 +290,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
-- **0.17.6** (21/11/2026): Fase 1 da Etapa 2, passos 1.4 e 1.5 (áreas de toque de 44 px, foco com contraste, foco preso nas janelas dos mapas e `data-ambiente` só como identificação); na Central, foco do painel de missões, selo de aviso e, na finalização autorizada, anel duplo em todos os controles e toque dos rótulos com 46 px; passos aprovados, não publicada.
+- **0.17.6** (21/11/2026): Fase 1 da Etapa 2, passos 1.4 e 1.5 (áreas de toque de 44 px, foco com contraste, foco preso nas janelas dos mapas e `data-ambiente` só como identificação); na Central, foco do painel de missões, selo de aviso e, na finalização autorizada, anel duplo em todos os controles e toque dos rótulos com 46 px; aprovada e publicada no GitHub Pages.
 - **0.17.5** (16/11/2026): Fase 1 da Etapa 2, passos 1.1 a 1.3 (tokens em quatro camadas, ponte de compatibilidade com os valores antigos e 11 componentes base), sem mudança na tela; aprovada e publicada no GitHub Pages.
 - **Documentação** (16/11/2026): auditoria visual da Fase 1 da Etapa 2 e proposta da base comum (tokens e componentes), aguardando aprovação (sem nova versão do jogo).
 - **0.17.4** (16/11/2026): Fase 0 da Etapa 2 (avisos, introdução do mundo, tabela do Perfil, link da linha do tempo, nomes oficiais da navegação e versão vinda do pacote); aprovada e publicada no GitHub Pages.

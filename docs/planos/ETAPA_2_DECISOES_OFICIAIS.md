@@ -48,7 +48,7 @@ implementada ainda.
 | Fase | O que entra | Situação |
 | --- | --- | --- |
 | 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
-| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, aprovados (finalização da Central em avaliação); passos 1.6 a 1.8 aguardando autorização |
+| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, aprovada e publicada em 21/11/2026; passos 1.6 a 1.8 aguardando autorização |
 | 2 a 5 | Conforme o diagnóstico | — |
 
 ## Fase 1 — decisões da primeira entrega (16/11/2026)
@@ -68,6 +68,7 @@ implementada ainda.
 - **Preservado:** funcionalidades, rotas, dados, progressão, estilos antigos e os dois sistemas de alto contraste (não unificados).
 - **Entrega:** só na branch de desenvolvimento, sem integração ao `main` nem publicação até a aprovação.
 - **Avaliação técnica (21/11/2026):** passos 1.4 e 1.5 aprovados, com autorização adicional na Central. O anel duplo do botão Missões vale também para os rótulos da cena, o Perfil e as Configurações do topo, as placas dos modos e o "Continuar". A área de toque dos rótulos chega a pelo menos 44 × 44 com área invisível. A única mudança visual permitida é o indicador de foco.
+- **Publicação (21/11/2026):** a 0.17.6 foi aprovada, integrada ao `main` por fast-forward e publicada (run 87).
 
 ## Personagens 3D (20/11/2026)
 

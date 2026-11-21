@@ -2,7 +2,7 @@
 
 **Data:** 21/11/2026 (finalização da Central na mesma data, seção 14)
 **Branch:** `claude/loving-carson-8mrbjo`
-**Situação:** passos 1.4 e 1.5 aprovados na avaliação técnica. A finalização da Central (autorização adicional) está em avaliação. Não foi integrada ao `main` nem publicada.
+**Situação:** aprovada e publicada em 21/11/2026 (fast-forward para `389468c`, run 87). Registro: `evidencias/etapa-2-fase1-0.17.6/VERIFICACAO_PUBLICACAO.md`.
 
 ## 1. Resumo
 
@@ -277,7 +277,7 @@ Pasta `docs/relatorios/evidencias/etapa-2-fase1-0.17.6/`:
 | Foco | 0 sem contraste suficiente (depois da finalização da Central) |
 | Teclado | Foco preso e Esc nas janelas dos mapas |
 | Clique no centro dos elementos | Igual à 0.17.5 (nenhum clique novo desviado) |
-| Integração e publicação | **Não feitas:** a versão está só na branch de desenvolvimento, aguardando avaliação |
+| Integração e publicação | Feitas em 21/11/2026, depois da aprovação (ver `VERIFICACAO_PUBLICACAO.md`) |
 
 ## 14. Finalização autorizada da Central
 

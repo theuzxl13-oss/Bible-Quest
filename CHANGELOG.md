@@ -2,7 +2,18 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
-## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (passos aprovados; finalização da Central em avaliação; não publicada)
+## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (aprovada e publicada)
+
+**Publicação oficial (21/11/2026):**
+- Aprovada e integrada ao `main` por fast-forward (`766d705` → `389468c`), sem conflitos e com o histórico preservado.
+- O fluxo oficial (run 87) passou e publicou no GitHub Pages. O site serve `assets/index-CAU2Jrfx.js` e `assets/index-oSlaMjt9.css`, os mesmos arquivos do build local (SHA-256 iguais).
+- Verificação no site, no celular e no computador:
+  - "Versão 0.17.6" no rodapé e na página Sobre;
+  - a Central sem foco idêntica à 0.17.6 aprovada, com o anel duplo pelo teclado;
+  - Tab e Shift+Tab na ordem aprovada, e o foco preso e o Esc nas janelas dos mapas;
+  - 84 das 88 capturas idênticas ao build local; as outras 4 só por tempo de carregamento;
+  - nenhum erro de JavaScript, nenhuma falha de carregamento e nenhuma rolagem horizontal.
+- Registro completo: `docs/relatorios/evidencias/etapa-2-fase1-0.17.6/VERIFICACAO_PUBLICACAO.md`.
 
 **Finalização da Central (autorização adicional, 21/11/2026):**
 - **Foco:** anel duplo do botão Missões (tinta por fora, marfim por dentro) nos rótulos da cena (3D e 2D), no Perfil e nas Configurações do topo, nas placas dos modos e no "Continuar". Na Central, os elementos sem indicador suficiente passaram de 13 para 0, no celular e no computador.
