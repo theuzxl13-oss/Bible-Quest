@@ -1,0 +1,10 @@
+/* Cabeçalho base (bq-cabecalho) e título de seção (bq-titulo-secao). */
+.bq-cabecalho { display: grid; gap: var(--esp-2); margin: 0 0 var(--esp-5); }
+.bq-cabecalho__sobretitulo { margin: 0; font-size: var(--fonte-12); font-weight: var(--peso-forte); letter-spacing: 0.14em; text-transform: uppercase; color: var(--amb-acento-texto); }
+.bq-cabecalho__titulo { margin: 0; font-family: var(--fonte-titulo); font-weight: var(--peso-titulo); font-size: clamp(var(--fonte-28), 6vw, var(--fonte-36)); line-height: var(--altura-linha-titulo); color: var(--texto-sobre-escuro); }
+.bq-cabecalho__apoio { margin: 0; max-width: 62ch; line-height: var(--altura-linha); color: var(--texto-suave-sobre-escuro); }
+.bq-titulo-secao {
+  display: inline-block; margin: var(--esp-5) 0 var(--esp-3); padding: var(--esp-1) var(--esp-4);
+  font-family: var(--fonte-titulo); font-weight: var(--peso-titulo); font-size: var(--fonte-18);
+  color: var(--amb-texto-sobre-base); background: var(--amb-base); border: 1px solid var(--amb-moldura); border-radius: var(--raio-p);
+}

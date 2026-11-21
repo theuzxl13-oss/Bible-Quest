@@ -1,0 +1,52 @@
+/* =========================================================
+   Ponte de compatibilidade (Fase 1 da Etapa 2, 0.17.5)
+   As variáveis antigas de global.css passam a vir dos tokens, com os MESMOS
+   valores de antes (paleta legada em tokens.css). Nada muda na tela.
+   - Carregado depois de tokens.css e de global.css (ver main.tsx): mesma
+     especificidade de :root, então só a ordem decide, e o valor é igual.
+   - Os ajustes de alto contraste e de animação reduzida de global.css
+     (html[data-contrast='alto'], html[data-motion='reduzido']) têm
+     especificidade maior e continuam valendo como antes.
+   - Os tons novos só entram depois de aprovados, ambiente por ambiente.
+   ========================================================= */
+:root {
+  --navy-950: var(--legado-navy-950);
+  --navy-900: var(--legado-navy-900);
+  --navy-850: var(--legado-navy-850);
+  --navy-800: var(--legado-navy-800);
+  --navy-700: var(--legado-navy-700);
+  --gold: var(--legado-gold);
+  --gold-strong: var(--legado-gold-strong);
+  --gold-dim: var(--legado-gold-dim);
+  --parchment: var(--legado-parchment);
+  --parchment-dark: var(--legado-parchment-dark);
+  --ivory: var(--legado-ivory);
+  --earth: var(--legado-earth);
+  --earth-light: var(--legado-earth-light);
+  --text: var(--legado-text);
+  --muted: var(--legado-muted);
+  --ink: var(--legado-ink);
+  --ok: var(--legado-ok);
+  --ok-bg: var(--legado-ok-bg);
+  --err: var(--legado-err);
+  --err-bg: var(--legado-err-bg);
+  --border: var(--legado-border);
+  --border-strong: var(--legado-border-strong);
+  --panel: var(--legado-panel);
+  --shadow: var(--legado-shadow);
+  --radius: var(--legado-radius);
+  --radius-sm: var(--legado-radius-sm);
+  --font-display: var(--legado-font-display);
+  --font-body: var(--legado-font-body);
+  --font-serif: var(--legado-font-serif);
+  --tabbar-h: var(--legado-tabbar-h);
+  --speed: var(--legado-speed);
+  --wood-hi: var(--legado-wood-hi);
+  --wood: var(--legado-wood);
+  --wood-lo: var(--legado-wood-lo);
+  --wood-edge: var(--legado-wood-edge);
+  --wood-shadow: var(--legado-wood-shadow);
+  --plank: var(--legado-plank);
+  --sky-top: var(--legado-sky-top);
+  --sky-mid: var(--legado-sky-mid);
+}

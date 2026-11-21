@@ -1,0 +1,1296 @@
+import * as THREE from 'three'
+import type { CharacterAppearance } from '../types'
+import { appearanceKey } from '../data/character/look'
+import { montar } from './runtime'
+import { soCores } from './heroi'
+import { createRenderer } from './stage'
+import type { Pose3D, Quality3D, Rig } from './rig'
+
+/*
+ * CENA 3D DO ACAMPAMENTO (Central do Jogador; v0.10, refeita na Etapa 2 / v0.17)
+ * - Acampamento de aventura em meio à natureza, ao entardecer. Tudo é geometria
+ *   e textura geradas aqui (sem arquivos extras para baixar): céu, cordilheiras
+ *   com névoa, florestas, rochas, caminho, tendas, fogueira, baú, quadro de
+ *   missões, mesa de estudos e os elementos que o jogador libera com o progresso
+ *   (src/data/acampamento.ts, sem mudanças). Sem cidades nem construções urbanas.
+ * - O personagem é o MESMO modelo 3D do criador (montar), no centro.
+ * - Um único renderizador. Na qualidade "leve": sem sombras, 30 quadros por
+ *   segundo e menos partículas. A animação para quando a cena não está visível.
+ * - Os rótulos clicáveis são botões HTML posicionados sobre os objetos
+ *   (acessíveis por teclado e leitores de tela); tocar no próprio objeto 3D
+ *   tem o mesmo efeito.
+ */
+
+export type AlvoAcampamento = 'personagem' | 'tenda' | 'mesa' | 'quadro' | 'bau'
+
+export interface CampOptions {
+  quality: Quality3D
+  reduced: boolean
+  /** Elementos liberados (ver src/data/acampamento.ts). */
+  elementos: string[]
+  /** Há baú pronto para abrir no mapa: o baú do acampamento fica aberto e brilhando. */
+  bauPronto: boolean
+  /** Rótulos HTML que acompanham cada alvo. */
+  rotulos: Map<AlvoAcampamento, HTMLElement>
+  onSelect(alvo: AlvoAcampamento): void
+  onReady?(): void
+}
+
+export interface CampHandle {
+  setAppearance(a: CharacterAppearance): void
+  /** Toca um gesto (comemoração, descoberta, aceno) e volta à espera. */
+  gesto(p: Pose3D, segundos?: number): void
+  dispose(): void
+}
+
+// ---------- materiais e utilidades ----------
+
+const lerp = THREE.MathUtils.lerp
+
+function criarMateriais(quality: Quality3D) {
+  const cache = new Map<string, THREE.Material>()
+  // texturas geradas em código (nenhum arquivo novo); na qualidade "leve", sem textura
+  const grao = quality === 'leve' ? null : texturaGrao()
+  const veios = quality === 'leve' ? null : texturaVeios()
+  const hsl = { h: 0, s: 0, l: 0 }
+  const std = (cor: string, extra: THREE.MeshStandardMaterialParameters = {}) => {
+    const k = cor + JSON.stringify(extra)
+    let m = cache.get(k)
+    if (!m) {
+      new THREE.Color(cor).getHSL(hsl)
+      // marrons médios e escuros = madeira (veios); o resto ganha só um grão discreto
+      const madeira = hsl.h > 0.04 && hsl.h < 0.13 && hsl.s > 0.25 && hsl.l < 0.5
+      // grão só em superfícies grandes de pedra e lona (claras); o resto, cor lisa
+      const pedraOuLona = !madeira && hsl.s < 0.22 && hsl.l > 0.45
+      const map = extra.map ?? (madeira ? veios : pedraOuLona ? grao : null)
+      m = new THREE.MeshStandardMaterial({ color: cor, roughness: 0.88, metalness: 0, flatShading: quality === 'alta', ...extra, map })
+      cache.set(k, m)
+    }
+    return m
+  }
+  return { std, cache }
+}
+
+/** Grão discreto (terra, pedra, tecido): variação de tom em manchas pequenas. */
+function texturaGrao() {
+  const c = document.createElement('canvas')
+  c.width = c.height = 128
+  const g = c.getContext('2d')!
+  g.fillStyle = '#ffffff'
+  g.fillRect(0, 0, 128, 128)
+  let semente = 7
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  for (let i = 0; i < 900; i++) {
+    const v = 200 + Math.floor(aleatorio() * 55)
+    g.fillStyle = `rgb(${v},${v},${v})`
+    g.fillRect(aleatorio() * 128, aleatorio() * 128, 1 + aleatorio() * 3, 1 + aleatorio() * 3)
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  return t
+}
+
+/** Veios de madeira: faixas onduladas em tons próximos. */
+function texturaVeios() {
+  const c = document.createElement('canvas')
+  c.width = c.height = 128
+  const g = c.getContext('2d')!
+  g.fillStyle = '#ffffff'
+  g.fillRect(0, 0, 128, 128)
+  for (let y = 0; y < 128; y += 2) {
+    const v = 205 + Math.round(Math.sin(y * 0.45) * 22 + Math.sin(y * 0.13) * 14)
+    g.strokeStyle = `rgb(${v},${v},${v})`
+    g.lineWidth = 1.5
+    g.beginPath()
+    for (let x = 0; x <= 128; x += 8) g.lineTo(x, y + Math.sin(x * 0.08 + y * 0.3) * 1.6)
+    g.stroke()
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  return t
+}
+
+type Mats = ReturnType<typeof criarMateriais>
+
+function malha(geo: THREE.BufferGeometry, mat: THREE.Material, x = 0, y = 0, z = 0) {
+  const m = new THREE.Mesh(geo, mat)
+  m.position.set(x, y, z)
+  m.castShadow = true
+  m.receiveShadow = true
+  return m
+}
+
+/** Textura de tecido listrado (tendas e estandarte). */
+function texturaListrada(base: string, listra: string, n = 6) {
+  const c = document.createElement('canvas')
+  c.width = 128
+  c.height = 128
+  const g = c.getContext('2d')!
+  g.fillStyle = base
+  g.fillRect(0, 0, 128, 128)
+  g.fillStyle = listra
+  for (let i = 0; i < n; i++) g.fillRect((i * 128) / n, 0, 128 / n / 3, 128)
+  // trama discreta
+  g.globalAlpha = 0.08
+  g.fillStyle = '#000'
+  for (let y = 0; y < 128; y += 3) g.fillRect(0, y, 128, 1)
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  return t
+}
+
+/** Mancha suave e redonda (fumaça, brilho, sombra). */
+function texturaMancha(cor = '255,255,255') {
+  const c = document.createElement('canvas')
+  c.width = c.height = 64
+  const g = c.getContext('2d')!
+  const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32)
+  gr.addColorStop(0, `rgba(${cor},1)`)
+  gr.addColorStop(1, `rgba(${cor},0)`)
+  g.fillStyle = gr
+  g.fillRect(0, 0, 64, 64)
+  return new THREE.CanvasTexture(c)
+}
+
+// ---------- paisagem ----------
+
+function construirCeu() {
+  const geo = new THREE.SphereGeometry(220, 24, 12)
+  const mat = new THREE.ShaderMaterial({
+    side: THREE.BackSide,
+    depthWrite: false,
+    fog: false,
+    uniforms: { topo: { value: new THREE.Color('#2f5a8c') }, meio: { value: new THREE.Color('#9dbbd2') }, horizonte: { value: new THREE.Color('#f2d2a0') } },
+    vertexShader: 'varying vec3 vP; void main(){ vP = normalize(position); gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+    fragmentShader:
+      'uniform vec3 topo; uniform vec3 meio; uniform vec3 horizonte; varying vec3 vP; void main(){ float h = clamp(vP.y, -0.1, 1.0); vec3 c = mix(horizonte, meio, smoothstep(0.0, 0.18, h)); c = mix(c, topo, smoothstep(0.18, 0.75, h)); gl_FragColor = vec4(c, 1.0); }',
+  })
+  const ceu = new THREE.Mesh(geo, mat)
+  ceu.renderOrder = -1
+  return ceu
+}
+
+function construirNuvens(m: Mats) {
+  const g = new THREE.Group()
+  const mat = new THREE.MeshStandardMaterial({ color: '#fff1df', roughness: 1, emissive: '#ffd9ae', emissiveIntensity: 0.45, fog: false, flatShading: false, transparent: true, opacity: 0.9 })
+  m.cache.set('nuvem', mat)
+  const geo = new THREE.IcosahedronGeometry(1, 1)
+  const nuvens: [number, number, number, number][] = [
+    [-70, 58, -170, 8],
+    [-15, 66, -190, 6],
+    [45, 62, -180, 9],
+    [100, 54, -160, 7],
+  ]
+  for (const [x, y, z, s] of nuvens) {
+    const n = new THREE.Group()
+    for (let i = 0; i < 5; i++) {
+      const b = new THREE.Mesh(geo, mat)
+      b.position.set((i - 2) * s * 0.75, Math.sin(i * 1.7) * s * 0.25, Math.cos(i) * s * 0.3)
+      b.scale.set(s * (1 - Math.abs(i - 2) * 0.18), s * 0.32, s * 0.5)
+      n.add(b)
+    }
+    n.position.set(x, y, z)
+    g.add(n)
+  }
+  return g
+}
+
+function alturaTerreno(x: number, z: number) {
+  const d = Math.hypot(x, z)
+  if (d < 9) return 0
+  const k = Math.min(1, (d - 9) / 30)
+  return k * k * (3 + 2.2 * Math.sin(x * 0.11) + 1.8 * Math.cos(z * 0.09 + x * 0.05))
+}
+
+function construirChao() {
+  const geo = new THREE.PlaneGeometry(160, 160, 80, 80)
+  geo.rotateX(-Math.PI / 2)
+  const pos = geo.attributes.position
+  const cores: number[] = []
+  const terra = new THREE.Color('#b9946a')
+  const caminho = new THREE.Color('#a8865c')
+  const grama = new THREE.Color('#7f9450')
+  const gramaLonge = new THREE.Color('#566f3c')
+  const c = new THREE.Color()
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i)
+    const z = pos.getZ(i)
+    pos.setY(i, alturaTerreno(x, z))
+    const d = Math.hypot(x, z * 1.2)
+    const ruido = Math.sin(x * 1.3) * Math.cos(z * 1.1) * 0.5 + 0.5
+    if (d < 4.2) c.copy(terra)
+    else if (d < 7) c.copy(terra).lerp(grama, (d - 4.2) / 2.8)
+    else c.copy(grama).lerp(gramaLonge, Math.min(1, (d - 7) / 25))
+    // caminho para o fundo
+    if (z < 0 && Math.abs(x + Math.sin(z * 0.25) * 1.2) < 1.1 + Math.max(0, -z) * 0.02) c.lerp(caminho, 0.85)
+    c.offsetHSL(0, 0, (ruido - 0.5) * 0.05)
+    cores.push(c.r, c.g, c.b)
+  }
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(cores, 3))
+  geo.computeVertexNormals()
+  const mapa = texturaChao()
+  const chao = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, map: mapa }))
+  chao.receiveShadow = true
+  return chao
+}
+
+/** Terra com cascalho e tufos (repetida no chão). */
+function texturaChao() {
+  const c = document.createElement('canvas')
+  c.width = c.height = 256
+  const g = c.getContext('2d')!
+  g.fillStyle = '#ffffff'
+  g.fillRect(0, 0, 256, 256)
+  let semente = 11
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  for (let i = 0; i < 2200; i++) {
+    const v = 185 + Math.floor(aleatorio() * 70)
+    g.fillStyle = `rgb(${v},${v - 4},${v - 12})`
+    const r = 0.6 + aleatorio() * 2.2
+    g.beginPath()
+    g.arc(aleatorio() * 256, aleatorio() * 256, r, 0, Math.PI * 2)
+    g.fill()
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  t.wrapS = t.wrapT = THREE.RepeatWrapping
+  t.repeat.set(40, 40)
+  return t
+}
+
+function construirPedrasDoCaminho(m: Mats) {
+  const g = new THREE.Group()
+  const geo = new THREE.CylinderGeometry(1, 1, 0.06, 7)
+  for (let i = 0; i < 26; i++) {
+    const z = -1.6 - i * 0.62
+    const x = -Math.sin(z * 0.25) * 1.2 + (i % 2 ? 0.35 : -0.35) + Math.sin(i * 7.3) * 0.12
+    const p = malha(geo, m.std(i % 3 ? '#a59a8a' : '#968a78'), x, alturaTerreno(x, z) + 0.02, z)
+    const s = 0.22 + (Math.sin(i * 3.1) * 0.5 + 0.5) * 0.14
+    p.scale.set(s, 1, s * 0.8)
+    p.rotation.y = i
+    p.castShadow = false
+    g.add(p)
+  }
+  return g
+}
+
+function construirMontanhas(m: Mats) {
+  const g = new THREE.Group()
+  const picos: [number, number, number, number][] = [
+    [-95, -175, 40, 30],
+    [-50, -190, 46, 38],
+    [-5, -200, 40, 30],
+    [45, -185, 50, 42],
+    [100, -170, 36, 28],
+    [-140, -150, 30, 22],
+    [150, -140, 30, 24],
+  ]
+  picos.forEach(([x, z, r, h], i) => {
+    const monte = malha(new THREE.ConeGeometry(r, h, 10), m.std(i % 2 ? '#71849b' : '#64778f'), x, h / 2 - 2, z)
+    monte.rotation.y = i
+    monte.castShadow = false
+    g.add(monte)
+    const neve = malha(new THREE.ConeGeometry(r * 0.24, h * 0.24, 10), m.std('#eadfcf'), x, h - 2 - h * 0.12 + 0.2, z)
+    neve.rotation.y = i
+    neve.castShadow = false
+    g.add(neve)
+  })
+  return g
+}
+
+/** Cordilheira média em musgo, com névoa (ocupa o lugar das antigas cidades). */
+function construirCordilheira(m: Mats) {
+  const g = new THREE.Group()
+  const morros: [number, number, number, number, string][] = [
+    [-70, -95, 26, 16, '#5d6e45'],
+    [-35, -88, 22, 13, '#56683f'],
+    [0, -100, 30, 18, '#617349'],
+    [34, -86, 24, 14, '#5a6b43'],
+    [72, -96, 28, 17, '#56683f'],
+    [-105, -80, 22, 12, '#5d6e45'],
+    [108, -78, 22, 12, '#5a6b43'],
+  ]
+  morros.forEach(([x, z, r, h, cor], i) => {
+    const morro = malha(new THREE.SphereGeometry(r, 14, 8, 0, Math.PI * 2, 0, Math.PI / 2), m.std(cor), x, -1, z)
+    morro.scale.set(1.5, h / r, 1)
+    morro.rotation.y = i
+    morro.castShadow = false
+    g.add(morro)
+  })
+  return g
+}
+
+/** Florestas em instâncias (uma malha por tipo): ciprestes e árvores de copa redonda. */
+function construirFlorestas(m: Mats, quality: Quality3D) {
+  const g = new THREE.Group()
+  let semente = 3
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  const pontos: [number, number, number][] = []
+  // laterais e fundo do acampamento, longe do caminho (x ≈ 0) e do centro
+  const total = quality === 'leve' ? 60 : 110
+  for (let i = 0; i < total * 3 && pontos.length < total; i++) {
+    const x = (aleatorio() * 2 - 1) * 46
+    const z = -6 - aleatorio() * 52
+    const corredor = Math.abs(x + Math.sin(z * 0.25) * 1.2) < 3.2 + Math.max(0, -z) * 0.05
+    if (corredor || Math.hypot(x, z) < 9) continue
+    pontos.push([x, z, 0.8 + aleatorio() * 0.9])
+  }
+  const tronco = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.1, 0.14, 0.7, 5), m.std('#4e3420'), pontos.length)
+  const ciprestes = pontos.filter((_, i) => i % 3 !== 0)
+  const redondas = pontos.filter((_, i) => i % 3 === 0)
+  const copaC = new THREE.InstancedMesh(new THREE.ConeGeometry(0.55, 2.8, 7), m.std('#2f5233'), ciprestes.length)
+  // segunda camada, mais clara e menor, na ponta: dá volume sem malha nova
+  const copaC2 = new THREE.InstancedMesh(new THREE.ConeGeometry(0.4, 1.5, 7), m.std('#46703f'), ciprestes.length)
+  const copaR = new THREE.InstancedMesh(new THREE.IcosahedronGeometry(0.9, 0), m.std('#4b6a35'), redondas.length)
+  const mt = new THREE.Matrix4()
+  const q = new THREE.Quaternion()
+  const esc = new THREE.Vector3()
+  const pos = new THREE.Vector3()
+  pontos.forEach(([x, z, s], i) => {
+    const y = alturaTerreno(x, z)
+    tronco.setMatrixAt(i, mt.compose(pos.set(x, y + 0.35 * s, z), q.identity(), esc.set(s, s, s)))
+  })
+  ciprestes.forEach(([x, z, s], i) => {
+    const y = alturaTerreno(x, z)
+    const alto = 0.9 + (i % 4) * 0.08
+    copaC.setMatrixAt(i, mt.compose(pos.set(x, y + 1.7 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), x), esc.set(s, s * alto, s)))
+    copaC2.setMatrixAt(i, mt.compose(pos.set(x + 0.08 * s, y + (1.7 + 0.85 * alto) * s, z + 0.08 * s), q.setFromAxisAngle(pos.clone().set(0, 1, 0), x + 1), esc.set(s, s * alto, s)))
+  })
+  redondas.forEach(([x, z, s], i) => {
+    const y = alturaTerreno(x, z)
+    copaR.setMatrixAt(i, mt.compose(pos.set(x, y + 1.25 * s, z), q.setFromAxisAngle(pos.clone().set(0, 1, 0), z), esc.set(s * 1.1, s * 0.85, s * 1.1)))
+  })
+  for (const im of [tronco, copaC, copaC2, copaR]) {
+    im.castShadow = false
+    im.receiveShadow = true
+    im.instanceMatrix.needsUpdate = true
+    g.add(im)
+  }
+  return g
+}
+
+/** Tufos de grama em volta do acampamento, fora do caminho e da área central. */
+function construirTufos(m: Mats, quality: Quality3D) {
+  let semente = 19
+  const aleatorio = () => ((semente = (semente * 16807) % 2147483647) / 2147483647)
+  const total = quality === 'leve' ? 60 : 140
+  const geo = new THREE.ConeGeometry(0.09, 0.32, 4)
+  const tufos = new THREE.InstancedMesh(geo, m.std('#6d8a3e'), total)
+  const mt = new THREE.Matrix4()
+  const q = new THREE.Quaternion()
+  const pos = new THREE.Vector3()
+  const esc = new THREE.Vector3()
+  let n = 0
+  for (let i = 0; i < total * 4 && n < total; i++) {
+    const a = aleatorio() * Math.PI * 2
+    const r = 3.6 + aleatorio() * 7
+    const x = Math.cos(a) * r
+    const z = Math.sin(a) * r * 0.9 - 1.5
+    if (z > 0.6 || Math.abs(x + Math.sin(z * 0.25) * 1.2) < 1.3) continue
+    const k = 0.55 + aleatorio() * 0.6
+    tufos.setMatrixAt(n++, mt.compose(pos.set(x, alturaTerreno(x, z) + 0.12 * k, z), q.setFromAxisAngle(esc.set(0, 1, 0), a), esc.set(k, k, k)))
+  }
+  tufos.count = n
+  tufos.castShadow = false
+  tufos.receiveShadow = true
+  tufos.instanceMatrix.needsUpdate = true
+  return tufos
+}
+
+/** Formações rochosas nas laterais (emolduram o acampamento). */
+function construirRochedos(m: Mats) {
+  const g = new THREE.Group()
+  const grupos: [number, number, number][] = [
+    [-8.5, -1.5, 1.4], [-11, -6.5, 1.8], [9.2, -2.5, 1.5], [12, -8, 2], [-6.8, 3.2, 0.9], [7.2, 3.4, 1],
+  ]
+  grupos.forEach(([x, z, s], i) => {
+    for (let k = 0; k < 3; k++) {
+      const r = malha(new THREE.DodecahedronGeometry(0.6, 0), m.std(k % 2 ? '#8a8172' : '#9a9080'), x + (k - 1) * 0.55 * s, 0, z + Math.sin(i + k) * 0.4)
+      const sk = s * (1 - k * 0.22)
+      r.scale.set(sk, sk * (0.75 + (k % 2) * 0.3), sk * 0.85)
+      r.position.y = alturaTerreno(r.position.x, r.position.z) + 0.25 * sk
+      r.rotation.set(i * 0.7 + k, i + k * 1.3, 0)
+      r.castShadow = false
+      g.add(r)
+    }
+  })
+  return g
+}
+
+function cipreste(m: Mats, x: number, z: number, s: number) {
+  const g = new THREE.Group()
+  g.add(malha(new THREE.CylinderGeometry(0.08, 0.1, 0.5, 5), m.std('#5a3d24'), 0, 0.25, 0))
+  const copa = malha(new THREE.ConeGeometry(0.5, 2.6, 7), m.std('#3f6a35'), 0, 1.6, 0)
+  g.add(copa)
+  g.position.set(x, alturaTerreno(x, z), z)
+  g.scale.setScalar(s)
+  return g
+}
+
+function arbusto(m: Mats, x: number, z: number, s: number, cor = '#5f8f3f') {
+  const b = malha(new THREE.IcosahedronGeometry(0.4, 0), m.std(cor), x, 0.22 * s + alturaTerreno(x, z), z)
+  b.scale.set(s, s * 0.7, s)
+  return b
+}
+
+function pedra(m: Mats, x: number, z: number, s: number, rot = 0) {
+  const p = malha(new THREE.DodecahedronGeometry(0.5, 0), m.std('#9c9283'), x, 0.18 * s, z)
+  p.scale.set(s, s * 0.6, s * 0.85)
+  p.rotation.set(rot, rot * 2, 0)
+  return p
+}
+
+// ---------- objetos do acampamento ----------
+
+function construirTenda(m: Mats, largura: number, fundo: number, altura: number, base: string, listra: string) {
+  const g = new THREE.Group()
+  const w = largura / 2
+  const d = fundo / 2
+  const h = altura
+  // telhado em duas águas + parede do fundo
+  const v = [
+    // esquerda
+    -w, 0, d, -w, 0, -d, 0, h, -d,
+    -w, 0, d, 0, h, -d, 0, h, d,
+    // direita
+    w, 0, d, 0, h, d, 0, h, -d,
+    w, 0, d, 0, h, -d, w, 0, -d,
+    // fundo
+    -w, 0, -d, w, 0, -d, 0, h, -d,
+  ]
+  const uv = [0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0.5, 1]
+  const geo = new THREE.BufferGeometry()
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(v, 3))
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2))
+  geo.computeVertexNormals()
+  const tex = texturaListrada(base, listra)
+  tex.repeat.set(2, 1)
+  const tecido = new THREE.MeshStandardMaterial({ map: tex, roughness: 0.95, side: THREE.DoubleSide })
+  m.cache.set(`tenda-${base}-${listra}-${largura}`, tecido)
+  g.add(malha(geo, tecido))
+  // entrada escura e abas abertas
+  const porta = new THREE.BufferGeometry()
+  porta.setAttribute('position', new THREE.Float32BufferAttribute([-w * 0.55, 0, d - 0.02, w * 0.55, 0, d - 0.02, 0, h * 0.82, d - 0.02], 3))
+  porta.computeVertexNormals()
+  g.add(malha(porta, m.std('#2b1a10', { side: THREE.DoubleSide })))
+  for (const lado of [-1, 1]) {
+    const aba = new THREE.BufferGeometry()
+    aba.setAttribute('position', new THREE.Float32BufferAttribute([0, h, d, lado * w * 0.62, 0, d, lado * w * 1.05, 0, d + 0.35], 3))
+    aba.setAttribute('uv', new THREE.Float32BufferAttribute([0.5, 1, 0, 0, 1, 0], 2))
+    aba.computeVertexNormals()
+    g.add(malha(aba, tecido))
+  }
+  // mastros
+  const mastro = new THREE.CylinderGeometry(0.035, 0.035, h + 0.35, 6)
+  g.add(malha(mastro, m.std('#6b4a2b'), 0, (h + 0.35) / 2, d + 0.02))
+  g.add(malha(mastro, m.std('#6b4a2b'), 0, (h + 0.35) / 2, -d - 0.02))
+  return g
+}
+
+function construirFogueira(m: Mats, quality: Quality3D) {
+  const g = new THREE.Group()
+  for (let i = 0; i < 10; i++) {
+    const a = (i / 10) * Math.PI * 2
+    g.add(pedra(m, Math.cos(a) * 0.48, Math.sin(a) * 0.48, 0.32, i))
+  }
+  const tora = new THREE.CylinderGeometry(0.06, 0.07, 0.75, 6)
+  for (let i = 0; i < 3; i++) {
+    const t = malha(tora, m.std('#5a3a20'), 0, 0.1, 0)
+    t.rotation.set(Math.PI / 2 - 0.35, (i / 3) * Math.PI * 2, 0, 'YXZ')
+    g.add(t)
+  }
+  const brasa = malha(new THREE.CircleGeometry(0.32, 10), new THREE.MeshBasicMaterial({ color: '#ff6a1c' }), 0, 0.02, 0)
+  brasa.rotation.x = -Math.PI / 2
+  g.add(brasa)
+  const chamas: THREE.Mesh[] = []
+  const cores = ['#ff7a1a', '#ffb02e', '#ffe08a']
+  cores.forEach((cor, i) => {
+    const mat = new THREE.MeshBasicMaterial({ color: cor, transparent: true, opacity: 0.92 - i * 0.1, depthWrite: false })
+    m.cache.set(`chama-${i}`, mat)
+    for (let j = 0; j < (i === 2 ? 1 : 3); j++) {
+      const c = new THREE.Mesh(new THREE.ConeGeometry(0.17 - i * 0.04, 0.65 - i * 0.15, 6), mat)
+      const a = (j / 3) * Math.PI * 2 + i
+      c.position.set(i === 2 ? 0 : Math.cos(a) * 0.08, 0.32 - i * 0.05, i === 2 ? 0 : Math.sin(a) * 0.08)
+      c.userData.fase = i * 1.7 + j * 2.3
+      chamas.push(c)
+      g.add(c)
+    }
+  })
+  const luz = new THREE.PointLight('#ff9a3c', quality === 'alta' ? 9 : 6, 7, 1.6)
+  luz.position.set(0, 0.7, 0)
+  g.add(luz)
+  const brilhoTex = texturaMancha('255,170,90')
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: brilhoTex, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }))
+  halo.scale.set(2.2, 2.2, 1)
+  halo.position.set(0, 0.55, 0)
+  g.add(halo)
+  const chaoQuente = new THREE.Mesh(new THREE.CircleGeometry(1.7, 24), new THREE.MeshBasicMaterial({ map: brilhoTex, transparent: true, opacity: 0.45, depthWrite: false, blending: THREE.AdditiveBlending }))
+  chaoQuente.rotation.x = -Math.PI / 2
+  chaoQuente.position.y = 0.015
+  g.add(chaoQuente)
+  // fumaça e faíscas
+  const fumacaTex = texturaMancha('200,190,180')
+  const fumaca: THREE.Sprite[] = []
+  for (let i = 0; i < (quality === 'alta' ? 6 : 3); i++) {
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: fumacaTex, transparent: true, opacity: 0, depthWrite: false }))
+    s.userData.fase = i / 6
+    fumaca.push(s)
+    g.add(s)
+  }
+  const nFaiscas = quality === 'alta' ? 36 : 14
+  const fp = new Float32Array(nFaiscas * 3)
+  const faiscas = new THREE.Points(new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(fp, 3)), new THREE.PointsMaterial({ color: '#ffc06a', size: 0.04, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending }))
+  g.add(faiscas)
+  const animar = (t: number) => {
+    for (const c of chamas) {
+      const f = c.userData.fase as number
+      c.scale.set(1 + Math.sin(t * 9 + f) * 0.12, 1 + Math.sin(t * 13 + f * 2) * 0.22, 1 + Math.cos(t * 8 + f) * 0.12)
+      c.rotation.y = t * 0.6 + f
+    }
+    luz.intensity = (quality === 'alta' ? 9 : 6) * (0.85 + Math.sin(t * 17) * 0.08 + Math.sin(t * 7.3) * 0.07)
+    for (const s of fumaca) {
+      const k = (t * 0.12 + (s.userData.fase as number)) % 1
+      s.position.set(Math.sin(k * 6 + (s.userData.fase as number) * 9) * 0.15, 0.8 + k * 2.2, 0)
+      s.scale.setScalar(0.35 + k * 1.1)
+      ;(s.material as THREE.SpriteMaterial).opacity = Math.sin(k * Math.PI) * 0.22
+    }
+    for (let i = 0; i < nFaiscas; i++) {
+      const k = (t * 0.35 + i / nFaiscas) % 1
+      fp[i * 3] = Math.sin(i * 12.9 + k * 4) * 0.25 * k
+      fp[i * 3 + 1] = 0.25 + k * 1.6
+      fp[i * 3 + 2] = Math.cos(i * 7.7 + k * 3) * 0.25 * k
+    }
+    faiscas.geometry.attributes.position.needsUpdate = true
+  }
+  return { grupo: g, animar }
+}
+
+function construirBau(m: Mats, pronto: boolean) {
+  const g = new THREE.Group()
+  const madeira = m.std('#8a5a2b')
+  const ouro = m.std('#e0b44c', { metalness: 0.6, roughness: 0.35, flatShading: false })
+  // suporte
+  g.add(malha(new THREE.BoxGeometry(0.95, 0.32, 0.62), m.std('#6b4a2b'), 0, 0.16, 0))
+  const corpo = new THREE.Group()
+  corpo.position.y = 0.32
+  corpo.add(malha(new THREE.BoxGeometry(0.72, 0.38, 0.46), madeira, 0, 0.19, 0))
+  for (const x of [-0.27, 0.27]) corpo.add(malha(new THREE.BoxGeometry(0.06, 0.4, 0.48), ouro, x, 0.19, 0))
+  corpo.add(malha(new THREE.BoxGeometry(0.1, 0.12, 0.04), ouro, 0, 0.3, 0.24))
+  // tampa com dobradiça atrás
+  const tampa = new THREE.Group()
+  tampa.position.set(0, 0.38, -0.23)
+  const arco = malha(new THREE.CylinderGeometry(0.23, 0.23, 0.72, 12, 1, false, 0, Math.PI), madeira, 0, 0, 0.23)
+  arco.rotation.z = Math.PI / 2
+  tampa.add(arco)
+  for (const x of [-0.27, 0.27]) {
+    const fita = malha(new THREE.CylinderGeometry(0.24, 0.24, 0.06, 12, 1, false, 0, Math.PI), ouro, x, 0, 0.23)
+    fita.rotation.z = Math.PI / 2
+    tampa.add(fita)
+  }
+  corpo.add(tampa)
+  g.add(corpo)
+  let animar = (_t: number) => {}
+  if (pronto) {
+    const brilho = new THREE.PointLight('#ffd166', 4, 2.5, 1.5)
+    brilho.position.set(0, 0.85, 0)
+    g.add(brilho)
+    const luzInterna = malha(new THREE.PlaneGeometry(0.6, 0.38), new THREE.MeshBasicMaterial({ color: '#ffe7a0' }), 0, 0.7, 0)
+    luzInterna.rotation.x = -Math.PI / 2
+    g.add(luzInterna)
+    const tex = texturaMancha('255,214,120')
+    const aura = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.55, depthWrite: false, blending: THREE.AdditiveBlending }))
+    aura.position.set(0, 0.95, 0)
+    aura.scale.setScalar(1.4)
+    g.add(aura)
+    const estrela = new THREE.OctahedronGeometry(0.05)
+    const brilhos = Array.from({ length: 6 }, (_, i) => {
+      const b = new THREE.Mesh(estrela, new THREE.MeshBasicMaterial({ color: '#fff3c4' }))
+      b.userData.fase = i
+      g.add(b)
+      return b
+    })
+    animar = (t) => {
+      tampa.rotation.x = -0.95 + Math.sin(t * 2) * 0.05
+      aura.material.opacity = 0.45 + Math.sin(t * 3) * 0.12
+      for (const b of brilhos) {
+        const k = (t * 0.4 + (b.userData.fase as number) / 6) % 1
+        const a = (b.userData.fase as number) * 1.05
+        b.position.set(Math.cos(a) * 0.3, 0.75 + k * 0.7, Math.sin(a) * 0.2)
+        b.scale.setScalar(Math.sin(k * Math.PI))
+        b.rotation.y = t * 3
+      }
+    }
+  }
+  return { grupo: g, animar }
+}
+
+/**
+ * Papel do quadro, sem texto (0.17.3): um sol nascente (o desafio de cada dia)
+ * sobre três bilhetes presos por alfinetes. É só decoração; o acesso é o rótulo
+ * "Desafio diário" e a placa "Missões" do HUD.
+ */
+function texturaQuadro() {
+  const c = document.createElement('canvas')
+  c.width = 256
+  c.height = 192
+  const g = c.getContext('2d')!
+  g.fillStyle = '#efe0bb'
+  g.fillRect(0, 0, 256, 192)
+  g.strokeStyle = 'rgba(92, 61, 34, 0.35)'
+  g.lineWidth = 3
+  g.strokeRect(8, 8, 240, 176)
+  // sol nascente
+  g.fillStyle = '#d9a441'
+  g.beginPath()
+  g.arc(128, 62, 22, Math.PI, 0)
+  g.fill()
+  g.strokeStyle = '#d9a441'
+  g.lineWidth = 4
+  g.lineCap = 'round'
+  for (let i = 1; i < 8; i++) {
+    const a = Math.PI + (i * Math.PI) / 8
+    g.beginPath()
+    g.moveTo(128 + Math.cos(a) * 30, 62 + Math.sin(a) * 30)
+    g.lineTo(128 + Math.cos(a) * 40, 62 + Math.sin(a) * 40)
+    g.stroke()
+  }
+  g.fillStyle = 'rgba(92, 61, 34, 0.55)'
+  g.fillRect(70, 64, 116, 3)
+  // três bilhetes presos por alfinetes
+  const bilhetes: [number, number, number][] = [[44, 84, -0.06], [104, 80, 0.04], [164, 86, -0.03]]
+  for (const [x, y, r] of bilhetes) {
+    g.save()
+    g.translate(x + 24, y + 30)
+    g.rotate(r)
+    g.fillStyle = 'rgba(0, 0, 0, 0.12)'
+    g.fillRect(-22, -26, 48, 60)
+    g.fillStyle = '#fbf3df'
+    g.fillRect(-24, -30, 48, 60)
+    g.fillStyle = 'rgba(92, 61, 34, 0.4)'
+    for (let i = 0; i < 4; i++) g.fillRect(-16, -12 + i * 11, 32 - (i % 2) * 10, 3)
+    g.fillStyle = '#a63a2a'
+    g.beginPath()
+    g.arc(0, -24, 4, 0, Math.PI * 2)
+    g.fill()
+    g.restore()
+  }
+  const t = new THREE.CanvasTexture(c)
+  t.colorSpace = THREE.SRGBColorSpace
+  return t
+}
+
+function construirQuadro(m: Mats) {
+  const g = new THREE.Group()
+  const madeira = m.std('#6b4a2b')
+  for (const x of [-0.72, 0.72]) g.add(malha(new THREE.CylinderGeometry(0.05, 0.06, 2, 6), madeira, x, 1, 0))
+  g.add(malha(new THREE.BoxGeometry(1.36, 1.0, 0.07), m.std('#7d5733'), 0, 1.35, 0))
+  const papel = new THREE.MeshStandardMaterial({ map: texturaQuadro(), roughness: 1 })
+  m.cache.set('quadro-papel', papel)
+  g.add(malha(new THREE.PlaneGeometry(1.18, 0.86), papel, 0, 1.35, 0.04))
+  const telhado = malha(new THREE.BoxGeometry(1.6, 0.06, 0.32), madeira, 0, 1.92, 0.04)
+  telhado.rotation.x = 0.25
+  g.add(telhado)
+  return g
+}
+
+function construirMesa(m: Mats) {
+  const g = new THREE.Group()
+  const madeira = m.std('#7a5230')
+  g.add(malha(new THREE.BoxGeometry(1.1, 0.06, 0.62), madeira, 0, 0.72, 0))
+  for (const [x, z] of [[-0.48, -0.25], [0.48, -0.25], [-0.48, 0.25], [0.48, 0.25]]) g.add(malha(new THREE.BoxGeometry(0.06, 0.72, 0.06), madeira, x, 0.36, z))
+  // livro aberto
+  const pagina = m.std('#f3ead2')
+  for (const lado of [-1, 1]) {
+    const p = malha(new THREE.BoxGeometry(0.22, 0.02, 0.3), pagina, lado * 0.11, 0.77, 0.05)
+    p.rotation.z = -lado * 0.12
+    g.add(p)
+  }
+  g.add(malha(new THREE.BoxGeometry(0.47, 0.015, 0.32), m.std('#6e2b20'), 0, 0.755, 0.05))
+  // pilha de livros
+  const cores = ['#2f4766', '#8e3328', '#5c7046']
+  cores.forEach((c, i) => {
+    const l = malha(new THREE.BoxGeometry(0.26, 0.06, 0.2), m.std(c), 0.36, 0.78 + i * 0.06, -0.12)
+    l.rotation.y = i * 0.25
+    g.add(l)
+  })
+  // pergaminhos
+  for (let i = 0; i < 2; i++) {
+    const r = malha(new THREE.CylinderGeometry(0.04, 0.04, 0.36, 8), m.std('#e9d9b0'), -0.33, 0.79, -0.1 + i * 0.12)
+    r.rotation.z = Math.PI / 2
+    r.rotation.y = 0.3 * i
+    g.add(r)
+  }
+  return g
+}
+
+function barril(m: Mats, x: number, z: number) {
+  const g = new THREE.Group()
+  g.add(malha(new THREE.CylinderGeometry(0.26, 0.24, 0.62, 10), m.std('#7d5230'), 0, 0.31, 0))
+  for (const y of [0.12, 0.5]) g.add(malha(new THREE.TorusGeometry(0.262, 0.015, 4, 14), m.std('#3d2b1f'), 0, y, 0).rotateX(Math.PI / 2))
+  g.position.set(x, 0, z)
+  return g
+}
+
+// ---------- elementos liberados com o progresso ----------
+
+function jarros(m: Mats) {
+  const g = new THREE.Group()
+  const perfil = [new THREE.Vector2(0, 0), new THREE.Vector2(0.12, 0.02), new THREE.Vector2(0.17, 0.15), new THREE.Vector2(0.14, 0.3), new THREE.Vector2(0.07, 0.38), new THREE.Vector2(0.08, 0.44)]
+  const geo = new THREE.LatheGeometry(perfil, 10)
+  ;[[0, 0, 1], [0.32, 0.1, 0.8], [0.15, -0.28, 0.9]].forEach(([x, z, s], i) => {
+    const j = malha(geo, m.std(i % 2 ? '#b0623a' : '#c47a48'), x, 0, z)
+    j.scale.setScalar(s)
+    g.add(j)
+  })
+  return g
+}
+
+function palmeira(m: Mats, s: number) {
+  const g = new THREE.Group()
+  const tronco = m.std('#8a6a44')
+  let y = 0
+  let x = 0
+  for (let i = 0; i < 7; i++) {
+    const seg = malha(new THREE.CylinderGeometry(0.09 - i * 0.004, 0.11 - i * 0.004, 0.42, 6), tronco, x, y + 0.21, 0)
+    seg.rotation.z = -0.06 * i
+    g.add(seg)
+    y += 0.4
+    x += 0.03 * i
+  }
+  const folha = m.std('#4f8a3a', { side: THREE.DoubleSide })
+  for (let i = 0; i < 7; i++) {
+    const f = malha(new THREE.ConeGeometry(0.14, 1.3, 4), folha, x, y, 0)
+    f.scale.set(1, 1, 0.25)
+    f.geometry.translate(0, 0.65, 0)
+    f.rotation.set(0, (i / 7) * Math.PI * 2, 1.15 + (i % 2) * 0.2, 'YXZ')
+    g.add(f)
+  }
+  g.scale.setScalar(s)
+  return g
+}
+
+function lanterna(m: Mats) {
+  const g = new THREE.Group()
+  g.add(malha(new THREE.CylinderGeometry(0.03, 0.035, 1.5, 6), m.std('#5a3d24'), 0, 0.75, 0))
+  g.add(malha(new THREE.BoxGeometry(0.28, 0.03, 0.03), m.std('#5a3d24'), 0.12, 1.48, 0))
+  const lamp = malha(new THREE.BoxGeometry(0.12, 0.16, 0.12), new THREE.MeshStandardMaterial({ color: '#ffd27a', emissive: '#ffb347', emissiveIntensity: 1.6 }), 0.24, 1.36, 0)
+  m.cache.set(`lanterna-${Math.random()}`, lamp.material as THREE.Material)
+  g.add(lamp)
+  return g
+}
+
+function estandarte(m: Mats) {
+  const g = new THREE.Group()
+  g.add(malha(new THREE.CylinderGeometry(0.04, 0.045, 3, 6), m.std('#5a3d24'), 0, 1.5, 0))
+  g.add(malha(new THREE.SphereGeometry(0.07, 8, 6), m.std('#e0b44c', { metalness: 0.6, roughness: 0.4 }), 0, 3.03, 0))
+  const c = document.createElement('canvas')
+  c.width = 64
+  c.height = 96
+  const x = c.getContext('2d')!
+  x.fillStyle = '#8e3328'
+  x.fillRect(0, 0, 64, 96)
+  x.fillStyle = '#e0b44c'
+  x.fillRect(0, 8, 64, 4)
+  x.fillRect(0, 84, 64, 4)
+  // lamparina estilizada
+  x.beginPath()
+  x.ellipse(32, 52, 16, 8, 0, 0, Math.PI * 2)
+  x.fill()
+  x.beginPath()
+  x.moveTo(32, 26)
+  x.quadraticCurveTo(40, 36, 32, 44)
+  x.quadraticCurveTo(24, 36, 32, 26)
+  x.fill()
+  const tex = new THREE.CanvasTexture(c)
+  tex.colorSpace = THREE.SRGBColorSpace
+  const geo = new THREE.PlaneGeometry(0.62, 0.95, 8, 1)
+  const pano = malha(geo, new THREE.MeshStandardMaterial({ map: tex, side: THREE.DoubleSide, roughness: 0.95 }), 0.33, 2.45, 0)
+  m.cache.set('estandarte', pano.material as THREE.Material)
+  g.add(pano)
+  const base = geo.attributes.position.array.slice() as Float32Array
+  const animar = (t: number) => {
+    const p = geo.attributes.position
+    for (let i = 0; i < p.count; i++) {
+      const bx = base[i * 3]
+      p.setZ(i, Math.sin(t * 2.4 + bx * 6) * 0.06 * (bx + 0.31))
+    }
+    p.needsUpdate = true
+  }
+  return { grupo: g, animar }
+}
+
+function poco(m: Mats) {
+  const g = new THREE.Group()
+  g.add(malha(new THREE.CylinderGeometry(0.55, 0.6, 0.6, 12, 1, true), m.std('#a39784', { side: THREE.DoubleSide }), 0, 0.3, 0))
+  g.add(malha(new THREE.TorusGeometry(0.56, 0.07, 5, 14), m.std('#958a78'), 0, 0.6, 0).rotateX(Math.PI / 2))
+  const agua = malha(new THREE.CircleGeometry(0.5, 12), m.std('#3d6f8c', { roughness: 0.2 }), 0, 0.35, 0)
+  agua.rotation.x = -Math.PI / 2
+  g.add(agua)
+  for (const x of [-0.55, 0.55]) g.add(malha(new THREE.BoxGeometry(0.07, 1.3, 0.07), m.std('#5a3d24'), x, 0.65, 0))
+  g.add(malha(new THREE.CylinderGeometry(0.04, 0.04, 1.2, 6), m.std('#5a3d24'), 0, 1.2, 0).rotateZ(Math.PI / 2))
+  g.add(malha(new THREE.CylinderGeometry(0.1, 0.08, 0.16, 8), m.std('#7d5230'), 0.2, 0.85, 0))
+  return g
+}
+
+function ovelhas(m: Mats) {
+  const g = new THREE.Group()
+  const la = m.std('#f1ebdf')
+  const escuro = m.std('#3a3029')
+  const cabecas: THREE.Object3D[] = []
+  ;[[0, 0, 0], [1.1, 0.5, 1.2], [-0.9, 0.7, -0.6]].forEach(([x, z, r], i) => {
+    const o = new THREE.Group()
+    const corpo = malha(new THREE.IcosahedronGeometry(0.32, 1), la, 0, 0.42, 0)
+    corpo.scale.set(1.25, 0.9, 0.9)
+    o.add(corpo)
+    const cab = malha(new THREE.BoxGeometry(0.16, 0.18, 0.2), escuro, 0.42, 0.5, 0)
+    cab.userData.fase = i * 1.3
+    cabecas.push(cab)
+    o.add(cab)
+    for (const [lx, lz] of [[-0.2, -0.12], [-0.2, 0.12], [0.2, -0.12], [0.2, 0.12]]) o.add(malha(new THREE.CylinderGeometry(0.03, 0.03, 0.22, 4), escuro, lx, 0.11, lz))
+    o.position.set(x, 0, z)
+    o.rotation.y = r
+    g.add(o)
+  })
+  const animar = (t: number) => {
+    for (const c of cabecas) c.position.y = 0.46 + Math.sin(t * 0.9 + (c.userData.fase as number)) * 0.06
+  }
+  return { grupo: g, animar }
+}
+
+function jardim(m: Mats) {
+  const g = new THREE.Group()
+  const caule = m.std('#4f7a35')
+  const cores = ['#e8a1b5', '#f2d36b', '#f4f0e8', '#b98ad6']
+  for (let i = 0; i < 26; i++) {
+    const lado = i % 2 ? 1 : -1
+    const z = -1.4 - (i >> 1) * 0.9
+    const x = -Math.sin(z * 0.25) * 1.2 + lado * (1.25 + Math.sin(i * 5.1) * 0.2)
+    g.add(malha(new THREE.CylinderGeometry(0.012, 0.012, 0.22, 3), caule, x, 0.11, z))
+    g.add(malha(new THREE.IcosahedronGeometry(0.05, 0), m.std(cores[i % 4]), x, 0.24, z))
+    if (i % 3 === 0) g.add(arbusto(m, x + lado * 0.3, z + 0.2, 0.55, '#6b9a44'))
+  }
+  return g
+}
+
+// ---------- disposição (larga no computador, compacta no celular) ----------
+
+/**
+ * [x, z] na tela larga, [x, z] na tela estreita e, opcionalmente, a escala na
+ * tela estreita. Só a posição e o tamanho na cena mudam; quais são os elementos
+ * e quando são liberados continua igual (src/data/acampamento.ts).
+ *
+ * Tela estreita (0.17.2): composição própria em três planos, para que nada
+ * dispute o espaço do personagem, que fica no centro:
+ * - perto, nas laterais: fogueira (à esquerda) e baú (à direita);
+ * - meio: mesa (esquerda), jarros e quadro (direita), lanternas no caminho;
+ * - fundo: tendas, barris e estandarte à esquerda; poço, palmeiras e ovelhas
+ *   à direita, aparecendo acima dos objetos da frente.
+ */
+const POSICOES: Record<string, [number, number, number, number, number?]> = {
+  tenda: [-3.3, -2.3, -1.75, -6.6, 0.85],
+  fogueira: [-1.6, 0.25, -0.7, -1.0, 0.72],
+  mesa: [-3.05, -0.35, -1.1, -3.1, 0.8],
+  quadro: [1.7, -3.4, 1.5, -6.6, 0.95],
+  bau: [0.9, -0.6, 0.76, -0.9, 0.72],
+  barris: [-4.9, -1.9, -2.1, -4.6, 0.85],
+  jarros: [-2.2, -1.5, 0.82, -2.1, 0.8],
+  palmeiras: [3.3, -7.4, 1.3, -10.0],
+  lanternas: [2.0, -1.0, 1.7, -4.3],
+  'tenda-grande': [-5.2, -6.8, -3.0, -11.5],
+  estandarte: [-1.0, -3.6, -0.65, -7.5],
+  poco: [3.9, -5.4, 1.15, -3.5, 0.75],
+  ovelhas: [4.8, -9.0, 2.4, -12.5],
+}
+
+/**
+ * Tablet em pé (0.17.3): para alguns objetos, um ponto intermediário [x, z]
+ * entre a tela larga e a estreita, para que fiquem inteiros no quadro. A
+ * posição segue em linha reta da tela larga até este ponto e dele até a tela
+ * estreita (E_MEIO é o fator de tela estreita de um tablet de 768 × 1024).
+ */
+const E_MEIO = 0.64
+const MEIO: Record<string, [number, number]> = {
+  poco: [1.2, -4.0],
+  barris: [-2.2, -3.8],
+  'tenda-grande': [-2.2, -12.5],
+}
+
+export function createCamp(container: HTMLElement, appearance: CharacterAppearance, opts: CampOptions): CampHandle {
+  const { quality, reduced } = opts
+  const renderer = createRenderer(quality)
+  renderer.setClearColor('#9dbbd2', 1)
+  renderer.toneMappingExposure = 1.0
+  const canvas = renderer.domElement
+  canvas.className = 'camp-canvas'
+  container.appendChild(canvas)
+
+  const scene = new THREE.Scene()
+  // névoa quente de fim de tarde: dá profundidade às cordilheiras
+  scene.fog = new THREE.Fog('#d8c7a8', 24, 360)
+  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 400)
+  const m = criarMateriais(quality)
+  const animacoes: ((t: number) => void)[] = []
+
+  // luz de fim de tarde
+  const sol = new THREE.DirectionalLight('#ffd49a', 2.7)
+  sol.position.set(7, 9, 5)
+  if (quality === 'alta') {
+    sol.castShadow = true
+    sol.shadow.mapSize.set(1024, 1024)
+    Object.assign(sol.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: 1, far: 30 })
+    sol.shadow.bias = -0.0005
+    sol.shadow.normalBias = 0.03
+  }
+  // preenchimento vindo da câmera, para o rosto do personagem não ficar escuro
+  const frente = new THREE.DirectionalLight('#fff0dc', 0.9)
+  frente.position.set(-1, 3, 8)
+  // (sem luz extra de contorno: custava cerca de 10% dos quadros em aparelhos
+  // sem placa de vídeo; o céu mais frio da luz hemisférica faz esse papel)
+  scene.add(sol, sol.target, frente, new THREE.HemisphereLight('#c2d6f0', '#6b4a2b', 1.2))
+
+  scene.add(construirCeu(), construirNuvens(m), construirChao(), construirPedrasDoCaminho(m), construirMontanhas(m))
+  scene.add(construirCordilheira(m), construirFlorestas(m, quality), construirRochedos(m), construirTufos(m, quality))
+  for (const [x, z, s] of [[-7, -6, 1.1], [-8.5, -3, 0.9], [7.5, -7, 1.2], [9, -4, 0.9], [-10, -9, 1.3], [11, -10, 1.1], [-5, -10, 1], [6, -12, 1.2], [-13, -6, 1], [13, -6, 1.2]]) scene.add(cipreste(m, x, z, s))
+  for (const [x, z, s] of [[-5, 1.6, 0.9], [4.4, 1.8, 0.8], [-6.5, -1.2, 1.1], [6.4, -2.2, 1], [3.4, 2.6, 0.7]]) scene.add(arbusto(m, x, z, s))
+  for (const [x, z, s] of [[3.7, 1.2, 0.8], [-4.4, 2.2, 0.7], [5.4, 0.2, 1.1], [-2.6, 2.6, 0.5]]) scene.add(pedra(m, x, z, s, x))
+
+  // objetos com posição adaptável
+  const posicionaveis = new Map<string, THREE.Object3D>()
+  const colocar = (id: string, o: THREE.Object3D, rotY = 0) => {
+    o.rotation.y = rotY
+    posicionaveis.set(id, o)
+    scene.add(o)
+    return o
+  }
+  const tenda = colocar('tenda', construirTenda(m, 2.4, 2.6, 1.9, '#e9dcc0', '#b06a3a'), 0.45)
+  const fogo = construirFogueira(m, quality)
+  colocar('fogueira', fogo.grupo)
+  if (!reduced) animacoes.push(fogo.animar)
+  const mesa = colocar('mesa', construirMesa(m), 0.6)
+  const quadro = colocar('quadro', construirQuadro(m), -0.45)
+  const bau = construirBau(m, opts.bauPronto)
+  colocar('bau', bau.grupo, -0.35)
+  if (!reduced) animacoes.push(bau.animar)
+  else bau.animar(0)
+  const barris = new THREE.Group()
+  barris.add(barril(m, 0, 0), barril(m, 0.55, 0.2), barril(m, 0.25, -0.45))
+  colocar('barris', barris)
+
+  const tem = new Set(opts.elementos)
+  if (tem.has('jarros')) colocar('jarros', jarros(m))
+  if (tem.has('palmeiras')) {
+    const p = new THREE.Group()
+    p.add(palmeira(m, 1.2), palmeira(m, 0.9).translateX(1.2).translateZ(0.8))
+    colocar('palmeiras', p)
+  }
+  if (tem.has('lanternas')) {
+    const l = new THREE.Group()
+    l.add(lanterna(m), lanterna(m).translateX(-2.6).translateZ(-1.4))
+    colocar('lanternas', l)
+  }
+  if (tem.has('tenda-grande')) colocar('tenda-grande', construirTenda(m, 3.2, 3.4, 2.5, '#d9c7a2', '#6e4426'), 0.6)
+  if (tem.has('estandarte')) {
+    const e = estandarte(m)
+    colocar('estandarte', e.grupo)
+    if (!reduced) animacoes.push(e.animar)
+  }
+  if (tem.has('poco')) colocar('poco', poco(m))
+  if (tem.has('ovelhas')) {
+    const o = ovelhas(m)
+    colocar('ovelhas', o.grupo, -0.6)
+    if (!reduced) animacoes.push(o.animar)
+  }
+  if (tem.has('jardim')) scene.add(jardim(m))
+
+  // ---------- personagem ----------
+  const sombra = new THREE.Mesh(new THREE.CircleGeometry(0.42, 20), new THREE.MeshBasicMaterial({ map: texturaMancha('0,0,0'), transparent: true, opacity: 0.45, depthWrite: false }))
+  sombra.rotation.x = -Math.PI / 2
+  sombra.position.y = 0.01
+  scene.add(sombra)
+  let rig: Rig | null = null
+  let chave = ''
+  let ultima: CharacterAppearance | null = null
+  let pedido = 0
+  let disposed = false
+  const setAppearance = (a: CharacterAppearance) => {
+    const k = appearanceKey(a)
+    if (k === chave) return
+    chave = k
+    if (rig?.recolorir && ultima && soCores(ultima, a)) {
+      ultima = a
+      rig.recolorir(a)
+      return
+    }
+    ultima = a
+    const meu = ++pedido
+    montar(a, quality).then((novo) => {
+      if (disposed || meu !== pedido) return novo.dispose()
+      if (rig) {
+        scene.remove(rig.root)
+        rig.dispose()
+      }
+      rig = novo
+      rig.root.traverse((o) => {
+        if ((o as THREE.Mesh).isMesh) o.castShadow = true
+      })
+      scene.add(rig.root)
+      opts.onReady?.()
+    })
+  }
+  setAppearance(appearance)
+
+  // gestos: aceno ao chegar, depois espera com pequenos gestos de vez em quando
+  let pose: Pose3D = reduced ? 'idle' : 'wave'
+  let fimGesto = reduced ? 0 : 3.2
+  let proximoGesto = 14
+  const gesto = (p: Pose3D, s = 3) => {
+    if (reduced) return
+    pose = p
+    fimGesto = t + s
+  }
+  if (opts.bauPronto && !reduced) proximoGesto = 5
+
+  // ---------- alvos clicáveis ----------
+  const alvos: { id: AlvoAcampamento; obj: THREE.Object3D; ancora: () => THREE.Vector3 }[] = [
+    { id: 'tenda', obj: tenda, ancora: () => tenda.localToWorld(new THREE.Vector3(0, lerp(2.25, 1.75, estreita), 0)) },
+    { id: 'mesa', obj: mesa, ancora: () => mesa.localToWorld(new THREE.Vector3(0, lerp(1.15, 0.8, estreita), 0)) },
+    { id: 'quadro', obj: quadro, ancora: () => quadro.localToWorld(new THREE.Vector3(0, 2.05, 0)) },
+    { id: 'bau', obj: bau.grupo, ancora: () => bau.grupo.localToWorld(new THREE.Vector3(0, 0.85, 0)) },
+    { id: 'personagem', obj: sombra, ancora: () => new THREE.Vector3(0, 1.95, 0) },
+  ]
+  const raycaster = new THREE.Raycaster()
+  const ponteiro = new THREE.Vector2()
+  const alvoEm = (ev: PointerEvent): AlvoAcampamento | null => {
+    const r = canvas.getBoundingClientRect()
+    ponteiro.set(((ev.clientX - r.left) / r.width) * 2 - 1, -((ev.clientY - r.top) / r.height) * 2 + 1)
+    raycaster.setFromCamera(ponteiro, camera)
+    const objs = alvos.filter((a) => a.id !== 'personagem').map((a) => a.obj)
+    if (rig) objs.push(rig.root)
+    const hit = raycaster.intersectObjects(objs, true)[0]
+    if (!hit) return null
+    let o: THREE.Object3D | null = hit.object
+    while (o) {
+      if (rig && o === rig.root) return 'personagem'
+      const a = alvos.find((x) => x.obj === o)
+      if (a) return a.id
+      o = o.parent
+    }
+    return null
+  }
+  let inicio: { x: number; y: number } | null = null
+  const onDown = (ev: PointerEvent) => (inicio = { x: ev.clientX, y: ev.clientY })
+  const onUp = (ev: PointerEvent) => {
+    if (!inicio || Math.hypot(ev.clientX - inicio.x, ev.clientY - inicio.y) > 8) return
+    inicio = null
+    const a = alvoEm(ev)
+    if (a) opts.onSelect(a)
+  }
+  const onMove = (ev: PointerEvent) => {
+    if (ev.pointerType !== 'mouse') return
+    canvas.style.cursor = alvoEm(ev) ? 'pointer' : 'default'
+  }
+  canvas.addEventListener('pointerdown', onDown)
+  canvas.addEventListener('pointerup', onUp)
+  canvas.addEventListener('pointermove', onMove)
+
+  // áreas da interface que os rótulos não podem cobrir nem encostar (HUD, placa
+  // "Missões"): atualizadas a cada segundo, em coordenadas do palco da cena
+  let evitar: { e: number; t: number; d: number; b: number }[] = []
+  const medirInterface = () => {
+    const palco = container.closest('.camp-stage')
+    if (!palco) return
+    const base = container.getBoundingClientRect()
+    evitar = Array.from(palco.querySelectorAll('.camp-hud > *, .camp-missoes-botao')).map((el) => {
+      const r = el.getBoundingClientRect()
+      return { e: r.left - base.left, t: r.top - base.top, d: r.right - base.left, b: r.bottom - base.top }
+    })
+  }
+
+  // ---------- câmera e disposição ----------
+  let estreita = 0
+  const alvoCamera = new THREE.Vector3()
+  const posCamera = new THREE.Vector3()
+  const resize = () => {
+    const w = Math.max(1, container.clientWidth)
+    const h = Math.max(1, container.clientHeight)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, quality === 'alta' ? 1.75 : 1))
+    renderer.setSize(w, h, false)
+    const aspect = w / h
+    camera.aspect = aspect
+    estreita = THREE.MathUtils.clamp((1.25 - aspect) / 0.7, 0, 1)
+    container.dataset.estreita = estreita.toFixed(2)
+    camera.fov = lerp(32, 44, estreita)
+    camera.updateProjectionMatrix()
+    for (const [id, o] of posicionaveis) {
+      const p = POSICOES[id]
+      if (!p) continue
+      const meio = MEIO[id]
+      if (meio && estreita <= E_MEIO) o.position.set(lerp(p[0], meio[0], estreita / E_MEIO), 0, lerp(p[1], meio[1], estreita / E_MEIO))
+      else if (meio) o.position.set(lerp(meio[0], p[2], (estreita - E_MEIO) / (1 - E_MEIO)), 0, lerp(meio[1], p[3], (estreita - E_MEIO) / (1 - E_MEIO)))
+      else o.position.set(lerp(p[0], p[2], estreita), 0, lerp(p[1], p[3], estreita))
+      o.scale.setScalar(lerp(1, p[4] ?? 1, estreita))
+    }
+    // Etapa 2: câmera mais próxima, para o personagem ocupar cerca de 40–45% da
+    // altura da cena; no computador ele fica um pouco à direita do centro.
+    // Câmera quase nivelada: o horizonte fica perto do meio da tela e a paisagem
+    // (céu, cordilheiras, florestas) aparece atrás do personagem.
+    const lado = lerp(-0.85, 0, estreita)
+    // nas telas estreitas a câmera sobe um pouco e olha levemente para baixo:
+    // os objetos do fundo aparecem acima dos da frente, em vez de atrás deles
+    alvoCamera.set(lado, lerp(1.12, 0.92, estreita), lerp(-0.4, -0.5, estreita))
+    posCamera.set(lado, lerp(1.2, 1.95, estreita), lerp(6.4, 4.6, estreita))
+    camera.position.copy(posCamera)
+    camera.lookAt(alvoCamera)
+  }
+  resize()
+  window.setTimeout(medirInterface, 0)
+  const ro = new ResizeObserver(() => {
+    resize()
+    medirInterface()
+  })
+  ro.observe(container)
+
+  // ---------- laço ----------
+  let visivel = true
+  const io = new IntersectionObserver((e) => {
+    visivel = e.some((x) => x.isIntersecting)
+    laco()
+  })
+  io.observe(container)
+  let t = 0
+  let ultimo = performance.now()
+  const minimo = quality === 'leve' ? 1 / 30 : 0
+  const v = new THREE.Vector3()
+  const FOLGA = 18
+  const ENTRE = 28
+  const posicionarRotulos = () => {
+    const w = container.clientWidth
+    const h = container.clientHeight
+    const postos: { e: number; t: number; d: number; b: number }[] = []
+    for (const a of alvos) {
+      const el = opts.rotulos.get(a.id)
+      if (!el) continue
+      v.copy(a.ancora()).project(camera)
+      // Etapa 2: se o objeto sai do quadro pelos lados (telas estreitas), o rótulo
+      // continua visível, preso à borda — nenhum acesso da cena se perde
+      const dentro = v.z < 1 && v.y < 0.98 && v.y > -0.98
+      // o rótulo nunca sai da tela: fica preso às bordas
+      const meia = el.offsetWidth / 2 + 12
+      const x = Math.min(w - meia, Math.max(meia, ((v.x + 1) / 2) * w))
+      // se encostar no HUD ou na placa "Missões", desce até ficar com folga abaixo dela
+      let y = ((1 - v.y) / 2) * h
+      const alto = el.offsetHeight
+      for (const r of evitar) {
+        if (x + meia > r.e - FOLGA && x - meia < r.d + FOLGA && y > r.t - FOLGA && y - alto < r.b + FOLGA) y = r.b + FOLGA + alto
+      }
+      // dois rótulos nunca ficam colados: se encostar num rótulo já posto, desce
+      for (const r of postos) {
+        if (x + meia > r.e - ENTRE && x - meia < r.d + ENTRE && y > r.t - ENTRE && y - alto < r.b + ENTRE) y = r.b + ENTRE + alto
+      }
+      if (dentro) postos.push({ e: x - meia, t: y - alto, d: x + meia, b: y })
+      el.style.transform = `translate(${x}px, ${y}px) translate(-50%, -100%)`
+      el.dataset.visivel = dentro ? 'sim' : 'nao'
+    }
+  }
+  // medição do personagem na tela (fração da altura e da largura), usada nas
+  // conferências de composição: data-personagem="topo,base,esquerda,direita"
+  // (do chão ao topo da cabeça, sem contar o cajado erguido)
+  let quadros = 0
+  const canto = new THREE.Vector3()
+  const medirPersonagem = () => {
+    if (!rig) return
+    const cabeca = rig.root.getObjectByName('head')
+    rig.root.updateWorldMatrix(true, true)
+    const topoY = cabeca ? cabeca.getWorldPosition(canto).y + 0.16 : 1.75
+    const pts = [[0, 0], [0, topoY], [-0.32, topoY * 0.6], [0.32, topoY * 0.6]].map(([x, y]) => {
+      canto.set(x, y, 0).project(camera)
+      return [(canto.x + 1) / 2, (1 - canto.y) / 2]
+    })
+    const xs = pts.map((q) => q[0])
+    container.dataset.personagem = [pts[1][1], pts[0][1], Math.min(...xs), Math.max(...xs)].map((n) => n.toFixed(3)).join(',')
+    // área de cada objeto do acampamento na tela (esquerda, topo, direita, base), para conferir composição
+    const areas: Record<string, number[]> = {}
+    const caixaObj = new THREE.Box3()
+    for (const [id, o] of posicionaveis) {
+      caixaObj.setFromObject(o)
+      let e = 9, t = 9, d = -9, b = -9
+      for (let i = 0; i < 8; i++) {
+        canto.set(i & 1 ? caixaObj.max.x : caixaObj.min.x, i & 2 ? caixaObj.max.y : caixaObj.min.y, i & 4 ? caixaObj.max.z : caixaObj.min.z).project(camera)
+        e = Math.min(e, (canto.x + 1) / 2); d = Math.max(d, (canto.x + 1) / 2); t = Math.min(t, (1 - canto.y) / 2); b = Math.max(b, (1 - canto.y) / 2)
+      }
+      areas[id] = [e, t, d, b].map((n) => +n.toFixed(3))
+    }
+    container.dataset.objetos = JSON.stringify(areas)
+  }
+  const medidor = window.setInterval(() => {
+    medirPersonagem()
+    medirInterface()
+  }, 1000)
+  const tick = () => {
+    const agora = performance.now()
+    const passou = (agora - ultimo) / 1000
+    if (passou < minimo) return
+    const dt = Math.min(0.05, passou)
+    ultimo = agora
+    t += dt
+    if (fimGesto && t > fimGesto) {
+      pose = 'idle'
+      fimGesto = 0
+      proximoGesto = t + 12 + Math.random() * 8
+    }
+    if (!reduced && !fimGesto && t > proximoGesto) gesto(opts.bauPronto && Math.random() < 0.5 ? 'celebrate' : 'react', 3)
+    for (const f of animacoes) f(t)
+    rig?.update(pose, t, dt, reduced)
+    if (!reduced) {
+      camera.position.set(posCamera.x + Math.sin(t * 0.15) * 0.12, posCamera.y + Math.sin(t * 0.21) * 0.04, posCamera.z)
+      camera.lookAt(alvoCamera)
+    }
+    renderer.render(scene, camera)
+    posicionarRotulos()
+    if (++quadros % 30 === 0) medirPersonagem()
+  }
+  const laco = () => renderer.setAnimationLoop(!disposed && visivel && document.visibilityState !== 'hidden' ? tick : null)
+  const onVis = () => laco()
+  document.addEventListener('visibilitychange', onVis)
+  if (reduced) animacoes.length = 0
+  fogo.animar(0)
+  laco()
+  renderer.render(scene, camera)
+  posicionarRotulos()
+  medirPersonagem()
+
+  return {
+    setAppearance,
+    gesto,
+    dispose() {
+      disposed = true
+      window.clearInterval(medidor)
+      renderer.setAnimationLoop(null)
+      document.removeEventListener('visibilitychange', onVis)
+      canvas.removeEventListener('pointerdown', onDown)
+      canvas.removeEventListener('pointerup', onUp)
+      canvas.removeEventListener('pointermove', onMove)
+      ro.disconnect()
+      io.disconnect()
+      if (rig) {
+        scene.remove(rig.root)
+        rig.dispose()
+      }
+      scene.traverse((o) => {
+        const mesh = o as THREE.Mesh
+        if (mesh.geometry) mesh.geometry.dispose()
+        const mats = Array.isArray(mesh.material) ? mesh.material : mesh.material ? [mesh.material] : []
+        for (const mt of mats) {
+          for (const val of Object.values(mt)) if (val instanceof THREE.Texture) val.dispose()
+          mt.dispose()
+        }
+      })
+      renderer.dispose()
+      renderer.forceContextLoss()
+      canvas.remove()
+    },
+  }
+}

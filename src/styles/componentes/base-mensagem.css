@@ -1,0 +1,13 @@
+/* Mensagem rápida (bq-mensagem): aviso curto que some sozinho (role="status"). */
+.bq-mensagem {
+  position: fixed; left: 50%; bottom: calc(var(--nav-altura) + var(--esp-4) + env(safe-area-inset-bottom)); z-index: var(--z-mensagem);
+  transform: translateX(-50%); width: min(92vw, 460px); margin: 0; text-align: center; pointer-events: none;
+}
+.bq-mensagem__caixa {
+  display: inline-block; padding: var(--esp-2) var(--esp-4); border-radius: var(--raio-m);
+  color: var(--texto-sobre-escuro); background: var(--vidro-escuro); border: 1px solid var(--borda-ouro); box-shadow: var(--elevacao-2);
+  animation: bq-mensagem-entra var(--dur-estado) var(--curva-saida) both;
+}
+@keyframes bq-mensagem-entra { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (min-width: 960px) { .bq-mensagem { bottom: var(--esp-5); } }
+html[data-contrast='alto'] .bq-mensagem__caixa { background: var(--terra-900); border-color: var(--marfim); }

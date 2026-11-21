@@ -1,0 +1,36 @@
+/* Navegação global inferior (Etapa 2): Central, História, Quiz, Biblioteca, Perfil.
+   Celular e tablet: em todas as telas não imersivas. Computador (≥ 960 px): por
+   enquanto só na Central; as demais telas mantêm a barra superior até serem migradas. */
+.nav-global {
+  position: fixed; z-index: 45; left: 0; right: 0; bottom: 0;
+  display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--esp-1);
+  height: calc(var(--nav-altura) + env(safe-area-inset-bottom));
+  padding: 0 max(6px, env(safe-area-inset-right)) env(safe-area-inset-bottom) max(6px, env(safe-area-inset-left));
+  background: var(--superficie-madeira);
+  border-top: 2px solid var(--moldura);
+  box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.35);
+}
+.nav-global-link {
+  position: relative; margin: 6px 0; min-height: 44px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  border-radius: var(--raio-m); text-decoration: none;
+  color: var(--texto-suave-sobre-escuro); font-size: var(--fonte-12); font-weight: 750;
+  transition: background var(--dur-estado) var(--curva-saida), color var(--dur-estado) var(--curva-saida);
+}
+.nav-global-icon { display: grid; place-items: center; width: 30px; height: 30px; }
+.nav-global-icon .game-icon { transition: transform var(--dur-estado) var(--curva-saida); }
+.nav-global-link:hover { color: var(--texto-sobre-escuro); background: rgba(255, 240, 210, 0.06); }
+.nav-global-link:focus-visible { outline: 3px solid var(--foco); outline-offset: 2px; }
+.nav-global-link.active { color: var(--texto-sobre-acao); background: linear-gradient(180deg, var(--ouro-300), var(--ouro-500)); box-shadow: var(--brilho-interno), 0 0 0 1px var(--ouro-700); }
+.nav-global-link.active .game-icon { transform: translateY(-1px) scale(1.08); filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.25)); }
+
+@media (min-width: 960px) {
+  .nav-global { display: none; }
+  .app.is-camp .nav-global {
+    display: grid; left: 50%; right: auto; width: min(560px, calc(100% - 24px)); translate: -50% 0;
+    border: 2px solid var(--moldura); border-bottom: 0; border-radius: var(--raio-g) var(--raio-g) 0 0;
+  }
+  .app.is-camp.has-tabs { padding-bottom: calc(var(--nav-altura) + env(safe-area-inset-bottom)); }
+}
+html[data-contrast='alto'] .nav-global { background: var(--terra-900); border-color: var(--marfim); }
+html[data-contrast='alto'] .nav-global-link.active { background: var(--marfim); }

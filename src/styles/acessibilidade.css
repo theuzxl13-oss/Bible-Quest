@@ -1,0 +1,54 @@
+/* =========================================================
+   Acessibilidade base (Fase 1 da Etapa 2, passo 1.4, versão 0.17.6)
+   Carregado depois de global.css, tokens.css e ponte.css, sem mexer nas
+   camadas antigas. Só tokens; nada de HEX.
+   ========================================================= */
+
+/* ---------- Áreas de toque de 44 × 44 px ----------
+   A área clicável cresce com um pseudo-elemento invisível centralizado:
+   o componente continua com o mesmo tamanho e a mesma aparência.
+   inset = min(0, (lado − 44 px) / 2): só cresce o que é menor que 44 px.
+   Só em elementos clicáveis: num contêiner (como o li.chip da Biblioteca),
+   o pseudo-elemento ficaria por cima do link de dentro e roubaria o clique. */
+:is(.footer-links a, a.brand, .topbar-profile, .topnav-link, .topbar-secundario, .back-link, .btn-sm, :is(button, label).chip, .chip > a, .swatch, .icon-btn, .av-janela-acoes .link, a.link:not(:is(p, li, small, td) a)) {
+  position: relative;
+}
+:is(.footer-links a, a.brand, .topbar-profile, .topnav-link, .topbar-secundario, .back-link, .btn-sm, :is(button, label).chip, .chip > a, .swatch, .icon-btn, .av-janela-acoes .link, a.link:not(:is(p, li, small, td) a), .av-bau-topo)::before {
+  content: '';
+  position: absolute;
+  inset: min(0px, calc((100% - var(--toque-min)) / 2));
+}
+/* interruptor (checkbox estilizado): o ::after já é a bolinha; o ::before amplia a altura (30 → 44 px) */
+.switch::before { content: ''; position: absolute; inset: min(0px, calc((100% - var(--toque-min)) / 2)) 0; }
+/* seletor de dificuldade do mapa do Quiz: um <select> não aceita área invisível,
+   então a altura mínima passa de 36 para 44 px (única mudança visível de tamanho) */
+.av-dificuldade select { min-height: var(--toque-min); }
+
+/* ---------- Foco visível com contraste ----------
+   Regra geral: o contorno dourado de antes continua valendo sobre fundos
+   escuros (e segue o alto contraste antigo, via --gold-strong). Sobre pergaminho e fundos claros, a cor passa para o azul de foco
+   sobre claro (5,4:1 no pergaminho), definido pelo contêiner em --foco-local. */
+:focus-visible { outline-color: var(--foco-local, var(--gold-strong)); }
+:is(.av-janela, .notice, .av-cena .scene-card, .av-resultado .result-head, .av-jogo .quiz-top) {
+  --foco-local: var(--foco-sobre-claro);
+}
+/* páginas de aventura (Biblioteca, Perfil, Conquistas): o contorno encosta em pergaminho,
+   céu e grama ao mesmo tempo; a tinta escura contrasta com os três */
+.av-pagina { --foco-local: var(--tinta); }
+/* faixas e placas de madeira dentro das páginas claras: marfim sobre madeira */
+.av-pagina :is(.tabs, .stat-grid) { --foco-local: var(--marfim); }
+
+/* campos de formulário: além do brilho de antes, um contorno sólido */
+.field :is(input, select, textarea):focus-visible, input:not([type='hidden']):focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: var(--foco-espessura) solid var(--foco-local, var(--gold-strong));
+  outline-offset: var(--foco-afastamento);
+}
+
+/* controles sobre cenários (mapas, cena da fase, cabeçalho das páginas de
+   aventura): anel duplo, marfim junto ao controle e tinta por fora, visível
+   sobre céu claro, grama, madeira ou fundo escuro */
+:is(.av-redondo, .av-medalhao, .av-atalho, .av-bau-topo, .av-cena-pular):focus-visible {
+  outline: var(--foco-espessura) solid var(--tinta);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px var(--marfim);
+}

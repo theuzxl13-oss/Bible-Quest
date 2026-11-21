@@ -1,0 +1,31 @@
+{
+ "/historia janela": {
+  "tabs": 16,
+  "foraDaJanela": 0,
+  "nomes": [
+   "Personagens e lugares da fase",
+   "Fechar",
+   "Começar fase"
+  ],
+  "abertaDepoisDoEsc": 0
+ },
+ "/historia ajuda": {
+  "tabs": 8,
+  "foraDaJanela": 0,
+  "abertaDepoisDoEsc": 0
+ },
+ "/quiz janela": {
+  "tabs": 16,
+  "foraDaJanela": 0,
+  "nomes": [
+   "Fechar",
+   "Começar desafio"
+  ],
+  "abertaDepoisDoEsc": 0
+ },
+ "/quiz ajuda": {
+  "tabs": 8,
+  "foraDaJanela": 0,
+  "abertaDepoisDoEsc": 0
+ }
+}

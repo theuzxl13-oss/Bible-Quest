@@ -1,0 +1,10 @@
+/* Abas base (bq-abas): role="tablist", setas do teclado, 44 px de toque. */
+.bq-abas { display: flex; flex-wrap: wrap; gap: var(--esp-1); padding: var(--esp-1); border-radius: var(--raio-g); background: var(--amb-base); border: var(--borda-espessura) solid var(--terra-900); }
+.bq-aba {
+  min-height: var(--aba-altura); padding: var(--esp-2) var(--esp-4); border: 0; border-radius: var(--raio-pilula);
+  font: inherit; font-weight: var(--peso-forte); color: var(--amb-texto-sobre-base); background: transparent; cursor: pointer;
+}
+.bq-aba:hover { background: rgba(255, 255, 255, 0.08); }
+.bq-aba[aria-selected='true'] { color: var(--texto-sobre-acao); background: linear-gradient(180deg, var(--ouro-300), var(--ouro-500)); }
+.bq-aba:focus-visible { outline: var(--foco-espessura) solid var(--foco-sobre-escuro); outline-offset: var(--foco-afastamento); }
+html[data-contrast='alto'] .bq-abas { background: var(--terra-900); border-color: var(--marfim); }

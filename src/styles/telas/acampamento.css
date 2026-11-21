@@ -1,0 +1,70 @@
+/* Central do Jogador: Acampamento de Aventura (Etapa 2, tela piloto).
+   A cena ocupa a tela inteira menos a barra de navegação; sem rolagem. */
+.app.is-camp .topbar { display: none; }
+.app.is-camp main { padding-top: 0; }
+.camp { --camp-h: calc(100dvh - var(--nav-altura) - env(safe-area-inset-bottom)); }
+.camp-stage { position: relative; height: var(--camp-h); min-height: 520px; overflow: hidden; background: var(--azul-700); isolation: isolate; }
+.camp-scene { position: absolute; inset: 0; }
+.camp-canvas-host { position: absolute; inset: 0; }
+.camp-canvas { display: block; width: 100%; height: 100%; touch-action: pan-y; }
+.camp-hero { position: absolute; left: 50%; bottom: 21%; transform: translateX(-50%); pointer-events: none; }
+.camp-scene.is-2d .camp-hero { pointer-events: auto; }
+/* o personagem 2D usa o tamanho calculado na cena (sobrepõe a regra antiga da Home de 120 px) */
+.camp-scene .camp-hero.home-char .character { width: auto !important; height: auto; }
+.camp-loading {
+  position: absolute; z-index: 3; left: 50%; top: 46%; transform: translate(-50%, -50%); margin: 0;
+  display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px; border-radius: var(--raio-pilula);
+  background: var(--vidro-escuro); color: var(--texto-sobre-escuro); font-weight: 650; border: 1px solid var(--moldura);
+}
+.camp-loading-fire { width: 14px; height: 18px; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; background: radial-gradient(circle at 50% 70%, var(--ouro-300), var(--fogueira-500) 60%, var(--fogueira-700)); animation: flicker 0.6s ease-in-out infinite; }
+
+/* ---------- cenário ilustrado (sem 3D) ---------- */
+.camp-paint { position: absolute; inset: 0; overflow: hidden; background: linear-gradient(180deg, var(--azul-700) 0%, var(--azul-500) 26%, var(--pedra-300) 44%, var(--ouro-300) 56%); }
+.camp-paint > span { position: absolute; display: block; }
+.camp-paint-sun { right: 16%; top: 22%; width: 140px; height: 140px; border-radius: 50%; background: radial-gradient(circle, rgba(255, 236, 190, 0.95), rgba(242, 169, 85, 0) 70%); }
+.camp-paint-mountains { left: -5%; right: -5%; top: 34%; height: 24%; opacity: 0.85; background: linear-gradient(180deg, var(--pedra-300), var(--azul-500)); clip-path: polygon(0 100%, 8% 40%, 18% 70%, 30% 10%, 42% 60%, 55% 25%, 68% 65%, 80% 15%, 92% 55%, 100% 35%, 100% 100%); }
+.camp-paint-ridge { left: -5%; right: -5%; top: 44%; height: 18%; background: linear-gradient(180deg, var(--musgo-600), var(--floresta-700)); clip-path: polygon(0 100%, 6% 45%, 16% 70%, 28% 35%, 40% 65%, 52% 40%, 64% 72%, 76% 42%, 88% 66%, 100% 48%, 100% 100%); }
+.camp-paint-forest { top: 46%; width: 22%; height: 22%; background: var(--floresta-700); clip-path: polygon(0 100%, 6% 40%, 12% 100%, 16% 30%, 24% 100%, 30% 20%, 38% 100%, 44% 35%, 52% 100%, 58% 25%, 66% 100%, 72% 40%, 80% 100%, 86% 30%, 94% 100%, 100% 45%, 100% 100%); }
+.camp-paint-forest.is-left { left: -2%; }
+.camp-paint-forest.is-right { right: -2%; }
+.camp-paint-hills { left: -10%; right: -10%; top: 56%; height: 14%; border-radius: 50% 50% 0 0; background: var(--musgo-600); }
+.camp-paint-ground { left: 0; right: 0; top: 62%; bottom: 0; background: radial-gradient(ellipse 60% 55% at 50% 40%, var(--areia) 0 30%, var(--terra-500) 62%, var(--musgo-600) 100%); }
+.camp-paint-rocks { left: 4%; right: 4%; top: 64%; height: 10%; background: radial-gradient(ellipse 5% 40% at 8% 80%, var(--pedra-300) 0 60%, transparent 62%), radial-gradient(ellipse 4% 30% at 92% 70%, var(--pedra-300) 0 60%, transparent 62%), radial-gradient(ellipse 3% 25% at 86% 90%, var(--terra-500) 0 60%, transparent 62%); }
+.camp-paint-tent { left: 6%; top: 44%; width: 26%; max-width: 230px; aspect-ratio: 1.2; background: linear-gradient(90deg, var(--areia), var(--pergaminho) 50%, var(--areia)); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.camp-paint-tent::after { content: ''; position: absolute; left: 38%; right: 38%; bottom: 0; height: 55%; background: var(--terra-900); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.camp-paint-glow { left: 14%; top: 56%; width: 34%; height: 30%; border-radius: 50%; background: radial-gradient(circle, rgba(242, 169, 85, 0.55), rgba(242, 169, 85, 0) 70%); }
+.camp-paint-fire { left: 26%; top: 66%; width: 70px; height: 70px; }
+.camp-paint-fire i { position: absolute; left: 50%; bottom: 10px; width: 26px; height: 46px; margin-left: -13px; border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; background: radial-gradient(circle at 50% 75%, var(--ouro-300), var(--fogueira-500) 60%, var(--fogueira-700)); animation: flicker 0.7s ease-in-out infinite; }
+.camp-paint-fire i:nth-child(2) { margin-left: -26px; height: 32px; animation-delay: -0.3s; }
+.camp-paint-fire i:nth-child(3) { margin-left: 2px; height: 36px; animation-delay: -0.5s; }
+.camp-paint-fire::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 16px; border-radius: 50%; background: repeating-linear-gradient(90deg, var(--bloqueado) 0 12px, var(--pedra-300) 12px 22px); }
+.camp-paint-table { left: 8%; top: 70%; width: 120px; height: 46px; background: linear-gradient(180deg, var(--terra-500) 0 22%, transparent 22%), linear-gradient(90deg, transparent 6%, var(--terra-600) 6% 12%, transparent 12% 88%, var(--terra-600) 88% 94%, transparent 94%); }
+.camp-paint-board { right: 10%; top: 46%; width: 110px; height: 120px; background: linear-gradient(var(--pergaminho), var(--pergaminho)) 10px 10px / 90px 64px no-repeat, linear-gradient(90deg, transparent 8%, var(--terra-600) 8% 14%, transparent 14% 86%, var(--terra-600) 86% 92%, transparent 92%), linear-gradient(var(--terra-500), var(--terra-500)) 0 0 / 100% 84px no-repeat; }
+.camp-paint-chest { right: 12%; top: 69%; width: 86px; height: 58px; border-radius: 22px 22px 6px 6px; background: linear-gradient(90deg, transparent 18%, var(--ouro-500) 18% 26%, transparent 26% 74%, var(--ouro-500) 74% 82%, transparent 82%), linear-gradient(180deg, var(--terra-500), var(--terra-700)); box-shadow: 0 6px 0 var(--terra-900); }
+.camp-paint-chest.is-open { box-shadow: 0 6px 0 var(--terra-900), 0 0 40px 12px rgba(230, 199, 126, 0.7); }
+.camp-paint-vignette { inset: 0; background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(10, 6, 3, 0.45) 100%); }
+.camp-scene.is-2d .camp-label { transform: translate(-50%, -100%); }
+.camp-scene.is-2d .camp-label-tenda { left: 19%; top: 43%; }
+.camp-scene.is-2d .camp-label-mesa { left: 14%; top: 69%; }
+.camp-scene.is-2d .camp-label-quadro { left: 84%; top: 45%; }
+.camp-scene.is-2d .camp-label-bau { left: 80%; top: 66%; }
+
+@media (max-width: 599px) {
+  .camp-stage { min-height: 560px; }
+  .camp-scene.is-2d .camp-hero { bottom: 17%; }
+  /* celular, 2D: objetos nas bordas, para não ficarem atrás do personagem */
+  .camp-paint-tent { left: -4%; width: 30%; }
+  .camp-paint-board { right: 1%; top: 40%; transform: scale(0.75); transform-origin: top right; }
+  .camp-paint-chest { right: 2%; top: 72%; transform: scale(0.8); transform-origin: right; }
+  .camp-paint-table { left: 1%; top: 74%; transform: scale(0.8); transform-origin: left; }
+  .camp-paint-fire { left: 18%; top: 70%; }
+  .camp-scene.is-2d .camp-label-tenda { left: 22%; top: 36%; }
+  .camp-scene.is-2d .camp-label-mesa { left: 16%; top: 73%; }
+  .camp-scene.is-2d .camp-label-quadro { left: 75%; top: 39%; }
+  .camp-scene.is-2d .camp-label-bau { left: 84%; top: 70%; }
+  /* no 2D do celular, o rótulo do baú mostra só o ícone (o nome segue no aria-label) para não encostar no cajado */
+  .camp-scene.is-2d .camp-label-bau { left: 90%; padding-right: 6px; min-width: 36px; justify-content: center; }
+  .camp-scene.is-2d .camp-label-bau .camp-label-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+}
+@media (prefers-reduced-motion: reduce) { .camp-badge, .camp-paint-fire i, .camp-loading-fire, .camp-painel { animation: none !important; } }
+html[data-motion='reduzido'] .camp-badge, html[data-motion='reduzido'] .camp-paint-fire i, html[data-motion='reduzido'] .camp-painel { animation: none !important; }

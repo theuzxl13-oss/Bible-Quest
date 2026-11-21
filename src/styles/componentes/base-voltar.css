@@ -1,0 +1,7 @@
+/* Voltar base (bq-voltar): link com seta, 44 px de toque. */
+.bq-voltar {
+  display: inline-flex; align-items: center; gap: var(--esp-1); min-height: var(--toque-min); padding: 0 var(--esp-2) 0 0;
+  font-weight: var(--peso-forte); text-decoration: none; color: var(--link-atual, var(--link-sobre-escuro));
+}
+.bq-voltar:hover { text-decoration: underline; text-underline-offset: 3px; }
+.bq-voltar:focus-visible { outline: var(--foco-espessura) solid var(--foco-atual, var(--foco-sobre-escuro)); outline-offset: var(--foco-afastamento); border-radius: var(--raio-p); }

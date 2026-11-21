@@ -1,0 +1,20 @@
+/* Aviso base (bq-aviso): informação do sistema; não muda por ambiente.
+   O título usa a tinta, com contraste garantido sobre o pergaminho. */
+.bq-aviso {
+  --foco-atual: var(--foco-sobre-claro); --link-atual: var(--link-leitura);
+  display: flex; gap: var(--esp-3); align-items: flex-start; padding: var(--esp-3) var(--esp-4);
+  color: var(--texto-sobre-leitura); background: var(--superficie-leitura);
+  border: var(--borda-espessura) solid var(--borda-madeira); border-left-width: 6px; border-radius: var(--aviso-raio);
+}
+.bq-aviso__icone { flex-shrink: 0; display: grid; place-items: center; margin-top: 2px; }
+.bq-aviso__titulo { display: block; margin-bottom: 2px; font-weight: var(--peso-forte); color: var(--texto-sobre-leitura); }
+.bq-aviso__texto { margin: 0; }
+.bq-aviso a { color: var(--link-leitura); }
+.bq-aviso--info { border-left-color: var(--feedback-info); }
+.bq-aviso--info .bq-aviso__icone { color: var(--feedback-info); }
+.bq-aviso--sucesso { border-left-color: var(--feedback-acerto); }
+.bq-aviso--sucesso .bq-aviso__icone { color: var(--feedback-acerto-texto); }
+.bq-aviso--alerta { border-left-color: var(--feedback-alerta); }
+.bq-aviso--alerta .bq-aviso__icone { color: var(--feedback-erro-texto); }
+.bq-aviso--demo { border-left-color: var(--ouro-700); }
+html[data-contrast='alto'] .bq-aviso { background: var(--pergaminho); border-color: var(--tinta); }

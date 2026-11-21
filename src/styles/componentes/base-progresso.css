@@ -1,0 +1,10 @@
+/* Progresso base (bq-progresso): barra com rótulo acessível (role="progressbar"). */
+.bq-progresso { display: grid; gap: var(--esp-1); }
+.bq-progresso__trilho {
+  position: relative; height: var(--progresso-altura); border-radius: var(--raio-pilula); overflow: hidden;
+  background: rgba(0, 0, 0, 0.45); border: 1px solid var(--borda-suave); box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.45);
+}
+.bq-progresso__barra { height: 100%; border-radius: inherit; background: var(--amb-progresso); transition: width var(--dur-estado) var(--curva-saida); }
+.bq-progresso__texto { font-size: var(--fonte-12); font-weight: var(--peso-forte); font-variant-numeric: tabular-nums; }
+.bq-progresso--hud .bq-progresso__trilho { height: var(--progresso-altura-hud); border-color: var(--ouro-700); }
+html[data-contrast='alto'] .bq-progresso__trilho { background: var(--terra-900); border-color: var(--marfim); box-shadow: none; }

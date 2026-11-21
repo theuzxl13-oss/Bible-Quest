@@ -1,0 +1,89 @@
+elementos: 1082 | centro cai em outro elemento: 88
+   cel /configuracoes A.link "Leia a política de privacidade" -> SECTION.panel stack
+   cel /guarda-roupa BUTTON.tab is-on "Rosto" -> DIV.wardrobe-preview panel
+   cel /guarda-roupa BUTTON.tab  "Cabelo" -> P.creator-name
+   cel /guarda-roupa BUTTON.tab  "Cor do cabelo" -> DIV.wardrobe-preview panel
+   cel /guarda-roupa BUTTON.tab  "Barba" -> P.creator-name
+   cel /guarda-roupa BUTTON.tab  "Túnica" -> DIV.wardrobe-preview panel
+   cel /guarda-roupa BUTTON.tab  "Manto" -> P.creator-name
+   cel /guarda-roupa BUTTON.tab  "Cinto" -> DIV.wardrobe-preview panel
+   cel /guarda-roupa BUTTON.tab  "Sandálias" -> DIV.wardrobe-preview panel
+   cel /guarda-roupa BUTTON.tab  "Acessórios" -> P.creator-name
+   cel /guarda-roupa BUTTON.tab  "Cores" -> DIV.wardrobe-preview panel
+   cel /guarda-roupa INPUT. "" -> P.creator-name
+   cel /historia A.av-redondo "Voltar ao acampamento" -> DIV.hero-shade
+   cel /historia BUTTON.av-redondo "Como funciona o mapa" -> DIV.hero-shade
+   cel /historia BUTTON.av-bau-topo  "Nenhum baú pronto para abrir" -> DIV.hero-shade
+   cel /historia BUTTON.av-medalhao "Fase 21: Moisés, salvo das águ" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 22: A sarça ardente. Bloq" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 23: As pragas e a Páscoa." -> LI.
+   cel /historia BUTTON.av-medalhao "Fase 24: O mar e o monte Sinai" -> IMG.portrait-img
+   cel /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> SPAN.portrait
+   cel /historia BUTTON.av-medalhao "Fase 1: A criação do mundo. Co" -> DIV.hero-shade
+   cel /historia BUTTON.av-medalhao "Fase 2: A criação do homem e d" -> BUTTON.btn btn-gold btn-lg
+   cel /historia BUTTON.av-medalhao "Fase 3: O jardim do Éden. Conc" -> LI.
+   cel /historia BUTTON.av-medalhao "Fase 4: A queda. Fase atual" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 5: Caim e Abel. Bloqueada" -> SPAN.portrait
+   cel /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> LI.
+   cel /historia BUTTON.av-medalhao "Fase 6: A corrupção da humanid" -> LI.
+   cel /historia BUTTON.av-medalhao "Fase 7: Noé, um homem justo. B" -> UL.intro-chars
+   cel /historia BUTTON.av-medalhao "Fase 8: A construção da arca. " -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 9: O dilúvio. Bloqueada" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 10: A aliança com Noé. Bl" -> IMG.portrait-img
+   cel /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 11: A torre de Babel. Blo" -> SPAN.portrait
+   cel /historia BUTTON.av-medalhao "Fase 12: O chamado de Abraão. " -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 13: Abraão e Ló. Bloquead" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 14: A promessa de Deus. B" -> LI.
+   cel /historia BUTTON.av-medalhao "Fase 15: Isaque, o filho da pr" -> UL.intro-chars
+   cel /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> UL.intro-chars
+   cel /historia BUTTON.av-medalhao "Fase 16: Jacó e Esaú. Bloquead" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 17: Jacó e sua família. B" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 18: José e seus irmãos. B" -> SPAN.portrait
+   cel /historia BUTTON.av-medalhao "Fase 19: José no Egito. Bloque" -> IMG.portrait-img
+   cel /historia BUTTON.av-medalhao "Fase 20: José: reencontro e pe" -> IMG.portrait-img
+   cel /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> IMG.portrait-img
+   cel /historia/genesis/gn-queda A. "Abrir Biblioteca" -> SPAN.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Fonte no Commons" -> LI.
+   cel /sobre A. "Prévia do painel administrativ" -> P.small
+   pc /historia A.av-redondo "Voltar ao acampamento" -> DIV.hero-shade
+   pc /historia BUTTON.av-redondo "Como funciona o mapa" -> DIV.hero-shade
+   pc /historia BUTTON.av-bau-topo  "Nenhum baú pronto para abrir" -> DIV.hero-shade
+   pc /historia BUTTON.av-medalhao "Fase 21: Moisés, salvo das águ" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 22: A sarça ardente. Bloq" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 23: As pragas e a Páscoa." -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 24: O mar e o monte Sinai" -> P.small muted
+   pc /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 1: A criação do mundo. Co" -> DIV.hero-shade
+   pc /historia BUTTON.av-medalhao "Fase 2: A criação do homem e d" -> LI.
+   pc /historia BUTTON.av-medalhao "Fase 3: O jardim do Éden. Conc" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 4: A queda. Fase atual" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 5: Caim e Abel. Bloqueada" -> DIV.world-intro-body
+   pc /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 6: A corrupção da humanid" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 7: Noé, um homem justo. B" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 8: A construção da arca. " -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 9: O dilúvio. Bloqueada" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 10: A aliança com Noé. Bl" -> P.small muted
+   pc /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 11: A torre de Babel. Blo" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 12: O chamado de Abraão. " -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 13: Abraão e Ló. Bloquead" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 14: A promessa de Deus. B" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 15: Isaque, o filho da pr" -> P.small muted
+   pc /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 16: Jacó e Esaú. Bloquead" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 17: Jacó e sua família. B" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 18: José e seus irmãos. B" -> P.small muted
+   pc /historia BUTTON.av-medalhao "Fase 19: José no Egito. Bloque" -> DIV.world-intro-body
+   pc /historia BUTTON.av-medalhao "Fase 20: José: reencontro e pe" -> P.small muted
+   pc /historia BUTTON.chest-btn "Baú bloqueado: conclua as fase" -> P.small muted

@@ -1,0 +1,80 @@
+/* Placas: rótulos clicáveis presos aos objetos da cena, placas dos modos e a
+   ação principal ("Continuar"). Madeira com moldura de ouro envelhecido. */
+.camp-labels { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.camp-label {
+  position: absolute; left: 0; top: 0; pointer-events: auto; will-change: transform;
+  display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 3px 10px 3px 4px;
+  border-radius: var(--raio-pilula); border: 1px solid rgba(201, 162, 78, 0.55);
+  background: rgba(34, 22, 13, 0.62); color: var(--texto-sobre-escuro);
+  font-weight: 700; font-size: var(--fonte-12); letter-spacing: 0.01em; white-space: nowrap; cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  opacity: 0.88;
+  transition: opacity var(--dur-estado) ease, background var(--dur-estado) ease, border-color var(--dur-estado) ease;
+}
+/* área de toque de 44 px, maior que a placa visível (que fica discreta) */
+.camp-label::before { content: ''; position: absolute; inset: -8px -5px; } /* 0.17.6 (autorizado): 30 + 2 × 8 = 46 px, folga para o arredondamento */
+.camp-label::after { content: ''; position: absolute; left: 50%; bottom: -5px; translate: -50% 0; border: 4px solid transparent; border-top-color: rgba(201, 162, 78, 0.55); border-bottom: 0; }
+.camp-label:hover, .camp-label:focus-visible { opacity: 1; background: var(--terra-700); border-color: var(--moldura); }
+/* 0.17.6 (autorizado): anel duplo como o do botão Missões — tinta por fora, marfim por dentro */
+.camp-label:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; box-shadow: 0 0 0 3px var(--marfim), 0 2px 8px rgba(0, 0, 0, 0.25); }
+.camp-label[data-visivel='nao'] { opacity: 0; pointer-events: none; }
+.camp-label-icon { display: grid; place-items: center; width: 22px; height: 22px; margin: -2px 0; }
+.camp-label-icon .game-icon { width: 20px; height: 20px; }
+.camp-badge {
+  display: inline-grid; place-items: center; min-width: 20px; height: 20px; padding: 0 5px;
+  /* 0.17.6 (autorizado): vermelho mais escuro, marfim sobre ele 5,6:1 (antes 4,05:1) */
+  border-radius: var(--raio-pilula); background: var(--feedback-selo); color: var(--marfim);
+  font-size: var(--fonte-12); font-weight: 800; box-shadow: 0 0 0 2px var(--terra-900);
+  animation: unlock-pop var(--dur-janela) var(--curva-mola) both;
+}
+.camp-label .camp-badge { position: absolute; top: -8px; right: -8px; min-width: 18px; height: 18px; font-size: 0.68rem; }
+
+/* ações da Central: [História] [Continuar] [Quiz] */
+.camp-acoes {
+  position: absolute; z-index: 4; left: 50%; translate: -50% 0; bottom: clamp(12px, 2.4vh, 26px);
+  width: min(820px, calc(100% - 24px));
+  display: grid; grid-template-columns: 1fr minmax(0, 1.15fr) 1fr; gap: var(--esp-3); align-items: stretch;
+}
+.camp-modo, .camp-continuar {
+  position: relative; display: flex; align-items: center; gap: var(--esp-3); min-height: 56px; min-width: 0;
+  padding: 8px 14px; border-radius: var(--raio-g); text-decoration: none;
+  transition: transform var(--dur-toque) var(--curva-saida), filter var(--dur-toque) ease;
+}
+.camp-modo {
+  color: var(--texto-sobre-escuro);
+  background: linear-gradient(180deg, var(--modo-cor-clara), var(--modo-cor) 70%);
+  border: 1.5px solid var(--modo-borda);
+  box-shadow: var(--brilho-interno), var(--elevacao-1);
+}
+.camp-modo-texto, .camp-continuar-texto { display: grid; gap: 1px; min-width: 0; line-height: 1.15; }
+.camp-modo-texto strong { font-family: var(--font-display); font-weight: 700; font-size: var(--fonte-18); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.camp-modo-texto small { font-size: var(--fonte-12); color: var(--texto-suave-sobre-escuro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.camp-modo-progresso { font-size: var(--fonte-12); font-weight: 750; color: var(--destaque); font-variant-numeric: tabular-nums; }
+.camp-modo-icone { flex-shrink: 0; display: grid; place-items: center; width: 40px; height: 40px; border-radius: var(--raio-m); background: rgba(0, 0, 0, 0.22); }
+.camp-continuar {
+  justify-content: center; text-align: center; color: var(--texto-sobre-acao);
+  background: var(--acao-principal); border: 1.5px solid var(--fogueira-borda);
+  box-shadow: inset 0 1px 0 rgba(255, 236, 200, 0.6), 0 3px 0 var(--fogueira-borda), 0 8px 16px rgba(0, 0, 0, 0.35);
+  font: inherit; cursor: pointer;
+}
+.camp-continuar-texto strong { font-size: var(--fonte-18); font-weight: 800; }
+.camp-continuar-texto small { font-size: var(--fonte-12); font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.camp-modo:hover, .camp-continuar:hover { filter: brightness(1.08); transform: translateY(-2px); }
+.camp-modo:active, .camp-continuar:active { transform: translateY(2px); }
+/* 0.17.6 (autorizado): anel duplo; as sombras originais continuam por trás */
+.camp-modo:focus-visible, .camp-continuar:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; }
+.camp-modo:focus-visible { box-shadow: 0 0 0 3px var(--marfim), var(--brilho-interno), var(--elevacao-1); }
+.camp-continuar:focus-visible { box-shadow: 0 0 0 3px var(--marfim), inset 0 1px 0 rgba(255, 236, 200, 0.6), 0 3px 0 var(--fogueira-borda), 0 8px 16px rgba(0, 0, 0, 0.35); }
+
+@media (max-width: 599px) {
+  .camp-acoes { gap: var(--esp-2); grid-template-columns: 1fr minmax(0, 1.2fr) 1fr; }
+  .camp-modo { flex-direction: column; justify-content: center; text-align: center; gap: 2px; padding: 6px 6px; min-height: 60px; }
+  .camp-modo-icone { width: 30px; height: 30px; }
+  .camp-modo-texto strong { font-size: var(--fonte-14); }
+  .camp-modo-texto small, .camp-modo-progresso { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .camp-continuar { padding: 6px 8px; min-height: 60px; }
+  .camp-continuar-texto strong { font-size: var(--fonte-16); }
+  .camp-label { min-height: 28px; padding: 2px 8px 2px 3px; }
+  .camp-label::before { inset: -9px -5px; } /* 0.17.6 (autorizado): 28 + 2 × 9 = 46 px; antes media 42–43 px */
+}
+html[data-contrast='alto'] .camp-label, html[data-contrast='alto'] .camp-modo { background: var(--terra-900); border-color: var(--marfim); }

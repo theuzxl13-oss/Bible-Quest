@@ -1,0 +1,14 @@
+/* Campo base (bq-campo): rótulo visível, ajuda, erro e foco claro. */
+.bq-campo { --foco-atual: var(--foco-sobre-claro); display: grid; gap: var(--esp-1); }
+.bq-campo__rotulo { font-weight: var(--peso-forte); font-size: var(--fonte-14); color: var(--rotulo-atual, var(--texto-sobre-escuro)); }
+.bq-campo__entrada {
+  min-height: var(--campo-altura); padding: var(--esp-2) var(--esp-3); border-radius: var(--campo-raio);
+  font: inherit; font-size: var(--fonte-16); color: var(--texto-sobre-leitura); background: var(--pergaminho);
+  border: var(--borda-espessura) solid var(--borda-madeira); box-shadow: inset 0 2px 4px rgba(90, 58, 28, 0.25);
+}
+.bq-campo__entrada:focus-visible { outline: var(--foco-espessura) solid var(--foco-sobre-claro); outline-offset: var(--foco-afastamento); }
+.bq-campo__entrada[aria-invalid='true'] { border-color: var(--feedback-erro); }
+.bq-campo__ajuda { font-size: var(--fonte-12); color: var(--ajuda-atual, var(--texto-suave-sobre-escuro)); }
+.bq-campo__erro { font-size: var(--fonte-14); font-weight: var(--peso-forte); color: var(--erro-atual, var(--feedback-erro-sobre-escuro)); }
+.bq-painel--leitura .bq-campo, .bq-janela .bq-campo { --rotulo-atual: var(--texto-sobre-leitura); --ajuda-atual: var(--texto-suave-sobre-leitura); --erro-atual: var(--feedback-erro-texto); }
+html[data-contrast='alto'] .bq-campo__entrada { box-shadow: none; border-color: var(--tinta); }

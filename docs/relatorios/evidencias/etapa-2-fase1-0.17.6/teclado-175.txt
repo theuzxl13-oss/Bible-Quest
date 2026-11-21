@@ -1,0 +1,50 @@
+{
+ "/historia janela": {
+  "tabs": 16,
+  "foraDaJanela": 15,
+  "nomes": [
+   "Personagens e lugares da fase",
+   "Pular para o conteúdoBible Que",
+   "Pular para o conteúdo",
+   "Voltar ao acampamento",
+   "Como funciona o mapa",
+   "Nenhum baú pronto para abrir",
+   "Fase 21: Moisés, salvo das águ",
+   "Fase 22: A sarça ardente. Bloq",
+   "Fase 23: As pragas e a Páscoa.",
+   "Fase 24: O mar e o monte Sinai",
+   "Baú bloqueado: conclua as fase",
+   "Fase 1: A criação do mundo. Fa"
+  ],
+  "abertaDepoisDoEsc": 0
+ },
+ "/historia ajuda": {
+  "tabs": 8,
+  "foraDaJanela": 8,
+  "abertaDepoisDoEsc": 1
+ },
+ "/quiz janela": {
+  "tabs": 16,
+  "foraDaJanela": 16,
+  "nomes": [
+   "Pular para o conteúdoBible Que",
+   "Pular para o conteúdo",
+   "Voltar ao acampamento",
+   "Como funciona o mapa",
+   "Dificuldade (região do mapa)",
+   "Nenhum baú pronto para abrir",
+   "Vale dos Iniciantes, desafio 1",
+   "Vale dos Iniciantes, desafio 2",
+   "Vale dos Iniciantes, desafio 3",
+   "Vale dos Iniciantes, desafio 4",
+   "Vale dos Iniciantes, desafio 5",
+   "Vale dos Iniciantes, desafio 6"
+  ],
+  "abertaDepoisDoEsc": 0
+ },
+ "/quiz ajuda": {
+  "tabs": 8,
+  "foraDaJanela": 8,
+  "abertaDepoisDoEsc": 1
+ }
+}
