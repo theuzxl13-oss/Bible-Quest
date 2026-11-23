@@ -1,10 +1,15 @@
 {
-  "falhas": 1,
+  "falhas": 0,
   "resultado": [
+    {
+      "nome": "sistema do emulador do tipo \"user\", como o dos celulares",
+      "ok": true,
+      "detalhe": "ro.build.type=user ro.debuggable=0"
+    },
     {
       "nome": "APK de depuração: soquete de depuração do WebView aberto",
       "ok": true,
-      "detalhe": "@webview_devtools_remote_2679"
+      "detalhe": "@webview_devtools_remote_2835"
     },
     {
       "nome": "build de lançamento instalado sem o atributo DEBUGGABLE",
@@ -14,12 +19,12 @@
     {
       "nome": "build de lançamento: aplicativo em execução",
       "ok": true,
-      "detalhe": "pid 4463"
+      "detalhe": "pid 4905"
     },
     {
       "nome": "build de lançamento: nenhum soquete de depuração do WebView",
-      "ok": false,
-      "detalhe": "@webview_devtools_remote_4463 @stetho_com.google.android.apps.messaging_devtools_remote @stetho_com.google.android.apps.messaging:rcs_devtools_remote"
+      "ok": true,
+      "detalhe": "@stetho_com.google.android.apps.messaging_devtools_remote"
     }
   ]
 }

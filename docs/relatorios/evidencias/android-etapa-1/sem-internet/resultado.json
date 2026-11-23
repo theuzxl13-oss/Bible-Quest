@@ -23,6 +23,11 @@
       "detalhe": ""
     },
     {
+      "nome": "a cena da Central termina de carregar",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
       "nome": "painel administrativo inacessível",
       "ok": true,
       "detalhe": ""
@@ -43,7 +48,12 @@
       "detalhe": ""
     },
     {
-      "nome": "voltar na Biblioteca leva de volta à Central",
+      "nome": "a Biblioteca abre (a Central sai da tela)",
+      "ok": true,
+      "detalhe": "#/biblioteca"
+    },
+    {
+      "nome": "voltar na Biblioteca leva de volta à Central (o aplicativo continua aberto)",
       "ok": true,
       "detalhe": "#/painel"
     },
