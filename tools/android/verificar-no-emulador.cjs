@@ -123,7 +123,8 @@ async function emPrimeiroPlano(device) {
   const antes = await page.evaluate(() => ({ foco: document.activeElement?.tagName + '.' + (document.activeElement?.className || ''), estado: history.state, tamanho: history.length }))
   const teclado = (await device.shell('dumpsys input_method')).toString().split('\n').filter((l) => /mInputShown|mIsInputViewShown|isInputViewShown/.test(l)).map((l) => l.trim()).join(' ')
   await device.shell('input keyevent 4')
-  await espera(4000)
+  // o emulador desenha por software e responde devagar: espera a Central voltar (até 15 s) em vez de um tempo fixo
+  await page.waitForFunction(() => location.hash === '#/painel' && document.querySelector('.camp-scene'), null, { timeout: 15000 }).catch(() => {})
   const diag = { antes, teclado, eventosVoltar: await page.evaluate(() => window.__voltares), depois: await page.evaluate(() => ({ hash: location.hash, estado: history.state, tamanho: history.length })), errosJs }
   fs.writeFileSync(path.join(SAIDA, 'diagnostico-voltar.json'), JSON.stringify(diag, null, 2))
   console.log('diagnóstico do voltar:', JSON.stringify(diag))
@@ -131,8 +132,12 @@ async function emPrimeiroPlano(device) {
   const centralDeVolta = await page.evaluate(() => Boolean(document.querySelector('.camp-scene')))
   confere('voltar na Biblioteca leva de volta à Central (o aplicativo continua aberto)', depoisDoVoltar === '#/painel' && centralDeVolta && (await emPrimeiroPlano(device)), depoisDoVoltar)
   await device.shell('input keyevent 4')
-  await espera(2500)
-  confere('voltar na Central sai do aplicativo', !(await emPrimeiroPlano(device)))
+  let saiu = false
+  for (let i = 0; i < 15 && !saiu; i++) {
+    await espera(1000)
+    saiu = !(await emPrimeiroPlano(device))
+  }
+  confere('voltar na Central sai do aplicativo', saiu)
 
   confere('nenhuma requisição para a internet', externas.length === 0, externas.slice(0, 3).join(' '))
 
