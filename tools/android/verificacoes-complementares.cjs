@@ -11,6 +11,7 @@
  *    - APK de depuração: o soquete de depuração do WebView existe;
  *    - build de lançamento (assinado só para este teste com a chave de
  *      depuração do executor, nunca publicado): o soquete não existe.
+ *    Precisa de um emulador com sistema "user" (imagem google_apis_playstore).
  * Grava as capturas e um complementos.json na pasta de saída.
  */
 const { _android } = require('playwright')
@@ -45,6 +46,12 @@ async function soquetesDeDepuracao(device) {
   const [device] = await _android.devices()
   if (!device) throw new Error('nenhum emulador conectado')
   await sh(device, 'settings put system screen_off_timeout 600000')
+  // Em sistemas "userdebug" ou "eng" (imagens google_apis do emulador), o WebView
+  // liga a depuração em TODOS os aplicativos, seja qual for a configuração do app.
+  // Por isso este teste exige um sistema "user", como o dos celulares (google_apis_playstore).
+  const tipo = (await sh(device, 'getprop ro.build.type')).trim()
+  const depuravel = (await sh(device, 'getprop ro.debuggable')).trim()
+  confere('sistema do emulador do tipo "user", como o dos celulares', tipo === 'user', `ro.build.type=${tipo} ro.debuggable=${depuravel}`)
 
   // ---- APK de depuração ----
   await sh(device, `pm uninstall ${PACOTE}`).catch(() => {})

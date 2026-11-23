@@ -112,7 +112,9 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 36
-          target: google_apis
+          # imagem com sistema "user" (como nos celulares): nas imagens google_apis
+          # ("userdebug"), o WebView liga a depuração em todos os aplicativos
+          target: google_apis_playstore
           arch: x86_64
           profile: pixel_6
           disable-animations: true
@@ -134,7 +136,7 @@ jobs:
         if: always()
         run: |
           DEST=docs/relatorios/evidencias/android-etapa-1
-          mkdir -p "$DEST"
+          rm -rf "$DEST" && mkdir -p "$DEST"
           cp -r evidencias/. "$DEST/"
           # capturas em JPEG de 720 px de largura, para não pesar no repositório
           python3 -m pip install --quiet pillow
