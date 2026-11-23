@@ -45,6 +45,13 @@ async function irPara(page, rota) {
   await page.evaluate((r) => { window.location.hash = r }, rota)
   await espera(2500)
 }
+/** Espera a cena da Central terminar de carregar (o emulador desenha o 3D por software, devagar). */
+async function esperarCentral(page) {
+  return page
+    .waitForFunction(() => location.hash === '#/painel' && document.querySelector('.camp-scene') && !document.querySelector('.camp-scene.is-loading'), null, { timeout: 90000 })
+    .then(() => true)
+    .catch(() => false)
+}
 async function emPrimeiroPlano(device) {
   const s = (await device.shell('dumpsys activity activities')).toString()
   const linha = s.split('\n').find((l) => /mResumedActivity|topResumedActivity/.test(l)) || ''
@@ -78,8 +85,11 @@ async function emPrimeiroPlano(device) {
   await irPara(page, '#/painel')
   await page.reload()
   await espera(6000)
+  const centralPronta = await esperarCentral(page)
+  await espera(1500)
   await fs.promises.writeFile(path.join(SAIDA, '02-central.png'), await device.screenshot())
   confere('a Central abre com o perfil', (await page.evaluate(() => window.location.hash)) === '#/painel')
+  confere('a cena da Central termina de carregar', centralPronta)
 
   // 5–6. recursos desativados no aplicativo
   await irPara(page, '#/admin')
@@ -95,12 +105,21 @@ async function emPrimeiroPlano(device) {
 
   // 7. botão voltar: volta uma tela; na Central, sai do aplicativo
   await irPara(page, '#/painel')
+  await esperarCentral(page)
   await irPara(page, '#/biblioteca')
+  // confirma que a Biblioteca está de fato na tela (a Central saiu) antes de apertar voltar
+  const naBiblioteca = await page
+    .waitForFunction(() => location.hash === '#/biblioteca' && !document.querySelector('.camp-scene') && /Biblioteca/i.test(document.querySelector('main')?.textContent || ''), null, { timeout: 30000 })
+    .then(() => true)
+    .catch(() => false)
+  await espera(1500)
   await fs.promises.writeFile(path.join(SAIDA, '05-biblioteca.png'), await device.screenshot())
+  confere('a Biblioteca abre (a Central sai da tela)', naBiblioteca, await page.evaluate(() => window.location.hash))
   await device.shell('input keyevent 4')
   await espera(2500)
   const depoisDoVoltar = await page.evaluate(() => window.location.hash)
-  confere('voltar na Biblioteca leva de volta à Central', depoisDoVoltar === '#/painel', depoisDoVoltar)
+  const centralDeVolta = await page.evaluate(() => Boolean(document.querySelector('.camp-scene')))
+  confere('voltar na Biblioteca leva de volta à Central (o aplicativo continua aberto)', depoisDoVoltar === '#/painel' && centralDeVolta && (await emPrimeiroPlano(device)), depoisDoVoltar)
   await device.shell('input keyevent 4')
   await espera(2500)
   confere('voltar na Central sai do aplicativo', !(await emPrimeiroPlano(device)))
@@ -115,6 +134,8 @@ async function emPrimeiroPlano(device) {
   await espera(1500)
   page = await abrir(device)
   await espera(4000)
+  await esperarCentral(page)
+  await espera(1500)
   await fs.promises.writeFile(path.join(SAIDA, '06-sem-internet.png'), await device.screenshot())
   const hashOffline = await page.evaluate(() => window.location.hash)
   confere('sem internet, o aplicativo abre direto na Central (progresso salvo)', hashOffline === '#/painel', hashOffline)
