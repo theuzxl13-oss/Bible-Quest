@@ -32,8 +32,11 @@ import Review from './pages/Review'
 import QuizMap from './pages/quiz/QuizMap'
 import QuizChallenge from './pages/quiz/QuizChallenge'
 import Statistics from './pages/Statistics'
+import { ANDROID } from './plataforma'
 
-const Admin = lazy(() => import('./admin/AdminApp'))
+// No aplicativo Android o painel administrativo (protótipo sem autenticação) não existe:
+// nem a rota nem o módulo entram no pacote.
+const Admin = __ANDROID__ ? () => null : lazy(() => import('./admin/AdminApp'))
 
 function RequireProfile({ children, character = true }: { children: React.ReactNode; character?: boolean }) {
   const { profile } = useGame()
@@ -47,7 +50,7 @@ function RequireProfile({ children, character = true }: { children: React.ReactN
 /** Endereços antigos do Modo Livre (v0.2–v0.3) levam ao treino livre do Modo Quiz. */
 function LegacyFree() {
   const { '*': rest } = useParams()
-  if (rest === 'multiplayer') return <Navigate to="/quiz/multiplayer" replace />
+  if (rest === 'multiplayer') return <Navigate to={ANDROID ? '/quiz/treino' : '/quiz/multiplayer'} replace />
   return <Navigate to={rest ? `/quiz/treino/${rest}` : '/quiz/treino'} replace />
 }
 
@@ -97,7 +100,8 @@ export default function App() {
           <Route path="quiz/desafio/:nodeId" element={p(<QuizChallengeRoute />)} />
           <Route path="quiz/treino" element={p(<FreeHub />)} />
           <Route path="quiz/treino/:modeId" element={p(<FreePlayRoute />)} />
-          <Route path="quiz/multiplayer" element={p(<Multiplayer />)} />
+          {/* no aplicativo Android, o multiplayer de demonstração fica desativado (a implementação continua no site) */}
+          <Route path="quiz/multiplayer" element={ANDROID ? <Navigate to="/quiz/treino" replace /> : p(<Multiplayer />)} />
           <Route path="livre/*" element={<LegacyFree />} />
           <Route path="estatisticas" element={p(<Statistics />)} />
           {/* Endereços da versão 0.1 */}
@@ -119,14 +123,16 @@ export default function App() {
           <Route path="multiplayer" element={<Navigate to="/livre/multiplayer" replace />} />
           <Route path="configuracoes" element={<SettingsPage />} />
           <Route path="sobre" element={<About />} />
-          <Route
-            path="admin/*"
-            element={
-              <Suspense fallback={<p className="container section">Carregando módulo administrativo…</p>}>
-                <Admin />
-              </Suspense>
-            }
-          />
+          {!ANDROID && (
+            <Route
+              path="admin/*"
+              element={
+                <Suspense fallback={<p className="container section">Carregando módulo administrativo…</p>}>
+                  <Admin />
+                </Suspense>
+              }
+            />
+          )}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

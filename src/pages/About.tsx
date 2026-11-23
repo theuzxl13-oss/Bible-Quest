@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { VERSAO } from '../versao'
+import { ANDROID } from '../plataforma'
 import { ArtImage } from '../components/ArtImage'
 import { PageHeader } from '../components/ui'
 import { ART, commonsUrl } from '../data/images'
@@ -29,7 +30,11 @@ export default function About() {
           <li>Experiências concluídas podem ser revisitadas a qualquer momento, sem perder o progresso.</li>
         </ol>
         <h3>Modo Quiz</h3>
-        <p>Escolha qualquer modalidade, quando quiser: {FREE_MODES.map((m) => m.title).join(', ')}. Há também o desafio diário e salas multiplayer em demonstração.</p>
+        {ANDROID ? (
+          <p>Escolha qualquer modalidade, quando quiser: {FREE_MODES.map((m) => m.title).join(', ')}. Há também o desafio diário.</p>
+        ) : (
+          <p>Escolha qualquer modalidade, quando quiser: {FREE_MODES.map((m) => m.title).join(', ')}. Há também o desafio diário e salas multiplayer em demonstração.</p>
+        )}
         <h3>Evolução compartilhada</h3>
         <p>
           XP, níveis, medalhas, conquistas, histórico e sequência diária são os mesmos nos dois modos. Para evitar
@@ -60,11 +65,19 @@ export default function About() {
         <h2>Privacidade e segurança</h2>
         <ul className="bullets">
           <li><strong>Dados mínimos:</strong> só apelido, selo e faixa etária. Sem e-mail, telefone, foto ou localização.</li>
-          <li><strong>Somente no dispositivo:</strong> tudo fica no armazenamento local do navegador e nada é enviado a servidores.</li>
+          {ANDROID ? (
+            <li><strong>Somente no dispositivo:</strong> tudo fica no armazenamento local do aplicativo e nada é enviado a servidores.</li>
+          ) : (
+            <li><strong>Somente no dispositivo:</strong> tudo fica no armazenamento local do navegador e nada é enviado a servidores.</li>
+          )}
           <li><strong>Controle:</strong> exporte ou apague seus dados a qualquer momento em Perfil (direitos previstos na LGPD).</li>
           <li><strong>Menores de idade:</strong> recomendamos o acompanhamento de um responsável. Na versão online, menores de 13 anos só poderão jogar em salas privadas, e o cadastro exigirá consentimento do responsável.</li>
           <li><strong>Sem chat aberto:</strong> o multiplayer usará apenas reações predefinidas, sem conversa livre entre desconhecidos.</li>
-          <li><strong>Versão estática:</strong> o perfil local não é uma autenticação segura, e o módulo administrativo é apenas um protótipo.</li>
+          {ANDROID ? (
+            <li><strong>Versão estática:</strong> o perfil local não é uma autenticação segura.</li>
+          ) : (
+            <li><strong>Versão estática:</strong> o perfil local não é uma autenticação segura, e o módulo administrativo é apenas um protótipo.</li>
+          )}
         </ul>
       </section>
 
@@ -87,9 +100,11 @@ export default function About() {
       <section className="stack">
         <h2>Kzann Tech</h2>
         <p>Bible Quest é desenvolvido pela Kzann Tech. Versão {VERSAO}.</p>
-        <p className="small">
-          <Link to="/admin">Prévia do painel administrativo (protótipo, sem autenticação real)</Link>
-        </p>
+        {!ANDROID && (
+          <p className="small">
+            <Link to="/admin">Prévia do painel administrativo (protótipo, sem autenticação real)</Link>
+          </p>
+        )}
       </section>
     </div>
   )

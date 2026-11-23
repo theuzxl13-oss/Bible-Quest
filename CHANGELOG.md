@@ -2,6 +2,32 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Android, etapa 1 — 23/11/2026 — Aplicativo Android com Capacitor 8 (em avaliação)
+
+Branch `claude/bible-quest-android`, criada a partir de `4815afa` (0.17.9). Não foi integrada ao `main` nem publicada na Google Play. Relatório: `docs/relatorios/ANDROID_ETAPA_1.md`.
+
+- **Estrutura:**
+  - Capacitor 8.6.2 (`@capacitor/core`, `android`, `cli`) e os plugins oficiais `app` (botão voltar), `splash-screen` e `browser`;
+  - `capacitor.config.ts` com o identificador `com.kzanntech.biblequest`;
+  - projeto `android/` com mínimo API 24 e alvo API 36;
+  - o jogo vem dos arquivos locais de `dist`, sem site remoto, e funciona sem internet.
+- **Build do aplicativo separado do site:** `npm run build:android` (modo `android`, constante `__ANDROID__`). O build do site continua **idêntico à 0.17.9**: os 106 arquivos têm o mesmo SHA-256.
+- **Experiência nativa:**
+  - ícone adaptativo próprio, com versão monocromática;
+  - tela de abertura do Android 12+;
+  - barras do sistema no tom do jogo, com a página encaixada entre elas;
+  - botão voltar;
+  - retrato nos celulares e rotação livre em tablets;
+  - links externos no navegador do sistema;
+  - leitura em voz alta oculta.
+- **Só no aplicativo:**
+  - painel administrativo fora do pacote;
+  - multiplayer de demonstração desativado (sem o atalho, a rota leva ao treino livre);
+  - ranking sem a aba das partidas de demonstração;
+  - nenhum SDK de anúncios ou de análise.
+- **GitHub Actions** (`android.yml`): testes, typecheck, builds, APK de depuração como artefato e verificação num emulador Android 16. Sem chave de assinatura nem segredos.
+- **Testes:** 212, em 19 arquivos (15 novos em `android.test.tsx`).
+
 ## 0.17.9 — 23/11/2026 — Passo 1.7, entrega 2: Biblioteca (Sala de Estudos) (em avaliação, não publicada)
 
 Desenvolvida só na branch `claude/loving-carson-8mrbjo`, sobre a 0.17.8; não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_7_BIBLIOTECA.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.9-biblioteca/`.

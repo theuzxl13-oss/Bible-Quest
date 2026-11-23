@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useGame } from '../state/GameContext'
 import { Icon } from './Icon'
+import { ANDROID } from '../plataforma'
 
 /** Leitura em voz alta usando a síntese de voz do navegador (pt-BR), quando disponível. */
 export function ReadAloud({ text, label = 'Ouvir' }: { text: string; label?: string }) {
   const { settings } = useGame()
   const [speaking, setSpeaking] = useState(false)
-  const supported = typeof window !== 'undefined' && 'speechSynthesis' in window
+  // no aplicativo Android a leitura em voz alta fica oculta nesta primeira versão
+  const supported = !ANDROID && typeof window !== 'undefined' && 'speechSynthesis' in window
 
   useEffect(() => () => {
     if (supported && speaking) window.speechSynthesis.cancel()

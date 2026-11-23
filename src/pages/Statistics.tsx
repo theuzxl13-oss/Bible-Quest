@@ -10,6 +10,7 @@ import { FREE_MODES } from '../services/game/freeModes'
 import { isItemUnlocked, totalStars } from '../services/game/items'
 import { levelFromXp, levelTitle } from '../services/game/levels'
 import { quizCompletion } from '../services/game/quizMap'
+import { ANDROID } from '../plataforma'
 import { visibleStreak } from '../services/game/streak'
 import { useGame } from '../state/GameContext'
 import type { QuestionType } from '../types'
@@ -121,12 +122,12 @@ export default function Statistics() {
       </section>
 
       <section aria-labelledby="ed">
-        <h2 id="ed" className="section-title">Desafio diário e multiplayer</h2>
+        <h2 id="ed" className="section-title">{ANDROID ? 'Desafio diário' : 'Desafio diário e multiplayer'}</h2>
         <dl className="stat-grid">
           {stat('Desafios diários concluídos', progress.daily.completedCount)}
-          {stat('Partidas de demonstração (multiplayer)', progress.multiplayer.demoMatches)}
+          {!ANDROID && stat('Partidas de demonstração (multiplayer)', progress.multiplayer.demoMatches)}
         </dl>
-        <p className="small muted"><Icon name="info" size={14} /> O multiplayer online ainda não existe; as partidas de demonstração não rendem XP.</p>
+        {!ANDROID && <p className="small muted"><Icon name="info" size={14} /> O multiplayer online ainda não existe; as partidas de demonstração não rendem XP.</p>}
       </section>
     </div>
   )

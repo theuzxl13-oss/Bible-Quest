@@ -1,0 +1,29 @@
+{
+ "bible-quest:v1:profile": {
+  "id": "94714899-db6c-4287-908e-629bc0738b16",
+  "nickname": "Tobias",
+  "avatar": "lamp",
+  "ageRange": "18mais",
+  "createdAt": "2026-11-13T11:57:34.749Z",
+  "storage": "local",
+  "character": {
+   "version": 2,
+   "id": "89960e4f-9211-47b3-9a6e-ef3ef8a24d14",
+   "name": "Tobias",
+   "base": "viajante",
+   "skin": 1,
+   "face": "suave",
+   "hairStyle": "curto",
+   "hairColor": 1,
+   "equipped": {
+    "tunica": "tunica-terra",
+    "manto": null,
+    "calcado": "sandalias-simples",
+    "cinto": "cinto-couro",
+    "acessorios": [
+     "cajado"
+    ]
+   }
+  }
+ }
+}

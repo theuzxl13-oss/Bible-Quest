@@ -10,6 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
+| **Aplicativo Android** | Em preparação (branch `claude/bible-quest-android`): APK de depuração gerado pelo GitHub Actions; ver [Aplicativo Android](#aplicativo-android) |
 | **Versão** | 0.17.9 em avaliação (Conquistas e Biblioteca nas paletas da Sala dos Troféus e da Sala de Estudos); publicada: 0.17.7 (Central do Jogador, Fase 0 da identidade nas demais telas e, da Fase 1, base visual comum, acessibilidade base, identificação dos ambientes e alto contraste unificado) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
@@ -25,9 +26,10 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 6. [Como acrescentar conteúdo](#como-acrescentar-conteúdo)
 7. [Testes](#testes)
 8. [Publicação no GitHub Pages](#publicação-no-github-pages)
-9. [O que depende de servidor](#o-que-depende-de-servidor)
-10. [Conteúdo bíblico e licenças](#conteúdo-bíblico-e-licenças)
-11. [Histórico de atualizações](#histórico-de-atualizações)
+9. [Aplicativo Android](#aplicativo-android)
+10. [O que depende de servidor](#o-que-depende-de-servidor)
+11. [Conteúdo bíblico e licenças](#conteúdo-bíblico-e-licenças)
+12. [Histórico de atualizações](#histórico-de-atualizações)
 
 ## Como jogar
 
@@ -130,6 +132,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 - **Fontes auto-hospedadas:** Cinzel, Inter e Crimson Pro.
 - **Blender 4 e Python** para gerar os modelos 3D (`tools/`).
 - **GitHub Actions** para testar e publicar.
+- **Capacitor 8** para o aplicativo Android (Android 7 a 16; alvo API 36).
 
 ## Executar no computador
 
@@ -150,6 +153,8 @@ npm run dev
 | `npm test` | Roda os testes |
 | `npm run build` | Gera a versão de produção em `dist/` |
 | `npm run preview` | Serve a versão de produção localmente |
+| `npm run build:android` | Gera a versão do aplicativo Android em `dist/` (modo `android`) |
+| `npm run android:sync` | Gera a versão do aplicativo e copia para o projeto Android (`npx cap sync android`) |
 
 ## Organização das pastas
 
@@ -225,7 +230,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 197 testes automatizados (Vitest e Testing Library), em 18 arquivos de `src/test/`:
+São 212 testes automatizados (Vitest e Testing Library), em 19 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -244,6 +249,7 @@ São 197 testes automatizados (Vitest e Testing Library), em 18 arquivos de `src
 | `fase0` | Fase 0 da Etapa 2: nomes oficiais da navegação, Desafio diário como destino secundário, versão vinda do pacote e acesso à linha do tempo |
 | `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |
 | `flow` | Fluxos de tela completos, do cadastro ao resultado, incluindo o acampamento |
+| `android` | Aplicativo Android: painel administrativo e multiplayer de demonstração inacessíveis, ranking só com recordes do aparelho, leitura em voz alta oculta, exportar e apagar dados, botão voltar, links externos no navegador, configuração do Capacitor (identificador, `dist` local, sem site remoto), API 24/36, ícones e tela de abertura, nenhum SDK de anúncios ou análise |
 
 O ambiente de teste não tem WebGL, então as telas usam o personagem e o acampamento em 2D. O 3D é conferido no navegador (Playwright), no celular e no computador, a cada versão.
 
@@ -264,6 +270,34 @@ Configuração do GitHub:
 - Em **Settings → Environments → github-pages → Deployment branches and tags**, o ramo `main` precisa estar liberado. Recomendado: deixar só o `main`.
 
 O build usa `base: './'` e `HashRouter`, então funciona em qualquer subpasta.
+
+## Aplicativo Android
+
+Primeira etapa (branch `claude/bible-quest-android`, ainda não integrada ao `main` nem publicada na Google Play). Relatório: [`docs/relatorios/ANDROID_ETAPA_1.md`](docs/relatorios/ANDROID_ETAPA_1.md).
+
+- **Tecnologia:** Capacitor 8.6.2. Identificador permanente `com.kzanntech.biblequest`, nome "Bible Quest", Android mínimo API 24 (7.0), alvo API 36 (Android 16).
+- **Funciona sem internet:** o jogo inteiro vem dos arquivos locais de `dist`, copiados para dentro do aplicativo. Nada é carregado de um site remoto.
+- **Build do aplicativo:** `vite build --mode android` define `__ANDROID__` como verdadeiro. No build do site essa constante é falsa e o código exclusivo do aplicativo sai do pacote: o site continua idêntico, byte a byte.
+- **Desativado no aplicativo, nesta primeira versão:**
+  - painel administrativo (rota e módulo fora do pacote);
+  - multiplayer de demonstração (a rota leva ao treino livre);
+  - leitura em voz alta.
+
+  A implementação de cada um continua no projeto e no site.
+- **Experiência nativa:**
+  - ícone adaptativo com versão monocromática;
+  - tela de abertura do Android 12+;
+  - barras do sistema no tom do jogo, com a página encaixada entre elas;
+  - botão voltar (fecha a janela aberta, volta uma tela, sai na Central);
+  - retrato nos celulares e rotação livre em tablets;
+  - links externos no navegador do sistema.
+- **Build no GitHub Actions** (`.github/workflows/android.yml`): typecheck, testes, build do site (conferido contra a 0.17.9), build do aplicativo, `cap sync`, APK de depuração, verificação do APK e teste num emulador Android 16. O APK fica disponível como artefato do fluxo. Não há chave de assinatura nem segredos no repositório.
+- **Pastas:**
+  - `android/`: projeto Android;
+  - `capacitor.config.ts`: configuração do Capacitor;
+  - `src/android/`: integração nativa;
+  - `src/plataforma.ts`: constante `ANDROID`;
+  - `tools/android/`: ícones, verificação no emulador e perfil de teste.
 
 ## O que depende de servidor
 
@@ -292,7 +326,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **Android, etapa 1** (23/11/2026): aplicativo Android com Capacitor 8 (API 24 a 36), ícone e tela de abertura próprios, experiência nativa, painel administrativo, multiplayer de demonstração e leitura em voz alta desativados só no aplicativo, e APK de depuração pelo GitHub Actions; site idêntico à 0.17.9. Branch `claude/bible-quest-android`, em avaliação.
 - **0.17.9** (23/11/2026): passo 1.7, entrega 2: Biblioteca na paleta da Sala de Estudos (papel, couro e lamparina; textos abaixo do mínimo de 18 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
 - **0.17.8** (23/11/2026): passo 1.7, entrega 1: Conquistas na paleta da Sala dos Troféus (veludo, ouro e pergaminho, medalhas em bronze e prata; textos abaixo do mínimo de 49 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
 - **Documentação** (23/11/2026): diagnóstico e plano do passo 1.7 (paletas por ambiente nas telas antigas, ordem Conquistas → Biblioteca → Perfil → Quiz → História), aguardando avaliação (sem nova versão do jogo).
-- **0.17.7** (23/11/2026): Fase 1 da Etapa 2, passo 1.6 (alto contraste unificado em terra e marfim, sem texto ilegível nos cartões claros: de 257 textos abaixo do mínimo para 0) e foco que não para atrás do painel de missões aberto; aprovada e publicada no GitHub Pages.

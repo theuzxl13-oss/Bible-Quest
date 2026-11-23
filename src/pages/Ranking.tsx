@@ -8,15 +8,18 @@ import { dayKey } from '../services/game/dates'
 import { visibleStreak } from '../services/game/streak'
 import { useGame } from '../state/GameContext'
 import { quizCompletion } from '../services/game/quizMap'
+import { ANDROID } from '../plataforma'
 
 type Tab = 'geral' | 'historia' | 'livre' | 'diario' | 'multiplayer'
-const TABS: { id: Tab; label: string }[] = [
+const TODAS: { id: Tab; label: string }[] = [
   { id: 'geral', label: 'XP geral' },
   { id: 'historia', label: 'Modo História' },
   { id: 'livre', label: 'Modo Quiz' },
   { id: 'diario', label: 'Desafio diário' },
   { id: 'multiplayer', label: 'Multiplayer (futuro)' },
 ]
+// no aplicativo Android, sem a aba das partidas de demonstração
+const TABS = ANDROID ? TODAS.filter((t) => t.id !== 'multiplayer') : TODAS
 
 /**
  * Rankings. Sem servidor não existe classificação entre jogadores; a tela

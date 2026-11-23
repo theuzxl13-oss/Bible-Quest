@@ -1,0 +1,131 @@
+name: Aplicativo Android (APK de depuração)
+
+# Gera o APK de DEPURAÇÃO do Bible Quest (Capacitor 8, Android 16 / API 36)
+# e o testa num emulador. Não usa chave de assinatura nem segredos, e não
+# publica nada (nem no GitHub Pages, nem na Google Play).
+# O site continua sendo verificado e publicado só pelo deploy.yml.
+
+on:
+  push:
+    branches: ['claude/bible-quest-android']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    name: Testes, build e APK de depuração
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: gradle
+      - uses: android-actions/setup-android@v3
+      - name: SDK do Android (plataforma 36 e build-tools 36)
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0" "platform-tools"
+
+      - name: Dependências
+        run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Testes
+        run: npm test
+
+      - name: Build do site e conferência (idêntico à 0.17.9)
+        run: |
+          npm run build
+          cd dist && find . -type f | sort | xargs sha256sum > ../site-atual.sha256 && cd ..
+          if diff tools/android/site-0.17.9.sha256 site-atual.sha256; then echo "Site idêntico à 0.17.9 (mesmo SHA-256 em todos os arquivos)"; else echo "::warning::O build do site mudou em relação à 0.17.9"; fi
+
+      - name: Build do aplicativo e sincronização do Capacitor
+        run: |
+          npm run build:android
+          npx cap sync android
+
+      - name: Compilar o APK de depuração
+        working-directory: android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon assembleDebug
+
+      - name: Verificar o APK
+        run: |
+          APK=android/app/build/outputs/apk/debug/app-debug.apk
+          AAPT2=$(ls "$ANDROID_HOME"/build-tools/36.0.0/aapt2)
+          "$AAPT2" dump badging "$APK" > badging.txt
+          cat badging.txt | head -40
+          grep -q "package: name='com.kzanntech.biblequest'" badging.txt
+          grep -q "versionName='0.17.9'" badging.txt
+          grep -q "sdkVersion:'24'" badging.txt
+          grep -q "targetSdkVersion:'36'" badging.txt
+          grep -q "launchable-activity: name='com.kzanntech.biblequest.MainActivity'" badging.txt
+          unzip -l "$APK" > conteudo.txt
+          grep -q "assets/public/index.html" conteudo.txt
+          grep -q "assets/public/models/personagem/heroi-masculino.glb" conteudo.txt
+          if grep -q "AdminApp" conteudo.txt; then echo "::error::o painel administrativo está no APK"; exit 1; fi
+          unzip -p "$APK" assets/public/index.html | grep -q "viewport-fit=cover" && { echo "::error::viewport-fit=cover no HTML do aplicativo"; exit 1; } || true
+          unzip -p "$APK" assets/capacitor.config.json > capacitor.config.json
+          cat capacitor.config.json
+          if grep -q '"server"' capacitor.config.json; then echo "::error::o aplicativo carrega um servidor remoto"; exit 1; fi
+          echo "Permissões:"; grep "uses-permission" badging.txt
+          ls -la "$APK"
+
+      - name: Publicar o APK como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: bible-quest-0.17.9-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+          if-no-files-found: error
+
+  emulador:
+    name: Teste no emulador Android 16 (API 36)
+    needs: apk
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: bible-quest-0.17.9-debug-apk
+          path: apk
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Playwright (só a biblioteca, para falar com o WebView do aplicativo)
+        run: npm install --no-save --no-package-lock playwright@1.63.0
+      - name: Habilitar a aceleração (KVM)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Instalar e verificar no emulador
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 36
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
+          script: |
+            adb install -r apk/app-debug.apk
+            node tools/android/verificar-no-emulador.cjs verificacao-android
+      - name: Publicar as capturas e o resultado
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verificacao-no-emulador
+          path: verificacao-android
+          retention-days: 30

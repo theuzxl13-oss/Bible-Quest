@@ -6,6 +6,7 @@ import { DemoTag, ProgressBar } from '../../components/ui'
 import { FREE_MODES, freeModePool } from '../../services/game/freeModes'
 import { PRACTICE_DAILY_CAP } from '../../services/game/scoring'
 import { useGame } from '../../state/GameContext'
+import { ANDROID } from '../../plataforma'
 
 export default function FreeHub() {
   const { progress, questionPool, dailyContext } = useGame()
@@ -45,14 +46,17 @@ export default function FreeHub() {
               <span className="link">{dailyDone ? 'Ver detalhes' : 'Jogar agora'} <Icon name="arrowRight" size={16} /></span>
             </div>
           </Link>
-          <Link to="/quiz/multiplayer" className="special-card">
-            <ArtImage art="place-petra" className="special-img" sizes="(min-width: 900px) 40vw, 100vw" decorative />
-            <div className="special-body">
-              <p className="eyebrow">Multiplayer <DemoTag>Demonstração</DemoTag></p>
-              <h2>Salas privadas com amigos</h2>
-              <span className="link">Abrir salas <Icon name="arrowRight" size={16} /></span>
-            </div>
-          </Link>
+          {/* multiplayer de demonstração: só no site (desativado no aplicativo Android) */}
+          {!ANDROID && (
+            <Link to="/quiz/multiplayer" className="special-card">
+              <ArtImage art="place-petra" className="special-img" sizes="(min-width: 900px) 40vw, 100vw" decorative />
+              <div className="special-body">
+                <p className="eyebrow">Multiplayer <DemoTag>Demonstração</DemoTag></p>
+                <h2>Salas privadas com amigos</h2>
+                <span className="link">Abrir salas <Icon name="arrowRight" size={16} /></span>
+              </div>
+            </Link>
+          )}
         </div>
 
         <section aria-labelledby="mods">

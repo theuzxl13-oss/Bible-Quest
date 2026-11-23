@@ -8,6 +8,7 @@ import { PlayerCharacter } from '../character/PlayerCharacter'
 import { ItemReward } from '../character/ItemReward'
 import { NavegacaoGlobal } from './NavegacaoGlobal'
 import { VERSAO } from '../../versao'
+import { ANDROID } from '../../plataforma'
 import { ambienteDaRota } from './ambiente'
 
 const NAV: { to: string; label: string; short: string; icon: IconName }[] = [
@@ -25,7 +26,8 @@ const SECONDARY: { to: string; label: string }[] = [
   { to: '/diario', label: 'Desafio diário' },
   { to: '/revisao', label: 'Revisão' },
   { to: '/linha-do-tempo', label: 'Linha do tempo' },
-  { to: '/quiz/multiplayer', label: 'Multiplayer' },
+  // o multiplayer de demonstração não aparece no aplicativo Android
+  ...(ANDROID ? [] : [{ to: '/quiz/multiplayer', label: 'Multiplayer' }]),
   { to: '/conquistas', label: 'Conquistas' },
   { to: '/configuracoes', label: 'Configurações' },
   { to: '/sobre', label: 'Sobre' },

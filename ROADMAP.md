@@ -116,6 +116,14 @@
 
 ## Fase 6 — Aplicativo Android
 
+- **Etapa 1 (23/11/2026, em avaliação):** Capacitor 8 (API 24 a 36), experiência nativa, recursos desativados só no aplicativo e APK de depuração pelo GitHub Actions, na branch `claude/bible-quest-android` (`docs/relatorios/ANDROID_ETAPA_1.md`).
+- **Próximas etapas (com autorização):**
+  - AAB assinado, com a chave de envio guardada pela Kzann Tech e a assinatura do app pela Google Play;
+  - política de privacidade publicada;
+  - página da loja (ícone de 512 px, imagem de destaque e capturas);
+  - declarações da Play Console;
+  - teste interno e depois teste fechado (12 testadores por 14 dias, se a conta for pessoal criada depois de 13/11/2023).
+
 - Empacotar com **Capacitor**. O app já usa `base: './'` e `HashRouter`, compatíveis com WebView.
 - Ícones, splash screen, notificações locais opcionais para lembrar o desafio diário (com consentimento) e modo offline.
 - Publicação na Google Play: classificação etária, política de privacidade e formulário de segurança de dados.

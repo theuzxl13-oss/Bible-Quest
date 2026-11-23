@@ -41,3 +41,9 @@ createRoot(document.getElementById('root')!).render(
     </HashRouter>
   </StrictMode>,
 )
+
+// aplicativo Android: botão voltar, links externos e tela de abertura.
+// No site, __ANDROID__ vira false na compilação e este trecho (com a importação) sai do pacote.
+if (__ANDROID__) {
+  void import('./android/nativo').then((m) => m.iniciarAplicativo())
+}

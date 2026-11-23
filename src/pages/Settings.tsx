@@ -4,6 +4,7 @@ import { Notice, PageHeader } from '../components/ui'
 import { useGame } from '../state/GameContext'
 import { QUALITY_LABEL, resolveQuality } from '../character3d/quality'
 import type { Settings } from '../types'
+import { ANDROID } from '../plataforma'
 
 const GRAPHICS: { id: Settings['graphics']; label: string; help: string }[] = [
   { id: 'auto', label: 'Automática', help: 'Escolhe conforme a capacidade do aparelho.' },
@@ -54,13 +55,16 @@ export default function SettingsPage() {
         </fieldset>
         <Toggle id="contrast" label="Alto contraste" help="Aumenta o contraste de textos, bordas e botões." checked={settings.highContrast} onChange={(v) => updateSettings({ highContrast: v })} />
         <Toggle id="motion" label="Reduzir animações" help="Remove transições e efeitos de movimento." checked={settings.reduceMotion} onChange={(v) => updateSettings({ reduceMotion: v })} />
-        <Toggle
-          id="read"
-          label="Botões de leitura em voz alta"
-          help={speech ? 'Mostra o botão "Ouvir" nas introduções, usando a voz do seu dispositivo.' : 'Seu navegador não oferece síntese de voz.'}
-          checked={settings.readAloud}
-          onChange={(v) => updateSettings({ readAloud: v })}
-        />
+        {/* leitura em voz alta: oculta no aplicativo Android nesta primeira versão */}
+        {!ANDROID && (
+          <Toggle
+            id="read"
+            label="Botões de leitura em voz alta"
+            help={speech ? 'Mostra o botão "Ouvir" nas introduções, usando a voz do seu dispositivo.' : 'Seu navegador não oferece síntese de voz.'}
+            checked={settings.readAloud}
+            onChange={(v) => updateSettings({ readAloud: v })}
+          />
+        )}
       </section>
 
       <section className="panel stack" aria-labelledby="jogo">

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">
+  <!-- Bible Quest — ícone monocromático (ícones temáticos do Android 13+): só a forma, em branco.
+       O sistema aplica a cor do tema do aparelho. -->
+  <g fill="none" stroke="#FFFFFF" stroke-linejoin="round">
+    <circle cx="54" cy="54" r="30" stroke-width="4"/>
+  </g>
+  <path d="M51.6 30.5h4.8v8.6h7.4v4.6h-7.4v14.8h-4.8V43.7h-7.4v-4.6h7.4z" fill="#FFFFFF"/>
+  <path d="M53 62.9c-6.2-3.2-12.6-3.8-19.2-2.4v11.4c6.6-1.4 13-0.8 19.2 2.4zM55 62.9c6.2-3.2 12.6-3.8 19.2-2.4v11.4c-6.6-1.4-13-0.8-19.2 2.4z" fill="#FFFFFF"/>
+</svg>
