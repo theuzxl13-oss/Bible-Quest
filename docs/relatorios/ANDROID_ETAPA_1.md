@@ -2,6 +2,7 @@
 
 **Data:** 23/11/2026
 **Branch:** `claude/bible-quest-android`, criada a partir de `4815afa` (0.17.9)
+**Complemento:** `docs/relatorios/ANDROID_ETAPA_1_COMPLEMENTO.md` traz as verificações pedidas na avaliação. Ele corrige a verificação do botão voltar desta execução (aprovada sem a Biblioteca ter aberto de fato), que agora foi confirmada com o script corrigido.
 **Situação:** em avaliação. Não foi integrada ao `main`, não foi publicada na Google Play e não tem build comercial assinado.
 
 ## 1. Resumo

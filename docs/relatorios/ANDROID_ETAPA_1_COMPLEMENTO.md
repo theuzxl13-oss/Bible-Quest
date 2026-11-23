@@ -4,6 +4,11 @@
 **Branch:** `claude/bible-quest-android` (não integrada ao `main`)
 **Complementa:** `docs/relatorios/ANDROID_ETAPA_1.md`
 
+**Execuções finais (commit `1a159d6`), todas com sucesso:**
+- APK e emulador: 45288432969;
+- verificações complementares: 45288432987, com as evidências gravadas no commit `0187521`;
+- site: 45288433053.
+
 Este complemento registra as cinco verificações pedidas na avaliação da etapa 1. Nenhuma funcionalidade do jogo mudou, e o build do site e o APK oficial continuam os mesmos. Só foram alterados os scripts de verificação e os fluxos do GitHub Actions, e foram acrescentadas evidências e documentação.
 
 ## Resumo
@@ -54,7 +59,7 @@ Por isso criei o fluxo `android-verificacoes.yml`, iniciado à mão. Ele copia a
 Isso afetava também o teste do botão voltar:
 - no commit `e80b817`, ele foi aprovado sem que a Biblioteca tivesse aberto de fato;
 - com o script corrigido, o teste espera a tela certa antes de capturar ou de apertar voltar;
-- a nova verificação mostrou o voltar funcionando nas execuções 45285440109 (versão sem INTERNET, imagem com sistema "user") e 45287219234 (com diagnóstico);
+- a nova verificação mostrou o voltar funcionando nas execuções 45285440109 (versão sem INTERNET, imagem com sistema "user"), 45287219234 (com diagnóstico) e nas finais 45288432969 e 45288432987;
 - numa execução (45285440130), o teste conferiu a tela cedo demais e falhou;
 - o diagnóstico seguinte mostrou que o evento chega à página, sem teclado aberto e sem erro de JavaScript, e que o jogo volta à Central;
 - o script agora espera a resposta do aplicativo (até 15 s) em vez de um tempo fixo.
@@ -71,7 +76,7 @@ O código do jogo não precisou mudar.
 | Central | `sem-internet/02-central.jpg` | cena 3D inteira: personagem, barraca, fogueira, quadro de missões e baú; botões História, Começar e Quiz e o menu inferior visíveis |
 | Biblioteca | `sem-internet/05-biblioteca.jpg` | cabeçalho com voltar, painel em pergaminho, abas (Personagens 0/35, Livros, Lugares 0/19, Acontecimentos, Temas, Linha do tempo) e fichas bloqueadas; "Biblioteca" marcado no menu inferior |
 | Configurações | `sem-internet/04-configuracoes.jpg` | igual à captura 04 original; sem a leitura em voz alta |
-| Sem internet | `sem-internet/06-sem-internet.jpg` | modo avião ligado, o perfil "Tobias" mantido e a Central aberta. **A cena 3D não chegou a ser desenhada nesta captura** (aparecem o fundo e os rótulos). O teste da Central sem internet passou, mas o desenho 3D logo depois de reabrir o aplicativo precisa ser conferido num celular de verdade |
+| Sem internet | `sem-internet/06-sem-internet.jpg` | modo avião ligado, o perfil "Tobias" mantido e a Central aberta. **A cena 3D não chegou a ser desenhada nesta captura** (aparecem o fundo e os rótulos). Isso se repetiu em duas execuções (45285440109 e 45288432987). O registro de erros não mostra falha de WebGL, e a causa não foi identificada: pode ser o desenho por software do emulador ao reabrir o aplicativo. O teste da Central sem internet passou, mas o desenho 3D logo depois de reabrir o aplicativo precisa ser conferido num celular de verdade |
 
 ## 3. A permissão INTERNET
 
@@ -84,7 +89,7 @@ O código do jogo não precisou mudar.
 
 **Teste:** o fluxo `android-verificacoes.yml` monta, só dentro do executor, um APK de depuração com a permissão removida (`tools:node="remove"`):
 - o `aapt2` confirma que esse APK não tem INTERNET (`evidencias/android-etapa-1/apk/app-sem-internet.permissoes.txt`);
-- instalado num emulador Android 16 com sistema "user", ele passou nas 16 verificações (`sem-internet/resultado.json`, execução 45285440109): abertura, perfil, Central, recursos desativados, Biblioteca, botão voltar, nenhuma requisição externa, modo avião com o progresso salvo e nenhum travamento.
+- instalado num emulador Android 16 com sistema "user", ele passou nas 16 verificações nas execuções 45285440109 e 45288432987 (`sem-internet/resultado.json`): abertura, perfil, Central, recursos desativados, Biblioteca, botão voltar, nenhuma requisição externa, modo avião com o progresso salvo e nenhum travamento.
 
 **Conclusão:**
 - a permissão **não é indispensável** para o jogo atual;
@@ -105,7 +110,7 @@ O código do jogo não precisou mudar.
 |---|---|---|
 | `aapt2` | `application-debuggable` presente | ausente |
 | `dumpsys package` no aparelho | — | `flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]` (sem DEBUGGABLE) |
-| Soquete de depuração do WebView | `@webview_devtools_remote_<pid>` aberto | **nenhum soquete do aplicativo** |
+| Soquete de depuração do WebView | `@webview_devtools_remote_<pid>` aberto | **nenhum soquete do aplicativo** (execuções 45285440109 e 45288432987) |
 
 O soquete que aparece na lista do build de lançamento é do aplicativo de mensagens do próprio Android (`stetho_com.google.android.apps.messaging`), não do Bible Quest.
 
