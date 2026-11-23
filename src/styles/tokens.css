@@ -311,3 +311,43 @@ html[data-contrast='alto'] {
   --foco-sobre-claro: var(--azul-foco-700);
   --borda-suave: var(--marfim);
 }
+
+/* ---------- Alto contraste unificado (passo 1.6, 0.17.7) ----------
+   Um só modo de alto contraste, na família terra e marfim da Central.
+   Substitui o antigo modo preto e amarelo de global.css. As regras que usam
+   estes valores ficam em alto-contraste.css; os componentes da Central e os
+   bq-* continuam com as regras deles, que já usavam estes mesmos tokens.
+   Contraste medido (WCAG): marfim/terra-900 14,9:1; tinta/pergaminho 13,6:1;
+   tinta/ouro-300 10,0:1; ouro-300/terra-900 10,8:1; marfim/floresta-700 8,4:1;
+   marfim/vermelho-700 6,8:1; marfim-suave/terra-900 9,3:1. */
+html[data-contrast='alto'] {
+  --ac-fundo: var(--terra-900);
+  --ac-escuro-fundo: var(--terra-900);
+  --ac-escuro-texto: var(--marfim);
+  --ac-escuro-texto-suave: var(--marfim-suave);
+  --ac-escuro-borda: var(--ouro-300);
+  --ac-claro-fundo: var(--pergaminho);
+  --ac-claro-texto: var(--tinta);
+  --ac-claro-borda: var(--tinta);
+  --ac-selecionado-fundo: var(--ouro-300);
+  --ac-selecionado-texto: var(--tinta);
+  --ac-acerto-fundo: var(--floresta-700);
+  --ac-acerto-borda: var(--verde-200);
+  --ac-erro-fundo: var(--vermelho-700);
+  --ac-erro-borda: var(--vermelho-200);
+
+  /* telas antigas: as variáveis de global.css (pela ponte) passam aos mesmos tons */
+  --legado-navy-950: var(--terra-900);
+  --legado-navy-900: var(--terra-900);
+  --legado-navy-850: var(--terra-900);
+  --legado-navy-800: var(--terra-800);
+  --legado-text: var(--marfim);
+  --legado-muted: var(--marfim);
+  --legado-gold: var(--ouro-300);
+  --legado-gold-strong: var(--ouro-300);
+  --legado-border: var(--marfim-suave);
+  --legado-border-strong: var(--ouro-300);
+  --legado-panel: var(--terra-900);
+  --legado-ok: var(--verde-200);
+  --legado-err: var(--vermelho-200);
+}

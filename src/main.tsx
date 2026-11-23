@@ -27,6 +27,7 @@ import './styles/componentes/hud.css'
 import './styles/componentes/placa.css'
 import './styles/componentes/painel.css'
 import './styles/telas/acampamento.css'
+import './styles/alto-contraste.css'
 import { GameProvider } from './state/GameContext'
 import App from './App'
 

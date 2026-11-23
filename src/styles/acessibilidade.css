@@ -26,7 +26,7 @@
 
 /* ---------- Foco visível com contraste ----------
    Regra geral: o contorno dourado de antes continua valendo sobre fundos
-   escuros (e segue o alto contraste antigo, via --gold-strong). Sobre pergaminho e fundos claros, a cor passa para o azul de foco
+   escuros (e segue o alto contraste, via --gold-strong: ouro-300 desde a 0.17.7). Sobre pergaminho e fundos claros, a cor passa para o azul de foco
    sobre claro (5,4:1 no pergaminho), definido pelo contêiner em --foco-local. */
 :focus-visible { outline-color: var(--foco-local, var(--gold-strong)); }
 :is(.av-janela, .notice, .av-cena .scene-card, .av-resultado .result-head, .av-jogo .quiz-top) {

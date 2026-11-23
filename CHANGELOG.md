@@ -2,6 +2,32 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.7 — 23/11/2026 — Fase 1 da Etapa 2, passo 1.6: alto contraste unificado (em avaliação, não publicada)
+
+Desenvolvida só na branch `claude/loving-carson-8mrbjo`; não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_6.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.7/`.
+
+- **Um só alto contraste:** o modo antigo (preto e amarelo, em `global.css`) e o da Central (terra e marfim) viraram um modo só, na família da Central.
+  - Valores em `tokens.css`: tokens `--ac-*` e as variáveis antigas pela ponte.
+  - Regras das telas antigas em `src/styles/alto-contraste.css`, só com tokens.
+  - Saíram de `global.css` só o bloco de variáveis e as 5 regras do modo antigo.
+- **Problema corrigido:** o modo antigo pintava de preto os cartões claros de Biblioteca, Perfil e Conquistas, mas deixava o texto escuro. Agora esses cartões ficam em pergaminho sólido com texto e borda em tinta.
+  - Medição de 3.523 textos em 27 telas: abaixo de 4,5:1 eram 257 no alto contraste da 0.17.6; agora são **0** (o modo normal continua com 103).
+- **Também no alto contraste:**
+  - respostas certa e errada com preenchimento sólido;
+  - alternativa descartada sem transparência;
+  - item escolhido em ouro com texto escuro;
+  - aviso do próximo mundo legível;
+  - botão de perigo em vermelho escuro sobre pergaminho.
+- **Central:**
+  - sem foco, continua idêntica pixel a pixel, também no alto contraste;
+  - só no alto contraste, o anel marfim do foco volta ao topo e ao botão Missões (ele estava apagado). O foco insuficiente na Central caiu de 7 para 0.
+- **Preservado:**
+  - a opção "Alto contraste" e a preferência salva (mesma chave e formato);
+  - a redução de animações;
+  - o modo normal, sem nenhuma mudança;
+  - funcionalidades, rotas e dados.
+- **Testes:** 189, em 17 arquivos (7 novos em `altoContraste.test.tsx`).
+
 ## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (aprovada e publicada)
 
 **Publicação oficial (21/11/2026):**

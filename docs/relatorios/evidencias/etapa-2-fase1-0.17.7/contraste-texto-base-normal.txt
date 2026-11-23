@@ -1,0 +1,55 @@
+cel-biblioteca             modo=normal textos= 103 abaixo=  0
+cel-cena                   modo=normal textos=   8 abaixo=  0
+cel-central-2d             modo=normal textos=  25 abaixo=  0
+cel-central                modo=normal textos=  26 abaixo=  0
+cel-config                 modo=normal textos=  54 abaixo=  2  3.2:1 "As preferências ficam salvas neste dispo" div.page-header-lead | 4.1:1 "Apenas informativo: o tempo nunca altera" p.small
+cel-conquistas             modo=normal textos= 111 abaixo= 26  3.8:1 "Abra seu primeiro baú de recompensa no m" p.small | 3.8:1 "Acerte 10 perguntas de "Complete o versí" p.small | 3.8:1 "Acerte 10 perguntas numa rodada de Contr" p.small | 3.8:1 "Acerte 10 perguntas seguidas, em qualque" p.small | 3.8:1 "Acerte um "Quem sou eu?" com apenas uma " p.small | 3.8:1 "Conclua 2 livros completos (Gênesis e Êx" p.small
+cel-desafio                modo=normal textos=  10 abaixo=  1  2.98:1 "Difícil" span.tag
+cel-diario                 modo=normal textos=  14 abaixo=  0
+cel-entrar                 modo=normal textos=  18 abaixo=  1  4.33:1 "Nesta versão não há conta online, e-mail" p.muted
+cel-estatisticas           modo=normal textos=  88 abaixo=  1  3.5:1 "Números calculados com as suas partidas " div.page-header-lead
+cel-fase                   modo=normal textos=  47 abaixo=  1  4.16:1 "O primeiro homem" span.small
+cel-ficha                  modo=normal textos=  70 abaixo=  1  3.71:1 "O primeiro homem" p.lead
+cel-guarda-roupa           modo=normal textos=  57 abaixo=  5  2.94:1 "itens desbloqueados; os demais são conqu" p.page-header-lead | 3.08:1 "18" p.page-header-lead | 3.08:1 "35" p.page-header-lead | 3.11:1 "de" p.page-header-lead | 3.21:1 "Vestimentas inspiradas nas roupas dos te" p.page-header-lead
+cel-historia-mapa          modo=normal textos=   7 abaixo=  3  3.14:1 "Em preparação" p.small | 3.25:1 "Conquista e Terra Prometida" strong. | 3.32:1 "Próximo mundo:" p.
+cel-janela-fase            modo=normal textos=  15 abaixo=  0
+cel-linha                  modo=normal textos= 237 abaixo=  3  2.17:1 "Data estimada" span.dating | 3.35:1 "Sequência bíblica" span.dating | 3.41:1 "Os principais acontecimentos em ordem. C" div.page-header-lead
+cel-livro                  modo=normal textos= 148 abaixo=  0
+cel-livros                 modo=normal textos= 193 abaixo=  0
+cel-modalidade             modo=normal textos=  13 abaixo=  1  3.48:1 "Fácil" span.tag
+cel-multiplayer            modo=normal textos=  47 abaixo=  0
+cel-nao-encontrada         modo=normal textos=  26 abaixo=  1  3.35:1 "O endereço pode ter mudado ou não existi" p.muted
+cel-perfil                 modo=normal textos=  88 abaixo=  3  1.88:1 "Apagar perfil e progresso" button.btn | 2.23:1 "Nenhuma partida registrada." p.muted | 2.53:1 "Conquistas e medalhas" a.link
+cel-quiz-mapa              modo=normal textos=   9 abaixo=  0
+cel-ranking                modo=normal textos=  36 abaixo=  1  3.61:1 "Classificações por categoria." div.page-header-lead
+cel-revisao                modo=normal textos=  24 abaixo=  1  3.03:1 "O jogo registra cada resposta. Assuntos " div.page-header-lead
+cel-sobre                  modo=normal textos= 186 abaixo=  1  3.41:1 "Uma jornada pelas Escrituras. Um jogo ed" div.page-header-lead
+cel-treino                 modo=normal textos=  70 abaixo=  1  3.79:1 "Escolha qualquer modalidade, dificuldade" p.page-header-lead
+pc-biblioteca              modo=normal textos= 102 abaixo=  0
+pc-cena                    modo=normal textos=   8 abaixo=  0
+pc-central-2d              modo=normal textos=  28 abaixo=  0
+pc-central                 modo=normal textos=  28 abaixo=  0
+pc-config                  modo=normal textos=  56 abaixo=  2  3.45:1 "As preferências ficam salvas neste dispo" div.page-header-lead | 4.31:1 "Apenas informativo: o tempo nunca altera" p.small
+pc-conquistas              modo=normal textos= 107 abaixo= 23  3.72:1 "Jogue todas as 7 modalidades do Modo Qui" p.small | 3.76:1 "Conclua 2 livros completos (Gênesis e Êx" p.small | 3.8:1 "Abra seu primeiro baú de recompensa no m" p.small | 3.8:1 "Acerte 10 perguntas de "Complete o versí" p.small | 3.8:1 "Acerte 10 perguntas seguidas, em qualque" p.small | 3.8:1 "Acerte 5 desafios de memória." p.small
+pc-desafio                 modo=normal textos=  10 abaixo=  1  3.05:1 "Difícil" span.tag
+pc-diario                  modo=normal textos=  20 abaixo=  0
+pc-entrar                  modo=normal textos=  22 abaixo=  0
+pc-estatisticas            modo=normal textos=  93 abaixo=  1  3.45:1 "Números calculados com as suas partidas " div.page-header-lead
+pc-fase                    modo=normal textos=  49 abaixo=  1  4.25:1 "O primeiro homem" span.small
+pc-ficha                   modo=normal textos=  75 abaixo=  1  4.11:1 "O primeiro homem" p.lead
+pc-guarda-roupa            modo=normal textos=  66 abaixo=  5  3.35:1 "itens desbloqueados; os demais são conqu" p.page-header-lead | 3.45:1 "18" p.page-header-lead | 3.45:1 "35" p.page-header-lead | 3.45:1 "Vestimentas inspiradas nas roupas dos te" p.page-header-lead | 3.45:1 "de" p.page-header-lead
+pc-historia-mapa           modo=normal textos=   7 abaixo=  3  3.14:1 "Em preparação" p.small | 3.24:1 "Conquista e Terra Prometida" strong. | 3.32:1 "Próximo mundo:" p.
+pc-janela-fase             modo=normal textos=  17 abaixo=  0
+pc-linha                   modo=normal textos= 245 abaixo=  4  2.64:1 "Data estimada" span.dating | 3.45:1 "Os principais acontecimentos em ordem. C" div.page-header-lead | 3.56:1 "Sequência bíblica" span.dating | 3.73:1 "Data debatida" span.dating
+pc-livro                   modo=normal textos= 152 abaixo=  0
+pc-livros                  modo=normal textos= 196 abaixo=  0
+pc-modalidade              modo=normal textos=  13 abaixo=  1  3.6:1 "Fácil" span.tag
+pc-multiplayer             modo=normal textos=  48 abaixo=  0
+pc-nao-encontrada          modo=normal textos=  27 abaixo=  1  3.49:1 "O endereço pode ter mudado ou não existi" p.muted
+pc-perfil                  modo=normal textos=  84 abaixo=  3  1.92:1 "Apagar perfil e progresso" button.btn | 2.23:1 "Nenhuma partida registrada." p.muted | 2.53:1 "Conquistas e medalhas" a.link
+pc-quiz-mapa               modo=normal textos=   9 abaixo=  0
+pc-ranking                 modo=normal textos=  41 abaixo=  1  3.45:1 "Classificações por categoria." div.page-header-lead
+pc-revisao                 modo=normal textos=  28 abaixo=  1  3.31:1 "O jogo registra cada resposta. Assuntos " div.page-header-lead
+pc-sobre                   modo=normal textos= 188 abaixo=  1  3.45:1 "Uma jornada pelas Escrituras. Um jogo ed" div.page-header-lead
+pc-treino                  modo=normal textos=  74 abaixo=  1  3.99:1 "Escolha qualquer modalidade, dificuldade" p.page-header-lead
+TOTAL 3523 abaixo 103

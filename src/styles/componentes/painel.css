@@ -52,3 +52,5 @@ a.board-item:focus-visible { outline: 3px solid var(--foco-sobre-claro); outline
   @keyframes camp-painel-sobe { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
 }
 html[data-contrast='alto'] .camp-painel, html[data-contrast='alto'] .camp-missoes-botao { background: var(--pergaminho); color: var(--tinta); border-color: var(--tinta); box-shadow: none; }
+/* 0.17.7 (passo 1.6): o anel marfim do foco volta no alto contraste (antes ficava apagado pela regra acima) */
+html[data-contrast='alto'] .camp-missoes-botao:focus-visible { box-shadow: 0 0 0 3px var(--marfim); }

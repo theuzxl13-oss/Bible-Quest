@@ -43,10 +43,11 @@ describe('ponte de compatibilidade (0.17.5)', () => {
     }
   })
 
-  it('o alto contraste e as animações reduzidas antigas continuam com especificidade maior que a ponte', () => {
-    // a ponte usa :root (0,1,0); os ajustes antigos usam html[data-...] (0,1,1)
+  it('a animação reduzida antiga continua com especificidade maior que a ponte; o alto contraste passou aos tokens (0.17.7)', () => {
+    // a ponte usa :root (0,1,0); os ajustes usam html[data-...] (0,1,1)
     expect(semComentarios(ponte)).not.toMatch(/html\[data-/)
-    expect(global).toMatch(/html\[data-contrast='alto'\]\s*\{[^}]*--gold:/)
+    expect(semComentarios(global)).not.toMatch(/data-contrast/)
+    expect(tokens).toMatch(/html\[data-contrast='alto'\]\s*\{[^}]*--legado-gold:/)
     expect(global).toMatch(/html\[data-motion='reduzido'\]\s*\{\s*--speed:\s*0ms/)
   })
 
@@ -89,10 +90,11 @@ describe('arquivos novos sem cor HEX (0.17.5)', () => {
     const arquivos = [
       'src/styles/ponte.css',
       'src/styles/acessibilidade.css',
+      'src/styles/alto-contraste.css',
       ...readdirSync(join(raiz, 'src/styles/componentes')).filter((f) => f.startsWith('base-')).map((f) => `src/styles/componentes/${f}`),
       'src/components/base/index.tsx',
     ]
-    expect(arquivos.length).toBe(14)
+    expect(arquivos.length).toBe(15)
     for (const f of arquivos) expect(semComentarios(ler(f)).match(/#[0-9a-fA-F]{3,8}\b/g), f).toBeNull()
   })
 

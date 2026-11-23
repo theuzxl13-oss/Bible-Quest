@@ -145,7 +145,7 @@ describe('passo 1.4: estilos de acessibilidade', () => {
     expect(css).toMatch(/\.switch::before/)
     expect(css).toMatch(/--foco-local:\s*var\(--foco-sobre-claro\)/)
     expect(css).toMatch(/\.av-pagina\s*\{\s*--foco-local:\s*var\(--tinta\)/)
-    // o contorno padrão continua seguindo o alto contraste antigo (--gold-strong)
+    // o contorno padrão segue --gold-strong, que o alto contraste unificado troca por ouro-300 (0.17.7)
     expect(css).toMatch(/:focus-visible\s*\{\s*outline-color:\s*var\(--foco-local, var\(--gold-strong\)\)/)
     expect(ler('src/main.tsx').indexOf('acessibilidade.css')).toBeGreaterThan(ler('src/main.tsx').indexOf('ponte.css'))
   })

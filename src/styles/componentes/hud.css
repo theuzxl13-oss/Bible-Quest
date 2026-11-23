@@ -57,3 +57,5 @@
   .hud-settings { width: 44px; height: 44px; order: -1; }
 }
 html[data-contrast='alto'] .hud-player, html[data-contrast='alto'] .hud-res, html[data-contrast='alto'] .hud-settings { background: var(--terra-900); border-color: var(--marfim); box-shadow: none; }
+/* 0.17.7 (passo 1.6): no alto contraste, o "box-shadow: none" acima apagava o anel marfim do foco; ele volta só com foco */
+html[data-contrast='alto'] :is(.hud-player, .hud-settings):focus-visible { box-shadow: 0 0 0 3px var(--marfim); }

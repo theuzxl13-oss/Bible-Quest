@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.17.6 (Central do Jogador, Fase 0 da identidade nas demais telas, base visual comum, acessibilidade base e identificação dos ambientes da Fase 1) |
+| **Versão** | 0.17.7 em avaliação (alto contraste unificado); publicada: 0.17.6 (Central do Jogador, Fase 0 da identidade nas demais telas, base visual comum, acessibilidade base e identificação dos ambientes da Fase 1) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -113,7 +113,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 
 **Acessibilidade**
 
-- Três tamanhos de texto, alto contraste e opção de reduzir animações.
+- Três tamanhos de texto, alto contraste e opção de reduzir animações. Desde a 0.17.7, um só alto contraste em todo o jogo, na família terra e marfim da Central, com superfícies sólidas (`src/styles/alto-contraste.css`).
 - Leitura em voz alta.
 - Foco visível com contraste também sobre pergaminho e cenários, e alvos de toque com pelo menos 44 px (área invisível, sem mudar o visual; `src/styles/acessibilidade.css`, desde a 0.17.6).
 - Foco preso nas janelas dos mapas, do baú e da recompensa; Esc fecha a janela da fase e a ajuda do mapa.
@@ -200,7 +200,7 @@ npm run dev
     │   ├── library/         Biblioteca e linha do tempo
     │   └── *.tsx            Acampamento (Dashboard), diário, resultado, perfil, configurações e outras
     ├── admin/               Painel administrativo (carregado sob demanda)
-    ├── styles/              Visual: global.css (telas antigas), tokens.css (tokens em 4 camadas), ponte.css (variáveis antigas → tokens), acessibilidade.css (áreas de toque e foco), componentes/ (Central e componentes base bq-*) e telas/
+    ├── styles/              Visual: global.css (telas antigas), tokens.css (tokens em 4 camadas), ponte.css (variáveis antigas → tokens), acessibilidade.css (áreas de toque e foco), alto-contraste.css (alto contraste unificado), componentes/ (Central e componentes base bq-*) e telas/
     └── test/                Testes automatizados
 ```
 
@@ -225,7 +225,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 182 testes automatizados (Vitest e Testing Library), em 16 arquivos de `src/test/`:
+São 189 testes automatizados (Vitest e Testing Library), em 17 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -237,6 +237,7 @@ São 182 testes automatizados (Vitest e Testing Library), em 16 arquivos de `src
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
 | `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, rótulos da cena, o Desafio diário pelos dois caminhos, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
 | `ponte` | Base visual da Fase 1: variáveis antigas com os valores exatos de antes, ordem de importação, tokens da Central intactos, tokens de ambiente e nenhum HEX nos arquivos novos |
+| `altoContraste` | Passo 1.6: um só alto contraste (sem HEX nas regras, variáveis e superfícies do modo antigo cobertas, contraste dos pares de tokens, ordem de carregamento, preferência salva com a animação reduzida e anel do foco na Central) |
 | `acessibilidade` | Passos 1.4 e 1.5: ambiente de cada rota e marca no Layout, atributo sem efeito na tela (só `tokens.css` o seleciona), foco preso e Esc nas janelas dos mapas, áreas de toque e cor do foco, e, na Central, só as correções autorizadas (painel de missões, selo, anel duplo dos rótulos, topo, placas e Continuar, e toque dos rótulos) |
 | `base` | Componentes base (bq-*): botão, painel, cartão, janela (foco preso e Esc), aviso, mensagem rápida, campo, progresso, abas (setas), cabeçalho e voltar |
 | `fase0` | Fase 0 da Etapa 2: nomes oficiais da navegação, Desafio diário como destino secundário, versão vinda do pacote e acesso à linha do tempo |
@@ -290,7 +291,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.17.7** (23/11/2026): Fase 1 da Etapa 2, passo 1.6 (alto contraste unificado em terra e marfim, sem texto ilegível nos cartões claros: de 257 textos abaixo do mínimo para 0); em avaliação, não publicada.
 - **0.17.6** (21/11/2026): Fase 1 da Etapa 2, passos 1.4 e 1.5 (áreas de toque de 44 px, foco com contraste, foco preso nas janelas dos mapas e `data-ambiente` só como identificação); na Central, foco do painel de missões, selo de aviso e, na finalização autorizada, anel duplo em todos os controles e toque dos rótulos com 46 px; aprovada e publicada no GitHub Pages.
 - **0.17.5** (16/11/2026): Fase 1 da Etapa 2, passos 1.1 a 1.3 (tokens em quatro camadas, ponte de compatibilidade com os valores antigos e 11 componentes base), sem mudança na tela; aprovada e publicada no GitHub Pages.
 - **Documentação** (16/11/2026): auditoria visual da Fase 1 da Etapa 2 e proposta da base comum (tokens e componentes), aguardando aprovação (sem nova versão do jogo).
-- **0.17.4** (16/11/2026): Fase 0 da Etapa 2 (avisos, introdução do mundo, tabela do Perfil, link da linha do tempo, nomes oficiais da navegação e versão vinda do pacote); aprovada e publicada no GitHub Pages.
