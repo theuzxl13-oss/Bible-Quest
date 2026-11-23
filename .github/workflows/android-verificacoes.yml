@@ -137,9 +137,17 @@ jobs:
           mkdir -p "$DEST"
           cp -r evidencias/. "$DEST/"
           # capturas em JPEG de 720 px de largura, para não pesar no repositório
-          find "$DEST" -name '*.png' | while read -r f; do
-            convert "$f" -resize 720x -quality 85 "${f%.png}.jpg" && rm "$f"
-          done
+          python3 -m pip install --quiet pillow
+          python3 - "$DEST" <<'PY'
+          import pathlib, sys
+          from PIL import Image
+          for f in pathlib.Path(sys.argv[1]).rglob('*.png'):
+              im = Image.open(f).convert('RGB')
+              if im.width > 720:
+                  im = im.resize((720, round(im.height * 720 / im.width)), Image.LANCZOS)
+              im.save(f.with_suffix('.jpg'), quality=85)
+              f.unlink()
+          PY
           ls -R "$DEST"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
