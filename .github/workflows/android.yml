@@ -68,15 +68,16 @@ jobs:
           APK=android/app/build/outputs/apk/debug/app-debug.apk
           AAPT2=$(ls "$ANDROID_HOME"/build-tools/36.0.0/aapt2)
           "$AAPT2" dump badging "$APK" > badging.txt
-          cat badging.txt | head -40
-          grep -q "package: name='com.kzanntech.biblequest'" badging.txt
-          grep -q "versionName='0.17.9'" badging.txt
-          grep -q "sdkVersion:'24'" badging.txt
-          grep -q "targetSdkVersion:'36'" badging.txt
-          grep -q "launchable-activity: name='com.kzanntech.biblequest.MainActivity'" badging.txt
+          grep -vE "^application-label-" badging.txt
+          exige() { grep -q "$1" "$2" || { echo "::error::não encontrado em $2: $1"; exit 1; }; }
+          exige "package: name='com.kzanntech.biblequest'" badging.txt
+          exige "versionName='0.17.9'" badging.txt
+          exige "minSdkVersion:'24'" badging.txt
+          exige "targetSdkVersion:'36'" badging.txt
+          exige "launchable-activity: name='com.kzanntech.biblequest.MainActivity'" badging.txt
           unzip -l "$APK" > conteudo.txt
-          grep -q "assets/public/index.html" conteudo.txt
-          grep -q "assets/public/models/personagem/heroi-masculino.glb" conteudo.txt
+          exige "assets/public/index.html" conteudo.txt
+          exige "assets/public/models/personagem/heroi-masculino.glb" conteudo.txt
           if grep -q "AdminApp" conteudo.txt; then echo "::error::o painel administrativo está no APK"; exit 1; fi
           unzip -p "$APK" assets/public/index.html | grep -q "viewport-fit=cover" && { echo "::error::viewport-fit=cover no HTML do aplicativo"; exit 1; } || true
           unzip -p "$APK" assets/capacitor.config.json > capacitor.config.json
