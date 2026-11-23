@@ -91,10 +91,11 @@ describe('arquivos novos sem cor HEX (0.17.5)', () => {
       'src/styles/ponte.css',
       'src/styles/acessibilidade.css',
       'src/styles/alto-contraste.css',
+      'src/styles/ambientes.css',
       ...readdirSync(join(raiz, 'src/styles/componentes')).filter((f) => f.startsWith('base-')).map((f) => `src/styles/componentes/${f}`),
       'src/components/base/index.tsx',
     ]
-    expect(arquivos.length).toBe(15)
+    expect(arquivos.length).toBe(16)
     for (const f of arquivos) expect(semComentarios(ler(f)).match(/#[0-9a-fA-F]{3,8}\b/g), f).toBeNull()
   })
 

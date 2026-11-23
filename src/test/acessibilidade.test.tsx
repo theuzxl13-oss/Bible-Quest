@@ -64,13 +64,14 @@ describe('passo 1.5: identificação dos ambientes', () => {
     expect(outro.container.querySelector('.app')).not.toHaveAttribute('data-ambiente')
   })
 
-  it('o atributo não muda nada na tela: só tokens.css o seleciona, e os tokens de ambiente só são lidos pelos componentes base', () => {
-    const estilos = ['src/styles/global.css', 'src/styles/tokens.css', 'src/styles/ponte.css', 'src/styles/acessibilidade.css',
+  it('só tokens.css e ambientes.css (passo 1.7) selecionam o atributo; os tokens de ambiente só são lidos por eles e pelos componentes base', () => {
+    const estilos = ['src/styles/global.css', 'src/styles/tokens.css', 'src/styles/ponte.css', 'src/styles/ambientes.css', 'src/styles/acessibilidade.css', 'src/styles/alto-contraste.css',
       ...['componentes', 'telas'].flatMap((d) => readdirSync(join(raiz, 'src/styles', d)).map((f) => `src/styles/${d}/${f}`))]
     for (const f of estilos) {
       const css = semComentarios(ler(f))
-      if (f !== 'src/styles/tokens.css') expect(css, f).not.toMatch(/data-ambiente/)
-      if (f !== 'src/styles/tokens.css' && !f.includes('/base-')) expect(css, f).not.toMatch(/var\(--amb-/)
+      const autorizado = f === 'src/styles/tokens.css' || f === 'src/styles/ambientes.css'
+      if (!autorizado) expect(css, f).not.toMatch(/data-ambiente/)
+      if (!autorizado && !f.includes('/base-')) expect(css, f).not.toMatch(/var\(--amb-/)
     }
     // nenhum componente ou tela lê o atributo pelo código
     const codigo = readdirSync(join(raiz, 'src'), { recursive: true }).map(String).filter((f) => /\.tsx?$/.test(f) && !f.startsWith('test')).filter((f) => !f.endsWith('layout/ambiente.ts') && !f.endsWith('layout/Layout.tsx'))

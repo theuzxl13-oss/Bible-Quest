@@ -48,7 +48,7 @@ implementada ainda.
 | Fase | O que entra | Situação |
 | --- | --- | --- |
 | 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
-| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, aprovada e publicada em 21/11/2026; passo 1.6 na versão 0.17.7, aprovada e publicada em 23/11/2026; passo 1.7 com diagnóstico e plano feitos (23/11/2026), aguardando avaliação; passo 1.8 aguardando autorização |
+| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, aprovada e publicada em 21/11/2026; passo 1.6 na versão 0.17.7, aprovada e publicada em 23/11/2026; passo 1.7 com plano aprovado e entrega 1 (Conquistas, 0.17.8) em avaliação; passo 1.8 aguardando autorização |
 | 2 a 5 | Conforme o diagnóstico | — |
 
 ## Fase 1 — decisões da primeira entrega (16/11/2026)
@@ -77,6 +77,14 @@ implementada ainda.
 - **Preservado:** a opção e a preferência salva, a redução de animações e o modo normal.
 - **Publicação (23/11/2026):** aprovada, com a correção do foco com o painel de missões aberto; integrada ao `main` por fast-forward e publicada (run 92).
 - **Fora desta versão:** paletas dos ambientes, migração visual das telas, limpeza de estilos, passos 1.7 e 1.8 e Etapa 3.
+
+## Fase 1 — passo 1.7 (23/11/2026)
+
+- **Plano aprovado** (diagnóstico `452682b`): ordem Conquistas → Biblioteca → Perfil → Quiz → História, uma entrega por ambiente.
+- **Escopo:** só as superfícies de interface. Cenários, mapas, arte, personagem, cantos e sombras não mudam. As telas de serviço continuam neutras.
+- **Medalhas:** bronze e prata podem ser aplicados aos ícones das medalhas, sem alterar dados.
+- **Proteções:** a Central fica integralmente protegida, e o alto contraste continua idêntico à 0.17.7.
+- **Entrega 1:** Conquistas, versão 0.17.8, em avaliação.
 
 ## Personagens 3D (20/11/2026)
 
