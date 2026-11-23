@@ -27,9 +27,9 @@
 
 | Medição | 0.17.6 | 0.17.7 |
 | --- | --- | --- |
-| Elementos com foco insuficiente no alto contraste | 9 | 2 |
+| Elementos com foco insuficiente no alto contraste | 9 | 0 |
 
-Os 2 restantes são um artefato da medição (seção 7, item 4).
+Na primeira medição sobraram 2: rótulos que recebiam foco mesmo encobertos pelo painel de missões aberto. A verificação final (seção 9) mostrou que o problema era real e o corrigiu.
 
 **O que não mudou:**
 - a Central: sem foco, em alto contraste, é idêntica pixel a pixel à 0.17.6, em 3D e 2D, no celular e no computador;
@@ -114,7 +114,8 @@ Nenhum dos dois sistemas atingia os mapas (História e Quiz), as cenas nem a mai
 | `src/styles/acessibilidade.css` | Só o comentário sobre `--gold-strong` |
 | `src/test/altoContraste.test.tsx` (novo) | 7 testes do alto contraste unificado |
 | `src/test/ponte.test.ts` | O teste do modo antigo passa a conferir o modo unificado; `alto-contraste.css` entra na lista de arquivos sem HEX |
-| `src/test/acessibilidade.test.tsx` | Só um comentário |
+| `src/test/acessibilidade.test.tsx` | Um comentário e o teste do foco com o painel de missões aberto (seção 9) |
+| `src/components/usePularEncobertos.ts` (novo) e `src/components/camp/PainelMissoes.tsx` | Com o painel de missões aberto, o Tab pula o que fica encoberto por ele (seção 9) |
 | `package.json`, `package-lock.json` | Versão 0.17.7 |
 | Documentação | Este relatório, evidências, CHANGELOG, README, ROADMAP, `docs/README.md` e `docs/planos/ETAPA_2_DECISOES_OFICIAIS.md` |
 
@@ -189,7 +190,7 @@ Folhas em `evidencias/etapa-2-fase1-0.17.7/`:
 4. **Foco pelo teclado:**
    - medição geral (24 telas, Tab em até 30 elementos, no computador): 9 elementos com indicador insuficiente na 0.17.6 e 2 na 0.17.7;
    - Central com o painel de missões fechado, no celular e no computador: de 7 para **0**;
-   - os 2 restantes da medição geral são rótulos da Central que, nessa medição, ficam atrás do painel de missões aberto (o mesmo artefato registrado na 0.17.6);
+   - os 2 restantes eram rótulos da Central que recebiam foco atrás do painel de missões aberto. Isso foi corrigido na verificação final (seção 9), e a medição passou a 0;
    - imagens: `foco-central-alto-contraste.png`; números: `foco-*.txt`.
 5. **Formulários, botões, avisos, cartões, mapas e janelas:** cobertos pelas telas de entrada, configurações, multiplayer, perguntas, resultado, Biblioteca, Perfil, Conquistas, mapas e janela da fase, todas com 0 textos abaixo do mínimo.
 6. **Central em 3D e 2D:** idêntica sem foco; foco medido nas quatro combinações.
@@ -203,7 +204,7 @@ Folhas em `evidencias/etapa-2-fase1-0.17.7/`:
    - um teste confere que as 10 variáveis e as 11 superfícies que o modo antigo cobria continuam cobertas.
 10. **Typecheck, testes e build:**
     - typecheck sem erros;
-    - **189 testes em 17 arquivos**, todos passando (7 novos em `altoContraste.test.tsx`);
+    - **190 testes em 17 arquivos**, todos passando (7 novos em `altoContraste.test.tsx` e 1 em `acessibilidade.test.tsx`, da seção 9);
     - build concluído (`index-70rtdYm8.js` e `index-BVuaq63J.css`).
 
 ## 8. Limitações e pendências
@@ -215,3 +216,54 @@ Folhas em `evidencias/etapa-2-fase1-0.17.7/`:
 - **Contraste máximo:** no alto contraste, o texto principal passa de branco sobre preto (21:1) para marfim sobre terra (14,9:1). Os dois estão muito acima do nível AAA, e o mínimo melhorou (seção 5).
 - **Resposta errada:** 6,83:1, acima de AA (4,5:1) e um pouco abaixo de AAA (7:1). Não existe um vermelho mais escuro na paleta, e criar um novo tom ficou fora do escopo.
 - **Mapas e cenas:** continuam com o cenário ilustrado no alto contraste. Só o aviso do próximo mundo mudou, porque era o único texto abaixo do mínimo.
+
+## 9. Verificação final: foco com o painel de missões aberto
+
+Pedida antes da integração, para explicar os 2 rótulos que a medição geral de foco marcava como insuficientes.
+
+### 9.1 O que foi verificado
+
+O teste abriu a Central (build de produção) e o painel de missões nas 8 combinações:
+- celular e computador;
+- 3D e 2D;
+- modo normal e alto contraste.
+
+Em cada uma, percorreu os elementos com 22 Tabs e 21 Shift+Tabs. Para cada foco, registrou quanto do elemento estava visível, medindo 15 pontos da caixa.
+
+**Resultado: os rótulos encobertos recebiam foco.** O painel de missões não é uma janela modal: é uma seção que abre ao lado do botão, e o resto da Central continua na ordem do Tab. Com ele aberto, o foco parava em elementos escondidos atrás dele, o que fere a WCAG 2.4.11 (foco não encoberto):
+
+| Combinação | Elementos que recebiam foco encobertos pelo painel |
+| --- | --- |
+| Computador, 3D | Rótulos "Desafio diário" (20% visível) e "Recompensas" (40% visível) |
+| Computador, 2D | Os mesmos dois rótulos, 0% visíveis |
+| Celular, 3D | Placas "História" e "Quiz", "Começar/Continuar" e o rótulo "Recompensas", 0% visíveis |
+| Celular, 2D | Os mesmos, mais o rótulo "Biblioteca" |
+
+Era o mesmo resultado no modo normal e no alto contraste. A medição geral de foco só via os dois rótulos do computador, porque só mede nessa largura.
+
+### 9.2 Correção (só comportamento de foco)
+
+O hook novo `src/components/usePularEncobertos.ts` foi ligado ao painel em `PainelMissoes.tsx`:
+- enquanto o painel está aberto, Tab e Shift+Tab pulam os elementos com metade ou mais da área sob o painel e vão ao próximo visível, na mesma ordem de antes;
+- os elementos visíveis continuam recebendo foco;
+- com o painel fechado, nada muda.
+
+**Não mudaram:** a aparência, a composição, o CSS, a abertura e o fechamento do painel (botão, Esc e "Fechar missões") nem o clique com o mouse.
+
+### 9.3 Resultado
+
+| Verificação | Resultado |
+| --- | --- |
+| Foco em elemento encoberto, painel aberto (8 combinações, Tab e Shift+Tab) | Antes: de 2 a 5 elementos por combinação. Depois: **0** |
+| Elementos visíveis que deixaram de receber foco | Nenhum |
+| Ordem do Tab e do Shift+Tab com o painel fechado (4 combinações) | Idêntica à 0.17.6 |
+| Medição geral de foco, modo normal | Antes: 2 insuficientes (os rótulos encobertos). Depois: **0** |
+| Medição geral de foco, alto contraste | Antes: 2. Depois: **0** |
+| Central sem foco, alto contraste (3D e 2D, celular e computador) | Idêntica pixel a pixel à 0.17.6 |
+| Central sem foco, modo normal | Idêntica à 0.17.6. No 2D do computador, as três rodadas novas ficaram iguais a uma rodada da própria 0.17.6; a captura desse modo tem dois estados possíveis, os dois já presentes na 0.17.6. Um ponto de 1 × 2 px no 3D do computador, numa rodada, sumiu ao repetir |
+| Teste automático novo (`acessibilidade.test.tsx`) | Painel aberto: o Tab pula o botão encoberto nos dois sentidos. Painel fechado: a ordem é a de sempre |
+| Typecheck, testes e build | Sem erros; **190 testes em 17 arquivos**; build concluído |
+
+**Evidências** (`evidencias/etapa-2-fase1-0.17.7/painel-aberto/`):
+- `antes-foco-encoberto-*.jpg`: o foco parado num rótulo atrás do painel;
+- `tab-painel-aberto-antes.json` e `tab-painel-aberto-depois.json`: a sequência completa de Tab e Shift+Tab, com a porcentagem visível de cada foco.

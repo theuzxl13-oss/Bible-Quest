@@ -12,6 +12,7 @@ import { MemoryStore } from '../services/storage/keyValueStore'
 import { ambienteDaRota } from '../components/layout/ambiente'
 import { AjudaMapa, JanelaFase } from '../components/map/aventura/Interface'
 import { usePrenderFoco } from '../components/usePrenderFoco'
+import { PainelMissoes } from '../components/camp/PainelMissoes'
 import type { CharacterAppearance } from '../types'
 
 /*
@@ -173,5 +174,53 @@ describe('passo 1.4: estilos de acessibilidade', () => {
     // área de toque: 30 + 2 × 8 e 28 + 2 × 9 (celular), acima de 44 px
     expect(placa).toMatch(/\.camp-label::before\s*\{[^}]*inset:\s*-8px -5px/)
     expect(placa).toMatch(/\.camp-label::before\s*\{\s*inset:\s*-9px -5px/)
+  })
+})
+
+describe('0.17.7: foco com o painel de missões aberto', () => {
+  function cena() {
+    const itens = [{ id: 'diario', icon: 'calendar' as const, titulo: 'Desafio diário', detalhe: '5 perguntas', to: '/diario' }]
+    return render(
+      <MemoryRouter>
+        <button type="button">Visível antes</button>
+        <button type="button">Encoberto</button>
+        <PainelMissoes itens={itens} pendentes={1} />
+        <button type="button">Visível depois</button>
+      </MemoryRouter>,
+    )
+  }
+
+  it('com o painel aberto, Tab e Shift+Tab pulam o que fica embaixo dele; fechado, a ordem é a de sempre', async () => {
+    const user = userEvent.setup()
+    cena()
+    const encoberto = screen.getByRole('button', { name: 'Encoberto' })
+    // simula a cena: o painel aberto cobre o botão "Encoberto"
+    const original = document.elementFromPoint
+    document.elementFromPoint = (x: number, y: number) => {
+      const painel = document.querySelector('.camp-painel') as HTMLElement
+      const caixa = encoberto.getBoundingClientRect()
+      if (!painel.hidden && x >= caixa.left && x <= caixa.right && y >= caixa.top && y <= caixa.bottom) return painel.querySelector('h2')
+      return null
+    }
+    encoberto.getBoundingClientRect = () => ({ x: 10, y: 10, left: 10, top: 10, width: 100, height: 30, right: 110, bottom: 40, toJSON: () => ({}) })
+    try {
+      // fechado: a ordem normal passa pelo botão encoberto
+      screen.getByRole('button', { name: 'Visível antes' }).focus()
+      await user.tab()
+      expect(encoberto).toHaveFocus()
+      // aberto: o foco pula o botão encoberto nos dois sentidos
+      await user.click(screen.getByRole('button', { name: /^missões/i }))
+      screen.getByRole('button', { name: 'Visível antes' }).focus()
+      await user.tab()
+      expect(screen.getByRole('button', { name: /^missões/i })).toHaveFocus()
+      await user.tab({ shift: true })
+      expect(screen.getByRole('button', { name: 'Visível antes' })).toHaveFocus()
+      // os itens do próprio painel continuam na ordem
+      screen.getByRole('button', { name: /^missões/i }).focus()
+      await user.tab()
+      expect(screen.getByRole('button', { name: 'Fechar missões' })).toHaveFocus()
+    } finally {
+      document.elementFromPoint = original
+    }
   })
 })

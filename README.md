@@ -225,7 +225,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 189 testes automatizados (Vitest e Testing Library), em 17 arquivos de `src/test/`:
+São 190 testes automatizados (Vitest e Testing Library), em 17 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -238,7 +238,7 @@ São 189 testes automatizados (Vitest e Testing Library), em 17 arquivos de `src
 | `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, rótulos da cena, o Desafio diário pelos dois caminhos, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
 | `ponte` | Base visual da Fase 1: variáveis antigas com os valores exatos de antes, ordem de importação, tokens da Central intactos, tokens de ambiente e nenhum HEX nos arquivos novos |
 | `altoContraste` | Passo 1.6: um só alto contraste (sem HEX nas regras, variáveis e superfícies do modo antigo cobertas, contraste dos pares de tokens, ordem de carregamento, preferência salva com a animação reduzida e anel do foco na Central) |
-| `acessibilidade` | Passos 1.4 e 1.5: ambiente de cada rota e marca no Layout, atributo sem efeito na tela (só `tokens.css` o seleciona), foco preso e Esc nas janelas dos mapas, áreas de toque e cor do foco, e, na Central, só as correções autorizadas (painel de missões, selo, anel duplo dos rótulos, topo, placas e Continuar, e toque dos rótulos) |
+| `acessibilidade` | Passos 1.4 e 1.5: ambiente de cada rota e marca no Layout, atributo sem efeito na tela (só `tokens.css` o seleciona), foco preso e Esc nas janelas dos mapas, Tab que pula o que o painel de missões aberto encobre, áreas de toque e cor do foco, e, na Central, só as correções autorizadas (painel de missões, selo, anel duplo dos rótulos, topo, placas e Continuar, e toque dos rótulos) |
 | `base` | Componentes base (bq-*): botão, painel, cartão, janela (foco preso e Esc), aviso, mensagem rápida, campo, progresso, abas (setas), cabeçalho e voltar |
 | `fase0` | Fase 0 da Etapa 2: nomes oficiais da navegação, Desafio diário como destino secundário, versão vinda do pacote e acesso à linha do tempo |
 | `mapas` | Regiões dos mapas de aventura, cenário de cada partida, cabeçalho com dados reais, seletor de dificuldade, bloqueios, independência dos modos, cena da fase e telas do acampamento (Biblioteca, Conquistas, Perfil) |

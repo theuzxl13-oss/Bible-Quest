@@ -26,7 +26,8 @@ Desenvolvida só na branch `claude/loving-carson-8mrbjo`; não foi integrada ao 
   - a redução de animações;
   - o modo normal, sem nenhuma mudança;
   - funcionalidades, rotas e dados.
-- **Testes:** 189, em 17 arquivos (7 novos em `altoContraste.test.tsx`).
+- **Painel de missões aberto (verificação final):** Tab e Shift+Tab estavam parando em rótulos e placas encobertos pelo painel (até 5 por combinação). Agora pulam o que fica embaixo dele (`usePularEncobertos`), sem mudar a aparência. Com o painel fechado, a ordem é a de sempre. A medição geral de foco caiu para 0 insuficientes no modo normal e no alto contraste.
+- **Testes:** 190, em 17 arquivos (7 novos em `altoContraste.test.tsx` e 1 em `acessibilidade.test.tsx`).
 
 ## 0.17.6 — 21/11/2026 — Fase 1 da Etapa 2, passos 1.4 e 1.5: acessibilidade base e identificação dos ambientes (aprovada e publicada)
 

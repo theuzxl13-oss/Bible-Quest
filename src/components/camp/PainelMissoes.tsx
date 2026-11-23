@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { GameIcon } from '../GameIcon'
 import { Icon, type IconName } from '../Icon'
 import { ProgressBar } from '../ui'
+import { usePularEncobertos } from '../usePularEncobertos'
 
 export interface ItemMissao {
   id: string
@@ -24,6 +25,9 @@ export function PainelMissoes({ itens, pendentes, rodape }: { itens: ItemMissao[
   const [aberto, setAberto] = useState(false)
   const id = useId()
   const botao = useRef<HTMLButtonElement>(null)
+  const painel = useRef<HTMLElement>(null)
+  // aberto, o painel encobre parte da cena: o Tab pula o que fica embaixo dele (0.17.7)
+  usePularEncobertos(painel, aberto)
 
   useEffect(() => {
     if (!aberto) return
@@ -50,7 +54,7 @@ export function PainelMissoes({ itens, pendentes, rodape }: { itens: ItemMissao[
         <GameIcon name="scroll" size={24} /> Missões
         {pendentes > 0 && <span className="camp-badge" aria-label={`${pendentes} ${pendentes === 1 ? 'missão disponível' : 'missões disponíveis'}`}>{pendentes}</span>}
       </button>
-      <section id={id} className="camp-painel" aria-label="Missões" hidden={!aberto}>
+      <section ref={painel} id={id} className="camp-painel" aria-label="Missões" hidden={!aberto}>
         <div className="camp-painel-topo">
           <h2>Missões</h2>
           <button type="button" className="camp-painel-fechar" aria-label="Fechar missões" onClick={() => { setAberto(false); botao.current?.focus() }}>
