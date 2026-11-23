@@ -65,7 +65,13 @@ async function emPrimeiroPlano(device) {
   await fs.promises.writeFile(path.join(SAIDA, '01-primeira-abertura.png'), await device.screenshot())
   const origem = await page.evaluate(() => window.location.origin)
   confere('a página vem dos arquivos do aplicativo', origem === 'https://localhost', origem)
-  confere('a primeira tela é a de boas-vindas (sem perfil)', /boas-vindas|entrar/.test(await page.evaluate(() => window.location.hash)), await page.evaluate(() => window.location.hash))
+  // sem perfil, o jogo abre na rota inicial (endereço sem #, ou #/boas-vindas) com o título do jogo
+  const hashInicial = await page.evaluate(() => window.location.hash)
+  confere(
+    'a primeira tela é a de boas-vindas (sem perfil)',
+    ['', '#', '#/', '#/boas-vindas', '#/entrar'].includes(hashInicial) && (await page.locator('h1.welcome-title').isVisible()),
+    hashInicial || '(rota inicial)',
+  )
 
   // 3. cria o perfil de teste (fictício) e confere que ele fica salvo entre aberturas
   await page.evaluate((itens) => { for (const [k, v] of Object.entries(itens)) localStorage.setItem(k, JSON.stringify(v)) }, PERFIL)
