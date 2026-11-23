@@ -1,0 +1,15 @@
+{
+  "antes": {
+    "foco": "MAIN.",
+    "estado": null,
+    "tamanho": 7
+  },
+  "teclado": "mInputShown=false mIsInputViewShown=false mStatusIcon=0",
+  "eventosVoltar": 1,
+  "depois": {
+    "hash": "#/painel",
+    "estado": null,
+    "tamanho": 8
+  },
+  "errosJs": []
+}
