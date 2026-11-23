@@ -1,0 +1,61 @@
+/* HUD do jogador: retrato, nome, nível, XP, estrelas, sequência e configurações. */
+.camp-hud {
+  position: absolute; z-index: 4; top: 0; left: 0; right: 0;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: var(--esp-3);
+  padding: max(12px, env(safe-area-inset-top)) max(clamp(12px, 3vw, 28px), env(safe-area-inset-right)) 0 max(clamp(12px, 3vw, 28px), env(safe-area-inset-left));
+  pointer-events: none;
+}
+.camp-hud > * { pointer-events: auto; }
+.hud-player {
+  display: flex; align-items: center; gap: var(--esp-3); min-width: 0;
+  padding: 6px 16px 6px 6px; border-radius: var(--raio-g); text-decoration: none;
+  color: var(--texto-sobre-escuro); background: var(--vidro-escuro);
+  border: 1.5px solid var(--moldura); box-shadow: var(--elevacao-2);
+}
+/* 0.17.6 (autorizado): anel duplo como o do botão Missões */
+.hud-player:focus-visible, .hud-settings:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; box-shadow: 0 0 0 3px var(--marfim), var(--elevacao-2); }
+.hud-portrait {
+  flex-shrink: 0; display: grid; place-items: center; width: 60px; height: 60px; overflow: hidden;
+  border-radius: var(--raio-m); border: 2px solid var(--ouro-300);
+  background: radial-gradient(circle at 50% 30%, var(--areia), var(--terra-500));
+}
+.hud-player-info { display: grid; gap: 2px; min-width: 0; }
+.hud-name h1 {
+  margin: 0; font-family: var(--font-display); font-weight: 700; font-size: var(--fonte-18); line-height: 1.15;
+  color: var(--texto-sobre-escuro); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hud-level { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: var(--fonte-14); font-weight: 750; color: var(--destaque); white-space: nowrap; }
+.hud-level-texto { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.hud-level .game-icon { filter: none; }
+.hud-xp { position: relative; display: block; width: clamp(150px, 22vw, 230px); }
+.hud-xp .progress { height: 16px; border-radius: var(--raio-pilula); background: rgba(0, 0, 0, 0.55); border: 1px solid var(--ouro-700); box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.5); }
+.hud-xp .progress-fill { background: linear-gradient(180deg, var(--ouro-300), var(--ouro-500)); border-radius: var(--raio-pilula); }
+.hud-xp-text { position: absolute; inset: 0; display: grid; place-items: center; font-size: var(--fonte-12); font-weight: 800; color: var(--marfim); text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); font-variant-numeric: tabular-nums; }
+.hud-resources { display: flex; align-items: center; gap: var(--esp-2); }
+.hud-res {
+  display: inline-flex; align-items: center; gap: 4px; height: 42px; padding: 0 14px 0 4px;
+  border-radius: var(--raio-pilula); font-weight: 800; font-size: var(--fonte-18); font-variant-numeric: tabular-nums;
+  color: var(--texto-sobre-escuro); background: var(--vidro-escuro); border: 1.5px solid var(--moldura); box-shadow: var(--elevacao-2);
+}
+.hud-res-icon { display: grid; place-items: center; width: 34px; height: 34px; margin: -4px 0; }
+.hud-settings {
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%;
+  background: var(--vidro-escuro); border: 1.5px solid var(--moldura); box-shadow: var(--elevacao-2);
+}
+.hud-settings .game-icon { width: 30px; height: 30px; }
+
+@media (max-width: 599px) {
+  .hud-player { padding: 4px 12px 4px 4px; gap: var(--esp-2); }
+  .hud-portrait { width: 46px; height: 46px; }
+  .hud-name h1 { font-size: var(--fonte-16); max-width: 36vw; }
+  .hud-level { font-size: var(--fonte-12); }
+  .hud-xp { width: 36vw; }
+  .hud-xp .progress { height: 14px; }
+  .hud-resources { flex-wrap: wrap; justify-content: flex-end; max-width: 112px; gap: 6px; }
+  .hud-res { height: 36px; font-size: var(--fonte-16); padding-right: 10px; }
+  .hud-res-icon { width: 28px; height: 28px; }
+  .hud-settings { width: 44px; height: 44px; order: -1; }
+}
+html[data-contrast='alto'] .hud-player, html[data-contrast='alto'] .hud-res, html[data-contrast='alto'] .hud-settings { background: var(--terra-900); border-color: var(--marfim); box-shadow: none; }
+/* 0.17.7 (passo 1.6): no alto contraste, o "box-shadow: none" acima apagava o anel marfim do foco; ele volta só com foco */
+html[data-contrast='alto'] :is(.hud-player, .hud-settings):focus-visible { box-shadow: 0 0 0 3px var(--marfim); }

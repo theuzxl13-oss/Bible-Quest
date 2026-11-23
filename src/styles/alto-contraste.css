@@ -1,0 +1,83 @@
+/* =========================================================
+   Alto contraste unificado (Fase 1 da Etapa 2, passo 1.6, versão 0.17.7)
+   Um só modo, ligado por html[data-contrast='alto'] (opção "Alto contraste"
+   das Configurações). Substitui as regras preto e amarelo que ficavam em
+   global.css. Só tokens (valores em tokens.css); nada de HEX.
+
+   Duas famílias de superfície, sempre sólidas e sem sombra:
+   - escura (madeira, painéis e cartões das telas antigas): terra-900,
+     texto marfim, borda ouro-300;
+   - clara (pergaminho das páginas de aventura): pergaminho, texto tinta,
+     borda tinta.
+   A Central e os componentes bq-* têm as regras de alto contraste nos
+   próprios arquivos, com os mesmos tokens.
+   ========================================================= */
+
+/* ---------- fundo e cenário ---------- */
+/* (a Central fica de fora: o fundo dela é a cena, aprovada na 0.17.6) */
+html[data-contrast='alto'] body:not(:has(.app.is-camp)) { background: var(--ac-fundo); }
+html[data-contrast='alto'] main::before { display: none; }
+
+/* ---------- superfícies escuras ---------- */
+html[data-contrast='alto'] :is(.panel, .lib-card, .mode-card, .history-item, .btn-outline, .chip, .topbar, .section-title, .quiz-body .question, .quiz-body .option) {
+  background: var(--ac-escuro-fundo);
+  border-color: var(--ac-escuro-borda);
+  box-shadow: none;
+}
+html[data-contrast='alto'] .section-title { clip-path: none; color: var(--ac-escuro-texto); text-shadow: none; }
+html[data-contrast='alto'] .btn-outline { color: var(--ac-escuro-texto); text-shadow: none; }
+
+/* item escolhido (fichas e abas): fundo claro, texto escuro */
+html[data-contrast='alto'] :is(.chip.is-on, .tab.is-on) {
+  background: var(--ac-selecionado-fundo);
+  color: var(--ac-selecionado-texto);
+  border-color: var(--ac-escuro-texto);
+  text-shadow: none;
+}
+
+/* respostas: preenchimento sólido de acerto e erro (o ícone ✓/✕ continua) */
+html[data-contrast='alto'] .quiz-body .option.is-correct { background: var(--ac-acerto-fundo); border-color: var(--ac-acerto-borda); color: var(--ac-escuro-texto); }
+html[data-contrast='alto'] .quiz-body .option.is-wrong { background: var(--ac-erro-fundo); border-color: var(--ac-erro-borda); color: var(--ac-escuro-texto); }
+/* alternativa descartada: sem transparência, com texto atenuado legível */
+html[data-contrast='alto'] .quiz-body .option.is-dim { opacity: 1; color: var(--ac-escuro-texto-suave); border-color: var(--ac-escuro-texto-suave); }
+
+/* ---------- superfícies claras: páginas de aventura (Biblioteca, Perfil, Conquistas) ---------- */
+html[data-contrast='alto'] .av-pagina :is(.page-header, .panel, .medal-card, .ach-card, .lib-card, .lib-book, .history-item, .lib-event, .table-wrap, .btn-outline, .notice) {
+  background: var(--ac-claro-fundo);
+  color: var(--ac-claro-texto);
+  border-color: var(--ac-claro-borda);
+  box-shadow: none;
+  text-shadow: none;
+}
+html[data-contrast='alto'] .av-pagina :is(.page-header, .panel, .medal-card, .ach-card, .lib-card, .lib-book, .history-item, .lib-event, .table-wrap, .notice) :is(h1, h2, h3, p, small, strong, span, dt, dd, th, td, .muted, .eyebrow, .gold, .page-header-lead) {
+  color: var(--ac-claro-texto);
+}
+html[data-contrast='alto'] .av-pagina .ach-card.is-on { background: var(--ac-selecionado-fundo); }
+/* bloqueados: sem transparência nem cinza, para o texto continuar legível */
+html[data-contrast='alto'] .av-pagina :is(.medal-card, .lib-card, .lib-event).is-locked { filter: none; opacity: 1; }
+html[data-contrast='alto'] .av-pagina :is(.av-pagina-corpo > p.small, section > p.small) { background: var(--ac-claro-fundo); color: var(--ac-claro-texto); }
+
+/* madeira dentro das páginas claras (abas, números do Perfil): superfície escura */
+html[data-contrast='alto'] .av-pagina :is(.tabs, .stat-grid .panel, .book-abbrev) {
+  background: var(--ac-escuro-fundo);
+  border-color: var(--ac-escuro-borda);
+  box-shadow: none;
+}
+html[data-contrast='alto'] .av-pagina :is(.tab:not(.is-on), .tabs a:not(.is-on), .stat-grid dt, .stat-grid dd, .book-abbrev) { color: var(--ac-escuro-texto); text-shadow: none; }
+html[data-contrast='alto'] .av-pagina .section-title { background: var(--ac-escuro-fundo); }
+/* links dentro de fichas escuras (ficha de personagem, lugar e livro) */
+html[data-contrast='alto'] .av-pagina .chip a { color: var(--ac-escuro-texto); }
+
+/* texto e links soltos nas páginas de aventura (fora dos cartões claros): sobre o fundo escuro */
+html[data-contrast='alto'] .av-pagina :is(.muted, .small, .page-header-lead) { color: var(--ac-escuro-texto); }
+html[data-contrast='alto'] .av-pagina a:not(.btn):not(.lib-card):not(.lib-book):not(.av-redondo):not(.tab) { color: var(--ac-escuro-texto); }
+/* ...e dentro dos cartões claros, tinta (mesma cadeia de :not, mais o cartão) */
+html[data-contrast='alto'] .av-pagina :is(.page-header, .panel, .medal-card, .ach-card, .lib-card, .lib-book, .history-item, .lib-event, .table-wrap, .notice) a:not(.btn):not(.lib-card):not(.lib-book):not(.av-redondo):not(.tab) { color: var(--ac-claro-texto); }
+html[data-contrast='alto'] .av-pagina :is(.page-header, .panel, .medal-card, .ach-card, .lib-card, .lib-book, .history-item, .lib-event, .table-wrap, .notice) :is(.muted, .small, .page-header-lead) { color: var(--ac-claro-texto); }
+/* botão de perigo sobre pergaminho: vermelho escuro (6,8:1) */
+html[data-contrast='alto'] .av-pagina .btn-danger { color: var(--ac-erro-fundo); border-color: var(--ac-erro-fundo); background: var(--ac-claro-fundo); box-shadow: none; }
+
+/* ---------- mapas ---------- */
+/* aviso do próximo mundo, no alto do mapa da História: placa escura sólida */
+html[data-contrast='alto'] .av-portao { background: var(--ac-escuro-fundo); border-color: var(--ac-escuro-borda); color: var(--ac-escuro-texto); box-shadow: none; }
+html[data-contrast='alto'] .av-portao :is(p, strong, .small) { color: var(--ac-escuro-texto); text-shadow: none; }

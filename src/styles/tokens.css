@@ -1,0 +1,353 @@
+/* =========================================================
+   Bible Quest — tokens da identidade "Crônicas da Jornada" (Etapa 2)
+   Único arquivo com cores HEX dos estilos novos (há um teste que confere).
+   Primitivos (paleta) → semânticos (significado) → modos (História × Quiz).
+   As telas ainda não migradas continuam usando os tokens antigos de global.css.
+   ========================================================= */
+:root {
+  /* primitivos: terra e madeira */
+  --terra-900: #22160D;
+  --terra-800: #2E1E12;
+  --terra-700: #4A2F1C;
+  --terra-600: #5C3B23;
+  --terra-500: #7A5234;
+  /* pergaminho, areia, tinta e marfim */
+  --pergaminho: #F4EAD2;
+  --pergaminho-escuro: #EBDDB9;
+  --areia: #E8D5A8;
+  --tinta: #2B1D10;
+  --tinta-suave: #5C4630;
+  --marfim: #F3EBDA;
+  --marfim-suave: #C9BBA0;
+  /* ouro envelhecido */
+  --ouro-300: #E6C77E;
+  --ouro-500: #C9A24E;
+  --ouro-700: #8C6A2A;
+  /* modos */
+  --floresta-700: #234A33;
+  --floresta-500: #3E6B47;
+  --musgo-600: #5E6B3A;
+  --azul-900: #13253D;
+  --azul-700: #1D3554;
+  --azul-500: #2F5378;
+  --pedra-300: #8FA3B8;
+  /* fogueira */
+  --fogueira-300: #F2A955;
+  --fogueira-500: #E08A2E;
+  --fogueira-700: #B9671C;
+  --fogueira-borda: #6E3A0E;
+  /* estados */
+  --acerto: #356B3B;
+  --erro: #A63D2A;
+  --bloqueado: #6E6A62;
+  --foco: #7FB2E5;
+  --aviso: #C9452F;
+
+  /* semânticos */
+  --superficie-escura: var(--terra-900);
+  --superficie-madeira: linear-gradient(180deg, var(--terra-600), var(--terra-700) 60%, var(--terra-800));
+  --superficie-leitura: linear-gradient(180deg, var(--pergaminho), var(--pergaminho-escuro));
+  --texto-sobre-leitura: var(--tinta);
+  --texto-suave-sobre-leitura: var(--tinta-suave);
+  --texto-sobre-escuro: var(--marfim);
+  --texto-suave-sobre-escuro: var(--marfim-suave);
+  --destaque: var(--ouro-300);
+  --moldura: var(--ouro-500);
+  --acao-principal: linear-gradient(180deg, var(--fogueira-300), var(--fogueira-500) 60%, var(--fogueira-700));
+  --texto-sobre-acao: var(--tinta);
+  --vidro-escuro: rgba(34, 22, 13, 0.86);
+
+  /* modos (padrão: História) */
+  --modo-cor: var(--floresta-700);
+  --modo-cor-clara: var(--floresta-500);
+  --modo-borda: var(--ouro-500);
+
+  /* escalas */
+  --esp-1: 4px; --esp-2: 8px; --esp-3: 12px; --esp-4: 16px; --esp-5: 24px; --esp-6: 32px; --esp-7: 48px;
+  --raio-p: 6px; --raio-m: 10px; --raio-g: 16px; --raio-pilula: 999px;
+  --fonte-12: 0.75rem; --fonte-14: 0.875rem; --fonte-16: 1rem; --fonte-18: 1.125rem; --fonte-22: 1.375rem; --fonte-28: 1.75rem; --fonte-36: 2.25rem;
+  --elevacao-1: 0 3px 0 rgba(20, 11, 5, 0.7), 0 5px 10px rgba(0, 0, 0, 0.3);
+  --elevacao-2: 0 8px 20px rgba(0, 0, 0, 0.35);
+  --elevacao-3: 0 18px 44px rgba(0, 0, 0, 0.5);
+  --brilho-interno: inset 0 1px 0 rgba(255, 240, 210, 0.35);
+  --dur-toque: 120ms; --dur-estado: 200ms; --dur-janela: 320ms; --dur-recompensa: 600ms;
+  --curva-saida: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --curva-mola: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --nav-altura: 64px;
+}
+
+[data-modo='quiz'] {
+  --modo-cor: var(--azul-700);
+  --modo-cor-clara: var(--azul-500);
+  --modo-borda: var(--pedra-300);
+}
+
+/* alto contraste: superfícies lisas e bordas claras */
+html[data-contrast='alto'] {
+  --superficie-madeira: var(--terra-900);
+  --superficie-leitura: var(--pergaminho);
+  --vidro-escuro: var(--terra-900);
+  --moldura: var(--marfim);
+  --texto-suave-sobre-escuro: var(--marfim);
+  --texto-suave-sobre-leitura: var(--tinta);
+}
+
+/* reduzir animações: as durações viram zero */
+html[data-motion='reduzido'] { --dur-toque: 0ms; --dur-estado: 0ms; --dur-janela: 0ms; --dur-recompensa: 0ms; }
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-toque: 0ms; --dur-estado: 0ms; --dur-janela: 0ms; --dur-recompensa: 0ms; }
+}
+
+/* =========================================================
+   Fase 1 da Etapa 2 (0.17.5) — base visual comum
+   Os blocos acima continuam exatamente como na 0.17.3 (Central).
+   Daqui para baixo, só tokens NOVOS, organizados em quatro camadas:
+     1. Paleta      — valores brutos (único lugar com HEX)
+     2. Significado — para que serve cada valor
+     3. Componentes — medidas e cores das peças compartilhadas (bq-*)
+     4. Ambientes   — o que muda por ambiente ([data-ambiente])
+   Nenhuma tela usa estes tokens ainda: esta entrega não muda nada na tela.
+   ========================================================= */
+
+/* ---------- 1. Paleta ---------- */
+:root {
+  /* feedback sobre fundo claro e escuro */
+  --verde-700: #2E5E33;   /* acerto como texto em pergaminho: 6,4:1 */
+  --vermelho-700: #8E3020; /* erro como texto em pergaminho: 6,8:1 */
+  --verde-200: #8FD3A2;   /* acerto sobre terra-900: 10,1:1 */
+  --vermelho-200: #F0A08F; /* erro sobre terra-900: 8,5:1 */
+  --vermelho-600: #A8321F; /* selo de aviso legível: marfim sobre ele 5,6:1 (aplicação na Central: próxima entrega) */
+  /* foco e links */
+  --azul-foco-700: #1F5FA8; /* foco sobre fundo claro: 5,4:1 no pergaminho */
+  --marrom-link: #7A3B0A;   /* link em leitura: 7,1:1 no pergaminho */
+
+  /* PROPOSTA de tons dos ambientes — NÃO aplicados no jogo; dependem da
+     aprovação da folha de amostras (docs/relatorios/evidencias/etapa-2-fase1-amostras/) */
+  --campo-200: #DCE6C3;
+  --pedra-100: #E4E8EC;
+  --couro-700: #4B2A22;
+  --lamparina-300: #F0C76E;
+  --papel: #F7F0DE;
+  --lona: #EADCC0;
+  --tecido-600: #7A3A26;
+  --veludo-800: #3A1622;
+  --bronze: #C08A5B;
+  --prata: #C9CED4;
+
+  /* paleta legada: os valores EXATOS das variáveis antigas de global.css,
+     usados pela ponte de compatibilidade (styles/ponte.css). Não mudar sem
+     aprovação: mudar aqui muda todas as telas antigas. */
+  --legado-navy-950: #160e08;
+  --legado-navy-900: #22150d;
+  --legado-navy-850: #2c1b11;
+  --legado-navy-800: #3a2416;
+  --legado-navy-700: #5a3822;
+  --legado-gold: #d4af5a;
+  --legado-gold-strong: #ecc96e;
+  --legado-gold-dim: #9d7f43;
+  --legado-parchment: #efe3c4;
+  --legado-parchment-dark: #e2d2a8;
+  --legado-ivory: #fbf7ec;
+  --legado-earth: #5c3d22;
+  --legado-earth-light: #7d5733;
+  --legado-text: #f1e9d6;
+  --legado-muted: #b8ad94;
+  --legado-ink: #2b1d10;
+  --legado-ok: #73c493;
+  --legado-ok-bg: rgba(115, 196, 147, 0.12);
+  --legado-err: #ec8a78;
+  --legado-err-bg: rgba(236, 138, 120, 0.12);
+  --legado-border: rgba(212, 175, 90, 0.22);
+  --legado-border-strong: rgba(212, 175, 90, 0.5);
+  --legado-panel: linear-gradient(180deg, rgba(84, 52, 31, 0.55), rgba(44, 28, 17, 0.75));
+  --legado-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --legado-radius: 18px;
+  --legado-radius-sm: 12px;
+  --legado-font-display: 'Cinzel', 'Times New Roman', serif;
+  --legado-font-body: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --legado-font-serif: 'Crimson Pro', Georgia, serif;
+  --legado-tabbar-h: 64px;
+  --legado-speed: 180ms;
+  --legado-wood-hi: #7a5030;
+  --legado-wood: #5a3a22;
+  --legado-wood-lo: #3d2716;
+  --legado-wood-edge: #a87a3f;
+  --legado-wood-shadow: #22140a;
+  --legado-plank: linear-gradient(180deg, #6e4729 0%, #563620 55%, #462c19 100%);
+  --legado-sky-top: #1f3c66;
+  --legado-sky-mid: #33608f;
+}
+
+/* ---------- 2. Significado ---------- */
+:root {
+  /* feedback */
+  --feedback-acerto: var(--acerto);
+  --feedback-erro: var(--erro);
+  --feedback-acerto-texto: var(--verde-700);
+  --feedback-erro-texto: var(--vermelho-700);
+  --feedback-acerto-sobre-escuro: var(--verde-200);
+  --feedback-erro-sobre-escuro: var(--vermelho-200);
+  --feedback-info: var(--azul-500);
+  --feedback-alerta: var(--fogueira-700);
+  --feedback-selo: var(--vermelho-600);
+  /* foco: um token para cada tipo de fundo */
+  --foco-sobre-escuro: var(--foco);
+  --foco-sobre-claro: var(--azul-foco-700);
+  --foco-espessura: 3px;
+  --foco-afastamento: 2px;
+  /* links */
+  --link-leitura: var(--marrom-link);
+  --link-sobre-escuro: var(--ouro-300);
+  /* bordas */
+  --borda-ouro: var(--ouro-500);
+  --borda-suave: rgba(201, 162, 78, 0.25);
+  --borda-madeira: var(--terra-500);
+  --borda-leitura: var(--ouro-700);
+  --borda-espessura: 2px;
+  /* interação */
+  --toque-min: 44px;
+  --opacidade-desativado: 0.55;
+  --brilho-hover: 1.08;
+  --subir-hover: -2px;
+  --afundar-ativo: 2px;
+  /* camadas (z-index) */
+  --z-cena: 0;
+  --z-conteudo: 1;
+  --z-hud: 4;
+  --z-navegacao: 30;
+  --z-mensagem: 60;
+  --z-janela: 80;
+  --z-topo: 100;
+  /* tipografia */
+  --fonte-titulo: 'Cinzel', 'Times New Roman', serif;
+  --fonte-texto: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --fonte-leitura: 'Crimson Pro', Georgia, serif;
+  --peso-normal: 400;
+  --peso-titulo: 600;
+  --peso-forte: 700;
+  --peso-destaque: 800;
+  --altura-linha: 1.5;
+  --altura-linha-titulo: 1.15;
+  /* raios e sombras */
+  --raio-janela: 20px;
+  --sombra-texto-sobre-imagem: 0 1px 2px rgba(0, 0, 0, 0.8);
+  --superficie-leitura-elevada: var(--superficie-leitura);
+}
+
+/* ---------- 3. Componentes (bq-*, em styles/componentes/base-*.css) ---------- */
+:root {
+  --botao-altura: var(--toque-min);
+  --botao-altura-grande: 56px;
+  --botao-raio: var(--raio-m);
+  --botao-padding: var(--esp-2) var(--esp-4);
+  --botao-fonte: var(--fonte-16);
+  --painel-raio: var(--raio-g);
+  --painel-padding: var(--esp-4);
+  --cartao-raio: var(--raio-m);
+  --janela-raio: var(--raio-janela);
+  --janela-largura: min(94vw, 520px);
+  --aviso-raio: var(--raio-m);
+  --campo-altura: var(--toque-min);
+  --campo-raio: var(--raio-m);
+  --progresso-altura: 10px;
+  --progresso-altura-hud: 16px;
+  --aba-altura: var(--toque-min);
+}
+
+/* ---------- 4. Ambientes ----------
+   Padrão (Central): os mesmos valores que a Central já usa.
+   [data-ambiente] ainda não é usado por nenhuma tela; os tons novos são
+   PROPOSTA e só serão aplicados depois da aprovação da folha de amostras. */
+:root {
+  --amb-acento: var(--ouro-300);
+  --amb-acento-texto: var(--ouro-300); /* acento usado em TEXTO: sempre legível sobre a base e o fundo escuro */
+  --amb-base: var(--terra-600);
+  --amb-leitura: var(--pergaminho);
+  --amb-moldura: var(--ouro-500);
+  --amb-texto-sobre-base: var(--marfim);
+  --amb-progresso: var(--ouro-500);
+}
+[data-ambiente='historia'] {
+  --amb-acento: var(--floresta-500);
+  --amb-acento-texto: var(--campo-200);
+  --amb-base: var(--floresta-700);
+  --amb-leitura: var(--campo-200);
+  --amb-moldura: var(--ouro-500);
+  --amb-progresso: var(--floresta-500);
+}
+[data-ambiente='quiz'] {
+  --amb-acento: var(--ouro-300);
+  --amb-acento-texto: var(--ouro-300);
+  --amb-base: var(--azul-700);
+  --amb-leitura: var(--pedra-100);
+  --amb-moldura: var(--ouro-300);
+  --amb-progresso: var(--azul-500);
+}
+[data-ambiente='biblioteca'] {
+  --amb-acento: var(--lamparina-300);
+  --amb-acento-texto: var(--lamparina-300);
+  --amb-base: var(--couro-700);
+  --amb-leitura: var(--papel);
+  --amb-moldura: var(--terra-500);
+  --amb-progresso: var(--lamparina-300);
+}
+[data-ambiente='perfil'] {
+  --amb-acento: var(--tecido-600);
+  --amb-acento-texto: var(--lona);
+  --amb-base: var(--terra-600);
+  --amb-leitura: var(--lona);
+  --amb-moldura: var(--terra-500);
+  --amb-progresso: var(--tecido-600);
+}
+[data-ambiente='conquistas'] {
+  --amb-acento: var(--ouro-300);
+  --amb-acento-texto: var(--ouro-300);
+  --amb-base: var(--veludo-800);
+  --amb-leitura: var(--pergaminho);
+  --amb-moldura: var(--ouro-500);
+  --amb-progresso: var(--ouro-500);
+}
+html[data-contrast='alto'] {
+  --foco-sobre-claro: var(--azul-foco-700);
+  --borda-suave: var(--marfim);
+}
+
+/* ---------- Alto contraste unificado (passo 1.6, 0.17.7) ----------
+   Um só modo de alto contraste, na família terra e marfim da Central.
+   Substitui o antigo modo preto e amarelo de global.css. As regras que usam
+   estes valores ficam em alto-contraste.css; os componentes da Central e os
+   bq-* continuam com as regras deles, que já usavam estes mesmos tokens.
+   Contraste medido (WCAG): marfim/terra-900 14,9:1; tinta/pergaminho 13,6:1;
+   tinta/ouro-300 10,0:1; ouro-300/terra-900 10,8:1; marfim/floresta-700 8,4:1;
+   marfim/vermelho-700 6,8:1; marfim-suave/terra-900 9,3:1. */
+html[data-contrast='alto'] {
+  --ac-fundo: var(--terra-900);
+  --ac-escuro-fundo: var(--terra-900);
+  --ac-escuro-texto: var(--marfim);
+  --ac-escuro-texto-suave: var(--marfim-suave);
+  --ac-escuro-borda: var(--ouro-300);
+  --ac-claro-fundo: var(--pergaminho);
+  --ac-claro-texto: var(--tinta);
+  --ac-claro-borda: var(--tinta);
+  --ac-selecionado-fundo: var(--ouro-300);
+  --ac-selecionado-texto: var(--tinta);
+  --ac-acerto-fundo: var(--floresta-700);
+  --ac-acerto-borda: var(--verde-200);
+  --ac-erro-fundo: var(--vermelho-700);
+  --ac-erro-borda: var(--vermelho-200);
+
+  /* telas antigas: as variáveis de global.css (pela ponte) passam aos mesmos tons */
+  --legado-navy-950: var(--terra-900);
+  --legado-navy-900: var(--terra-900);
+  --legado-navy-850: var(--terra-900);
+  --legado-navy-800: var(--terra-800);
+  --legado-text: var(--marfim);
+  --legado-muted: var(--marfim);
+  --legado-gold: var(--ouro-300);
+  --legado-gold-strong: var(--ouro-300);
+  --legado-border: var(--marfim-suave);
+  --legado-border-strong: var(--ouro-300);
+  --legado-panel: var(--terra-900);
+  --legado-ok: var(--verde-200);
+  --legado-err: var(--vermelho-200);
+}

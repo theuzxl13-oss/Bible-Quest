@@ -1,0 +1,22 @@
+/* Cartão base (bq-cartao): imagem ou ícone, título, detalhe e estado.
+   O estado bloqueado não depende só de cor: o componente mostra ícone e texto. */
+.bq-cartao {
+  --foco-atual: var(--foco-sobre-claro);
+  position: relative; display: grid; gap: var(--esp-2); align-content: start; padding: var(--esp-3);
+  min-height: var(--toque-min); border-radius: var(--cartao-raio); text-decoration: none; text-align: left;
+  color: var(--texto-sobre-leitura); background: var(--amb-leitura);
+  border: var(--borda-espessura) solid var(--borda-madeira); box-shadow: var(--elevacao-1);
+  font: inherit;
+}
+button.bq-cartao, a.bq-cartao { cursor: pointer; transition: transform var(--dur-toque) var(--curva-saida); }
+button.bq-cartao:hover, a.bq-cartao:hover { transform: translateY(var(--subir-hover)); }
+.bq-cartao:focus-visible { outline: var(--foco-espessura) solid var(--foco-atual); outline-offset: var(--foco-afastamento); }
+.bq-cartao__imagem { display: grid; place-items: center; min-height: 64px; border-radius: var(--raio-p); overflow: hidden; }
+.bq-cartao__titulo { font-family: var(--fonte-titulo); font-weight: var(--peso-titulo); font-size: var(--fonte-16); line-height: var(--altura-linha-titulo); }
+.bq-cartao__detalhe { font-size: var(--fonte-14); color: var(--texto-suave-sobre-leitura); }
+.bq-cartao__estado { display: inline-flex; align-items: center; gap: var(--esp-1); font-size: var(--fonte-12); font-weight: var(--peso-forte); }
+.bq-cartao.is-bloqueado { filter: grayscale(0.6); }
+.bq-cartao.is-concluido { border-color: var(--feedback-acerto); }
+.bq-cartao.is-concluido .bq-cartao__estado { color: var(--feedback-acerto-texto); }
+.bq-cartao.is-destaque { border-color: var(--amb-moldura); box-shadow: 0 0 0 2px var(--amb-acento), var(--elevacao-2); }
+html[data-contrast='alto'] .bq-cartao { background: var(--pergaminho); border-color: var(--tinta); box-shadow: none; filter: none; }

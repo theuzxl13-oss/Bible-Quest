@@ -1,0 +1,10 @@
+elementos medidos: 439 | sem indicador suficiente (nem mediana 3:1 nem área de 2 px com 3:1): 9 | link Pular para o conteúdo (fora da medida): 22
+  central-2d: button.camp-label "Desafio diário: 5 perguntas, +30 XP, uma" — sem indicador (solid 3px rgb(43, 29, 16))
+  central-2d: button.camp-label "Recompensas: conquistas e baús" — sem indicador (solid 3px rgb(43, 29, 16))
+  central-2d: a.hud-player "Perfil de Tobias" — 1.43:1 (solid 3px rgb(43, 29, 16))
+  central-2d: a.hud-settings "Configurações" — 1.35:1 (solid 3px rgb(43, 29, 16))
+  central-2d: button.camp-missoes-botao "Missões1" — 1.68:1 (solid 3px rgb(43, 29, 16))
+  perfil: a. "Personalizar personagem" — 1.29:1 (solid 3px rgb(43, 29, 16))
+  perfil: button.btn "Editar perfil" — 1.29:1 (solid 3px rgb(43, 29, 16))
+  perfil: button.btn "Exportar meus dados" — 1.29:1 (solid 3px rgb(43, 29, 16))
+  perfil: button.btn "Apagar perfil e progresso" — 1.29:1 (solid 3px rgb(43, 29, 16))

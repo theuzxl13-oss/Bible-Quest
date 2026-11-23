@@ -1,0 +1,56 @@
+/* Painel de missões: placa recolhida que abre um painel de pergaminho.
+   Computador: lateral direita. Celular: de baixo para cima, acima das ações. */
+.camp-missoes { position: absolute; z-index: 5; right: max(clamp(12px, 3vw, 28px), env(safe-area-inset-right)); top: 88px; display: grid; justify-items: end; gap: var(--esp-2); }
+.camp-missoes-botao {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 6px 14px;
+  border-radius: var(--raio-m); cursor: pointer; font: inherit;
+  font-family: var(--font-display); font-weight: 700; font-size: var(--fonte-16);
+  color: var(--texto-sobre-leitura); background: var(--superficie-leitura);
+  border: 1.5px solid var(--terra-500); box-shadow: var(--brilho-interno), var(--elevacao-1);
+}
+/* 0.17.6 (autorizado): anel duplo, visível sobre qualquer parte do cenário */
+.camp-missoes-botao:focus-visible { outline: 3px solid var(--tinta); outline-offset: 3px; box-shadow: 0 0 0 3px var(--marfim), var(--brilho-interno), var(--elevacao-1); }
+.camp-missoes-botao[aria-expanded='true'] { background: var(--areia); }
+.camp-missoes-botao .game-icon { filter: none; }
+.camp-painel {
+  width: min(300px, calc(100vw - 24px)); max-height: calc(var(--camp-h) - 260px); overflow-y: auto;
+  padding: var(--esp-2); border-radius: var(--raio-g);
+  color: var(--texto-sobre-leitura); background: var(--superficie-leitura);
+  border: 2px solid var(--terra-500);
+  box-shadow: inset 0 0 0 3px rgba(255, 250, 235, 0.6), var(--elevacao-3);
+  animation: camp-painel-entra var(--dur-janela) var(--curva-saida) both;
+}
+@keyframes camp-painel-entra { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+.camp-painel-topo { display: flex; align-items: center; justify-content: space-between; gap: var(--esp-2); margin: 0 2px 8px 6px; }
+.camp-painel h2 { margin: 0; font-family: var(--font-display); font-size: var(--fonte-18); color: var(--texto-sobre-leitura); }
+.camp-painel-fechar { display: grid; place-items: center; width: 44px; height: 44px; margin: -6px -2px -6px 0; border: 0; border-radius: 50%; background: transparent; color: var(--texto-sobre-leitura); cursor: pointer; }
+.camp-painel-fechar:hover { background: rgba(122, 82, 52, 0.15); }
+/* 0.17.6 (autorizado): dentro do pergaminho, foco azul escuro (5,4:1), no lugar do azul claro (1,87:1) */
+.camp-painel-fechar:focus-visible { outline: 3px solid var(--foco-sobre-claro); outline-offset: 1px; }
+.board-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.board-item {
+  display: flex; align-items: flex-start; gap: var(--esp-3); padding: 8px 10px; border-radius: var(--raio-m);
+  color: var(--texto-sobre-leitura); text-decoration: none;
+  background: rgba(255, 250, 235, 0.55); border: 1px solid rgba(122, 82, 52, 0.3);
+}
+a.board-item:hover { background: rgba(255, 250, 235, 0.95); }
+a.board-item:focus-visible { outline: 3px solid var(--foco-sobre-claro); outline-offset: 1px; }
+.board-item strong { display: block; font-size: var(--fonte-14); }
+.board-item small { display: block; color: var(--texto-suave-sobre-leitura); font-size: var(--fonte-12); line-height: 1.35; }
+.board-item .progress { margin-top: 4px; height: 6px; background: rgba(90, 58, 28, 0.2); }
+.board-item .progress-fill { background: linear-gradient(90deg, var(--floresta-500), var(--musgo-600)); }
+.board-item.is-done { opacity: 0.8; }
+.board-item.is-hot { background: linear-gradient(180deg, rgba(230, 199, 126, 0.55), rgba(201, 162, 78, 0.45)); border-color: var(--ouro-700); }
+.board-icon { flex-shrink: 0; display: grid; place-items: center; width: 32px; height: 32px; }
+.board-upgrade, .board-geral { background: rgba(94, 107, 58, 0.12); }
+
+@media (max-width: 599px) {
+  .camp-missoes { left: max(12px, env(safe-area-inset-left)); right: auto; top: 88px; justify-items: start; }
+  .camp-missoes-botao { font-size: var(--fonte-14); min-height: 44px; padding: 4px 12px; }
+  /* celular: folha que sobe de baixo, por cima das ações; a cabeça e o tronco do personagem continuam à vista */
+  .camp-painel { position: fixed; left: 8px; right: 8px; width: auto; top: auto; bottom: calc(var(--nav-altura) + env(safe-area-inset-bottom) + 20px); max-height: 44vh; border-radius: var(--raio-g) var(--raio-g) var(--raio-m) var(--raio-m); animation-name: camp-painel-sobe; }
+  @keyframes camp-painel-sobe { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+}
+html[data-contrast='alto'] .camp-painel, html[data-contrast='alto'] .camp-missoes-botao { background: var(--pergaminho); color: var(--tinta); border-color: var(--tinta); box-shadow: none; }
+/* 0.17.7 (passo 1.6): o anel marfim do foco volta no alto contraste (antes ficava apagado pela regra acima) */
+html[data-contrast='alto'] .camp-missoes-botao:focus-visible { box-shadow: 0 0 0 3px var(--marfim); }

@@ -1,0 +1,140 @@
+/* =========================================================
+   Paletas por ambiente (Fase 1 da Etapa 2, passo 1.7)
+   Leva as paletas aprovadas (folha de amostras e tokens --amb-* de
+   tokens.css) às telas antigas, UM AMBIENTE POR VEZ.
+
+   Regras obrigatórias (há testes que conferem):
+   - só tokens, nada de HEX;
+   - toda regra começa por
+       html:not([data-contrast='alto']) .app[data-ambiente='<ambiente>']
+     para não valer no alto contraste (aprovado na 0.17.7, que fica igual)
+     nem fora do ambiente;
+   - nenhuma regra para a Central;
+   - nenhuma regra antiga é removida: estas só sobrepõem dentro do ambiente;
+   - cenários, ilustrações, personagem, cantos e sombras não mudam.
+
+   Ambientes já migrados: conquistas (0.17.8) e biblioteca (0.17.9).
+   Ainda sem bloco: perfil, quiz e historia.
+   ========================================================= */
+
+/* ---------- Conquistas: Sala dos Troféus (0.17.8) ----------
+   base veludo-800, acento ouro-300, leitura pergaminho, moldura ouro-500;
+   medalhas bronze e prata. Contraste medido (WCAG):
+   tinta/pergaminho 13,6:1; tinta-suave/pergaminho 7,4:1; ouro-300/veludo 9,7:1;
+   marfim/veludo 13,4:1; bronze/veludo 5,3:1; prata/veludo 10,1:1. */
+
+/* ponte do ambiente: as variáveis antigas de destaque e moldura passam aos
+   tons do ambiente (texto, raios, sombras e fontes não mudam) */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] {
+  --gold: var(--amb-acento-texto);
+  --gold-strong: var(--amb-acento-texto);
+  --gold-dim: var(--amb-moldura);
+  --border-strong: var(--amb-moldura);
+  --parchment: var(--amb-leitura);
+  --panel: var(--amb-base);
+}
+
+/* cartões de leitura: pergaminho liso com moldura de ouro */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina :is(.page-header, .medal-card, .ach-card) {
+  background: var(--amb-leitura);
+  border-color: var(--amb-moldura);
+  color: var(--tinta);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina :is(.page-header-lead, .muted, .small.muted) { color: var(--tinta-suave); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .eyebrow { color: var(--tinta-suave); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina section > p.small { background: var(--amb-leitura); color: var(--tinta-suave); }
+
+/* faixas de título: placa de veludo com letras de ouro */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .section-title {
+  background: var(--amb-base);
+  border-color: var(--amb-moldura);
+  color: var(--amb-acento-texto);
+  text-shadow: none;
+}
+
+/* bloqueadas: pergaminho legível (sem transparência), ícone em cinza */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina :is(.ach-card:not(.is-on), .medal-card.is-locked) { opacity: 1; filter: none; }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.is-locked .game-icon { filter: grayscale(1); opacity: 0.6; }
+
+/* obtidas: troféu em exposição, placa de veludo com moldura de ouro */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .ach-card.is-on {
+  background: var(--amb-base);
+  border-color: var(--amb-acento);
+  color: var(--marfim);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .ach-card.is-on strong { color: var(--amb-acento-texto); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .ach-card.is-on :is(p, .small, .muted, .small.muted) { color: var(--marfim); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .ach-card.is-on .ach-icon {
+  background: var(--amb-leitura);
+  border-color: var(--amb-acento);
+}
+
+/* medalhas de livro obtidas: placa de veludo, louro e moldura na cor do metal */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card:is(.medal-bronze, .medal-prata, .medal-ouro) {
+  background: var(--amb-base);
+  color: var(--marfim);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card:is(.medal-bronze, .medal-prata, .medal-ouro) :is(strong, .small) { color: var(--marfim); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-bronze { border-color: var(--bronze); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-prata { border-color: var(--prata); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-ouro { border-color: var(--amb-acento); }
+/* as folhas do louro tomam a cor do metal (só aparência; o ícone e os dados não mudam) */
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-bronze .game-icon ellipse { fill: var(--bronze); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-prata .game-icon ellipse { fill: var(--prata); }
+html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-ouro .game-icon ellipse { fill: var(--amb-acento); }
+
+/* ---------- Biblioteca: Sala de Estudos (0.17.9) ----------
+   base couro-700, acento lamparina-300, leitura papel, moldura terra-500.
+   Contraste medido (WCAG): tinta/papel 14,4:1; tinta-suave/papel 7,8:1;
+   marfim/couro 10,7:1; lamparina/couro 7,9:1; tinta/lamparina 10,2:1;
+   lamparina/terra-900 11,0:1. Lamparina nunca é texto sobre papel (1,4:1). */
+
+/* ponte do ambiente: destaques, molduras e placas de madeira passam ao couro e à lamparina */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] {
+  --gold: var(--amb-acento-texto);
+  --gold-strong: var(--amb-acento-texto);
+  --gold-dim: var(--amb-moldura);
+  --border-strong: var(--amb-moldura);
+  --parchment: var(--amb-leitura);
+  --panel: var(--amb-base);
+  --plank: var(--amb-base);
+  --wood-edge: var(--amb-moldura);
+}
+
+/* página de aventura (/biblioteca): fichas em papel, abas em couro */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina :is(.page-header, .panel, .lib-card, .lib-book, .lib-event) {
+  background: var(--amb-leitura);
+  border-color: var(--amb-moldura);
+  color: var(--tinta);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina :is(.page-header-lead, .muted, .small.muted, .eyebrow) { color: var(--tinta-suave); }
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina :is(.lib-card, .lib-book, .lib-event).is-locked { opacity: 1; filter: none; }
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina .tabs {
+  background: var(--amb-base);
+  border-color: var(--amb-moldura);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina .tab:not(.is-on) { color: var(--marfim); }
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina .tabs a:not(.is-on) { color: var(--amb-acento-texto); }
+
+/* fichas e linha do tempo (telas com barra superior) */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .section-title {
+  background: var(--amb-base);
+  border-color: var(--amb-moldura);
+  color: var(--amb-acento-texto);
+  text-shadow: none;
+}
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] :is(.tab.is-on, .chip.is-on) {
+  background: var(--amb-acento);
+  border-color: var(--amb-acento);
+  color: var(--tinta);
+  text-shadow: none;
+}
+/* textos sobre o céu do cenário do topo (subtítulo da ficha, introdução da linha do tempo,
+   aviso de ficha bloqueada): marfim (o acento ou o texto atenuado sobre o céu ficariam abaixo de 4,5:1) */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] :is(.sheet-head .lead, main > .page-header .page-header-lead, .page-header > .page-header-lead) { color: var(--marfim); }
+/* (regra separada: dentro de um :is, ela aumentaria a especificidade e venceria a da página de aventura) */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .narrow.center > .muted { color: var(--marfim); }
+/* etiquetas do tipo de data: placa de couro, para ficarem legíveis sobre o céu e sobre os painéis */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .dating { background: var(--amb-base); }
+/* barras de progresso: lamparina */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .progress-fill { background: var(--amb-progresso); }

@@ -1,0 +1,2114 @@
+{
+ "pc-3d": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "pc-3d-alto": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "pc-2d": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "pc-2d-alto": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo Quiz: Teste seu c",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-continuar Começar: fase 1, A cri",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.camp-modo Modo História: Explore",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "cel-3d": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "cel-3d-alto": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Biblioteca: mesa de es",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "cel-2d": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ },
+ "cel-2d-alto": {
+  "ida": [
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ],
+  "volta": [
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-missoes-botao Missões1",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-settings Configurações",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.hud-player Perfil de Tobias",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Desafio diário: 5 perg",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-label Personagem: roupas e a",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.skip-link Pular para o conteúdo",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "body. Pular para o conteúdoB",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Perfil",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Biblioteca",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Quiz",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link História",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.nav-global-link Central",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Revisão inteligenteErr",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Baús de recompensaConc",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Continuar jornadaFase ",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "a.board-item Desafio diário5 pergun",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   },
+   {
+    "n": "button.camp-painel-fechar Fechar missões",
+    "visivel": 100,
+    "cobre": "",
+    "painelAberto": true
+   }
+  ]
+ }
+}

@@ -1,0 +1,27 @@
+/* Janela base (bq-janela): pergaminho com moldura de madeira, como a janela da
+   fase do mapa. Variante "folha" sobe de baixo no celular. */
+.bq-janela-fundo {
+  position: fixed; inset: 0; z-index: var(--z-janela); display: grid; place-items: center; padding: var(--esp-4);
+  background: rgba(10, 6, 3, 0.62);
+}
+.bq-janela {
+  --foco-atual: var(--foco-sobre-claro); --link-atual: var(--link-leitura);
+  position: relative; width: var(--janela-largura); max-height: 90vh; overflow: auto; padding: var(--esp-5) var(--esp-4) var(--esp-4);
+  color: var(--texto-sobre-leitura); background: var(--amb-leitura);
+  border: 4px solid var(--borda-madeira); border-radius: var(--janela-raio);
+  box-shadow: inset 0 0 0 3px rgba(255, 250, 235, 0.7), var(--elevacao-3);
+  animation: bq-janela-entra var(--dur-janela) var(--curva-saida) both;
+}
+@keyframes bq-janela-entra { from { opacity: 0; transform: translateY(8px) scale(0.98); } to { opacity: 1; transform: none; } }
+.bq-janela__titulo { margin: 0 var(--esp-6) var(--esp-3) 0; font-family: var(--fonte-titulo); font-weight: var(--peso-titulo); font-size: var(--fonte-22); line-height: var(--altura-linha-titulo); color: var(--texto-sobre-leitura); }
+.bq-janela__fechar {
+  position: absolute; top: var(--esp-2); right: var(--esp-2); display: grid; place-items: center;
+  width: var(--toque-min); height: var(--toque-min); border: 0; border-radius: 50%; background: transparent; color: var(--texto-sobre-leitura); cursor: pointer;
+}
+.bq-janela__fechar:focus-visible { outline: var(--foco-espessura) solid var(--foco-sobre-claro); outline-offset: 0; }
+.bq-janela__acoes { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--esp-2); margin-top: var(--esp-4); }
+@media (max-width: 599px) {
+  .bq-janela-fundo.bq-janela-fundo--folha { place-items: end stretch; padding: 0; }
+  .bq-janela--folha { width: auto; max-height: 80vh; border-radius: var(--janela-raio) var(--janela-raio) 0 0; border-bottom: 0; }
+}
+html[data-contrast='alto'] .bq-janela { background: var(--pergaminho); border-color: var(--tinta); box-shadow: none; }
