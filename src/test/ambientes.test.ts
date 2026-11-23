@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest'
 
 /*
  * Passo 1.7 da Fase 1: paletas por ambiente nas telas antigas.
- * Entrega 1 (0.17.8): só Conquistas (Sala dos Troféus).
+ * Entrega 1 (0.17.8): Conquistas (Sala dos Troféus). Entrega 2 (0.17.9): Biblioteca (Sala de Estudos).
  */
 
 const raiz = process.cwd()
@@ -12,7 +12,7 @@ const ler = (f: string) => readFileSync(join(raiz, f), 'utf8')
 const semComentarios = (s: string) => s.replace(/\/\*[\s\S]*?\*\//g, '')
 const css = semComentarios(ler('src/styles/ambientes.css'))
 const regras = [...css.matchAll(/([^{}]+)\{([^}]*)\}/g)].map((m) => ({ seletor: m[1].trim(), corpo: m[2] }))
-const AMBIENTES_MIGRADOS = ['conquistas']
+const AMBIENTES_MIGRADOS = ['conquistas', 'biblioteca']
 
 function contraste(a: string, b: string) {
   const L = (h: string) => {
@@ -43,15 +43,18 @@ describe('passo 1.7: ambientes.css', () => {
 
   it('a Central e os outros ambientes ficam de fora', () => {
     expect(css).not.toMatch(/central|camp-|hud-|nav-global/)
-    for (const amb of ['historia', 'quiz', 'biblioteca', 'perfil']) expect(css).not.toContain(`data-ambiente='${amb}'`)
+    for (const amb of ['historia', 'quiz', 'perfil']) expect(css).not.toContain(`data-ambiente='${amb}'`)
   })
 
   it('a ponte, a paleta legada e :root continuam com os valores antigos', () => {
     expect(css).not.toMatch(/:root/)
     expect(css).not.toMatch(/--legado-/)
     // a ponte do ambiente só aponta variáveis antigas para tokens de ambiente
-    const ponte = regras.find((r) => r.seletor === "html:not([data-contrast='alto']) .app[data-ambiente='conquistas']")!
-    for (const d of ponte.corpo.matchAll(/(--[\w-]+):\s*([^;]+);/g)) expect(d[2].trim(), d[1]).toMatch(/^var\(--amb-[\w-]+\)$/)
+    for (const amb of AMBIENTES_MIGRADOS) {
+      const ponte = regras.find((r) => r.seletor === `html:not([data-contrast='alto']) .app[data-ambiente='${amb}']`)!
+      expect(ponte, amb).toBeDefined()
+      for (const d of ponte.corpo.matchAll(/(--[\w-]+):\s*([^;]+);/g)) expect(d[2].trim(), `${amb} ${d[1]}`).toMatch(/^var\(--amb-[\w-]+\)$/)
+    }
   })
 
   it('é carregado depois da ponte e antes da acessibilidade e do alto contraste', () => {
@@ -72,5 +75,18 @@ describe('passo 1.7: ambientes.css', () => {
     expect(css).toMatch(/\.ach-card:not\(\.is-on\), \.medal-card\.is-locked\)\s*\{\s*opacity:\s*1/)
     expect(css).toMatch(/\.medal-card\.medal-bronze \.game-icon ellipse\s*\{\s*fill:\s*var\(--bronze\)/)
     expect(css).toMatch(/\.medal-card\.medal-prata \.game-icon ellipse\s*\{\s*fill:\s*var\(--prata\)/)
+  })
+
+  it('Biblioteca: os pares de cor usados passam no contraste da WCAG', () => {
+    const pares: [string, string][] = [
+      ['tinta', 'papel'], ['tinta-suave', 'papel'], // fichas da página de aventura
+      ['marfim', 'couro-700'], ['lamparina-300', 'couro-700'], // placas, faixas, abas e etiquetas de data
+      ['tinta', 'lamparina-300'], // aba e ficha escolhidas
+      ['lamparina-300', 'terra-900'], // destaques sobre o fundo escuro
+    ]
+    for (const [a, b] of pares) expect(contraste(hex(a), hex(b)), `${a}/${b}`).toBeGreaterThanOrEqual(4.5)
+    // a lamparina nunca vira texto sobre o papel (1,4:1)
+    expect(contraste(hex('lamparina-300'), hex('papel'))).toBeLessThan(3)
+    expect(css).not.toMatch(/data-ambiente='biblioteca'\] \.av-pagina[^{]*\{[^}]*color:\s*var\(--amb-acento-texto\)[^}]*background:\s*var\(--amb-leitura\)/)
   })
 })

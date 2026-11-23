@@ -13,8 +13,8 @@
    - nenhuma regra antiga é removida: estas só sobrepõem dentro do ambiente;
    - cenários, ilustrações, personagem, cantos e sombras não mudam.
 
-   Ambientes já migrados: conquistas (0.17.8).
-   Ainda sem bloco: biblioteca, perfil, quiz e historia.
+   Ambientes já migrados: conquistas (0.17.8) e biblioteca (0.17.9).
+   Ainda sem bloco: perfil, quiz e historia.
    ========================================================= */
 
 /* ---------- Conquistas: Sala dos Troféus (0.17.8) ----------
@@ -82,3 +82,59 @@ html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .me
 html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-bronze .game-icon ellipse { fill: var(--bronze); }
 html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-prata .game-icon ellipse { fill: var(--prata); }
 html:not([data-contrast='alto']) .app[data-ambiente='conquistas'] .av-pagina .medal-card.medal-ouro .game-icon ellipse { fill: var(--amb-acento); }
+
+/* ---------- Biblioteca: Sala de Estudos (0.17.9) ----------
+   base couro-700, acento lamparina-300, leitura papel, moldura terra-500.
+   Contraste medido (WCAG): tinta/papel 14,4:1; tinta-suave/papel 7,8:1;
+   marfim/couro 10,7:1; lamparina/couro 7,9:1; tinta/lamparina 10,2:1;
+   lamparina/terra-900 11,0:1. Lamparina nunca é texto sobre papel (1,4:1). */
+
+/* ponte do ambiente: destaques, molduras e placas de madeira passam ao couro e à lamparina */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] {
+  --gold: var(--amb-acento-texto);
+  --gold-strong: var(--amb-acento-texto);
+  --gold-dim: var(--amb-moldura);
+  --border-strong: var(--amb-moldura);
+  --parchment: var(--amb-leitura);
+  --panel: var(--amb-base);
+  --plank: var(--amb-base);
+  --wood-edge: var(--amb-moldura);
+}
+
+/* página de aventura (/biblioteca): fichas em papel, abas em couro */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina :is(.page-header, .panel, .lib-card, .lib-book, .lib-event) {
+  background: var(--amb-leitura);
+  border-color: var(--amb-moldura);
+  color: var(--tinta);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina :is(.page-header-lead, .muted, .small.muted, .eyebrow) { color: var(--tinta-suave); }
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina :is(.lib-card, .lib-book, .lib-event).is-locked { opacity: 1; filter: none; }
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina .tabs {
+  background: var(--amb-base);
+  border-color: var(--amb-moldura);
+}
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina .tab:not(.is-on) { color: var(--marfim); }
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .av-pagina .tabs a:not(.is-on) { color: var(--amb-acento-texto); }
+
+/* fichas e linha do tempo (telas com barra superior) */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .section-title {
+  background: var(--amb-base);
+  border-color: var(--amb-moldura);
+  color: var(--amb-acento-texto);
+  text-shadow: none;
+}
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] :is(.tab.is-on, .chip.is-on) {
+  background: var(--amb-acento);
+  border-color: var(--amb-acento);
+  color: var(--tinta);
+  text-shadow: none;
+}
+/* textos sobre o céu do cenário do topo (subtítulo da ficha, introdução da linha do tempo,
+   aviso de ficha bloqueada): marfim (o acento ou o texto atenuado sobre o céu ficariam abaixo de 4,5:1) */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] :is(.sheet-head .lead, main > .page-header .page-header-lead, .page-header > .page-header-lead) { color: var(--marfim); }
+/* (regra separada: dentro de um :is, ela aumentaria a especificidade e venceria a da página de aventura) */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .narrow.center > .muted { color: var(--marfim); }
+/* etiquetas do tipo de data: placa de couro, para ficarem legíveis sobre o céu e sobre os painéis */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .dating { background: var(--amb-base); }
+/* barras de progresso: lamparina */
+html:not([data-contrast='alto']) .app[data-ambiente='biblioteca'] .progress-fill { background: var(--amb-progresso); }

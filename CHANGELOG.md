@@ -2,6 +2,25 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## 0.17.9 — 23/11/2026 — Passo 1.7, entrega 2: Biblioteca (Sala de Estudos) (em avaliação, não publicada)
+
+Desenvolvida só na branch `claude/loving-carson-8mrbjo`, sobre a 0.17.8; não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_7_BIBLIOTECA.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.9-biblioteca/`.
+
+- **Biblioteca, fichas de personagem, livro e lugar e linha do tempo:**
+  - fichas da página de aventura em papel;
+  - placas, abas, faixas de título e etiquetas de data em couro;
+  - destaques e progresso em lamparina;
+  - moldura terra;
+  - textos sobre o céu do topo em marfim.
+- **Contraste:** textos abaixo de 4,5:1 nas telas da Biblioteca, de 18 para **0**.
+- **Mesma metodologia de Conquistas:** regras só em `ambientes.css`, limitadas à Biblioteca e desligadas no alto contraste; nenhuma regra antiga removida.
+- **Preservado:**
+  - o alto contraste idêntico à 0.17.8;
+  - a Central idêntica;
+  - Conquistas, Perfil, Quiz e História sem alteração;
+  - foco, toque, cliques e teclado iguais.
+- **Testes:** 197, em 18 arquivos.
+
 ## 0.17.8 — 23/11/2026 — Passo 1.7, entrega 1: Conquistas (Sala dos Troféus) (em avaliação, não publicada)
 
 Desenvolvida só na branch `claude/loving-carson-8mrbjo`; não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_7_CONQUISTAS.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.8-conquistas/`.

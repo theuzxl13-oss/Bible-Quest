@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.17.8 em avaliação (Conquistas na paleta da Sala dos Troféus); publicada: 0.17.7 (Central do Jogador, Fase 0 da identidade nas demais telas e, da Fase 1, base visual comum, acessibilidade base, identificação dos ambientes e alto contraste unificado) |
+| **Versão** | 0.17.9 em avaliação (Conquistas e Biblioteca nas paletas da Sala dos Troféus e da Sala de Estudos); publicada: 0.17.7 (Central do Jogador, Fase 0 da identidade nas demais telas e, da Fase 1, base visual comum, acessibilidade base, identificação dos ambientes e alto contraste unificado) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -200,7 +200,7 @@ npm run dev
     │   ├── library/         Biblioteca e linha do tempo
     │   └── *.tsx            Acampamento (Dashboard), diário, resultado, perfil, configurações e outras
     ├── admin/               Painel administrativo (carregado sob demanda)
-    ├── styles/              Visual: global.css (telas antigas), tokens.css (tokens em 4 camadas), ponte.css (variáveis antigas → tokens), acessibilidade.css (áreas de toque e foco), alto-contraste.css (alto contraste unificado), ambientes.css (paletas por ambiente, desde a 0.17.8), componentes/ (Central e componentes base bq-*) e telas/
+    ├── styles/              Visual: global.css (telas antigas), tokens.css (tokens em 4 camadas), ponte.css (variáveis antigas → tokens), acessibilidade.css (áreas de toque e foco), alto-contraste.css (alto contraste unificado), ambientes.css (paletas por ambiente, desde a 0.17.8: Conquistas e Biblioteca), componentes/ (Central e componentes base bq-*) e telas/
     └── test/                Testes automatizados
 ```
 
@@ -225,7 +225,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 196 testes automatizados (Vitest e Testing Library), em 18 arquivos de `src/test/`:
+São 197 testes automatizados (Vitest e Testing Library), em 18 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -237,7 +237,7 @@ São 196 testes automatizados (Vitest e Testing Library), em 18 arquivos de `src
 | `icones` | Ícones ilustrados: cobertura, ids únicos e alternativa de traço |
 | `central` | Central do Jogador: acessos preservados, painel de missões pelo teclado e pelo botão de fechar, rótulos da cena, o Desafio diário pelos dois caminhos, "Continuar", visibilidade da navegação, os 13 elementos do acampamento e cores só nos tokens |
 | `ponte` | Base visual da Fase 1: variáveis antigas com os valores exatos de antes, ordem de importação, tokens da Central intactos, tokens de ambiente e nenhum HEX nos arquivos novos |
-| `ambientes` | Passo 1.7: camada de paletas por ambiente (sem HEX, regras só dentro de ambientes autorizados e fora do alto contraste, sem Central, ponte intacta, ordem de carregamento e contraste dos pares de Conquistas) |
+| `ambientes` | Passo 1.7: camada de paletas por ambiente (sem HEX, regras só dentro de ambientes autorizados e fora do alto contraste, sem Central, ponte intacta, ordem de carregamento e contraste dos pares de Conquistas e da Biblioteca) |
 | `altoContraste` | Passo 1.6: um só alto contraste (sem HEX nas regras, variáveis e superfícies do modo antigo cobertas, contraste dos pares de tokens, ordem de carregamento, preferência salva com a animação reduzida e anel do foco na Central) |
 | `acessibilidade` | Passos 1.4 e 1.5: ambiente de cada rota e marca no Layout, atributo sem efeito na tela (só `tokens.css` o seleciona), foco preso e Esc nas janelas dos mapas, Tab que pula o que o painel de missões aberto encobre, áreas de toque e cor do foco, e, na Central, só as correções autorizadas (painel de missões, selo, anel duplo dos rótulos, topo, placas e Continuar, e toque dos rótulos) |
 | `base` | Componentes base (bq-*): botão, painel, cartão, janela (foco preso e Esc), aviso, mensagem rápida, campo, progresso, abas (setas), cabeçalho e voltar |
@@ -292,7 +292,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **0.17.9** (23/11/2026): passo 1.7, entrega 2: Biblioteca na paleta da Sala de Estudos (papel, couro e lamparina; textos abaixo do mínimo de 18 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
 - **0.17.8** (23/11/2026): passo 1.7, entrega 1: Conquistas na paleta da Sala dos Troféus (veludo, ouro e pergaminho, medalhas em bronze e prata; textos abaixo do mínimo de 49 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
 - **Documentação** (23/11/2026): diagnóstico e plano do passo 1.7 (paletas por ambiente nas telas antigas, ordem Conquistas → Biblioteca → Perfil → Quiz → História), aguardando avaliação (sem nova versão do jogo).
 - **0.17.7** (23/11/2026): Fase 1 da Etapa 2, passo 1.6 (alto contraste unificado em terra e marfim, sem texto ilegível nos cartões claros: de 257 textos abaixo do mínimo para 0) e foco que não para atrás do painel de missões aberto; aprovada e publicada no GitHub Pages.
-- **0.17.6** (21/11/2026): Fase 1 da Etapa 2, passos 1.4 e 1.5 (áreas de toque de 44 px, foco com contraste, foco preso nas janelas dos mapas e `data-ambiente` só como identificação); na Central, foco do painel de missões, selo de aviso e, na finalização autorizada, anel duplo em todos os controles e toque dos rótulos com 46 px; aprovada e publicada no GitHub Pages.
