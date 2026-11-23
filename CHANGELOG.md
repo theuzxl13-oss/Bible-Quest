@@ -2,6 +2,17 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Documentação — 23/11/2026 — Passo 1.7: diagnóstico e planejamento (sem nova versão do jogo)
+
+- **Relatório:** `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_7_DIAGNOSTICO.md` (e `.pdf`), sobre a migração das telas antigas para as paletas aprovadas, ambiente por ambiente.
+  - Matriz por ambiente: telas, componentes, cores atuais e de destino, alterações, riscos, critérios e esforço.
+  - Ordem proposta: Conquistas → Biblioteca → Perfil → Quiz → História.
+- **Medições (teste local, nada mudou no jogo):**
+  - a ponte alcança de 12% a 79% das telas com barra superior, mas de 0% a 6% dos mapas, cenas, perguntas, Biblioteca, Perfil e Conquistas, que usam cores fixas;
+  - a Central não depende das variáveis antigas.
+- **Risco principal:** uma regra de ambiente venceria o alto contraste. Toda regra fica sob `html:not([data-contrast='alto'])`.
+- **Código:** nenhuma linha alterada. Aguarda avaliação.
+
 ## 0.17.7 — 23/11/2026 — Fase 1 da Etapa 2, passo 1.6: alto contraste unificado (aprovada e publicada)
 
 **Publicação oficial (23/11/2026):**
