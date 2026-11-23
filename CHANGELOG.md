@@ -2,6 +2,16 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Android, etapa 1, complemento — 23/11/2026 — verificações pedidas na avaliação (em avaliação)
+
+- Novo fluxo `android-verificacoes.yml` (iniciado à mão, ou quando ele mesmo muda), com o script `tools/android/verificacoes-complementares.cjs`:
+  - capturas da tela de abertura e do ícone no lançador;
+  - depuração do WebView ligada no APK de depuração e desligada num build de lançamento de teste (assinado só com a chave de depuração do executor, não publicado);
+  - teste do aplicativo sem a permissão INTERNET.
+- As capturas do emulador e os resultados ficam em `docs/relatorios/evidencias/android-etapa-1/`.
+- Complemento do relatório: `docs/relatorios/ANDROID_ETAPA_1_COMPLEMENTO.md`.
+- O jogo, o APK oficial e o site não mudaram.
+
 ## Android, etapa 1 — 23/11/2026 — Aplicativo Android com Capacitor 8 (em avaliação)
 
 Branch `claude/bible-quest-android`, criada a partir de `4815afa` (0.17.9). Não foi integrada ao `main` nem publicada na Google Play. Relatório: `docs/relatorios/ANDROID_ETAPA_1.md`.

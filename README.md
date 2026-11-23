@@ -291,6 +291,7 @@ Primeira etapa (branch `claude/bible-quest-android`, ainda não integrada ao `ma
   - botão voltar (fecha a janela aberta, volta uma tela, sai na Central);
   - retrato nos celulares e rotação livre em tablets;
   - links externos no navegador do sistema.
+- **Verificações complementares** (`.github/workflows/android-verificacoes.yml`, iniciado à mão): tela de abertura, ícone, depuração do WebView só no APK de depuração e teste sem a permissão INTERNET; evidências em `docs/relatorios/evidencias/android-etapa-1/`.
 - **Build no GitHub Actions** (`.github/workflows/android.yml`): typecheck, testes, build do site (conferido contra a 0.17.9), build do aplicativo, `cap sync`, APK de depuração, verificação do APK e teste num emulador Android 16. O APK fica disponível como artefato do fluxo. Não há chave de assinatura nem segredos no repositório.
 - **Pastas:**
   - `android/`: projeto Android;
@@ -326,7 +327,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **Android, etapa 1, complemento** (23/11/2026): verificações pedidas na avaliação (capturas do emulador, tela de abertura e ícone, depuração do WebView, permissão INTERNET, ausência de segredos); jogo, APK e site sem mudanças. Em avaliação.
 - **Android, etapa 1** (23/11/2026): aplicativo Android com Capacitor 8 (API 24 a 36), ícone e tela de abertura próprios, experiência nativa, painel administrativo, multiplayer de demonstração e leitura em voz alta desativados só no aplicativo, e APK de depuração pelo GitHub Actions; site idêntico à 0.17.9. Branch `claude/bible-quest-android`, em avaliação.
 - **0.17.9** (23/11/2026): passo 1.7, entrega 2: Biblioteca na paleta da Sala de Estudos (papel, couro e lamparina; textos abaixo do mínimo de 18 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
 - **0.17.8** (23/11/2026): passo 1.7, entrega 1: Conquistas na paleta da Sala dos Troféus (veludo, ouro e pergaminho, medalhas em bronze e prata; textos abaixo do mínimo de 49 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
-- **Documentação** (23/11/2026): diagnóstico e plano do passo 1.7 (paletas por ambiente nas telas antigas, ordem Conquistas → Biblioteca → Perfil → Quiz → História), aguardando avaliação (sem nova versão do jogo).
