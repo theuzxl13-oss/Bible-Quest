@@ -115,8 +115,18 @@ async function emPrimeiroPlano(device) {
   await espera(1500)
   await fs.promises.writeFile(path.join(SAIDA, '05-biblioteca.png'), await device.screenshot())
   confere('a Biblioteca abre (a Central sai da tela)', naBiblioteca, await page.evaluate(() => window.location.hash))
+  // diagnóstico do botão voltar: o evento chega à página? há teclado aberto ou erro de JavaScript?
+  const errosJs = []
+  page.on('pageerror', (e) => errosJs.push(String(e)))
+  page.on('console', (m) => { if (m.type() === 'error') errosJs.push(m.text()) })
+  await page.evaluate(() => { window.__voltares = 0; document.addEventListener('backbutton', () => { window.__voltares++ }) })
+  const antes = await page.evaluate(() => ({ foco: document.activeElement?.tagName + '.' + (document.activeElement?.className || ''), estado: history.state, tamanho: history.length }))
+  const teclado = (await device.shell('dumpsys input_method')).toString().split('\n').filter((l) => /mInputShown|mIsInputViewShown|isInputViewShown/.test(l)).map((l) => l.trim()).join(' ')
   await device.shell('input keyevent 4')
-  await espera(2500)
+  await espera(4000)
+  const diag = { antes, teclado, eventosVoltar: await page.evaluate(() => window.__voltares), depois: await page.evaluate(() => ({ hash: location.hash, estado: history.state, tamanho: history.length })), errosJs }
+  fs.writeFileSync(path.join(SAIDA, 'diagnostico-voltar.json'), JSON.stringify(diag, null, 2))
+  console.log('diagnóstico do voltar:', JSON.stringify(diag))
   const depoisDoVoltar = await page.evaluate(() => window.location.hash)
   const centralDeVolta = await page.evaluate(() => Boolean(document.querySelector('.camp-scene')))
   confere('voltar na Biblioteca leva de volta à Central (o aplicativo continua aberto)', depoisDoVoltar === '#/painel' && centralDeVolta && (await emPrimeiroPlano(device)), depoisDoVoltar)
