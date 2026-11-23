@@ -1,0 +1,102 @@
+{
+ "cel-3d": {
+  "ordem": [
+   "button.camp-label Personagem: roupas",
+   "button.camp-label Biblioteca: mesa d",
+   "button.camp-label Desafio diário: 5 ",
+   "button.camp-label Recompensas: conqu",
+   "a.hud-player Perfil de Tobias",
+   "a.hud-settings Configurações",
+   "button.camp-missoes-botao Missões1",
+   "a.camp-modo Modo História: Exp",
+   "button.camp-continuar Começar: fase 1, A",
+   "a.camp-modo Modo Quiz: Teste s",
+   "a.nav-global-link Central",
+   "a.nav-global-link História",
+   "a.nav-global-link Quiz",
+   "a.nav-global-link Biblioteca",
+   "a.nav-global-link Perfil",
+   "body. Pular para o conte",
+   "a.skip-link Pular para o conte",
+   "button.camp-label Personagem: roupas"
+  ],
+  "shiftTabInverso": true,
+  "alvosAlcancados": 10,
+  "alvosComContorno": 10
+ },
+ "cel-2d": {
+  "ordem": [
+   "button.camp-label Personagem: roupas",
+   "button.camp-label Biblioteca: mesa d",
+   "button.camp-label Desafio diário: 5 ",
+   "button.camp-label Recompensas: conqu",
+   "a.hud-player Perfil de Tobias",
+   "a.hud-settings Configurações",
+   "button.camp-missoes-botao Missões1",
+   "a.camp-modo Modo História: Exp",
+   "button.camp-continuar Começar: fase 1, A",
+   "a.camp-modo Modo Quiz: Teste s",
+   "a.nav-global-link Central",
+   "a.nav-global-link História",
+   "a.nav-global-link Quiz",
+   "a.nav-global-link Biblioteca",
+   "a.nav-global-link Perfil",
+   "body. Pular para o conte",
+   "a.skip-link Pular para o conte",
+   "button.camp-label Personagem: roupas"
+  ],
+  "shiftTabInverso": true,
+  "alvosAlcancados": 10,
+  "alvosComContorno": 10
+ },
+ "pc-3d": {
+  "ordem": [
+   "button.camp-label Personagem: roupas",
+   "button.camp-label Biblioteca: mesa d",
+   "button.camp-label Desafio diário: 5 ",
+   "button.camp-label Recompensas: conqu",
+   "a.hud-player Perfil de Tobias",
+   "a.hud-settings Configurações",
+   "button.camp-missoes-botao Missões1",
+   "a.camp-modo Modo História: Exp",
+   "button.camp-continuar Começar: fase 1, A",
+   "a.camp-modo Modo Quiz: Teste s",
+   "a.nav-global-link Central",
+   "a.nav-global-link História",
+   "a.nav-global-link Quiz",
+   "a.nav-global-link Biblioteca",
+   "a.nav-global-link Perfil",
+   "body. Pular para o conte",
+   "a.skip-link Pular para o conte",
+   "button.camp-label Personagem: roupas"
+  ],
+  "shiftTabInverso": true,
+  "alvosAlcancados": 10,
+  "alvosComContorno": 10
+ },
+ "pc-2d": {
+  "ordem": [
+   "button.camp-label Personagem: roupas",
+   "button.camp-label Biblioteca: mesa d",
+   "button.camp-label Desafio diário: 5 ",
+   "button.camp-label Recompensas: conqu",
+   "a.hud-player Perfil de Tobias",
+   "a.hud-settings Configurações",
+   "button.camp-missoes-botao Missões1",
+   "a.camp-modo Modo História: Exp",
+   "button.camp-continuar Começar: fase 1, A",
+   "a.camp-modo Modo Quiz: Teste s",
+   "a.nav-global-link Central",
+   "a.nav-global-link História",
+   "a.nav-global-link Quiz",
+   "a.nav-global-link Biblioteca",
+   "a.nav-global-link Perfil",
+   "body. Pular para o conte",
+   "a.skip-link Pular para o conte",
+   "button.camp-label Personagem: roupas"
+  ],
+  "shiftTabInverso": true,
+  "alvosAlcancados": 10,
+  "alvosComContorno": 10
+ }
+}

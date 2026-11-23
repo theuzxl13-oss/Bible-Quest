@@ -2,7 +2,7 @@
 
 **Data:** 23/11/2026
 **Branch:** `claude/loving-carson-8mrbjo`
-**Situação:** em avaliação. Não foi integrada ao `main` nem publicada.
+**Situação:** aprovada e publicada em 23/11/2026 (fast-forward para `9dacff7`, run 92). Registro: `evidencias/etapa-2-fase1-0.17.7/VERIFICACAO_PUBLICACAO.md`.
 
 ## 1. Resumo
 

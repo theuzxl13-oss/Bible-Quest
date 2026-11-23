@@ -10,7 +10,7 @@ O jogador cria o **próprio personagem** (que não representa ninguém da Bíbli
 | | |
 | --- | --- |
 | **Jogar agora** | https://theuzxl13-oss.github.io/Bible-Quest/ |
-| **Versão** | 0.17.7 em avaliação (alto contraste unificado); publicada: 0.17.6 (Central do Jogador, Fase 0 da identidade nas demais telas, base visual comum, acessibilidade base e identificação dos ambientes da Fase 1) |
+| **Versão** | 0.17.7 (Central do Jogador, Fase 0 da identidade nas demais telas e, da Fase 1, base visual comum, acessibilidade base, identificação dos ambientes e alto contraste unificado) |
 | **Histórico** | [`CHANGELOG.md`](CHANGELOG.md) |
 | **Próximos passos** | [`ROADMAP.md`](ROADMAP.md) |
 | **Documentação técnica** | [`docs/`](docs/README.md) |
@@ -291,7 +291,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
-- **0.17.7** (23/11/2026): Fase 1 da Etapa 2, passo 1.6 (alto contraste unificado em terra e marfim, sem texto ilegível nos cartões claros: de 257 textos abaixo do mínimo para 0); em avaliação, não publicada.
+- **0.17.7** (23/11/2026): Fase 1 da Etapa 2, passo 1.6 (alto contraste unificado em terra e marfim, sem texto ilegível nos cartões claros: de 257 textos abaixo do mínimo para 0) e foco que não para atrás do painel de missões aberto; aprovada e publicada no GitHub Pages.
 - **0.17.6** (21/11/2026): Fase 1 da Etapa 2, passos 1.4 e 1.5 (áreas de toque de 44 px, foco com contraste, foco preso nas janelas dos mapas e `data-ambiente` só como identificação); na Central, foco do painel de missões, selo de aviso e, na finalização autorizada, anel duplo em todos os controles e toque dos rótulos com 46 px; aprovada e publicada no GitHub Pages.
 - **0.17.5** (16/11/2026): Fase 1 da Etapa 2, passos 1.1 a 1.3 (tokens em quatro camadas, ponte de compatibilidade com os valores antigos e 11 componentes base), sem mudança na tela; aprovada e publicada no GitHub Pages.
 - **Documentação** (16/11/2026): auditoria visual da Fase 1 da Etapa 2 e proposta da base comum (tokens e componentes), aguardando aprovação (sem nova versão do jogo).

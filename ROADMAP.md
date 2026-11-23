@@ -12,7 +12,7 @@
     - Folha de amostras dos ambientes em `docs/relatorios/evidencias/etapa-2-fase1-amostras/`, aguardando aprovação dos tons.
     - Passos 1.4 (acessibilidade base) e 1.5 (`data-ambiente` só como identificação) implementados na versão 0.17.6, aprovada e publicada em 21/11/2026 (`docs/relatorios/evidencias/etapa-2-fase1-0.17.6/VERIFICACAO_PUBLICACAO.md`) (`docs/relatorios/ETAPA_2_FASE_1_PASSOS_1_4_E_1_5.md`). Na Central entraram só as duas correções autorizadas (foco do painel de missões e selo de aviso).
     - Avaliação técnica: passos 1.4 e 1.5 aprovados. Na finalização autorizada da Central, entraram o anel duplo no foco dos rótulos, do topo, das placas dos modos e do "Continuar", e a área de toque de 46 px nos rótulos (seção 14 do relatório). Nada da Central fica pendente.
-    - Passo 1.6 (alto contraste unificado) implementado na versão 0.17.7, em 23/11/2026, só na branch de desenvolvimento e aguardando avaliação (`docs/relatorios/ETAPA_2_FASE_1_PASSO_1_6.md`).
+    - Passo 1.6 (alto contraste unificado) implementado na versão 0.17.7, aprovada e publicada em 23/11/2026 (`docs/relatorios/ETAPA_2_FASE_1_PASSO_1_6.md` e `docs/relatorios/evidencias/etapa-2-fase1-0.17.7/VERIFICACAO_PUBLICACAO.md`).
     - Próximos: os passos 1.7 e 1.8, aguardando autorização. Sugestão registrada: ligar o alto contraste pela preferência do sistema (`prefers-contrast`), como funcionalidade nova. Os tons dos ambientes continuam sem aplicação.
     - A Etapa 3 ainda não começou.
   - **Etapa 2 (v0.16.5), direção artística:** decisões G1–G8 e as seis decisões da Central aprovadas; plano técnico da Central do Jogador (tela piloto) em `docs/relatorios/ETAPA_2_CENTRAL_PLANO_TECNICO_FINAL.pdf`, aguardando aprovação para implementar (versão 0.17.0).

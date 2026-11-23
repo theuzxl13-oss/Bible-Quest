@@ -2,9 +2,20 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
-## 0.17.7 — 23/11/2026 — Fase 1 da Etapa 2, passo 1.6: alto contraste unificado (em avaliação, não publicada)
+## 0.17.7 — 23/11/2026 — Fase 1 da Etapa 2, passo 1.6: alto contraste unificado (aprovada e publicada)
 
-Desenvolvida só na branch `claude/loving-carson-8mrbjo`; não foi integrada ao `main` nem publicada. Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_6.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.7/`.
+**Publicação oficial (23/11/2026):**
+- Aprovada e integrada ao `main` por fast-forward (`ad92ca2` → `9dacff7`), com `d0678f7` preservado no histórico, sem conflitos.
+- O fluxo oficial (run 92) passou e publicou no GitHub Pages. O site serve `assets/index-CLE677Uq.js` e `assets/index-BVuaq63J.css`, os mesmos arquivos do build local (SHA-256 iguais).
+- Verificação no site, no celular e no computador:
+  - "Versão 0.17.7" no rodapé e na página Sobre;
+  - modo normal e alto contraste sem mudança de estilo em relação ao build local (85 e 84 de 88 capturas idênticas; o resto é tempo de carregamento);
+  - a Central igual à 0.17.6 sem foco, com o painel aberto e fechado;
+  - Tab e Shift+Tab na ordem aprovada, sem foco encoberto com o painel aberto, e foco preso e Esc nas janelas dos mapas;
+  - nenhum erro de JavaScript, nenhuma falha de carregamento e nenhuma rolagem horizontal.
+- Registro completo: `docs/relatorios/evidencias/etapa-2-fase1-0.17.7/VERIFICACAO_PUBLICACAO.md`.
+
+Relatório: `docs/relatorios/ETAPA_2_FASE_1_PASSO_1_6.md`; evidências em `docs/relatorios/evidencias/etapa-2-fase1-0.17.7/`.
 
 - **Um só alto contraste:** o modo antigo (preto e amarelo, em `global.css`) e o da Central (terra e marfim) viraram um modo só, na família da Central.
   - Valores em `tokens.css`: tokens `--ac-*` e as variáveis antigas pela ponte.

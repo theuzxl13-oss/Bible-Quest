@@ -48,7 +48,7 @@ implementada ainda.
 | Fase | O que entra | Situação |
 | --- | --- | --- |
 | 0 | Correções de legibilidade e navegação | Versão 0.17.4, aprovada e publicada em 16/11/2026 |
-| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, aprovada e publicada em 21/11/2026; passo 1.6 na versão 0.17.7, em avaliação; passos 1.7 e 1.8 aguardando autorização |
+| 1 | Base visual comum com os tokens | Passos 1.1 a 1.3 na versão 0.17.5, aprovada e publicada em 20/11/2026; passos 1.4 e 1.5 na versão 0.17.6, aprovada e publicada em 21/11/2026; passo 1.6 na versão 0.17.7, aprovada e publicada em 23/11/2026; passos 1.7 e 1.8 aguardando autorização |
 | 2 a 5 | Conforme o diagnóstico | — |
 
 ## Fase 1 — decisões da primeira entrega (16/11/2026)
@@ -75,6 +75,7 @@ implementada ainda.
 - **Alto contraste:** um só modo, na família terra e marfim da Central; o modo antigo (preto e amarelo) foi substituído.
 - **Central:** a aparência normal e a aparência sem foco no alto contraste não mudam; o anel do foco foi corrigido só no alto contraste.
 - **Preservado:** a opção e a preferência salva, a redução de animações e o modo normal.
+- **Publicação (23/11/2026):** aprovada, com a correção do foco com o painel de missões aberto; integrada ao `main` por fast-forward e publicada (run 92).
 - **Fora desta versão:** paletas dos ambientes, migração visual das telas, limpeza de estilos, passos 1.7 e 1.8 e Etapa 3.
 
 ## Personagens 3D (20/11/2026)
