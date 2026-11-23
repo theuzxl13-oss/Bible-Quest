@@ -1,0 +1,76 @@
+{
+  "api": "36",
+  "falhas": 0,
+  "resultado": [
+    {
+      "nome": "emulador com Android API 36",
+      "ok": true,
+      "detalhe": "API 36"
+    },
+    {
+      "nome": "a página vem dos arquivos do aplicativo",
+      "ok": true,
+      "detalhe": "https://localhost"
+    },
+    {
+      "nome": "a primeira tela é a de boas-vindas (sem perfil)",
+      "ok": true,
+      "detalhe": "(rota inicial)"
+    },
+    {
+      "nome": "a Central abre com o perfil",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "painel administrativo inacessível",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "multiplayer de demonstração inacessível (leva ao treino livre)",
+      "ok": true,
+      "detalhe": "#/quiz/treino"
+    },
+    {
+      "nome": "sem atalho para as salas multiplayer",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "leitura em voz alta oculta nas Configurações",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "voltar na Biblioteca leva de volta à Central",
+      "ok": true,
+      "detalhe": "#/painel"
+    },
+    {
+      "nome": "voltar na Central sai do aplicativo",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "nenhuma requisição para a internet",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "sem internet, o aplicativo abre direto na Central (progresso salvo)",
+      "ok": true,
+      "detalhe": "#/painel"
+    },
+    {
+      "nome": "sem internet, a Central mostra o jogador",
+      "ok": true,
+      "detalhe": ""
+    },
+    {
+      "nome": "nenhum travamento (FATAL EXCEPTION)",
+      "ok": true,
+      "detalhe": ""
+    }
+  ]
+}

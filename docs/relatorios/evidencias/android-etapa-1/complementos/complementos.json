@@ -1,0 +1,25 @@
+{
+  "falhas": 1,
+  "resultado": [
+    {
+      "nome": "APK de depuração: soquete de depuração do WebView aberto",
+      "ok": true,
+      "detalhe": "@webview_devtools_remote_2679"
+    },
+    {
+      "nome": "build de lançamento instalado sem o atributo DEBUGGABLE",
+      "ok": true,
+      "detalhe": "flags=[ HAS_CODE ALLOW_CLEAR_USER_DATA ALLOW_BACKUP ]"
+    },
+    {
+      "nome": "build de lançamento: aplicativo em execução",
+      "ok": true,
+      "detalhe": "pid 4463"
+    },
+    {
+      "nome": "build de lançamento: nenhum soquete de depuração do WebView",
+      "ok": false,
+      "detalhe": "@webview_devtools_remote_4463 @stetho_com.google.android.apps.messaging_devtools_remote @stetho_com.google.android.apps.messaging:rcs_devtools_remote"
+    }
+  ]
+}
