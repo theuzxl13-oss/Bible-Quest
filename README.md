@@ -230,7 +230,7 @@ Siga o guia em `tools/personagem/README.md` e o plano em `docs/planos/EDITOR-3D-
 
 ## Testes
 
-São 212 testes automatizados (Vitest e Testing Library), em 19 arquivos de `src/test/`:
+São 213 testes automatizados (Vitest e Testing Library), em 19 arquivos de `src/test/`:
 
 | Arquivo | O que verifica |
 | --- | --- |
@@ -277,6 +277,7 @@ Primeira etapa (branch `claude/bible-quest-android`, ainda não integrada ao `ma
 
 - **Tecnologia:** Capacitor 8.6.2. Identificador permanente `com.kzanntech.biblequest`, nome "Bible Quest", Android mínimo API 24 (7.0), alvo API 36 (Android 16).
 - **Funciona sem internet:** o jogo inteiro vem dos arquivos locais de `dist`, copiados para dentro do aplicativo. Nada é carregado de um site remoto.
+- **Sem permissões:** o aplicativo não pede nenhuma permissão, nem a de internet. Os links externos abrem no navegador do sistema.
 - **Build do aplicativo:** `vite build --mode android` define `__ANDROID__` como verdadeiro. No build do site essa constante é falsa e o código exclusivo do aplicativo sai do pacote: o site continua idêntico, byte a byte.
 - **Desativado no aplicativo, nesta primeira versão:**
   - painel administrativo (rota e módulo fora do pacote);
@@ -327,7 +328,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **Android, etapa 1, fechamento** (24/11/2026): sem a permissão INTERNET, ícone com o medalhão reduzido (tela de abertura mantida) e diagnóstico da Central 3D ao reabrir sem internet; jogo e site sem mudanças. Em avaliação.
 - **Android, etapa 1, complemento** (23/11/2026): verificações pedidas na avaliação (capturas do emulador, tela de abertura e ícone, depuração do WebView, permissão INTERNET, ausência de segredos); jogo, APK e site sem mudanças. Em avaliação.
 - **Android, etapa 1** (23/11/2026): aplicativo Android com Capacitor 8 (API 24 a 36), ícone e tela de abertura próprios, experiência nativa, painel administrativo, multiplayer de demonstração e leitura em voz alta desativados só no aplicativo, e APK de depuração pelo GitHub Actions; site idêntico à 0.17.9. Branch `claude/bible-quest-android`, em avaliação.
 - **0.17.9** (23/11/2026): passo 1.7, entrega 2: Biblioteca na paleta da Sala de Estudos (papel, couro e lamparina; textos abaixo do mínimo de 18 para 0), com alto contraste e Central intactos; em avaliação, não publicada.
-- **0.17.8** (23/11/2026): passo 1.7, entrega 1: Conquistas na paleta da Sala dos Troféus (veludo, ouro e pergaminho, medalhas em bronze e prata; textos abaixo do mínimo de 49 para 0), com alto contraste e Central intactos; em avaliação, não publicada.

@@ -12,7 +12,8 @@
  *   4. funciona sem internet (modo avião);
  *   5. o painel administrativo e o multiplayer de demonstração estão inacessíveis;
  *   6. a leitura em voz alta não aparece nas Configurações;
- *   7. o botão voltar volta uma tela e, na Central, sai do aplicativo.
+ *   7. o botão voltar volta uma tela e, na Central, sai do aplicativo;
+ *   8. os links externos abrem no navegador do sistema, e o voltar retorna ao jogo.
  * Salva capturas da tela do emulador e um resultado.json. Sai com erro se algo falhar.
  */
 const { _android } = require('playwright')
@@ -102,6 +103,28 @@ async function emPrimeiroPlano(device) {
   await irPara(page, '#/configuracoes')
   confere('leitura em voz alta oculta nas Configurações', (await page.getByText('Botões de leitura em voz alta').count()) === 0)
   await fs.promises.writeFile(path.join(SAIDA, '04-configuracoes.png'), await device.screenshot())
+
+  // 8. links externos: abrem no navegador do sistema (o aplicativo não tem permissão de internet)
+  await irPara(page, '#/sobre')
+  const link = page.getByRole('link', { name: 'Fonte no Commons' }).first()
+  await link.scrollIntoViewIfNeeded().catch(() => {})
+  await link.click().catch(() => {})
+  let fora = ''
+  for (let i = 0; i < 15 && !fora; i++) {
+    await espera(1000)
+    const atividades = (await device.shell('dumpsys activity activities')).toString()
+    const linha = atividades.split('\n').find((l) => /topResumedActivity|mResumedActivity/.test(l)) || ''
+    if (linha && !linha.includes(PACOTE)) fora = linha.trim()
+  }
+  await fs.promises.writeFile(path.join(SAIDA, '07-link-externo.png'), await device.screenshot())
+  confere('link externo abre fora do aplicativo (navegador do sistema)', /chrome|browser/i.test(fora), fora)
+  await device.shell('input keyevent 4')
+  let devolta = false
+  for (let i = 0; i < 15 && !devolta; i++) {
+    await espera(1000)
+    devolta = await emPrimeiroPlano(device)
+  }
+  confere('voltar do navegador retorna ao jogo, na mesma tela', devolta && (await page.evaluate(() => location.hash)) === '#/sobre', await page.evaluate(() => location.hash))
 
   // 7. botão voltar: volta uma tela; na Central, sai do aplicativo
   await irPara(page, '#/painel')

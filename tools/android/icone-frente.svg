@@ -16,6 +16,8 @@
       <stop offset="1" stop-color="#EBDDB9"/>
     </linearGradient>
   </defs>
+  <!-- medalhão reduzido a 88 % (diâmetro ≈ 58 dp) para não encostar na máscara do lançador -->
+  <g transform="translate(54 54) scale(0.88) translate(-54 -54)">
   <!-- medalhão: moldura de ouro e fundo de madeira -->
   <circle cx="54" cy="54" r="32" fill="url(#ouro)" stroke="#8C6A2A" stroke-width="1.6"/>
   <circle cx="54" cy="54" r="27" fill="url(#fundo)" stroke="#8C6A2A" stroke-width="1"/>
@@ -34,4 +36,5 @@
   </g>
   <!-- fita marcadora -->
   <path d="M55.6 73.6l2 6 1.6-2.4 2.4 1.6-1.9-6.4" fill="#A8321F" stroke="#5A1A10" stroke-width="0.7" stroke-linejoin="round"/>
+  </g>
 </svg>

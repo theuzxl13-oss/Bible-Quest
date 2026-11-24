@@ -83,7 +83,8 @@ jobs:
           unzip -p "$APK" assets/capacitor.config.json > capacitor.config.json
           cat capacitor.config.json
           if grep -q '"server"' capacitor.config.json; then echo "::error::o aplicativo carrega um servidor remoto"; exit 1; fi
-          echo "Permissões:"; grep "uses-permission" badging.txt
+          echo "Permissões:"; grep "uses-permission" badging.txt || echo "(nenhuma)"
+          if grep -q "android.permission.INTERNET" badging.txt; then echo "::error::o APK declara a permissão INTERNET"; exit 1; fi
           ls -la "$APK"
 
       - name: Publicar o APK como artefato

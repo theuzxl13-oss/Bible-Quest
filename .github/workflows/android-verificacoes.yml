@@ -6,7 +6,8 @@ name: Aplicativo Android — verificações complementares
 #   - build de lançamento assinado com a chave de DEPURAÇÃO gerada no executor
 #     (nunca uma chave comercial), só para conferir que a depuração do WebView
 #     fica desligada fora do APK de depuração;
-#   - APK de depuração sem a permissão INTERNET, para conferir se ela é indispensável.
+#   - (a variante sem a permissão INTERNET deixou de ser necessária: o APK oficial não a tem mais).
+#   - diagnóstico da cena 3D da Central ao fechar e reabrir o aplicativo (tools/android/diagnostico-central.cjs).
 # Ao final, as capturas e os resultados são gravados em
 # docs/relatorios/evidencias/android-etapa-1/ nesta mesma branch (só documentação).
 
@@ -19,6 +20,7 @@ on:
       - '.github/workflows/android-verificacoes.yml'
       - 'tools/android/verificacoes-complementares.cjs'
       - 'tools/android/verificar-no-emulador.cjs'
+      - 'tools/android/diagnostico-central.cjs'
   workflow_dispatch:
     inputs:
       execucao:
@@ -62,7 +64,7 @@ jobs:
           npx cap sync android
           npm install --no-save --no-package-lock playwright@1.63.0
 
-      - name: APKs de teste (depuração, lançamento de teste e sem INTERNET)
+      - name: APKs de teste (depuração e lançamento de teste)
         run: |
           set -e
           mkdir -p teste evidencias/apk
@@ -81,27 +83,15 @@ jobs:
           ./gradlew --no-daemon assembleRelease
           cp app/build/outputs/apk/release/app-release.apk ../teste/app-lancamento-teste.apk
           git checkout -- app/build.gradle
-          # 3) APK de depuração sem a permissão INTERNET (remove também a que vier dos plugins)
-          python3 - <<'PY'
-          p = 'app/src/main/AndroidManifest.xml'; s = open(p).read()
-          s = s.replace('<manifest xmlns:android="http://schemas.android.com/apk/res/android">',
-                        '<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">')
-          a = '<uses-permission android:name="android.permission.INTERNET" />'
-          assert a in s, 'permissão INTERNET não encontrada'
-          open(p, 'w').write(s.replace(a, '<uses-permission android:name="android.permission.INTERNET" tools:node="remove" />'))
-          PY
-          ./gradlew --no-daemon assembleDebug
-          cp app/build/outputs/apk/debug/app-debug.apk ../teste/app-sem-internet.apk
-          git checkout -- app/src/main/AndroidManifest.xml
           cd ..
           git status --porcelain -- android/app/build.gradle android/app/src/main/AndroidManifest.xml | grep . && { echo "::error::arquivos do projeto ficaram alterados"; exit 1; } || true
-          for f in app-debug app-lancamento-teste app-sem-internet; do
+          for f in app-debug app-lancamento-teste; do
             "$AAPT2" dump badging "teste/$f.apk" | grep -vE "^application-label-" > "evidencias/apk/$f.badging.txt"
             "$AAPT2" dump permissions "teste/$f.apk" > "evidencias/apk/$f.permissoes.txt"
           done
           grep -q "application-debuggable" evidencias/apk/app-debug.badging.txt || { echo "::error::o APK de depuração deveria ser depurável"; exit 1; }
           if grep -q "application-debuggable" evidencias/apk/app-lancamento-teste.badging.txt; then echo "::error::o build de lançamento está depurável"; exit 1; fi
-          if grep -q "android.permission.INTERNET" evidencias/apk/app-sem-internet.permissoes.txt; then echo "::error::a variante ainda tem INTERNET"; exit 1; fi
+          if grep -q "android.permission.INTERNET" evidencias/apk/app-debug.permissoes.txt; then echo "::error::o APK declara a permissão INTERNET"; exit 1; fi
           for f in evidencias/apk/*.permissoes.txt; do echo "== $f"; cat "$f"; done
 
       - name: Habilitar a aceleração (KVM)
@@ -122,8 +112,9 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           script: |
             node tools/android/verificacoes-complementares.cjs teste/app-debug.apk teste/app-lancamento-teste.apk evidencias/complementos || touch evidencias/FALHA-complementos
-            adb install -r teste/app-sem-internet.apk
-            node tools/android/verificar-no-emulador.cjs evidencias/sem-internet || touch evidencias/sem-internet/HOUVE-FALHAS
+            adb install -r teste/app-debug.apk
+            node tools/android/verificar-no-emulador.cjs evidencias/aplicativo || touch evidencias/FALHA-aplicativo
+            node tools/android/diagnostico-central.cjs evidencias/central || touch evidencias/FALHA-diagnostico
 
       - name: Capturas do emulador da execução informada
         uses: actions/download-artifact@v4
@@ -162,4 +153,5 @@ jobs:
       - name: Resultado
         run: |
           test ! -e evidencias/FALHA-complementos || { echo "::error::verificações complementares falharam (ver complementos.json)"; exit 1; }
-          if [ -e evidencias/sem-internet/HOUVE-FALHAS ]; then echo "::warning::sem a permissão INTERNET, houve falhas (ver sem-internet/resultado.json)"; fi
+          test ! -e evidencias/FALHA-aplicativo || { echo "::error::verificação do aplicativo falhou (ver aplicativo/resultado.json)"; exit 1; }
+          test ! -e evidencias/FALHA-diagnostico || { echo "::error::o diagnóstico da Central não terminou (ver central/erro.txt)"; exit 1; }

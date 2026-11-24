@@ -179,7 +179,11 @@ describe('aplicativo Android: configuração do projeto', () => {
       }
     }
     const estilos = ler('android/app/src/main/res/values/styles.xml')
-    expect(estilos).toMatch(/windowSplashScreenAnimatedIcon">@mipmap\/ic_launcher_foreground/)
+    // a tela de abertura tem imagem própria (desenho original); o ícone do lançador usa o medalhão reduzido
+    expect(estilos).toMatch(/windowSplashScreenAnimatedIcon">@mipmap\/ic_splash/)
+    for (const d of ['mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi']) expect(existsSync(join(raiz, `android/app/src/main/res/mipmap-${d}/ic_splash.png`)), d).toBe(true)
+    expect(ler('tools/android/icone-frente.svg')).toMatch(/scale\(0\.88\)/)
+    expect(ler('tools/android/icone-monocromatico.svg')).toMatch(/scale\(0\.88\)/)
     expect(estilos).toMatch(/postSplashScreenTheme">@style\/AppTheme\.NoActionBar/)
   })
 
@@ -190,6 +194,11 @@ describe('aplicativo Android: configuração do projeto', () => {
     const vite = ler('vite.config.ts')
     expect(vite).toMatch(/__ANDROID__: JSON\.stringify\(android\)/)
     expect(vite).toMatch(/viewport-fit=cover/)
+  })
+
+  it('o aplicativo não declara nenhuma permissão (nem INTERNET): tudo vem dos arquivos locais', () => {
+    const manifesto = ler('android/app/src/main/AndroidManifest.xml')
+    expect(manifesto).not.toMatch(/<uses-permission/)
   })
 
   it('nenhum SDK de anúncios ou de análise nas dependências', () => {

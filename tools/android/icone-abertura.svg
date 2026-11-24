@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">
+  <!-- Bible Quest — ícone da tela de abertura (108 × 108 dp). É o desenho original do ícone, no tamanho
+       aprovado na etapa 1; o ícone do lançador (icone-frente.svg) usa o mesmo desenho reduzido a 88 %.
+       Desenho original da Kzann Tech (feito em código para o aplicativo), nas cores da paleta do jogo. -->
+  <defs>
+    <linearGradient id="ouro" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F2D891"/>
+      <stop offset="0.55" stop-color="#E6C77E"/>
+      <stop offset="1" stop-color="#C9A24E"/>
+    </linearGradient>
+    <radialGradient id="fundo" cx="0.5" cy="0.38" r="0.62">
+      <stop offset="0" stop-color="#5C3B23"/>
+      <stop offset="1" stop-color="#2E1E12"/>
+    </radialGradient>
+    <linearGradient id="pagina" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF4E2"/>
+      <stop offset="1" stop-color="#EBDDB9"/>
+    </linearGradient>
+  </defs>
+  <!-- medalhão: moldura de ouro e fundo de madeira -->
+  <circle cx="54" cy="54" r="32" fill="url(#ouro)" stroke="#8C6A2A" stroke-width="1.6"/>
+  <circle cx="54" cy="54" r="27" fill="url(#fundo)" stroke="#8C6A2A" stroke-width="1"/>
+  <!-- luz atrás da cruz -->
+  <circle cx="54" cy="44" r="13" fill="#F2A955" opacity="0.28"/>
+  <!-- cruz de ouro -->
+  <path d="M51.6 30.5h4.8v8.6h7.4v4.6h-7.4v14.8h-4.8V43.7h-7.4v-4.6h7.4z" fill="url(#ouro)" stroke="#6E4A1C" stroke-width="1.1" stroke-linejoin="round"/>
+  <!-- Bíblia aberta -->
+  <path d="M54 62.5c-6.6-3.6-13.4-4.3-20.5-2.7v11.6c7.1-1.6 13.9-0.9 20.5 2.7z" fill="url(#pagina)" stroke="#5C4630" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M54 62.5c6.6-3.6 13.4-4.3 20.5-2.7v11.6c-7.1-1.6-13.9-0.9-20.5 2.7z" fill="url(#pagina)" stroke="#5C4630" stroke-width="1.2" stroke-linejoin="round"/>
+  <path d="M54 62.5v11.6" stroke="#5C4630" stroke-width="1.2"/>
+  <!-- linhas do texto -->
+  <g stroke="#9C8562" stroke-width="0.8" stroke-linecap="round">
+    <path d="M38 63.6c4.4-0.7 8.6-0.2 12.6 1.4M38 66.6c4.4-0.7 8.6-0.2 12.6 1.4"/>
+    <path d="M70 63.6c-4.4-0.7-8.6-0.2-12.6 1.4M70 66.6c-4.4-0.7-8.6-0.2-12.6 1.4"/>
+  </g>
+  <!-- fita marcadora -->
+  <path d="M55.6 73.6l2 6 1.6-2.4 2.4 1.6-1.9-6.4" fill="#A8321F" stroke="#5A1A10" stroke-width="0.7" stroke-linejoin="round"/>
+</svg>

@@ -2,6 +2,16 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Android, etapa 1, fechamento — 24/11/2026 — permissão INTERNET, ícone e diagnóstico da Central 3D (em avaliação)
+
+- **Permissão INTERNET removida** do `AndroidManifest.xml`: o aplicativo não declara nenhuma permissão. Nenhuma permissão alternativa foi adicionada. O fluxo do APK passa a falhar se a permissão voltar.
+- **Links externos:** a verificação no emulador confere que "Fonte no Commons" abre no navegador do sistema e que o voltar retorna ao jogo.
+- **Ícone:** medalhão reduzido a 88 % dentro da área segura do ícone adaptativo, no colorido e no monocromático, com as mesmas cores, cruz e Bíblia.
+- **Tela de abertura sem mudança:** passa a usar imagem própria (`ic_splash`, cópia exata da anterior; desenho em `tools/android/icone-abertura.svg`). As imagens `splash.png` não mudaram.
+- **Central 3D ao reabrir sem internet:** novo diagnóstico `tools/android/diagnostico-central.cjs`, que só observa e não muda o jogo. Resultado em `docs/relatorios/ANDROID_ETAPA_1_FECHAMENTO.md`.
+- O jogo, o conteúdo e o site não mudaram: o build do site continua idêntico à 0.17.9.
+- **Testes:** 213, em 19 arquivos.
+
 ## Android, etapa 1, complemento — 23/11/2026 — verificações pedidas na avaliação (em avaliação)
 
 - Novo fluxo `android-verificacoes.yml` (iniciado à mão, ou quando ele mesmo muda), com o script `tools/android/verificacoes-complementares.cjs`:

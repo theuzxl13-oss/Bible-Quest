@@ -35,7 +35,7 @@
         </provider>
     </application>
 
-    <!-- Permissions -->
-
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Sem permissões: o jogo vem inteiro dos arquivos do aplicativo e não usa a rede
+         (a permissão INTERNET do modelo do Capacitor foi removida na etapa 1). Os links
+         externos abrem no navegador do sistema, que usa a permissão dele. -->
 </manifest>

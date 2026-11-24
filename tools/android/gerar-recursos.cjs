@@ -1,15 +1,19 @@
 /*
  * Gera os ícones e as imagens da tela de abertura do aplicativo Android a
- * partir dos SVGs desta pasta (icone-frente.svg e icone-monocromatico.svg).
+ * partir dos SVGs desta pasta:
+ *   icone-frente.svg, icone-monocromatico.svg  ícone do lançador (medalhão a 88 %)
+ *   icone-abertura.svg                          tela de abertura (desenho no tamanho original)
  *
  * Uso (na raiz do projeto, com o Playwright e o Chromium disponíveis):
- *   node tools/android/gerar-recursos.cjs
+ *   node tools/android/gerar-recursos.cjs              só os ícones do lançador
+ *   node tools/android/gerar-recursos.cjs --abertura   também a tela de abertura
  *
  * Saída em android/app/src/main/res/:
  *   mipmap-<densidade>/ic_launcher_foreground.png  camada da frente do ícone adaptativo (108 dp)
  *   mipmap-<densidade>/ic_launcher_monochrome.png  ícone temático do Android 13+ (108 dp)
  *   mipmap-<densidade>/ic_launcher.png e _round.png ícones para Android 7 (48 dp)
- *   drawable-<orientação>-<densidade>/splash.png    imagens de abertura antigas (fallback)
+ *   mipmap-<densidade>/ic_splash.png                ícone da tela de abertura (108 dp)  [--abertura]
+ *   drawable-<orientação>-<densidade>/splash.png    imagens de abertura antigas (fallback) [--abertura]
  */
 const { chromium } = require('playwright')
 const fs = require('fs')
@@ -20,6 +24,8 @@ const RES = path.join(RAIZ, 'android/app/src/main/res')
 const FUNDO = '#22160D' // terra-900 do jogo
 const frente = fs.readFileSync(path.join(__dirname, 'icone-frente.svg'), 'utf8')
 const mono = fs.readFileSync(path.join(__dirname, 'icone-monocromatico.svg'), 'utf8')
+const abertura = fs.readFileSync(path.join(__dirname, 'icone-abertura.svg'), 'utf8')
+const COM_ABERTURA = process.argv.includes('--abertura')
 const DENSIDADES = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 }
 
 const dataUrl = (svg) => 'data:image/svg+xml;base64,' + Buffer.from(svg).toString('base64')
@@ -46,6 +52,12 @@ async function render(page, html, w, h, arquivo, transparente) {
       <img src="${dataUrl(frente)}" style="position:absolute;width:${l * 1.5}px;height:${l * 1.5}px;left:${-l * 0.25}px;top:${-l * 0.25}px"></div>`
     await render(page, centro('22%'), l, l, path.join(pasta, 'ic_launcher.png'), true)
     await render(page, centro('50%'), l, l, path.join(pasta, 'ic_launcher_round.png'), true)
+    if (COM_ABERTURA) await render(page, `<img src="${dataUrl(abertura)}" width="${t}" height="${t}" style="display:block">`, t, t, path.join(pasta, 'ic_splash.png'), true)
+  }
+  if (!COM_ABERTURA) {
+    await b.close()
+    console.log('ícones gerados em', path.relative(RAIZ, RES), '(tela de abertura mantida; use --abertura para gerá-la)')
+    return
   }
   // imagens de abertura antigas (usadas só se o tema de abertura do Android 12+ não estiver disponível)
   for (const dir of fs.readdirSync(RES).filter((n) => n.startsWith('drawable') && fs.existsSync(path.join(RES, n, 'splash.png')))) {
@@ -55,7 +67,7 @@ async function render(page, html, w, h, arquivo, transparente) {
       return { w: buf.readUInt32BE(16), h: buf.readUInt32BE(20) }
     })()
     const t = Math.round(Math.min(w, h) * 0.5)
-    await render(page, `<div style="width:${w}px;height:${h}px;background:${FUNDO};display:grid;place-items:center"><img src="${dataUrl(frente)}" width="${t}" height="${t}"></div>`, w, h, arq, false)
+    await render(page, `<div style="width:${w}px;height:${h}px;background:${FUNDO};display:grid;place-items:center"><img src="${dataUrl(abertura)}" width="${t}" height="${t}"></div>`, w, h, arq, false)
   }
   await b.close()
   console.log('recursos gerados em', path.relative(RAIZ, RES))
