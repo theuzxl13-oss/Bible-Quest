@@ -58,6 +58,12 @@ async function answerCorrectly(user: ReturnType<typeof userEvent.setup>, q: Ques
     await user.click(screen.getByRole('button', { name: 'Confirmar ordem' }))
   } else if (q.type === 'memory') {
     await solveMemory(user, q.pairs)
+  } else if (q.type === 'match') {
+    // relacionar colunas: item da esquerda e depois o par certo da direita
+    for (const par of q.pairs) {
+      await user.click(within(screen.getByRole('list', { name: 'Itens' })).getByRole('button', { name: par.a }))
+      await user.click(within(screen.getByRole('list', { name: 'Correspondências' })).getByRole('button', { name: par.b }))
+    }
   }
 }
 

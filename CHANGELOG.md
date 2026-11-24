@@ -11,6 +11,7 @@ Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudan
 - **Central 3D ao reabrir sem internet:** novo diagnóstico `tools/android/diagnostico-central.cjs`, que só observa e não muda o jogo. Resultado em `docs/relatorios/ANDROID_ETAPA_1_FECHAMENTO.md`.
 - O jogo, o conteúdo e o site não mudaram: o build do site continua idêntico à 0.17.9.
 - **Testes:** 213, em 19 arquivos.
+- **Correção num teste (sem mudar o jogo):** o teste do desafio diário falhava em alguns dias, já na 0.17.9, porque o assistente que responde as perguntas não tratava o tipo "associar" (`match`), que o diário sorteia em certas datas (como 24/11/2026). O assistente passou a responder esse tipo.
 
 ## Android, etapa 1, complemento — 23/11/2026 — verificações pedidas na avaliação (em avaliação)
 
