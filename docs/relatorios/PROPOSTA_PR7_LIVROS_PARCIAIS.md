@@ -1,0 +1,122 @@
+# Bible Quest — Proposta PR7: livros parciais não aparecem como concluídos
+
+**Data:** 24/11/2026
+**Branch consultada:** `claude/bible-quest-android` (commit `4b8af34`).
+**Situação:** **proposta para avaliação.** Nada foi implementado e nenhum código foi alterado.
+
+**Princípio aprovado:** um livro disponível só em parte não pode ser apresentado como integralmente concluído.
+
+**Por que Gênesis e Êxodo são "parciais" hoje:**
+- Gênesis tem 39 de 50 capítulos com conteúdo;
+- Êxodo tem 19 de 40.
+
+Os outros 64 livros já aparecem como "Em preparação" e não abrem.
+
+## 1. Onde o jogo mostra "concluído" para um livro (ou algo equivalente)
+
+| # | Onde | Arquivo e linha | O que mostra hoje ao terminar todas as fases de Gênesis | Problema? |
+|---|---|---|---|---|
+| 1 | **Etiqueta de status do livro** na lista de livros do Modo História | `src/pages/story/BooksIndex.tsx`, linhas 78–103; regra em `src/services/game/progression.ts`, linha 49 (`if (c.done === c.total) return 'concluido'`) | **"Concluído"**, com ícone de verificado, também no texto lido pelo leitor de tela (`aria-label`) | **sim** |
+| 2 | **Etiqueta de status na página do livro** | `src/pages/story/BookPage.tsx`, linhas 19 e 36 | **"Concluído"** | **sim** |
+| 3 | **Mensagem no resultado** da última fase do livro | `src/pages/Result.tsx`, linhas 33 e 101 | **"Você concluiu o livro de Gênesis!"** | **sim** |
+| 4 | **Medalha do livro** (ouro, prata ou bronze), dada ao terminar todas as fases | `progression.ts`, `bookMedal`, linhas 89–96; aparece em `BooksIndex.tsx` (80), `BookPage.tsx` (21), `Achievements.tsx` (33) e `Profile.tsx` (137) | medalha "do livro" | **sim**, porque sugere o livro inteiro |
+| 5 | **Porcentagem do livro** na Biblioteca (lista e ficha) | `src/pages/library/Library.tsx` (100) e `LibraryDetail.tsx` (134) | **"100%"** | **sim**, porque parece o livro inteiro |
+| 6 | **Progresso do livro no Perfil** | `src/pages/Profile.tsx`, linhas 136–145 | "20/20 experiências · 100% · 60/60 estrelas" | **sim**, pelo "100%" |
+| 7 | **Porcentagem do Testamento e da jornada** | `BooksIndex.tsx` (66, "% concluído") e `Profile.tsx` (130–132) | cada livro conta pela proporção de fases feitas: Gênesis vale 100% | **menor:** o número cresce mais do que deveria |
+| 8 | **Conquista "Conhecedor das Escrituras"** | `src/data/achievements.ts`, linha 34 | "Conclua 2 livros completos (Gênesis e Êxodo, nesta versão)." | **sim** |
+| 9 | **Conquistas "Explorador de Gênesis" e "Caminho no mar"** | `achievements.ts`, linhas 32 e 33 | "Conclua todas as experiências de Gênesis / de Êxodo." | **não** (fala das experiências que existem); ajuste opcional, para manter a padronização |
+| 10 | **Roupas "Túnica com barra bordada" e "Manto com bordas douradas"** | `src/data/character/items.ts` (74 e 84); requisito em `src/services/game/items.ts`, linhas 52–53 (`requirementLabel`) | "Barra dourada para quem completou Gênesis." / "Para quem completou Êxodo." / "Conclua o livro de Gênesis" | **sim** |
+| 11 | **Missão "Continuar jornada"** e botão da Central quando tudo está feito | `src/pages/Dashboard.tsx` (84) e `src/components/camp/AcoesAcampamento.tsx` (43–46) | "Todas as fases publicadas concluídas" | **não**, porque já fala das fases publicadas. Só padronizar o termo |
+| 12 | **Resumo da lista de livros** | `BooksIndex.tsx`, linha 48 | "experiências disponíveis concluídas" | **não**: é o modelo de texto que seguimos |
+
+**Não tratam de livros e continuam como estão:**
+- "Concluída" na fase (`ExperiencePage.tsx`, 57);
+- desafios do Quiz concluídos (`quizMap.ts`);
+- "Fase concluída!", "Revisão concluída" e "Desafio diário concluído" (`Result.tsx`).
+
+## 2. Proposta de textos
+
+**Termo padrão:** **"fases disponíveis"**, que hoje convive com "experiências disponíveis" e "fases publicadas". Para livros ainda incompletos, sempre indicar que **há capítulos em preparação**.
+
+| # | Onde | Hoje | Proposta |
+|---|---|---|---|
+| 1 e 2 | Status do livro (lista e página) | **Concluído** | **Fases disponíveis concluídas**. Opção curta para a etiqueta: **"Em dia"**, com a explicação "todas as fases disponíveis concluídas; mais capítulos em preparação". O ícone passa a ser o de relógio ou de pergaminho, e não o de "verificado" |
+| 1 e 2 | Status de um livro **realmente completo** (no futuro) | Concluído | **Concluído** (sem mudança; só para livros com todos os capítulos) |
+| 2 | Página do livro (linha nova, só em livro parcial) | — | **"Livro em preparação: 39 de 50 capítulos disponíveis. Novas fases chegarão em atualizações."** |
+| 3 | Resultado da última fase disponível | Você concluiu o livro de Gênesis! | **Você concluiu todas as fases disponíveis de Gênesis! Novos capítulos estão em preparação.** |
+| 4 | Medalha | medalha do livro | **Medalha das fases disponíveis.** Na legenda e no texto do leitor de tela: "Medalha de ouro nas fases disponíveis de Gênesis" |
+| 5 | Biblioteca (lista e ficha do livro) | 100% | **"20 de 20 fases disponíveis"**. Na ficha, a linha extra: "39 de 50 capítulos com fases" |
+| 6 | Perfil | 20/20 experiências · 100% · 60/60 estrelas | **20/20 fases disponíveis · 60/60 estrelas · livro em preparação (39 de 50 capítulos)** |
+| 7 | Testamento e jornada | X% concluído | **X% da jornada percorrida**. Opcional: passar a calcular pelos capítulos com fases, para o número não crescer demais (decisão D3) |
+| 8 | Conquista "Conhecedor das Escrituras" | Conclua 2 livros completos (Gênesis e Êxodo, nesta versão). | **Conclua todas as fases disponíveis de Gênesis e de Êxodo.** O título não muda, e o identificador `conhecedor` também não |
+| 9 | "Explorador de Gênesis" / "Caminho no mar" | Conclua todas as experiências de Gênesis / Êxodo. | **Conclua todas as fases disponíveis de Gênesis / de Êxodo.** (padronização) |
+| 10 | Roupas de livro | Barra dourada para quem completou Gênesis. / Para quem completou Êxodo. / requisito "Conclua o livro de Gênesis" | **Barra dourada para quem concluiu as fases disponíveis de Gênesis.** / **Para quem concluiu as fases disponíveis de Êxodo.** / requisito **"Conclua as fases disponíveis de Gênesis"** |
+| 11 | Central e missões | Todas as fases publicadas concluídas | **Todas as fases disponíveis concluídas** (padronização) |
+
+**Como o jogo saberia se um livro está completo:** acrescentar aos dados de cada livro uma informação explícita de completude. Por exemplo, os capítulos com fases ou um sinal "livro completo". Assim:
+- Gênesis e Êxodo ficam como **parciais** até as fases novas (A10);
+- os 64 livros continuam "Em preparação";
+- um livro só mostra **"Concluído"** quando tiver todos os capítulos.
+
+Os números (39 de 50 e 19 de 40) já foram calculados pelas referências das fases (planejamento, seção 13). Eles teriam de ser mantidos nos dados e conferidos por um teste.
+
+## 3. Impacto sobre recompensas, conquistas e progresso salvo
+
+### 3.1 O que fica gravado e o que é calculado na hora
+
+| Dado | Como funciona hoje | Efeito da PR7 (só textos e regra de status) |
+|---|---|---|
+| Fases concluídas, estrelas e melhor resultado (`progress.experiences`) | gravado | **nenhum** |
+| XP, nível, sequência, desafio diário, histórico e estatísticas | gravado | **nenhum** |
+| **Conquistas** (`progress.achievements`, com a data) | gravadas **uma vez** e **nunca retiradas** (`engine.ts`, 165–166: só acrescenta) | **nenhum**: quem já tem "Explorador de Gênesis", "Caminho no mar" ou "Conhecedor das Escrituras" continua com elas. Os identificadores não mudam |
+| **Roupas liberadas** (`progress.items.unlocked`, com a data) | gravadas quando o requisito é cumprido (`syncUnlockedItems`, depois de cada partida e ao abrir baús); `isItemUnlocked` também aceita o que já está gravado | **nenhum**: a túnica bordada e o manto dourado continuam de quem já os ganhou |
+| **Baús** (`progress.chests`) | gravados | **nenhum** |
+| **Elementos do acampamento** | calculados por nível, **quantidade** de fases, quantidade de conquistas e quantidade de baús | **nenhum**: não dependem de livro concluído |
+| **Status do livro, porcentagens e medalhas** | **calculados na hora** a partir das fases | **só a apresentação muda**: nada é gravado nem apagado |
+
+**Conclusão:** a PR7, como proposta, **não muda nem apaga nenhum dado salvo** e **não precisa de migração**. Ela troca textos e a regra que decide quando mostrar "Concluído".
+
+### 3.2 Efeito futuro, quando entrarem as fases novas (A10, sem relação direta com a PR7)
+
+| Situação | O que acontece hoje (sem a PR7) | Proposta para avaliação |
+|---|---|---|
+| Quem tinha terminado Gênesis verá o livro voltar a "em andamento" | acontece | é esperado; a mensagem "novas fases disponíveis" deve explicar (decisão D2) |
+| **Medalha do livro** (calculada) **some** até terminar as fases novas | **acontece**: o jogador "perde" algo visível | **Decisão D1:** <br>(a) aceitar, com o aviso "novas fases: complete-as para renovar sua medalha"; <br>(b) **gravar a medalha** quando ganha e mostrar a maior já obtida. **Recomendo (b)**, mas ela acrescenta um campo ao salvamento, com migração e testes |
+| Conquistas de livro já ganhas | continuam (nunca são retiradas) | sem mudança |
+| Quem ainda **não** ganhou a conquista "Conhecedor" precisará terminar também as fases novas | acontece | esperado; o texto "fases disponíveis" deixa isso claro |
+| Roupas de livro já ganhas | continuam (gravadas) | sem mudança |
+
+## 4. Testes para garantir que nenhum jogador perca progresso
+
+**Testes automáticos (Vitest)**, feitos antes e junto com a implementação:
+
+| # | Teste | Garante |
+|---|---|---|
+| T1 | **Salvamentos de exemplo** (fixtures) de vários jogadores: <br>• novo; <br>• Gênesis pela metade; <br>• Gênesis e Êxodo completos com as três conquistas de livro, as duas roupas e as medalhas; <br>• salvamento em formato antigo (`migrateProgress`) | base para os testes seguintes |
+| T2 | Carregar cada exemplo, abrir as telas afetadas e **comparar o salvamento antes e depois** (igualdade completa): fases, estrelas, XP, conquistas com as datas, roupas com as datas, baús, sequência, desafio diário e histórico | **nada é alterado nem apagado** |
+| T3 | `bookStatus` de um livro parcial com todas as fases feitas **nunca** devolve "concluído"; um livro marcado como completo devolve "concluído"; os 64 em preparação continuam "em preparação" e sem acesso | a regra nova |
+| T4 | Nenhuma tela mostra "Concluído" ou "concluiu o livro" para um livro parcial: lista de livros, página do livro, resultado da última fase, Biblioteca (lista e ficha), Perfil, Conquistas, incluindo o texto do leitor de tela | os textos (seção 1) |
+| T5 | As conquistas `genesis`, `exodo` e `conhecedor` **continuam com o mesmo identificador**, e as já gravadas continuam presentes depois de carregar | conquistas |
+| T6 | As roupas `tunica-bordada` e `manto-dourado` continuam liberadas para quem as tem gravadas, mesmo que o requisito deixe de valer | recompensas |
+| T7 | **Simulação de conteúdo futuro:** com uma fase de teste a mais em Gênesis, as conquistas e roupas gravadas continuam; os baús continuam; "Continuar" aponta para a fase nova; o acampamento não perde elementos; e a medalha se comporta como decidido em D1 | atualizações futuras |
+| T8 | Os testes atuais (213) continuam passando; os que conferem os textos antigos são atualizados para os novos | sem regressão |
+
+**Conferência no Android** (emulador e aparelho):
+- **T9:** exportar os dados (Perfil → Exportar) antes e depois de instalar a versão nova por cima, e comparar os dois arquivos. Eles devem ser iguais, exceto pela data da exportação.
+- **T10:** capturas das telas da seção 1 com um perfil que tenha Gênesis completo.
+
+**Efeito no site:** a PR7 muda textos do jogo. O site deixa de ser idêntico à 0.17.9 (o que é esperado) e passa a ser conferido pelos testes T4 e T8.
+
+## 5. Decisões necessárias antes de implementar
+
+- **D1. Medalha quando entrarem fases novas:**
+  - (a) some até o jogador completar de novo, com aviso;
+  - (b) é gravada e mostra a maior já obtida (recomendado).
+- **D2. Aviso de "novas fases disponíveis"** quando um livro ganhar conteúdo novo: sim ou não. Se sim, onde: na lista de livros e na Central.
+- **D3. Porcentagem do Testamento e da jornada:**
+  - manter o cálculo por fases, só mudando o texto;
+  - ou calcular pelos capítulos com fases.
+- **D4. Texto curto da etiqueta:** "Fases disponíveis concluídas" ou "Em dia".
+- **D5. Em que versão entra:** proposta de uma versão própria e pequena, depois do diagnóstico físico (etapa 6 do planejamento).
+
+Nenhuma mudança será feita antes da avaliação desta proposta.

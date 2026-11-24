@@ -3,7 +3,8 @@
 **Registros:**
 - primeiro registro em 24/11/2026;
 - atualizado em 24/11/2026 com as "Decisões preliminares";
-- **consolidado em 24/11/2026** com os "Ajustes finais do planejamento" (avaliação do commit `a4dd3f2`).
+- **consolidado em 24/11/2026** com os "Ajustes finais do planejamento" (avaliação do commit `a4dd3f2`);
+- **atualizado em 24/11/2026** com a "Aprovação da direção e próximas providências" (avaliação do commit `4b8af34`).
 
 **Situação:** documento de planejamento. **Não altera** os documentos oficiais (ROADMAP, README, CHANGELOG, índice de documentos).
 
@@ -32,7 +33,15 @@
 | A4 | **Manter a personalização existente:** guarda-roupa, roupas e baús, **preservando a progressão atual** |
 | A5 | **Não criar** novos personagens nem novos sistemas de personalização nesta etapa |
 | A6 | **Não iniciar a implementação do personagem feminino** sem autorização |
+| A28 | **A reformulação do personagem feminino é requisito OBRIGATÓRIO da versão 1.0**, com todos os critérios visuais e técnicos registrados (C1 a C11 e avaliação visual, no planejamento, seções 15.3 e 15.4). A produção **não começa** sem autorização (A6) |
 | A23 | **Incluir no plano uma etapa de reformulação do personagem feminino.** Objetivo: qualidade visual equivalente à do masculino, com o mesmo estilo, as mesmas proporções e o mesmo acabamento, corrigindo o cabelo, os acessórios e o posicionamento. Tem critérios de aceitação e avaliação visual (planejamento, seção 15) |
+
+### 1.1.1 Direção e prioridade
+
+| # | Decisão |
+|---|---|
+| A29 | **A direção do planejamento consolidado (`4b8af34`) está aprovada como base da versão 1.0** |
+| A30 | **Prioridade imediata:** executar os testes físicos e diagnosticar o ANR (etapas 1 e 2 do planejamento) |
 
 ### 1.2 Funcionalidades fora da 1.0
 
@@ -49,6 +58,7 @@
 | A10 | **Planejar** a conclusão dos capítulos ausentes (estimativa no planejamento, seção 13) |
 | A25 | **Não iniciar a produção** das fases novas de Gênesis e Êxodo |
 | A11 | **Manter os outros 64 livros** como "Em preparação" **na Biblioteca e também no Modo História** |
+| A31 | **Princípio da PR7 aprovado:** um livro disponível só em parte **não pode ser apresentado como integralmente concluído**. A **implementação não está autorizada**. Antes dela, a proposta detalhada precisa ser avaliada: locais, textos, impacto e testes (`docs/relatorios/PROPOSTA_PR7_LIVROS_PARCIAIS.md`) |
 | A26 | **Nenhum conteúdo incompleto deve aparecer ou dar acesso como se estivesse concluído.** Os livros em preparação continuam sem acesso a fases. Ver o conflito novo sobre "Concluído" na seção 4 e a pendência P11 |
 | A12 | **Preservar as perguntas gerais do Modo Livre.** São as 34 de `geral.ts`. As 2 perguntas temáticas sem fase (`cr-05` e `jo-16`) também continuam no jogo (planejamento, seção 16) |
 | A13 e A24 | **Revisão humana obrigatória** de todos os trechos bíblicos, referências e perguntas. O conteúdo **só é considerado revisado** depois das revisões **textual, teológica e pedagógica** |
@@ -105,7 +115,7 @@
 | P7 | **Documentos oficiais:** quando atualizar CHANGELOG, README, ROADMAP e o índice com estas diretrizes |
 | P9 | **Personagem feminino:** <br>• quando começar a etapa (depois dos testes físicos?); <br>• com que origem: o mesmo pipeline do masculino (imagem de referência gerada por IA e malha pelo TRELLIS.2, com licenças registradas) ou outra; <br>• o que fazer com os perfis que usam as 6 bases que deixam de ser oferecidas: converter para o corpo correspondente, mantendo cores e roupas (proposta da seção 15) |
 | P10 | **Ações do GitHub Actions** baseadas no Node 20: quando atualizar |
-| P11 | **"Concluído" em livro parcial** (seção 4): aprovar a PR7 ou outra forma, e quando aplicar (é mudança de código; só com autorização) |
+| P11 | **PR7 (livros parciais):** avaliar a proposta detalhada (`PROPOSTA_PR7_LIVROS_PARCIAIS.md`) e as decisões nela: <br>• **D1:** medalha quando entrarem fases novas (recomendado: gravar a maior já obtida); <br>• **D2:** aviso de "novas fases disponíveis"; <br>• **D3:** porcentagem do Testamento e da jornada; <br>• **D4:** texto curto da etiqueta; <br>• **D5:** em que versão entra. <br>A implementação só acontece com autorização |
 
 A antiga P8 (livros em preparação no Modo História) foi resolvida por A11.
 
