@@ -150,6 +150,9 @@ async function emPrimeiroPlano(device) {
   confere('voltar na Central sai do aplicativo', saiu)
 
   // 8. links externos: abrem no navegador do sistema (o aplicativo não tem permissão de internet)
+  // o processo continua vivo depois do voltar; fechá-lo antes de reabrir dá ao Playwright um WebView novo
+  await device.shell(`am force-stop ${PACOTE}`)
+  await espera(1500)
   page = await abrir(device)
   await irPara(page, '#/sobre')
   const link = page.getByRole('link', { name: 'Fonte no Commons' }).first()
