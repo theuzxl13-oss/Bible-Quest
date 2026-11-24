@@ -1,8 +1,8 @@
 # Bible Quest — Proposta PR7: livros parciais não aparecem como concluídos
 
-**Data:** 24/11/2026
-**Branch consultada:** `claude/bible-quest-android` (commit `4b8af34`).
-**Situação:** **proposta para avaliação.** Nada foi implementado e nenhum código foi alterado.
+**Data:** 24/11/2026. **Atualizado no mesmo dia** com as decisões D1 a D5 aprovadas.
+**Branch consultada:** `claude/bible-quest-android` (commits `4b8af34` e `6354aed`).
+**Situação:** **decisões aprovadas e incluídas no escopo da 1.0** (A31 a A36 em `docs/planos/VERSAO_1_0_DIRETRIZES.md`). **A implementação não está autorizada**: será feita no momento adequado, depois dos testes físicos e do diagnóstico do ANR. Nada foi implementado e nenhum código foi alterado.
 
 **Princípio aprovado:** um livro disponível só em parte não pode ser apresentado como integralmente concluído.
 
@@ -11,6 +11,18 @@
 - Êxodo tem 19 de 40.
 
 Os outros 64 livros já aparecem como "Em preparação" e não abrem.
+
+## 0. Decisões aprovadas (24/11/2026) e o que elas exigem na implementação
+
+| Decisão | O que foi aprovado | O que a implementação precisará fazer (registro de planejamento; nada foi feito) |
+|---|---|---|
+| **D1, medalhas** (A32) | **Preservar a maior medalha já conquistada.** Fases novas não retiram medalhas. O jogador pode melhorar a medalha depois. Todo o histórico e o progresso ficam preservados | **Gravar a melhor medalha de cada livro** no salvamento, com um campo novo; hoje a medalha é calculada. A migração **só acrescenta**: na primeira abertura da versão nova, a medalha atual de quem já terminou o livro é gravada. Nenhum dado é apagado. A medalha exibida é a maior entre a gravada e a calculada |
+| **D2, novas fases** (A33) | Indicação **dentro do jogo**, **discreta e clara**, sem notificações insistentes | Guardar **quais fases de cada livro o jogador já viu**. Quando houver fase nova, mostrar um **selo discreto "Novas fases"** no livro (lista de livros) e uma linha na página do livro. O selo **some quando o jogador abre o livro**. **Proposta para confirmar na implementação:** também uma linha no painel de missões da Central, sem janela que se abre sozinha e sem notificação do sistema |
+| **D3, porcentagens** (A34) | Jornada: **todos os capítulos da Bíblia** (1.189). Testamento: todos os capítulos dele (Antigo 929, Novo 260). Capítulos não disponíveis **não contam**. A página do livro separa as **fases disponíveis concluídas** dos **capítulos em preparação** | Registrar nos dados de cada livro **quais capítulos têm fases** (hoje: Gênesis 39 de 50, Êxodo 19 de 40, os outros 0). Passar a calcular as porcentagens por capítulos. **Regra proposta, para confirmar:** um capítulo conta como concluído quando **todas as fases que o cobrem** estiverem concluídas. A página do livro mostra, por exemplo, **"Fases disponíveis: 20 de 20 concluídas"** e **"Capítulos: 39 de 50 com fases; 11 em preparação"** |
+| **D4, etiqueta** (A35) | **"Fases em dia"** (curta); **"Fases disponíveis concluídas"** onde couber | Etiqueta da lista de livros: **"Fases em dia"**. Página do livro, Perfil e Biblioteca: **"Fases disponíveis concluídas"**. O texto do leitor de tela usa sempre a forma longa |
+| **D5, versão** (A36) | **No escopo da 1.0.** Implementar no momento adequado | Entra no plano como **etapa 6**. Só começa com autorização, depois das etapas 1 e 2 (testes físicos e diagnóstico do ANR) |
+
+**Efeito da D3 nos números (estimativa com o conteúdo atual):** quem concluiu todas as 24 fases verá cerca de **4,9% da jornada** (58 de 1.189 capítulos) e cerca de **6,2% do Antigo Testamento** (58 de 929). Hoje esses números são calculados por livro e dão cerca de 3% e 5%. O número novo é maior e reflete o conteúdo real.
 
 ## 1. Onde o jogo mostra "concluído" para um livro (ou algo equivalente)
 
@@ -40,14 +52,14 @@ Os outros 64 livros já aparecem como "Em preparação" e não abrem.
 
 | # | Onde | Hoje | Proposta |
 |---|---|---|---|
-| 1 e 2 | Status do livro (lista e página) | **Concluído** | **Fases disponíveis concluídas**. Opção curta para a etiqueta: **"Em dia"**, com a explicação "todas as fases disponíveis concluídas; mais capítulos em preparação". O ícone passa a ser o de relógio ou de pergaminho, e não o de "verificado" |
+| 1 e 2 | Status do livro (lista e página) | **Concluído** | **Aprovado (D4):** etiqueta curta **"Fases em dia"** na lista; **"Fases disponíveis concluídas"** na página do livro e onde couber. Explicação: "todas as fases disponíveis concluídas; mais capítulos em preparação". O ícone passa a ser o de relógio ou de pergaminho, e não o de "verificado" |
 | 1 e 2 | Status de um livro **realmente completo** (no futuro) | Concluído | **Concluído** (sem mudança; só para livros com todos os capítulos) |
 | 2 | Página do livro (linha nova, só em livro parcial) | — | **"Livro em preparação: 39 de 50 capítulos disponíveis. Novas fases chegarão em atualizações."** |
 | 3 | Resultado da última fase disponível | Você concluiu o livro de Gênesis! | **Você concluiu todas as fases disponíveis de Gênesis! Novos capítulos estão em preparação.** |
 | 4 | Medalha | medalha do livro | **Medalha das fases disponíveis.** Na legenda e no texto do leitor de tela: "Medalha de ouro nas fases disponíveis de Gênesis" |
 | 5 | Biblioteca (lista e ficha do livro) | 100% | **"20 de 20 fases disponíveis"**. Na ficha, a linha extra: "39 de 50 capítulos com fases" |
 | 6 | Perfil | 20/20 experiências · 100% · 60/60 estrelas | **20/20 fases disponíveis · 60/60 estrelas · livro em preparação (39 de 50 capítulos)** |
-| 7 | Testamento e jornada | X% concluído | **X% da jornada percorrida**. Opcional: passar a calcular pelos capítulos com fases, para o número não crescer demais (decisão D3) |
+| 7 | Testamento e jornada | X% concluído | **Aprovado (D3):** calcular pelos capítulos (Bíblia inteira: 1.189; Antigo Testamento: 929; Novo Testamento: 260). Capítulos não disponíveis não contam. Texto: **"X% da jornada percorrida"** |
 | 8 | Conquista "Conhecedor das Escrituras" | Conclua 2 livros completos (Gênesis e Êxodo, nesta versão). | **Conclua todas as fases disponíveis de Gênesis e de Êxodo.** O título não muda, e o identificador `conhecedor` também não |
 | 9 | "Explorador de Gênesis" / "Caminho no mar" | Conclua todas as experiências de Gênesis / Êxodo. | **Conclua todas as fases disponíveis de Gênesis / de Êxodo.** (padronização) |
 | 10 | Roupas de livro | Barra dourada para quem completou Gênesis. / Para quem completou Êxodo. / requisito "Conclua o livro de Gênesis" | **Barra dourada para quem concluiu as fases disponíveis de Gênesis.** / **Para quem concluiu as fases disponíveis de Êxodo.** / requisito **"Conclua as fases disponíveis de Gênesis"** |
@@ -80,8 +92,8 @@ Os números (39 de 50 e 19 de 40) já foram calculados pelas referências das fa
 
 | Situação | O que acontece hoje (sem a PR7) | Proposta para avaliação |
 |---|---|---|
-| Quem tinha terminado Gênesis verá o livro voltar a "em andamento" | acontece | é esperado; a mensagem "novas fases disponíveis" deve explicar (decisão D2) |
-| **Medalha do livro** (calculada) **some** até terminar as fases novas | **acontece**: o jogador "perde" algo visível | **Decisão D1:** <br>(a) aceitar, com o aviso "novas fases: complete-as para renovar sua medalha"; <br>(b) **gravar a medalha** quando ganha e mostrar a maior já obtida. **Recomendo (b)**, mas ela acrescenta um campo ao salvamento, com migração e testes |
+| Quem tinha terminado Gênesis verá o livro voltar a "em andamento" | acontece | **Aprovado (D2):** selo discreto "Novas fases" no livro, explicando a mudança |
+| **Medalha do livro** (calculada) **some** até terminar as fases novas | **acontece**: o jogador "perde" algo visível | **Aprovado (D1):** a maior medalha já obtida fica gravada e continua visível; o jogador pode melhorá-la. Acrescenta um campo ao salvamento, com migração que só acrescenta, e testes (T11 e T12) |
 | Conquistas de livro já ganhas | continuam (nunca são retiradas) | sem mudança |
 | Quem ainda **não** ganhou a conquista "Conhecedor" precisará terminar também as fases novas | acontece | esperado; o texto "fases disponíveis" deixa isso claro |
 | Roupas de livro já ganhas | continuam (gravadas) | sem mudança |
@@ -101,13 +113,32 @@ Os números (39 de 50 e 19 de 40) já foram calculados pelas referências das fa
 | T7 | **Simulação de conteúdo futuro:** com uma fase de teste a mais em Gênesis, as conquistas e roupas gravadas continuam; os baús continuam; "Continuar" aponta para a fase nova; o acampamento não perde elementos; e a medalha se comporta como decidido em D1 | atualizações futuras |
 | T8 | Os testes atuais (213) continuam passando; os que conferem os textos antigos são atualizados para os novos | sem regressão |
 
+**Testes acrescentados pelas decisões aprovadas:**
+
+| # | Teste | Garante |
+|---|---|---|
+| T11 | **D1, migração da medalha:** salvamentos de exemplo com Gênesis e Êxodo completos (ouro, prata e bronze) gravam a medalha atual na primeira abertura; **nenhum outro campo muda** (comparação completa como em T2) | a medalha não se perde |
+| T12 | **D1, fases novas:** com uma fase de teste a mais, a medalha gravada **continua visível**; ao concluir a fase nova com desempenho melhor, a medalha **sobe**; com desempenho pior, **não desce** | regra da maior medalha |
+| T13 | **D2, aviso:** com uma fase de teste a mais, o selo "Novas fases" aparece no livro; **some depois de abrir o livro**; não aparece para quem nunca jogou o livro (se essa for a decisão); nenhuma janela se abre sozinha | discrição do aviso |
+| T14 | **D3, porcentagens:** a jornada e os Testamentos calculados por capítulos (1.189, 929 e 260); um capítulo sem fases **nunca** conta; um livro com todas as fases feitas e capítulos em preparação **não chega a 100%**; a página do livro mostra os dois números separados | regra das porcentagens |
+| T15 | **D4, etiqueta:** a lista mostra "Fases em dia", e as telas com espaço mostram "Fases disponíveis concluídas"; o leitor de tela recebe a forma longa | os textos |
+
 **Conferência no Android** (emulador e aparelho):
 - **T9:** exportar os dados (Perfil → Exportar) antes e depois de instalar a versão nova por cima, e comparar os dois arquivos. Eles devem ser iguais, exceto pela data da exportação.
 - **T10:** capturas das telas da seção 1 com um perfil que tenha Gênesis completo.
 
 **Efeito no site:** a PR7 muda textos do jogo. O site deixa de ser idêntico à 0.17.9 (o que é esperado) e passa a ser conferido pelos testes T4 e T8.
 
-## 5. Decisões necessárias antes de implementar
+## 5. Decisões (ver a seção 0)
+
+**Todas as decisões abaixo foram aprovadas em 24/11/2026:**
+- D1: gravar a maior medalha;
+- D2: selo discreto;
+- D3: porcentagens por capítulos;
+- D4: "Fases em dia" e "Fases disponíveis concluídas";
+- D5: no escopo da 1.0, implementação no momento adequado.
+
+A redação original fica abaixo, para registro.
 
 - **D1. Medalha quando entrarem fases novas:**
   - (a) some até o jogador completar de novo, com aviso;

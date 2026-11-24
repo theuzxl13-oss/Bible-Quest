@@ -4,7 +4,8 @@
 - primeiro registro em 24/11/2026;
 - atualizado em 24/11/2026 com as "Decisões preliminares";
 - **consolidado em 24/11/2026** com os "Ajustes finais do planejamento" (avaliação do commit `a4dd3f2`);
-- **atualizado em 24/11/2026** com a "Aprovação da direção e próximas providências" (avaliação do commit `4b8af34`).
+- **atualizado em 24/11/2026** com a "Aprovação da direção e próximas providências" (avaliação do commit `4b8af34`);
+- **atualizado em 24/11/2026** com a "Avaliação e aprovação das decisões da PR7" (D1 a D5, avaliação do commit `6354aed`).
 
 **Situação:** documento de planejamento. **Não altera** os documentos oficiais (ROADMAP, README, CHANGELOG, índice de documentos).
 
@@ -59,6 +60,11 @@
 | A25 | **Não iniciar a produção** das fases novas de Gênesis e Êxodo |
 | A11 | **Manter os outros 64 livros** como "Em preparação" **na Biblioteca e também no Modo História** |
 | A31 | **Princípio da PR7 aprovado:** um livro disponível só em parte **não pode ser apresentado como integralmente concluído**. A **implementação não está autorizada**. Antes dela, a proposta detalhada precisa ser avaliada: locais, textos, impacto e testes (`docs/relatorios/PROPOSTA_PR7_LIVROS_PARCIAIS.md`) |
+| A32 | **PR7 · D1, preservação de medalhas:** <br>• preservar a **maior medalha já conquistada** pelo jogador; <br>• a inclusão de fases novas **não retira** medalhas já conquistadas; <br>• o jogador pode **melhorar** a medalha depois de concluir as fases novas, conforme o desempenho; <br>• preservar todo o histórico e o progresso existente |
+| A33 | **PR7 · D2, novas fases:** indicar **dentro do jogo**, de maneira **discreta e clara**, quando um livro receber fases novas. **Sem notificações insistentes** |
+| A34 | **PR7 · D3, porcentagens:** <br>• a porcentagem geral da jornada considera **todos os capítulos da Bíblia**; <br>• a de cada Testamento considera **todos os capítulos daquele Testamento**; <br>• capítulos ainda não disponíveis **não contam como concluídos**; <br>• na página de cada livro, **diferenciar claramente** as fases disponíveis concluídas dos capítulos em preparação; <br>• **não confundir** a conclusão do conteúdo publicado com a conclusão do livro inteiro |
+| A35 | **PR7 · D4, etiqueta:** etiqueta curta **"Fases em dia"**; **"Fases disponíveis concluídas"** onde houver espaço suficiente |
+| A36 | **PR7 · D5, versão:** a PR7 faz parte do **escopo da versão 1.0**. A implementação será feita **no momento adequado**, depois da prioridade atual (testes físicos e diagnóstico do ANR). **Não está autorizada agora** |
 | A26 | **Nenhum conteúdo incompleto deve aparecer ou dar acesso como se estivesse concluído.** Os livros em preparação continuam sem acesso a fases. Ver o conflito novo sobre "Concluído" na seção 4 e a pendência P11 |
 | A12 | **Preservar as perguntas gerais do Modo Livre.** São as 34 de `geral.ts`. As 2 perguntas temáticas sem fase (`cr-05` e `jo-16`) também continuam no jogo (planejamento, seção 16) |
 | A13 e A24 | **Revisão humana obrigatória** de todos os trechos bíblicos, referências e perguntas. O conteúdo **só é considerado revisado** depois das revisões **textual, teológica e pedagógica** |
@@ -98,7 +104,7 @@
 | PR4 | **Ordem das etapas da 1.0** | planejamento, seção 0 |
 | PR5 | **Critérios de leitura dos testes:** <br>• ANR confirmado: `ANR in` no registro ou o aviso visto na tela; <br>• travamento grave: 5 s ou mais; <br>• Central visível em até cerca de 3 s no aparelho intermediário | planejamento, seção 4 |
 | PR6 | **APK vencido:** gerar de novo o APK de diagnóstico se os testes passarem de 01/12/2026 | planejamento, seção 2 |
-| PR7 | **Livro parcial terminado:** quando o jogador terminar todas as fases disponíveis, mostrar algo como **"Fases disponíveis concluídas, mais capítulos em preparação"** em vez de "Concluído". O texto das conquistas de livro também deve deixar de falar em "livros completos" | seção 4 deste documento; P11 |
+| PR7 (**aprovada**: A31 a A36) | **Livro parcial terminado:** quando o jogador terminar todas as fases disponíveis, mostrar algo como **"Fases disponíveis concluídas, mais capítulos em preparação"** em vez de "Concluído". O texto das conquistas de livro também deve deixar de falar em "livros completos" | seção 4 deste documento; P11 |
 | PR8 | **Classificar `cr-05` e `jo-16` no lote 4** da revisão (perguntas do Modo Livre), junto com as 34 gerais | planejamento, seção 16 |
 | PR9 | **Escopo, critérios e esforço da reformulação do personagem feminino** | planejamento, seção 15 |
 
@@ -115,7 +121,7 @@
 | P7 | **Documentos oficiais:** quando atualizar CHANGELOG, README, ROADMAP e o índice com estas diretrizes |
 | P9 | **Personagem feminino:** <br>• quando começar a etapa (depois dos testes físicos?); <br>• com que origem: o mesmo pipeline do masculino (imagem de referência gerada por IA e malha pelo TRELLIS.2, com licenças registradas) ou outra; <br>• o que fazer com os perfis que usam as 6 bases que deixam de ser oferecidas: converter para o corpo correspondente, mantendo cores e roupas (proposta da seção 15) |
 | P10 | **Ações do GitHub Actions** baseadas no Node 20: quando atualizar |
-| P11 | **PR7 (livros parciais):** avaliar a proposta detalhada (`PROPOSTA_PR7_LIVROS_PARCIAIS.md`) e as decisões nela: <br>• **D1:** medalha quando entrarem fases novas (recomendado: gravar a maior já obtida); <br>• **D2:** aviso de "novas fases disponíveis"; <br>• **D3:** porcentagem do Testamento e da jornada; <br>• **D4:** texto curto da etiqueta; <br>• **D5:** em que versão entra. <br>A implementação só acontece com autorização |
+| P11 | **PR7: decisões D1 a D5 aprovadas** (A32 a A36). **Pendente só a autorização para implementar**, no momento adequado (A36). Detalhes de execução que serão confirmados na implementação: a regra para "capítulo concluído" e o momento em que o aviso de fases novas some (proposta, seção 0) |
 
 A antiga P8 (livros em preparação no Modo História) foi resolvida por A11.
 
