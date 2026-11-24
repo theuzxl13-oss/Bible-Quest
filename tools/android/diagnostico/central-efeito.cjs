@@ -90,10 +90,20 @@ async function cenario(device, rodada, nome, fn) {
   console.log(`\n=== ${id}`)
   await sh(device, 'logcat -c').catch(() => {})
   await sh(device, 'logcat -b events -c').catch(() => {})
+  // rótulo do cenário no logcat, como o testador faz no aparelho físico
+  await sh(device, `log -t BQDiag "cenario: ${id}"`).catch(() => {})
   const page = await fn()
+  // dois toques numa área vazia do céu, para medir o tempo de resposta (Event Timing)
+  for (let i = 0; i < 2; i++) {
+    await sh(device, 'input tap 540 420').catch(() => {})
+    await espera(1500)
+  }
   await fs.promises.writeFile(path.join(SAIDA, `${id}.png`), await device.screenshot())
   const eventos = await page.evaluate(() => window.__bqDiag.eventos).catch((e) => [{ tipo: 'erro ao ler o registro', detalhe: String(e) }])
   const log = await logcat(device)
+  // mesmo formato do roteiro de aparelhos físicos, para o analisador
+  const epoca = await sh(device, 'logcat -d -v epoch BQDiag:V Capacitor/Console:V ActivityManager:V ActivityTaskManager:V *:S')
+  fs.appendFileSync(path.join(SAIDA, 'logcat-epoch.txt'), epoca)
   const resumo = resumir(eventos)
   const execucoes = eventos.filter((e) => /^efeito executa/.test(e.tipo)).map((e) => ({ t: e.t, hora: e.hora, tipo: e.tipo, motivo: e.detalhe?.motivo, antes: e.detalhe?.antes, depois: e.detalhe?.depois }))
   const r = { cenario: id, execucoesDoEfeito: execucoes, resumo, bloqueiosDaThreadPrincipal: log.bloqueios, anr: log.anr, amAnr: log.amAnr, eventos }

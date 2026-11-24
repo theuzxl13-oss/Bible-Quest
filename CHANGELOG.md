@@ -2,6 +2,19 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Android, preparação do teste em aparelhos físicos — 24/11/2026 (em avaliação)
+
+- **Build de diagnóstico ampliado:** os registros vão também para o `adb logcat` (etiqueta `BQDiag`), para medir num celular sem nenhuma ferramenta conectada. Registra:
+  - início do processo, `onCreate`, segundo plano e foco;
+  - boas-vindas visível, Central visível e cena 3D pronta;
+  - tempo de resposta aos toques e travamentos da thread principal.
+- **Novo analisador** `tools/android/diagnostico/analisar-logcat.cjs`: gera a tabela por abertura a partir do registro. Ele roda também no emulador, a cada execução do fluxo de diagnóstico.
+- **Roteiro** `docs/relatorios/ANDROID_TESTE_APARELHOS_FISICOS.md`, com:
+  - instalação, coleta com `adb logcat` e dez cenários (com internet, modo avião, segundo plano, toques durante a abertura e qualidade 2D);
+  - tabela comparativa entre o aparelho de entrada e o intermediário.
+- **Envio do APK de diagnóstico como artefato: desligado** até decidirmos a visibilidade, porque o repositório é público.
+- O jogo, o APK oficial e o site não mudaram, e nenhuma otimização foi feita.
+
 ## Android, diagnóstico da Central 3D — 24/11/2026 — build temporário de diagnóstico (em avaliação)
 
 - **Novo fluxo `android-diagnostico.yml`** com um build temporário e separado: versão `0.17.9-diagnostico`, que não é guardada como artefato nem publicada.

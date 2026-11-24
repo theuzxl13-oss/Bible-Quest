@@ -17,6 +17,10 @@ on:
 permissions:
   contents: write
 
+env:
+  # "sim" envia o APK de diagnóstico como artefato (ver o passo correspondente)
+  ENVIAR_APK_DIAGNOSTICO: 'nao'
+
 concurrency:
   group: android-diagnostico
   cancel-in-progress: false
@@ -79,6 +83,24 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -no-snapshot -noaudio -no-boot-anim
           script: |
             node tools/android/diagnostico/central-efeito.cjs teste/app-diagnostico.apk evidencias || touch evidencias/FALHA
+
+      - name: Tabela do emulador (mesmo analisador do roteiro de aparelhos físicos)
+        if: always()
+        run: |
+          if [ -f evidencias/logcat-epoch.txt ]; then
+            node tools/android/diagnostico/analisar-logcat.cjs evidencias/logcat-epoch.txt "Emulador Android 16 (sistema user, desenho por software)" | tee evidencias/tabela-emulador.md
+          fi
+
+      # APK de diagnóstico para os testes em aparelhos físicos. DESLIGADO até a decisão sobre
+      # a visibilidade: o repositório é público e, nele, os artefatos podem ser baixados por
+      # qualquer pessoa conectada ao GitHub. Nunca é o APK oficial.
+      - name: APK de diagnóstico como artefato (somente se autorizado)
+        if: env.ENVIAR_APK_DIAGNOSTICO == 'sim'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bible-quest-0.17.9-diagnostico-NAO-DISTRIBUIR
+          path: teste/app-diagnostico.apk
+          retention-days: 7
 
       - name: Gravar os registros na branch (só documentação)
         if: always()

@@ -82,6 +82,29 @@ import android.util.Log;
 import java.util.concurrent.atomic.AtomicLong;`)
 trocar(ATIVIDADE, '        ajustarOrientacao(getResources().getConfiguration());\n    }\n', `        ajustarOrientacao(getResources().getConfiguration());
         iniciarVigia();
+        long agora = SystemClock.elapsedRealtime();
+        long inicio = android.os.Process.getStartElapsedRealtime();
+        Log.i("BQDiag", "onCreate | desde o início do processo=" + (agora - inicio) + " ms | relogio=" + System.currentTimeMillis()
+            + " | inicioDoProcessoRelogio=" + (System.currentTimeMillis() - (agora - inicio)));
+    }
+
+    // [DIAGNÓSTICO] ciclo de vida da atividade (aparelho físico: adb logcat -s BQDiag)
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("BQDiag", "onResume | relogio=" + System.currentTimeMillis());
+    }
+
+    @Override
+    public void onPause() {
+        Log.i("BQDiag", "onPause | relogio=" + System.currentTimeMillis());
+        super.onPause();
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean temFoco) {
+        super.onWindowFocusChanged(temFoco);
+        Log.i("BQDiag", "foco da janela=" + temFoco + " | relogio=" + System.currentTimeMillis());
     }
 
     // [DIAGNÓSTICO] mede quanto tempo a thread principal fica sem responder (logcat, etiqueta BQDiag)
@@ -99,7 +122,7 @@ trocar(ATIVIDADE, '        ajustarOrientacao(getResources().getConfiguration());
                     return;
                 }
                 long atraso = atendido.get() - enviado;
-                if (atraso >= 500) Log.w("BQDiag", "thread principal bloqueada por " + atraso + " ms (fim do bloqueio)");
+                if (atraso >= 500) Log.w("BQDiag", "thread principal bloqueada por " + atraso + " ms (fim do bloqueio) | relogio=" + System.currentTimeMillis());
             }
         }, "bq-vigia");
         vigia.setDaemon(true);

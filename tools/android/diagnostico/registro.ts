@@ -54,8 +54,15 @@ let execucoes = 0
 const diag: Diag = {
   eventos,
   marca(tipo, detalhe) {
-    eventos.push({ t: Math.round(performance.now()), hora: new Date().toISOString(), tipo, detalhe })
+    const t = Math.round(performance.now())
+    eventos.push({ t, hora: new Date().toISOString(), tipo, detalhe })
     if (eventos.length > 2000) eventos.splice(0, eventos.length - 2000)
+    // também no logcat (Capacitor/Console), para medir em aparelhos físicos só com o adb
+    try {
+      console.info(`BQDiag|${tipo}|relogio=${Date.now()}|t=${t}|${detalhe === undefined ? '' : JSON.stringify(detalhe).slice(0, 400)}`)
+    } catch {
+      /* ignora */
+    }
   },
   render(v) {
     const mudou = diferencas(ultimoRender, v)
@@ -83,6 +90,34 @@ new MutationObserver((ms) => {
     for (const n of Array.from(m.removedNodes)) if (n.nodeName === 'CANVAS') diag.marca('-canvas')
   }
 }).observe(document.documentElement, { childList: true, subtree: true })
+
+// marcos de tela: boas-vindas visível, Central visível (o desenho acontece no quadro seguinte)
+const vistos = new Set<string>()
+const marcos: [string, string][] = [
+  ['.welcome-title', 'tela de boas-vindas visível'],
+  ['.camp-scene', 'Central visível'],
+]
+const procurarMarcos = () => {
+  for (const [sel, nome] of marcos) {
+    if (!vistos.has(nome) && document.querySelector(sel)) {
+      vistos.add(nome)
+      requestAnimationFrame(() => requestAnimationFrame(() => diag.marca(nome)))
+    }
+  }
+}
+new MutationObserver(procurarMarcos).observe(document.documentElement, { childList: true, subtree: true })
+
+// tempo de resposta aos toques (Event Timing): atraso até o jogo começar a tratar e duração total até o desenho
+try {
+  new PerformanceObserver((lista) => {
+    for (const e of lista.getEntries() as PerformanceEventTiming[]) {
+      if (!['pointerdown', 'pointerup', 'click', 'keydown'].includes(e.name)) continue
+      diag.marca('toque', { evento: e.name, duracaoMs: Math.round(e.duration), atrasoDeEntradaMs: Math.round(e.processingStart - e.startTime) })
+    }
+  }).observe({ type: 'event', buffered: true, durationThreshold: 16 } as PerformanceObserverInit)
+} catch {
+  diag.marca('Event Timing indisponível')
+}
 
 // ciclo de vida da página
 document.addEventListener('visibilitychange', () => diag.marca('visibilitychange', document.visibilityState))
