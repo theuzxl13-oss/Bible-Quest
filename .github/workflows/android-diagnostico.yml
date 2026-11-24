@@ -19,7 +19,8 @@ permissions:
 
 env:
   # "sim" envia o APK de diagnóstico como artefato (ver o passo correspondente)
-  ENVIAR_APK_DIAGNOSTICO: 'nao'
+  # autorizado pelo dono do projeto em 24/11/2026: artefato por 7 dias, sabendo que o repositório é público
+  ENVIAR_APK_DIAGNOSTICO: 'sim'
 
 concurrency:
   group: android-diagnostico
@@ -91,9 +92,9 @@ jobs:
             node tools/android/diagnostico/analisar-logcat.cjs evidencias/logcat-epoch.txt "Emulador Android 16 (sistema user, desenho por software)" | tee evidencias/tabela-emulador.md
           fi
 
-      # APK de diagnóstico para os testes em aparelhos físicos. DESLIGADO até a decisão sobre
-      # a visibilidade: o repositório é público e, nele, os artefatos podem ser baixados por
-      # qualquer pessoa conectada ao GitHub. Nunca é o APK oficial.
+      # APK de diagnóstico para os testes em aparelhos físicos (nunca é o APK oficial).
+      # O repositório é público: o artefato pode ser baixado por quem estiver conectado ao
+      # GitHub. Autorizado assim, por 7 dias, em 24/11/2026.
       - name: APK de diagnóstico como artefato (somente se autorizado)
         if: env.ENVIAR_APK_DIAGNOSTICO == 'sim'
         uses: actions/upload-artifact@v4

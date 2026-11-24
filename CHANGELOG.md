@@ -12,7 +12,7 @@ Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudan
 - **Roteiro** `docs/relatorios/ANDROID_TESTE_APARELHOS_FISICOS.md`, com:
   - instalação, coleta com `adb logcat` e dez cenários (com internet, modo avião, segundo plano, toques durante a abertura e qualidade 2D);
   - tabela comparativa entre o aparelho de entrada e o intermediário.
-- **Envio do APK de diagnóstico como artefato: desligado** até decidirmos a visibilidade, porque o repositório é público.
+- **APK de diagnóstico como artefato** (`bible-quest-0.17.9-diagnostico-NAO-DISTRIBUIR`), apagado em **7 dias**. Autorizado em 24/11/2026, sabendo que o repositório é público.
 - O jogo, o APK oficial e o site não mudaram, e nenhuma otimização foi feita.
 
 ## Android, diagnóstico da Central 3D — 24/11/2026 — build temporário de diagnóstico (em avaliação)

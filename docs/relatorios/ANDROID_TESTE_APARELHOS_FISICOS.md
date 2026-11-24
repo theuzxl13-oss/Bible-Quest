@@ -8,6 +8,16 @@
 
 **Não é otimização:** nenhuma correção foi feita. O jogo, a cena e a versão oficial não mudaram.
 
+## 0. Onde baixar o APK de diagnóstico
+
+**Onde fica:** no artefato `bible-quest-0.17.9-diagnostico-NAO-DISTRIBUIR` do fluxo **"Aplicativo Android — diagnóstico da Central 3D"**, na aba Actions do GitHub. É preciso estar conectado ao GitHub.
+
+**Validade:** o arquivo é apagado automaticamente **7 dias** depois da execução.
+
+**Visibilidade:** o repositório é público, então quem estiver conectado ao GitHub e encontrar a execução também consegue baixar o artefato. O APK tem só o jogo, que já é público, e os registros de diagnóstico, sem segredos nem dados pessoais. Isso foi autorizado em 24/11/2026.
+
+**Formato:** o download vem compactado em `.zip`. Dentro dele está o `app-diagnostico.apk`, que nos comandos abaixo aparece como `bible-quest-0.17.9-diagnostico.apk`.
+
 ## 1. O que o APK de diagnóstico registra
 
 Tudo vai para o `adb logcat`, com a etiqueta `BQDiag`.
