@@ -1,6 +1,6 @@
 {
   "api": "36",
-  "falhas": 0,
+  "falhas": 2,
   "resultado": [
     {
       "nome": "emulador com Android API 36",
@@ -48,29 +48,34 @@
       "detalhe": ""
     },
     {
-      "nome": "link externo abre fora do aplicativo (navegador do sistema)",
-      "ok": true,
-      "detalhe": "topResumedActivity=ActivityRecord{94688266 u0 com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity t10}"
-    },
-    {
-      "nome": "voltar do navegador retorna ao jogo, na mesma tela",
-      "ok": true,
-      "detalhe": "#/sobre"
-    },
-    {
       "nome": "a Biblioteca abre (a Central sai da tela)",
       "ok": true,
       "detalhe": "#/biblioteca"
     },
     {
       "nome": "voltar na Biblioteca leva de volta à Central (o aplicativo continua aberto)",
-      "ok": true,
-      "detalhe": "#/painel"
+      "ok": false,
+      "detalhe": "#/biblioteca"
     },
     {
       "nome": "voltar na Central sai do aplicativo",
-      "ok": true,
+      "ok": false,
       "detalhe": ""
+    },
+    {
+      "nome": "link externo abre fora do aplicativo (navegador do sistema)",
+      "ok": true,
+      "detalhe": "topResumedActivity=ActivityRecord{199696965 u0 com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity t11}"
+    },
+    {
+      "nome": "observação: o voltar do navegador devolveu o jogo",
+      "ok": true,
+      "detalhe": "sim"
+    },
+    {
+      "nome": "depois do navegador, o jogo continua na mesma tela",
+      "ok": true,
+      "detalhe": "#/sobre"
     },
     {
       "nome": "nenhuma requisição para a internet",

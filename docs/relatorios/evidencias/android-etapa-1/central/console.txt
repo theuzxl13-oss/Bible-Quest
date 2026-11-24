@@ -1,153 +1,157 @@
 --------- beginning of main
-11-24 00:16:40.330 I/chromium( 8907): [1124/001640.329422:INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
-11-24 00:16:40.443 W/chromium( 8907): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
-11-24 00:16:40.521 E/chromium( 8907): [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/wasm: No such file or directory (2)
-11-24 00:16:40.521 E/chromium( 8907): [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
-11-24 00:16:40.599 D/Capacitor( 8907): Starting BridgeActivity
-11-24 00:16:40.636 D/Capacitor( 8907): Registering plugin instance: CapacitorCookies
-11-24 00:16:40.645 D/Capacitor( 8907): Registering plugin instance: WebView
-11-24 00:16:40.647 D/Capacitor( 8907): Registering plugin instance: CapacitorHttp
-11-24 00:16:40.648 D/Capacitor( 8907): Registering plugin instance: SystemBars
-11-24 00:16:40.666 D/Capacitor( 8907): Registering plugin instance: App
-11-24 00:16:40.667 D/Capacitor( 8907): Registering plugin instance: Browser
-11-24 00:16:40.668 D/Capacitor( 8907): Registering plugin instance: SplashScreen
-11-24 00:16:40.718 W/Capacitor( 8907): Unable to read file at path public/plugins
-11-24 00:16:40.726 D/Capacitor( 8907): Loading app at https://localhost
-11-24 00:16:40.839 D/Capacitor( 8907): App started
-11-24 00:16:40.848 D/Capacitor( 8907): App resumed
-11-24 00:16:40.862 W/chromium( 8907): [WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
-11-24 00:16:40.885 W/chromium( 8958): [WARNING:runtime_features.cc(560)] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
-11-24 00:16:40.886 W/chromium( 8958): [WARNING:runtime_features.cc(585)] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
-11-24 00:16:40.886 W/chromium( 8958): [WARNING:runtime_features.cc(606)] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
-11-24 00:16:40.894 D/Capacitor( 8907): Handling local request: https://localhost/
-11-24 00:16:41.062 D/Capacitor( 8907): Handling local request: https://localhost/assets/index-D-C8VbRu.js
-11-24 00:16:41.065 D/Capacitor( 8907): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
-11-24 00:16:41.277 D/Capacitor( 8907): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
-11-24 00:16:41.341 D/Capacitor( 8907): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
-11-24 00:16:41.345 D/Capacitor( 8907): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
-11-24 00:16:41.355 E/chromium( 8958): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:16:41.355 E/chromium( 8958): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:16:41.377 D/Capacitor( 8907): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
-11-24 00:16:41.378 D/Capacitor( 8907): Handling local request: https://localhost/favicon.svg
-11-24 00:16:41.396 E/chromium( 8958): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:16:41.396 E/chromium( 8958): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:16:41.409 D/Capacitor( 8907): Handling local request: https://localhost/favicon.svg
-11-24 00:16:41.411 I/Capacitor/Console( 8907): File:  - Line 350 - Msg: [object Object]
-11-24 00:16:41.421 V/Capacitor( 8907): callback: 110417730, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
-11-24 00:16:41.431 E/chromium( 8958): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:16:41.431 E/chromium( 8958): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:16:41.440 D/Capacitor( 8907): Handling local request: https://localhost/favicon.svg
-11-24 00:16:41.445 I/Capacitor/Console( 8907): File:  - Line 350 - Msg: [object Object]
-11-24 00:16:41.448 V/Capacitor( 8907): callback: 110417731, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
-11-24 00:16:41.453 I/Capacitor/Console( 8907): File:  - Line 334 - Msg: undefined
-11-24 00:16:41.510 D/Capacitor( 8907): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
-11-24 00:16:51.606 D/Capacitor( 8907): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
-11-24 00:17:04.022 D/Capacitor( 8907): Handling local request: https://localhost/favicon.svg
-11-24 00:18:28.938 I/chromium( 9902): [1124/001828.935754:INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
-11-24 00:18:28.980 W/chromium( 9902): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
-11-24 00:18:29.015 E/chromium( 9902): [ERROR:simple_version_upgrade.cc(151)] Failed to write a new fake index.
-11-24 00:18:29.018 E/chromium( 9902): [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
-11-24 00:18:29.018 E/chromium( 9902): [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
-11-24 00:18:29.074 D/Capacitor( 9902): Starting BridgeActivity
-11-24 00:18:29.087 D/Capacitor( 9902): Registering plugin instance: CapacitorCookies
-11-24 00:18:29.090 D/Capacitor( 9902): Registering plugin instance: WebView
-11-24 00:18:29.091 D/Capacitor( 9902): Registering plugin instance: CapacitorHttp
-11-24 00:18:29.092 D/Capacitor( 9902): Registering plugin instance: SystemBars
-11-24 00:18:29.094 D/Capacitor( 9902): Registering plugin instance: App
-11-24 00:18:29.096 D/Capacitor( 9902): Registering plugin instance: Browser
-11-24 00:18:29.097 D/Capacitor( 9902): Registering plugin instance: SplashScreen
-11-24 00:18:29.116 W/Capacitor( 9902): Unable to read file at path public/plugins
-11-24 00:18:29.119 D/Capacitor( 9902): Loading app at https://localhost
-11-24 00:18:29.143 D/Capacitor( 9902): App started
-11-24 00:18:29.149 W/chromium( 9938): [WARNING:runtime_features.cc(560)] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
-11-24 00:18:29.150 W/chromium( 9938): [WARNING:runtime_features.cc(585)] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
-11-24 00:18:29.150 W/chromium( 9938): [WARNING:runtime_features.cc(606)] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
-11-24 00:18:29.154 D/Capacitor( 9902): App resumed
-11-24 00:18:29.206 D/Capacitor( 9902): Handling local request: https://localhost/
-11-24 00:18:29.210 W/chromium( 9902): [WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
-11-24 00:18:29.278 D/Capacitor( 9902): Handling local request: https://localhost/assets/index-D-C8VbRu.js
-11-24 00:18:29.288 D/Capacitor( 9902): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
-11-24 00:18:29.471 D/Capacitor( 9902): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
-11-24 00:18:29.552 D/Capacitor( 9902): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
-11-24 00:18:29.553 D/Capacitor( 9902): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
-11-24 00:18:29.559 E/chromium( 9938): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:18:29.559 E/chromium( 9938): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:18:29.567 D/Capacitor( 9902): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
-11-24 00:18:29.572 D/Capacitor( 9902): Handling local request: https://localhost/favicon.svg
-11-24 00:18:29.585 E/chromium( 9938): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:18:29.586 E/chromium( 9938): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:18:29.598 I/Capacitor/Console( 9902): File:  - Line 350 - Msg: [object Object]
-11-24 00:18:29.599 D/Capacitor( 9902): Handling local request: https://localhost/favicon.svg
-11-24 00:18:29.600 D/Capacitor( 9902): Handling local request: https://localhost/favicon.svg
-11-24 00:18:29.613 I/Capacitor/Console( 9902): File:  - Line 350 - Msg: [object Object]
-11-24 00:18:29.617 V/Capacitor( 9902): callback: 120737418, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
-11-24 00:18:29.618 V/Capacitor( 9902): callback: 120737419, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
-11-24 00:18:29.686 D/Capacitor( 9902): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
-11-24 00:18:29.750 I/Capacitor/Console( 9902): File:  - Line 334 - Msg: undefined
-11-24 00:18:41.371 D/Capacitor( 9902): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
-11-24 00:18:53.641 D/Capacitor( 9902): Handling local request: https://localhost/favicon.svg
-11-24 00:20:16.053 D/Capacitor( 9902): Handling local request: https://localhost/#/painel
-11-24 00:20:17.199 D/Capacitor( 9902): Handling local request: https://localhost/assets/index-D-C8VbRu.js
-11-24 00:20:17.203 D/Capacitor( 9902): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
-11-24 00:20:17.270 D/Capacitor( 9902): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
-11-24 00:20:17.321 D/Capacitor( 9902): Handling local request: https://localhost/favicon.svg
-11-24 00:20:17.321 D/Capacitor( 9902): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
-11-24 00:20:17.322 D/Capacitor( 9902): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
-11-24 00:20:17.349 D/Capacitor( 9902): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
-11-24 00:20:17.361 D/Capacitor( 9902): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
-11-24 00:20:17.376 I/Capacitor/Console( 9902): File:  - Line 350 - Msg: [object Object]
-11-24 00:20:17.559 I/Capacitor/Console( 9902): File:  - Line 350 - Msg: [object Object]
-11-24 00:20:17.560 V/Capacitor( 9902): callback: 48425217, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
-11-24 00:20:17.790 V/Capacitor( 9902): callback: 48425218, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
-11-24 00:20:17.920 D/Capacitor( 9902): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
-11-24 00:20:29.002 I/Capacitor/Console( 9902): File:  - Line 334 - Msg: undefined
-11-24 00:21:48.571 I/chromium(11383): [1124/002148.570930:INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
-11-24 00:21:48.618 W/chromium(11383): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
-11-24 00:21:48.659 E/chromium(11383): [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/wasm: No such file or directory (2)
-11-24 00:21:48.659 E/chromium(11383): [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
-11-24 00:21:48.659 E/chromium(11383): [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
-11-24 00:21:48.659 E/chromium(11383): [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
-11-24 00:21:48.692 D/Capacitor(11383): Starting BridgeActivity
-11-24 00:21:48.719 D/Capacitor(11383): Registering plugin instance: CapacitorCookies
-11-24 00:21:48.722 D/Capacitor(11383): Registering plugin instance: WebView
-11-24 00:21:48.723 D/Capacitor(11383): Registering plugin instance: CapacitorHttp
-11-24 00:21:48.724 D/Capacitor(11383): Registering plugin instance: SystemBars
-11-24 00:21:48.726 D/Capacitor(11383): Registering plugin instance: App
-11-24 00:21:48.727 D/Capacitor(11383): Registering plugin instance: Browser
-11-24 00:21:48.728 D/Capacitor(11383): Registering plugin instance: SplashScreen
-11-24 00:21:48.747 W/Capacitor(11383): Unable to read file at path public/plugins
-11-24 00:21:48.750 D/Capacitor(11383): Loading app at https://localhost
-11-24 00:21:48.780 D/Capacitor(11383): App started
-11-24 00:21:48.786 W/chromium(11411): [WARNING:runtime_features.cc(560)] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
-11-24 00:21:48.787 W/chromium(11411): [WARNING:runtime_features.cc(585)] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
-11-24 00:21:48.788 W/chromium(11411): [WARNING:runtime_features.cc(606)] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
-11-24 00:21:48.789 D/Capacitor(11383): App resumed
-11-24 00:21:48.811 D/Capacitor(11383): Handling local request: https://localhost/
-11-24 00:21:48.999 D/Capacitor(11383): Handling local request: https://localhost/assets/index-D-C8VbRu.js
-11-24 00:21:49.011 D/Capacitor(11383): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
-11-24 00:21:49.020 W/chromium(11383): [WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
-11-24 00:21:49.195 D/Capacitor(11383): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
-11-24 00:21:49.256 D/Capacitor(11383): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
-11-24 00:21:49.256 D/Capacitor(11383): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
-11-24 00:21:49.259 E/chromium(11411): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:21:49.260 E/chromium(11411): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:21:49.267 D/Capacitor(11383): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
-11-24 00:21:49.267 D/Capacitor(11383): Handling local request: https://localhost/favicon.svg
-11-24 00:21:49.270 E/chromium(11411): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:21:49.270 E/chromium(11411): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
-11-24 00:21:49.278 I/Capacitor/Console(11383): File:  - Line 350 - Msg: [object Object]
-11-24 00:21:49.280 D/Capacitor(11383): Handling local request: https://localhost/favicon.svg
-11-24 00:21:49.280 D/Capacitor(11383): Handling local request: https://localhost/favicon.svg
-11-24 00:21:49.283 V/Capacitor(11383): callback: 16070517, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
-11-24 00:21:49.291 I/Capacitor/Console(11383): File:  - Line 350 - Msg: [object Object]
-11-24 00:21:49.299 V/Capacitor(11383): callback: 16070518, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
-11-24 00:21:49.302 I/Capacitor/Console(11383): File:  - Line 334 - Msg: undefined
-11-24 00:21:49.340 D/Capacitor(11383): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
-11-24 00:21:57.248 D/Capacitor(11383): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
-11-24 00:22:04.194 D/Capacitor(11383): Handling local request: https://localhost/favicon.svg
-11-24 00:22:49.046 D/Capacitor(11383): App paused
-11-24 00:22:49.644 D/Capacitor(11383): App stopped
-11-24 00:22:49.645 D/Capacitor(11383): Saving instance state!
-11-24 00:22:51.519 D/Capacitor(11383): App restarted
-11-24 00:22:51.520 D/Capacitor(11383): App started
-11-24 00:22:51.562 D/Capacitor(11383): App resumed
+11-24 00:46:42.245 I/chromium( 9328): [1124/004642.239071:INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
+11-24 00:46:42.294 W/chromium( 9328): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
+11-24 00:46:42.338 E/chromium( 9328): [ERROR:simple_version_upgrade.cc(151)] Failed to write a new fake index.
+11-24 00:46:42.339 E/chromium( 9328): [ERROR:simple_version_upgrade.cc(151)] Failed to write a new fake index.
+11-24 00:46:42.419 D/Capacitor( 9328): Starting BridgeActivity
+11-24 00:46:42.446 D/Capacitor( 9328): Registering plugin instance: CapacitorCookies
+11-24 00:46:42.453 D/Capacitor( 9328): Registering plugin instance: WebView
+11-24 00:46:42.454 D/Capacitor( 9328): Registering plugin instance: CapacitorHttp
+11-24 00:46:42.457 D/Capacitor( 9328): Registering plugin instance: SystemBars
+11-24 00:46:42.460 D/Capacitor( 9328): Registering plugin instance: App
+11-24 00:46:42.462 D/Capacitor( 9328): Registering plugin instance: Browser
+11-24 00:46:42.466 D/Capacitor( 9328): Registering plugin instance: SplashScreen
+11-24 00:46:42.489 W/Capacitor( 9328): Unable to read file at path public/plugins
+11-24 00:46:42.492 D/Capacitor( 9328): Loading app at https://localhost
+11-24 00:46:42.568 D/Capacitor( 9328): App started
+11-24 00:46:42.571 W/chromium( 9390): [WARNING:runtime_features.cc(560)] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
+11-24 00:46:42.572 W/chromium( 9390): [WARNING:runtime_features.cc(585)] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
+11-24 00:46:42.572 W/chromium( 9390): [WARNING:runtime_features.cc(606)] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
+11-24 00:46:42.576 D/Capacitor( 9328): App resumed
+11-24 00:46:42.629 D/Capacitor( 9328): Handling local request: https://localhost/
+11-24 00:46:42.834 D/Capacitor( 9328): Handling local request: https://localhost/assets/index-D-C8VbRu.js
+11-24 00:46:42.891 D/Capacitor( 9328): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
+11-24 00:46:42.906 W/chromium( 9328): [WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+11-24 00:46:43.213 D/Capacitor( 9328): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
+11-24 00:46:43.278 D/Capacitor( 9328): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
+11-24 00:46:43.278 D/Capacitor( 9328): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
+11-24 00:46:43.283 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.283 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.295 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.295 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.302 I/Capacitor/Console( 9328): File:  - Line 350 - Msg: [object Object]
+11-24 00:46:43.303 D/Capacitor( 9328): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
+11-24 00:46:43.306 D/Capacitor( 9328): Handling local request: https://localhost/favicon.svg
+11-24 00:46:43.310 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.313 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.313 I/Capacitor/Console( 9328): File:  - Line 350 - Msg: [object Object]
+11-24 00:46:43.318 D/Capacitor( 9328): Handling local request: https://localhost/favicon.svg
+11-24 00:46:43.320 D/Capacitor( 9328): Handling local request: https://localhost/favicon.svg
+11-24 00:46:43.328 V/Capacitor( 9328): callback: 50316335, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+11-24 00:46:43.329 V/Capacitor( 9328): callback: 50316336, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
+11-24 00:46:43.342 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:43.349 I/Capacitor/Console( 9328): File:  - Line 334 - Msg: undefined
+11-24 00:46:43.350 D/Capacitor( 9328): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
+11-24 00:46:43.352 E/chromium( 9390): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:46:51.206 D/Capacitor( 9328): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
+11-24 00:46:54.680 D/Capacitor( 9328): Handling local request: https://localhost/favicon.svg
+11-24 00:48:28.759 I/chromium(10311): [1124/004828.759517:INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
+11-24 00:48:28.851 W/chromium(10311): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
+11-24 00:48:28.881 E/chromium(10311): [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
+11-24 00:48:28.881 E/chromium(10311): [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
+11-24 00:48:28.942 D/Capacitor(10311): Starting BridgeActivity
+11-24 00:48:28.954 D/Capacitor(10311): Registering plugin instance: CapacitorCookies
+11-24 00:48:28.957 D/Capacitor(10311): Registering plugin instance: WebView
+11-24 00:48:28.958 D/Capacitor(10311): Registering plugin instance: CapacitorHttp
+11-24 00:48:28.961 D/Capacitor(10311): Registering plugin instance: SystemBars
+11-24 00:48:28.963 D/Capacitor(10311): Registering plugin instance: App
+11-24 00:48:28.964 D/Capacitor(10311): Registering plugin instance: Browser
+11-24 00:48:28.966 D/Capacitor(10311): Registering plugin instance: SplashScreen
+11-24 00:48:28.984 W/Capacitor(10311): Unable to read file at path public/plugins
+11-24 00:48:28.987 D/Capacitor(10311): Loading app at https://localhost
+11-24 00:48:29.011 D/Capacitor(10311): App started
+11-24 00:48:29.017 D/Capacitor(10311): App resumed
+11-24 00:48:29.021 W/chromium(10337): [WARNING:runtime_features.cc(560)] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
+11-24 00:48:29.021 W/chromium(10337): [WARNING:runtime_features.cc(585)] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
+11-24 00:48:29.021 W/chromium(10337): [WARNING:runtime_features.cc(606)] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
+11-24 00:48:29.052 D/Capacitor(10311): Handling local request: https://localhost/
+11-24 00:48:29.136 W/chromium(10311): [WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+11-24 00:48:29.241 D/Capacitor(10311): Handling local request: https://localhost/assets/index-D-C8VbRu.js
+11-24 00:48:29.244 D/Capacitor(10311): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
+11-24 00:48:29.364 D/Capacitor(10311): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
+11-24 00:48:29.420 D/Capacitor(10311): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
+11-24 00:48:29.422 D/Capacitor(10311): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
+11-24 00:48:29.425 E/chromium(10337): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:48:29.426 E/chromium(10337): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:48:29.429 D/Capacitor(10311): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
+11-24 00:48:29.433 D/Capacitor(10311): Handling local request: https://localhost/favicon.svg
+11-24 00:48:29.433 E/chromium(10337): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:48:29.434 E/chromium(10337): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:48:29.440 I/Capacitor/Console(10311): File:  - Line 350 - Msg: [object Object]
+11-24 00:48:29.443 D/Capacitor(10311): Handling local request: https://localhost/favicon.svg
+11-24 00:48:29.447 D/Capacitor(10311): Handling local request: https://localhost/favicon.svg
+11-24 00:48:29.452 V/Capacitor(10311): callback: 70838813, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+11-24 00:48:29.461 I/Capacitor/Console(10311): File:  - Line 350 - Msg: [object Object]
+11-24 00:48:29.468 D/Capacitor(10311): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
+11-24 00:48:29.468 V/Capacitor(10311): callback: 70838814, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
+11-24 00:48:29.483 E/chromium(10337): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:48:29.483 E/chromium(10337): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:48:29.592 I/Capacitor/Console(10311): File:  - Line 334 - Msg: undefined
+11-24 00:48:37.292 D/Capacitor(10311): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
+11-24 00:48:40.913 D/Capacitor(10311): Handling local request: https://localhost/favicon.svg
+11-24 00:50:09.001 D/Capacitor(10311): Handling local request: https://localhost/#/painel
+11-24 00:50:09.714 D/Capacitor(10311): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
+11-24 00:50:09.718 D/Capacitor(10311): Handling local request: https://localhost/assets/index-D-C8VbRu.js
+11-24 00:50:09.807 D/Capacitor(10311): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
+11-24 00:50:09.856 D/Capacitor(10311): Handling local request: https://localhost/favicon.svg
+11-24 00:50:09.860 D/Capacitor(10311): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
+11-24 00:50:09.860 D/Capacitor(10311): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
+11-24 00:50:09.890 D/Capacitor(10311): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
+11-24 00:50:09.893 D/Capacitor(10311): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
+11-24 00:50:10.052 I/Capacitor/Console(10311): File:  - Line 350 - Msg: [object Object]
+11-24 00:50:10.130 V/Capacitor(10311): callback: 72823476, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+11-24 00:50:10.440 D/Capacitor(10311): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
+11-24 00:50:20.580 I/Capacitor/Console(10311): File:  - Line 350 - Msg: [object Object]
+11-24 00:50:20.826 V/Capacitor(10311): callback: 72823477, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
+11-24 00:50:21.916 I/Capacitor/Console(10311): File:  - Line 334 - Msg: undefined
+11-24 00:51:38.557 I/chromium(11716): [1124/005138.556904:INFO:variations_seed_loader.cc(67)] Failed to open file for reading.: No such file or directory (2)
+11-24 00:51:38.594 W/chromium(11716): [WARNING:dns_config_service_android.cc(81)] Failed to read DnsConfig.
+11-24 00:51:38.620 E/chromium(11716): [ERROR:simple_file_enumerator.cc(58)] Could not get file info for /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js/index-dir
+11-24 00:51:38.620 E/chromium(11716): [ERROR:simple_file_enumerator.cc(58)] Could not get file info for /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js/index
+11-24 00:51:38.620 E/chromium(11716): [ERROR:simple_file_enumerator.cc(43)] readdir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
+11-24 00:51:38.620 E/chromium(11716): [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
+11-24 00:51:38.621 E/chromium(11716): [ERROR:simple_version_upgrade.cc(151)] Failed to write a new fake index.
+11-24 00:51:38.694 D/Capacitor(11716): Starting BridgeActivity
+11-24 00:51:38.715 D/Capacitor(11716): Registering plugin instance: CapacitorCookies
+11-24 00:51:38.719 D/Capacitor(11716): Registering plugin instance: WebView
+11-24 00:51:38.721 D/Capacitor(11716): Registering plugin instance: CapacitorHttp
+11-24 00:51:38.722 D/Capacitor(11716): Registering plugin instance: SystemBars
+11-24 00:51:38.725 D/Capacitor(11716): Registering plugin instance: App
+11-24 00:51:38.726 D/Capacitor(11716): Registering plugin instance: Browser
+11-24 00:51:38.727 D/Capacitor(11716): Registering plugin instance: SplashScreen
+11-24 00:51:38.747 W/Capacitor(11716): Unable to read file at path public/plugins
+11-24 00:51:38.749 D/Capacitor(11716): Loading app at https://localhost
+11-24 00:51:38.779 D/Capacitor(11716): App started
+11-24 00:51:38.783 D/Capacitor(11716): App resumed
+11-24 00:51:38.804 W/chromium(11742): [WARNING:runtime_features.cc(560)] Fenced frames cannot be enabled in this configuration. Use --enable-features=FencedFrames instead.
+11-24 00:51:38.805 W/chromium(11742): [WARNING:runtime_features.cc(585)] Topics cannot be enabled in this configuration. Use --enable-features=BrowsingTopics in addition.
+11-24 00:51:38.806 W/chromium(11742): [WARNING:runtime_features.cc(606)] SharedStorage cannot be enabled in this configuration. Use --enable-features=SharedStorageAPI in addition.
+11-24 00:51:38.864 D/Capacitor(11716): Handling local request: https://localhost/
+11-24 00:51:39.028 D/Capacitor(11716): Handling local request: https://localhost/assets/index-D-C8VbRu.js
+11-24 00:51:39.034 D/Capacitor(11716): Handling local request: https://localhost/assets/index-BOQu1Yf1.css
+11-24 00:51:39.037 W/chromium(11716): [WARNING:viz_main_impl.cc(85)] VizNullHypothesis is disabled (not a warning)
+11-24 00:51:39.203 D/Capacitor(11716): Handling local request: https://localhost/assets/nativo-CiquGBSs.js
+11-24 00:51:39.264 D/Capacitor(11716): Handling local request: https://localhost/assets/inter-latin-wght-normal-Dx4kXJAl.woff2
+11-24 00:51:39.264 D/Capacitor(11716): Handling local request: https://localhost/assets/cinzel-latin-700-normal-Dkw14w9r.woff2
+11-24 00:51:39.271 E/chromium(11742): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:51:39.274 E/chromium(11742): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:51:39.278 D/Capacitor(11716): Handling local request: https://localhost/assets/runtime-Bv3BIPgE.js
+11-24 00:51:39.279 D/Capacitor(11716): Handling local request: https://localhost/favicon.svg
+11-24 00:51:39.282 E/chromium(11742): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:51:39.282 E/chromium(11742): [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:51:39.303 D/Capacitor(11716): Handling local request: https://localhost/favicon.svg
+11-24 00:51:39.304 D/Capacitor(11716): Handling local request: https://localhost/favicon.svg
+11-24 00:51:39.304 I/Capacitor/Console(11716): File:  - Line 350 - Msg: [object Object]
+11-24 00:51:39.319 V/Capacitor(11716): callback: 47016476, pluginId: App, methodName: addListener, methodData: {"eventName":"backButton"}
+11-24 00:51:39.328 I/Capacitor/Console(11716): File:  - Line 350 - Msg: [object Object]
+11-24 00:51:39.335 V/Capacitor(11716): callback: 47016477, pluginId: SplashScreen, methodName: hide, methodData: {"fadeOutDuration":200}
+11-24 00:51:39.421 D/Capacitor(11716): Handling local request: https://localhost/assets/acampamento-DgvKfJm9.js
+11-24 00:51:39.469 I/Capacitor/Console(11716): File:  - Line 334 - Msg: undefined
+11-24 00:51:49.385 D/Capacitor(11716): Handling local request: https://localhost/models/personagem/heroi-masculino.glb
+11-24 00:51:52.971 D/Capacitor(11716): Handling local request: https://localhost/favicon.svg
+11-24 00:52:34.131 D/Capacitor(11716): App paused
+11-24 00:52:34.833 D/Capacitor(11716): App stopped
+11-24 00:52:34.833 D/Capacitor(11716): Saving instance state!
+11-24 00:52:36.672 D/Capacitor(11716): App restarted
+11-24 00:52:36.672 D/Capacitor(11716): App started
+11-24 00:52:36.678 D/Capacitor(11716): App resumed

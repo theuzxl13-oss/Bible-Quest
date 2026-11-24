@@ -8,7 +8,7 @@
         "visibilidade": "visible",
         "foco": true,
         "online": true,
-        "cena": "camp-scene is-3d is-loading ",
+        "cena": "camp-scene is-3d  ",
         "canvas": {
           "largura": 412,
           "altura": 778,
@@ -20,9 +20,12 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 7,
+        "quadrosPorSegundo": 2,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 31628
+        "tempoDesdeAbertura": 29369,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @26828ms"
+        ]
       },
       {
         "segundos": 15,
@@ -44,7 +47,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 46060
+        "tempoDesdeAbertura": 44572,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @26828ms",
+          "-canvas @29861ms",
+          "+canvas @41474ms"
+        ]
       },
       {
         "segundos": 30,
@@ -64,9 +72,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 6,
+        "quadrosPorSegundo": 8,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 64851
+        "tempoDesdeAbertura": 63526,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @26828ms",
+          "-canvas @29861ms",
+          "+canvas @41474ms"
+        ]
       },
       {
         "segundos": 60,
@@ -88,7 +101,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 99127
+        "tempoDesdeAbertura": 97364,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @26828ms",
+          "-canvas @29861ms",
+          "+canvas @41474ms"
+        ]
       }
     ],
     "B-modo-aviao-reaberto": [
@@ -98,7 +116,7 @@
         "visibilidade": "visible",
         "foco": true,
         "online": true,
-        "cena": "camp-scene is-3d is-loading ",
+        "cena": "camp-scene is-3d  ",
         "canvas": {
           "largura": 412,
           "altura": 778,
@@ -110,9 +128,12 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 5,
+        "quadrosPorSegundo": 1,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 33831
+        "tempoDesdeAbertura": 28076,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @25433ms"
+        ]
       },
       {
         "segundos": 15,
@@ -134,7 +155,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 4,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 49803
+        "tempoDesdeAbertura": 42706,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @25433ms",
+          "-canvas @28403ms",
+          "+canvas @39578ms"
+        ]
       },
       {
         "segundos": 30,
@@ -154,9 +180,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 6,
+        "quadrosPorSegundo": 7,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 70086
+        "tempoDesdeAbertura": 61704,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @25433ms",
+          "-canvas @28403ms",
+          "+canvas @39578ms"
+        ]
       },
       {
         "segundos": 60,
@@ -176,9 +207,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 10,
+        "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 104374
+        "tempoDesdeAbertura": 96036,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @25433ms",
+          "-canvas @28403ms",
+          "+canvas @39578ms"
+        ]
       }
     ],
     "C-modo-aviao-recarregado": [
@@ -194,15 +230,18 @@
           "altura": 778,
           "naTela": [
             0,
-            0,
+            1,
             412,
             778
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 1,
+        "quadrosPorSegundo": 3,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 19067
+        "tempoDesdeAbertura": 12863,
+        "eventosCena": [
+          "+canvas @11533ms"
+        ]
       },
       {
         "segundos": 15,
@@ -224,7 +263,11 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 7,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 33640
+        "tempoDesdeAbertura": 29334,
+        "eventosCena": [
+          "+canvas @11533ms",
+          "classe=\"camp-scene is-3d\" @23266ms"
+        ]
       },
       {
         "segundos": 30,
@@ -244,9 +287,13 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 6,
+        "quadrosPorSegundo": 11,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 53564
+        "tempoDesdeAbertura": 49066,
+        "eventosCena": [
+          "+canvas @11533ms",
+          "classe=\"camp-scene is-3d\" @23266ms"
+        ]
       },
       {
         "segundos": 60,
@@ -266,9 +313,13 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 6,
+        "quadrosPorSegundo": 7,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 87839
+        "tempoDesdeAbertura": 84640,
+        "eventosCena": [
+          "+canvas @11533ms",
+          "classe=\"camp-scene is-3d\" @23266ms"
+        ]
       }
     ],
     "D-modo-aviao-reaberto": [
@@ -279,11 +330,23 @@
         "foco": true,
         "online": true,
         "cena": "camp-scene is-3d  ",
-        "canvas": null,
-        "contexto": "sem canvas",
-        "quadrosPorSegundo": 2,
+        "canvas": {
+          "largura": 412,
+          "altura": 778,
+          "naTela": [
+            0,
+            0,
+            412,
+            778
+          ]
+        },
+        "contexto": "ativo",
+        "quadrosPorSegundo": 1,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 29423
+        "tempoDesdeAbertura": 24015,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @21728ms"
+        ]
       },
       {
         "segundos": 30,
@@ -303,9 +366,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 5,
+        "quadrosPorSegundo": 8,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 56604
+        "tempoDesdeAbertura": 52426,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @21728ms",
+          "-canvas @24323ms",
+          "+canvas @28439ms"
+        ]
       }
     ],
     "D-modo-aviao-depois-de-voltar": [
@@ -329,7 +397,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 7,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 69188
+        "tempoDesdeAbertura": 64705,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @21728ms",
+          "-canvas @24323ms",
+          "+canvas @28439ms"
+        ]
       },
       {
         "segundos": 15,
@@ -349,9 +422,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 5,
+        "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 84090
+        "tempoDesdeAbertura": 79940,
+        "eventosCena": [
+          "classe=\"camp-scene is-3d\" @21728ms",
+          "-canvas @24323ms",
+          "+canvas @28439ms"
+        ]
       }
     ]
   }

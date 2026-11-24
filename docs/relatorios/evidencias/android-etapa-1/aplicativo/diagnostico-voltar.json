@@ -2,14 +2,14 @@
   "antes": {
     "foco": "MAIN.",
     "estado": null,
-    "tamanho": 8
+    "tamanho": 7
   },
   "teclado": "mInputShown=false mIsInputViewShown=false mStatusIcon=0",
-  "eventosVoltar": 1,
+  "eventosVoltar": 0,
   "depois": {
-    "hash": "#/painel",
+    "hash": "#/biblioteca",
     "estado": null,
-    "tamanho": 9
+    "tamanho": 7
   },
   "errosJs": []
 }

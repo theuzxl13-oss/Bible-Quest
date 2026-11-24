@@ -9,7 +9,7 @@
     {
       "nome": "APK de depuração: soquete de depuração do WebView aberto",
       "ok": true,
-      "detalhe": "@webview_devtools_remote_2867"
+      "detalhe": "@webview_devtools_remote_2848"
     },
     {
       "nome": "build de lançamento instalado sem o atributo DEBUGGABLE",
@@ -19,7 +19,7 @@
     {
       "nome": "build de lançamento: aplicativo em execução",
       "ok": true,
-      "detalhe": "pid 4840"
+      "detalhe": "pid 4825"
     },
     {
       "nome": "build de lançamento: nenhum soquete de depuração do WebView",
