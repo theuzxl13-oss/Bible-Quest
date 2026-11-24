@@ -21,12 +21,12 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 1,
+        "quadrosPorSegundo": 2,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 32455,
+        "tempoDesdeAbertura": 29785,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @23773ms",
-          "classe=\"camp-scene is-3d\" @30510ms"
+          "reduzir-movimento=false (ao observar) @19771ms",
+          "classe=\"camp-scene is-3d\" @27665ms"
         ]
       },
       {
@@ -48,14 +48,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 8,
+        "quadrosPorSegundo": 4,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 44931,
+        "tempoDesdeAbertura": 46017,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @23773ms",
-          "classe=\"camp-scene is-3d\" @30510ms",
-          "-canvas @32770ms",
-          "+canvas @36414ms"
+          "reduzir-movimento=false (ao observar) @19771ms",
+          "classe=\"camp-scene is-3d\" @27665ms",
+          "-canvas @30200ms",
+          "+canvas @42494ms"
         ]
       },
       {
@@ -79,12 +79,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 64806,
+        "tempoDesdeAbertura": 64428,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @23773ms",
-          "classe=\"camp-scene is-3d\" @30510ms",
-          "-canvas @32770ms",
-          "+canvas @36414ms"
+          "reduzir-movimento=false (ao observar) @19771ms",
+          "classe=\"camp-scene is-3d\" @27665ms",
+          "-canvas @30200ms",
+          "+canvas @42494ms"
         ]
       },
       {
@@ -108,12 +108,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 5,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 98843,
+        "tempoDesdeAbertura": 98729,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @23773ms",
-          "classe=\"camp-scene is-3d\" @30510ms",
-          "-canvas @32770ms",
-          "+canvas @36414ms"
+          "reduzir-movimento=false (ao observar) @19771ms",
+          "classe=\"camp-scene is-3d\" @27665ms",
+          "-canvas @30200ms",
+          "+canvas @42494ms"
         ]
       }
     ],
@@ -137,12 +137,12 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 1,
+        "quadrosPorSegundo": 2,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 22454,
+        "tempoDesdeAbertura": 25582,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @15170ms",
-          "classe=\"camp-scene is-3d\" @20793ms"
+          "reduzir-movimento=false (ao observar) @15442ms",
+          "classe=\"camp-scene is-3d\" @23335ms"
         ]
       },
       {
@@ -164,14 +164,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 5,
+        "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 36460,
+        "tempoDesdeAbertura": 38713,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @15170ms",
-          "classe=\"camp-scene is-3d\" @20793ms",
-          "-canvas @22788ms",
-          "+canvas @32280ms"
+          "reduzir-movimento=false (ao observar) @15442ms",
+          "classe=\"camp-scene is-3d\" @23335ms",
+          "-canvas @26154ms",
+          "+canvas @29621ms"
         ]
       },
       {
@@ -193,128 +193,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 10,
+        "quadrosPorSegundo": 11,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 56128,
+        "tempoDesdeAbertura": 58860,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @15170ms",
-          "classe=\"camp-scene is-3d\" @20793ms",
-          "-canvas @22788ms",
-          "+canvas @32280ms"
-        ]
-      },
-      {
-        "segundos": 60,
-        "hash": "#/painel",
-        "visibilidade": "visible",
-        "foco": true,
-        "online": true,
-        "reduzirMovimento": false,
-        "cena": "camp-scene is-3d  ",
-        "canvas": {
-          "largura": 412,
-          "altura": 778,
-          "naTela": [
-            0,
-            0,
-            412,
-            778
-          ]
-        },
-        "contexto": "ativo",
-        "quadrosPorSegundo": 5,
-        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 90913,
-        "eventosCena": [
-          "reduzir-movimento=false (ao observar) @15170ms",
-          "classe=\"camp-scene is-3d\" @20793ms",
-          "-canvas @22788ms",
-          "+canvas @32280ms"
-        ]
-      }
-    ],
-    "C-modo-aviao-recarregado": [
-      {
-        "segundos": 5,
-        "hash": "#/painel",
-        "visibilidade": "visible",
-        "foco": true,
-        "online": true,
-        "reduzirMovimento": false,
-        "cena": "camp-scene is-3d is-loading ",
-        "canvas": {
-          "largura": 412,
-          "altura": 778,
-          "naTela": [
-            0,
-            1,
-            412,
-            778
-          ]
-        },
-        "contexto": "ativo",
-        "quadrosPorSegundo": 4,
-        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 18502,
-        "eventosCena": [
-          "reduzir-movimento=false (ao observar) @903ms",
-          "+canvas @10984ms"
-        ]
-      },
-      {
-        "segundos": 15,
-        "hash": "#/painel",
-        "visibilidade": "visible",
-        "foco": true,
-        "online": true,
-        "reduzirMovimento": false,
-        "cena": "camp-scene is-3d  ",
-        "canvas": {
-          "largura": 412,
-          "altura": 778,
-          "naTela": [
-            0,
-            0,
-            412,
-            778
-          ]
-        },
-        "contexto": "ativo",
-        "quadrosPorSegundo": 7,
-        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 32728,
-        "eventosCena": [
-          "reduzir-movimento=false (ao observar) @903ms",
-          "+canvas @10984ms",
-          "classe=\"camp-scene is-3d\" @25337ms"
-        ]
-      },
-      {
-        "segundos": 30,
-        "hash": "#/painel",
-        "visibilidade": "visible",
-        "foco": true,
-        "online": true,
-        "reduzirMovimento": false,
-        "cena": "camp-scene is-3d  ",
-        "canvas": {
-          "largura": 412,
-          "altura": 778,
-          "naTela": [
-            0,
-            0,
-            412,
-            778
-          ]
-        },
-        "contexto": "ativo",
-        "quadrosPorSegundo": 7,
-        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 52047,
-        "eventosCena": [
-          "reduzir-movimento=false (ao observar) @903ms",
-          "+canvas @10984ms",
-          "classe=\"camp-scene is-3d\" @25337ms"
+          "reduzir-movimento=false (ao observar) @15442ms",
+          "classe=\"camp-scene is-3d\" @23335ms",
+          "-canvas @26154ms",
+          "+canvas @29621ms"
         ]
       },
       {
@@ -338,11 +224,125 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 86007,
+        "tempoDesdeAbertura": 93508,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @903ms",
-          "+canvas @10984ms",
-          "classe=\"camp-scene is-3d\" @25337ms"
+          "reduzir-movimento=false (ao observar) @15442ms",
+          "classe=\"camp-scene is-3d\" @23335ms",
+          "-canvas @26154ms",
+          "+canvas @29621ms"
+        ]
+      }
+    ],
+    "C-modo-aviao-recarregado": [
+      {
+        "segundos": 5,
+        "hash": "#/painel",
+        "visibilidade": "visible",
+        "foco": true,
+        "online": true,
+        "reduzirMovimento": false,
+        "cena": "camp-scene is-3d is-loading ",
+        "canvas": {
+          "largura": 412,
+          "altura": 778,
+          "naTela": [
+            0,
+            0,
+            412,
+            778
+          ]
+        },
+        "contexto": "ativo",
+        "quadrosPorSegundo": 3,
+        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "tempoDesdeAbertura": 19255,
+        "eventosCena": [
+          "reduzir-movimento=false (ao observar) @1691ms",
+          "+canvas @12231ms"
+        ]
+      },
+      {
+        "segundos": 15,
+        "hash": "#/painel",
+        "visibilidade": "visible",
+        "foco": true,
+        "online": true,
+        "reduzirMovimento": false,
+        "cena": "camp-scene is-3d  ",
+        "canvas": {
+          "largura": 412,
+          "altura": 778,
+          "naTela": [
+            0,
+            0,
+            412,
+            778
+          ]
+        },
+        "contexto": "ativo",
+        "quadrosPorSegundo": 5,
+        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "tempoDesdeAbertura": 33454,
+        "eventosCena": [
+          "reduzir-movimento=false (ao observar) @1691ms",
+          "+canvas @12231ms",
+          "classe=\"camp-scene is-3d\" @26573ms"
+        ]
+      },
+      {
+        "segundos": 30,
+        "hash": "#/painel",
+        "visibilidade": "visible",
+        "foco": true,
+        "online": true,
+        "reduzirMovimento": false,
+        "cena": "camp-scene is-3d  ",
+        "canvas": {
+          "largura": 412,
+          "altura": 778,
+          "naTela": [
+            0,
+            0,
+            412,
+            778
+          ]
+        },
+        "contexto": "ativo",
+        "quadrosPorSegundo": 7,
+        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "tempoDesdeAbertura": 53283,
+        "eventosCena": [
+          "reduzir-movimento=false (ao observar) @1691ms",
+          "+canvas @12231ms",
+          "classe=\"camp-scene is-3d\" @26573ms"
+        ]
+      },
+      {
+        "segundos": 60,
+        "hash": "#/painel",
+        "visibilidade": "visible",
+        "foco": true,
+        "online": true,
+        "reduzirMovimento": false,
+        "cena": "camp-scene is-3d  ",
+        "canvas": {
+          "largura": 412,
+          "altura": 778,
+          "naTela": [
+            0,
+            0,
+            412,
+            778
+          ]
+        },
+        "contexto": "ativo",
+        "quadrosPorSegundo": 5,
+        "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
+        "tempoDesdeAbertura": 88293,
+        "eventosCena": [
+          "reduzir-movimento=false (ao observar) @1691ms",
+          "+canvas @12231ms",
+          "classe=\"camp-scene is-3d\" @26573ms"
         ]
       }
     ],
@@ -368,10 +368,10 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 2,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 32889,
+        "tempoDesdeAbertura": 23550,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @22902ms",
-          "classe=\"camp-scene is-3d\" @30537ms"
+          "reduzir-movimento=false (ao observar) @14903ms",
+          "classe=\"camp-scene is-3d\" @21425ms"
         ]
       },
       {
@@ -393,14 +393,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 7,
+        "quadrosPorSegundo": 11,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 61017,
+        "tempoDesdeAbertura": 52601,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @22902ms",
-          "classe=\"camp-scene is-3d\" @30537ms",
-          "-canvas @33199ms",
-          "+canvas @36742ms"
+          "reduzir-movimento=false (ao observar) @14903ms",
+          "classe=\"camp-scene is-3d\" @21425ms",
+          "-canvas @23938ms",
+          "+canvas @35341ms"
         ]
       }
     ],
@@ -424,14 +424,14 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 6,
+        "quadrosPorSegundo": 7,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 74128,
+        "tempoDesdeAbertura": 66364,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @22902ms",
-          "classe=\"camp-scene is-3d\" @30537ms",
-          "-canvas @33199ms",
-          "+canvas @36742ms"
+          "reduzir-movimento=false (ao observar) @14903ms",
+          "classe=\"camp-scene is-3d\" @21425ms",
+          "-canvas @23938ms",
+          "+canvas @35341ms"
         ]
       },
       {
@@ -455,12 +455,12 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 6,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 90188,
+        "tempoDesdeAbertura": 80825,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @22902ms",
-          "classe=\"camp-scene is-3d\" @30537ms",
-          "-canvas @33199ms",
-          "+canvas @36742ms"
+          "reduzir-movimento=false (ao observar) @14903ms",
+          "classe=\"camp-scene is-3d\" @21425ms",
+          "-canvas @23938ms",
+          "+canvas @35341ms"
         ]
       }
     ],
@@ -486,10 +486,10 @@
         "contexto": "ativo",
         "quadrosPorSegundo": 2,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 49490,
+        "tempoDesdeAbertura": 49377,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @35666ms",
-          "classe=\"camp-scene is-3d\" @47274ms"
+          "reduzir-movimento=false (ao observar) @34107ms",
+          "classe=\"camp-scene is-3d\" @46426ms"
         ]
       },
       {
@@ -511,12 +511,12 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 7,
+        "quadrosPorSegundo": 4,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 65291,
+        "tempoDesdeAbertura": 65000,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @35666ms",
-          "classe=\"camp-scene is-3d\" @47274ms"
+          "reduzir-movimento=false (ao observar) @34107ms",
+          "classe=\"camp-scene is-3d\" @46426ms"
         ]
       },
       {
@@ -538,12 +538,12 @@
           ]
         },
         "contexto": "ativo",
-        "quadrosPorSegundo": 11,
+        "quadrosPorSegundo": 8,
         "renderizador": "Android Emulator OpenGL ES Translator (Google SwiftShader)",
-        "tempoDesdeAbertura": 86123,
+        "tempoDesdeAbertura": 86945,
         "eventosCena": [
-          "reduzir-movimento=false (ao observar) @35666ms",
-          "classe=\"camp-scene is-3d\" @47274ms"
+          "reduzir-movimento=false (ao observar) @34107ms",
+          "classe=\"camp-scene is-3d\" @46426ms"
         ]
       }
     ]

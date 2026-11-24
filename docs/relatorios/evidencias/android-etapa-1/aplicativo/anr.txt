@@ -1,4 +1,2 @@
-11-24 01:00:33.751   612  5053 E ActivityManager: ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity)
-11-24 01:00:33.751   612  5053 E ActivityManager: Reason: Input dispatching timed out (114f4a2 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true)).
-11-24 01:01:03.484   612  6021 E ActivityManager: ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity)
-11-24 01:01:03.484   612  6021 E ActivityManager: Reason: Input dispatching timed out (d9803ef com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true)).
+11-24 01:22:12.975   553  5743 E ActivityManager: ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity)
+11-24 01:22:12.975   553  5743 E ActivityManager: Reason: Input dispatching timed out (148a4a6 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5002ms for FocusEvent(hasFocus=true)).

@@ -1,6 +1,6 @@
 {
   "api": "36",
-  "falhas": 3,
+  "falhas": 2,
   "resultado": [
     {
       "nome": "emulador com Android API 36",
@@ -65,7 +65,7 @@
     {
       "nome": "link externo abre fora do aplicativo (navegador do sistema)",
       "ok": true,
-      "detalhe": "topResumedActivity=ActivityRecord{48310262 u0 com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity t10}"
+      "detalhe": "topResumedActivity=ActivityRecord{68293314 u0 com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity t10}"
     },
     {
       "nome": "observação: o voltar do navegador devolveu o jogo",
@@ -93,9 +93,9 @@
       "detalhe": ""
     },
     {
-      "nome": "nenhum aviso de \"o aplicativo não está respondendo\" (ANR)",
-      "ok": false,
-      "detalhe": "11-24 01:00:33.751   612  5053 E ActivityManager: ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity) | 11-24 01:00:33.751   612  5053 E ActivityManager: Reason: Input dispatching timed out (114f4a2 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true))."
+      "nome": "observação: avisos de \"o aplicativo não está respondendo\" (ANR)",
+      "ok": true,
+      "detalhe": "1 ANR: 11-24 01:22:12.975   553  5743 E ActivityManager: ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity) | 11-24 01:22:12.975   553  5743 E ActivityManager: Reason: Input dispatching timed out (148a4a6 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5002ms for FocusEvent(hasFocus=true))."
     },
     {
       "nome": "nenhum travamento (FATAL EXCEPTION)",
