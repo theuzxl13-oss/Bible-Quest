@@ -2,6 +2,16 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Android, diagnóstico da Central 3D — 24/11/2026 — build temporário de diagnóstico (em avaliação)
+
+- **Novo fluxo `android-diagnostico.yml`** com um build temporário e separado: versão `0.17.9-diagnostico`, que não é guardada como artefato nem publicada.
+- **Instrumentação aplicada só dentro do executor** (`tools/android/diagnostico/instrumentar.cjs`). Ela registra:
+  - os quatro valores de que o efeito da cena 3D depende, antes e depois de cada execução, com o motivo;
+  - horário, montagem e desmontagem do canvas e ciclo de vida da página;
+  - bloqueios da thread principal do Android e ANR.
+- **Cenários:** abertura normal, modo avião e volta do segundo plano; com as animações do sistema desligadas, ligadas e desligadas de novo.
+- **APK oficial sem mudança:** o fluxo `android.yml` agora falha se encontrar qualquer instrumentação de diagnóstico no APK. Jogo, cena e site não mudaram, e nenhuma correção foi feita.
+
 ## Android, etapa 1, fechamento — 24/11/2026 — permissão INTERNET, ícone e diagnóstico da Central 3D (em avaliação)
 
 - **Permissão INTERNET removida** do `AndroidManifest.xml`: o aplicativo não declara nenhuma permissão. Nenhuma permissão alternativa foi adicionada. O fluxo do APK passa a falhar se a permissão voltar.

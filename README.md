@@ -328,7 +328,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **Android, diagnóstico da Central 3D** (24/11/2026): build temporário e separado que registra por que a cena 3D é refeita depois de pronta e mede os bloqueios (ANR); APK oficial, jogo e site sem mudanças. Em avaliação.
 - **Android, etapa 1, fechamento** (24/11/2026): sem a permissão INTERNET, ícone com o medalhão reduzido (tela de abertura mantida) e diagnóstico da Central 3D ao reabrir sem internet; jogo e site sem mudanças. Em avaliação.
 - **Android, etapa 1, complemento** (23/11/2026): verificações pedidas na avaliação (capturas do emulador, tela de abertura e ícone, depuração do WebView, permissão INTERNET, ausência de segredos); jogo, APK e site sem mudanças. Em avaliação.
 - **Android, etapa 1** (23/11/2026): aplicativo Android com Capacitor 8 (API 24 a 36), ícone e tela de abertura próprios, experiência nativa, painel administrativo, multiplayer de demonstração e leitura em voz alta desativados só no aplicativo, e APK de depuração pelo GitHub Actions; site idêntico à 0.17.9. Branch `claude/bible-quest-android`, em avaliação.
-- **0.17.9** (23/11/2026): passo 1.7, entrega 2: Biblioteca na paleta da Sala de Estudos (papel, couro e lamparina; textos abaixo do mínimo de 18 para 0), com alto contraste e Central intactos; em avaliação, não publicada.

@@ -85,6 +85,10 @@ jobs:
           if grep -q '"server"' capacitor.config.json; then echo "::error::o aplicativo carrega um servidor remoto"; exit 1; fi
           echo "Permissões:"; grep "uses-permission" badging.txt || echo "(nenhuma)"
           if grep -q "android.permission.INTERNET" badging.txt; then echo "::error::o APK declara a permissão INTERNET"; exit 1; fi
+          # o APK oficial não pode ter nada do build de diagnóstico da Central 3D
+          if unzip -p "$APK" 'assets/public/assets/*.js' | grep -q "__bqDiag"; then echo "::error::instrumentação de diagnóstico no APK oficial"; exit 1; fi
+          if unzip -p "$APK" 'classes*.dex' | grep -aq "BQDiag"; then echo "::error::vigia de diagnóstico no APK oficial"; exit 1; fi
+          grep -q "versionName='0.17.9'" badging.txt
           ls -la "$APK"
 
       - name: Publicar o APK como artefato
