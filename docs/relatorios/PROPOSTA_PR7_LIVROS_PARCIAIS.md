@@ -1,6 +1,6 @@
 # Bible Quest — Proposta PR7: livros parciais não aparecem como concluídos
 
-**Data:** 24/11/2026. **Atualizado no mesmo dia** com as decisões D1 a D5 aprovadas.
+**Data:** 24/11/2026. **Atualizado no mesmo dia** com as decisões D1 a D5 aprovadas e, depois, com as duas regras pendentes aprovadas (conclusão dos capítulos e aviso de novas fases). **O planejamento da PR7 está concluído.**
 **Branch consultada:** `claude/bible-quest-android` (commits `4b8af34` e `6354aed`).
 **Situação:** **decisões aprovadas e incluídas no escopo da 1.0** (A31 a A36 em `docs/planos/VERSAO_1_0_DIRETRIZES.md`). **A implementação não está autorizada**: será feita no momento adequado, depois dos testes físicos e do diagnóstico do ANR. Nada foi implementado e nenhum código foi alterado.
 
@@ -17,8 +17,8 @@ Os outros 64 livros já aparecem como "Em preparação" e não abrem.
 | Decisão | O que foi aprovado | O que a implementação precisará fazer (registro de planejamento; nada foi feito) |
 |---|---|---|
 | **D1, medalhas** (A32) | **Preservar a maior medalha já conquistada.** Fases novas não retiram medalhas. O jogador pode melhorar a medalha depois. Todo o histórico e o progresso ficam preservados | **Gravar a melhor medalha de cada livro** no salvamento, com um campo novo; hoje a medalha é calculada. A migração **só acrescenta**: na primeira abertura da versão nova, a medalha atual de quem já terminou o livro é gravada. Nenhum dado é apagado. A medalha exibida é a maior entre a gravada e a calculada |
-| **D2, novas fases** (A33) | Indicação **dentro do jogo**, **discreta e clara**, sem notificações insistentes | Guardar **quais fases de cada livro o jogador já viu**. Quando houver fase nova, mostrar um **selo discreto "Novas fases"** no livro (lista de livros) e uma linha na página do livro. O selo **some quando o jogador abre o livro**. **Proposta para confirmar na implementação:** também uma linha no painel de missões da Central, sem janela que se abre sozinha e sem notificação do sistema |
-| **D3, porcentagens** (A34) | Jornada: **todos os capítulos da Bíblia** (1.189). Testamento: todos os capítulos dele (Antigo 929, Novo 260). Capítulos não disponíveis **não contam**. A página do livro separa as **fases disponíveis concluídas** dos **capítulos em preparação** | Registrar nos dados de cada livro **quais capítulos têm fases** (hoje: Gênesis 39 de 50, Êxodo 19 de 40, os outros 0). Passar a calcular as porcentagens por capítulos. **Regra proposta, para confirmar:** um capítulo conta como concluído quando **todas as fases que o cobrem** estiverem concluídas. A página do livro mostra, por exemplo, **"Fases disponíveis: 20 de 20 concluídas"** e **"Capítulos: 39 de 50 com fases; 11 em preparação"** |
+| **D2, novas fases** (A33 e **regra A38**) | Indicação **dentro do jogo**, **discreta e clara**, sem notificações insistentes. **Regra aprovada:** <br>• selo **"Novas fases" só na lista de livros**; <br>• **nenhum aviso no painel de missões da Central**; <br>• o selo some quando o jogador **abre o livro** e vê as fases novas; <br>• o selo **reaparece** sempre que outras fases forem adicionadas, até serem vistas | Guardar **quais fases de cada livro o jogador já viu**, com um campo novo no salvamento que **só acrescenta**. O selo aparece na lista de livros quando o livro tem fase que o jogador ainda não viu. Ao abrir a página do livro, as fases atuais passam a contar como vistas |
+| **D3, porcentagens** (A34) | Jornada: **todos os capítulos da Bíblia** (1.189). Testamento: todos os capítulos dele (Antigo 929, Novo 260). Capítulos não disponíveis **não contam**. A página do livro separa as **fases disponíveis concluídas** dos **capítulos em preparação** | Registrar nos dados de cada livro **quais capítulos têm fases** e **quais fases cobrem cada capítulo** (hoje: Gênesis 39 de 50, Êxodo 19 de 40, os outros 0). Passar a calcular as porcentagens por capítulos. **Regra aprovada (A37):** <br>• um capítulo conta como concluído **só quando todas as fases relacionadas a ele** estiverem concluídas; <br>• se houver várias fases no capítulo, todas são exigidas; <br>• uma fase que abrange vários capítulos conta para todos eles; <br>• conteúdo concluído só em parte **não conta**; <br>• dados e histórico preservados. A página do livro mostra, por exemplo, **"Fases disponíveis: 20 de 20 concluídas"** e **"Capítulos: 39 de 50 com fases; 11 em preparação"** |
 | **D4, etiqueta** (A35) | **"Fases em dia"** (curta); **"Fases disponíveis concluídas"** onde couber | Etiqueta da lista de livros: **"Fases em dia"**. Página do livro, Perfil e Biblioteca: **"Fases disponíveis concluídas"**. O texto do leitor de tela usa sempre a forma longa |
 | **D5, versão** (A36) | **No escopo da 1.0.** Implementar no momento adequado | Entra no plano como **etapa 6**. Só começa com autorização, depois das etapas 1 e 2 (testes físicos e diagnóstico do ANR) |
 
@@ -119,7 +119,8 @@ Os números (39 de 50 e 19 de 40) já foram calculados pelas referências das fa
 |---|---|---|
 | T11 | **D1, migração da medalha:** salvamentos de exemplo com Gênesis e Êxodo completos (ouro, prata e bronze) gravam a medalha atual na primeira abertura; **nenhum outro campo muda** (comparação completa como em T2) | a medalha não se perde |
 | T12 | **D1, fases novas:** com uma fase de teste a mais, a medalha gravada **continua visível**; ao concluir a fase nova com desempenho melhor, a medalha **sobe**; com desempenho pior, **não desce** | regra da maior medalha |
-| T13 | **D2, aviso:** com uma fase de teste a mais, o selo "Novas fases" aparece no livro; **some depois de abrir o livro**; não aparece para quem nunca jogou o livro (se essa for a decisão); nenhuma janela se abre sozinha | discrição do aviso |
+| T13 | **D2, aviso (regra A38):** com uma fase de teste a mais, o selo "Novas fases" aparece **na lista de livros**; **some depois de abrir o livro**; **reaparece** quando uma segunda fase de teste é acrescentada; **não aparece** no painel de missões da Central; nenhuma janela se abre sozinha | discrição do aviso |
+| T16 | **D3, regra de conclusão dos capítulos (A37):** <br>• um capítulo coberto por duas fases não conta com só uma delas concluída e conta com as duas; <br>• uma fase que abrange vários capítulos (por exemplo, "Êxodo 5–11") conta para todos eles ao ser concluída; <br>• uma fase que cita só parte do capítulo (por exemplo, "Gênesis 1:26–31") se relaciona ao capítulo inteiro; <br>• os capítulos sem fases nunca contam | a regra aprovada |
 | T14 | **D3, porcentagens:** a jornada e os Testamentos calculados por capítulos (1.189, 929 e 260); um capítulo sem fases **nunca** conta; um livro com todas as fases feitas e capítulos em preparação **não chega a 100%**; a página do livro mostra os dois números separados | regra das porcentagens |
 | T15 | **D4, etiqueta:** a lista mostra "Fases em dia", e as telas com espaço mostram "Fases disponíveis concluídas"; o leitor de tela recebe a forma longa | os textos |
 
@@ -130,6 +131,10 @@ Os números (39 de 50 e 19 de 40) já foram calculados pelas referências das fa
 **Efeito no site:** a PR7 muda textos do jogo. O site deixa de ser idêntico à 0.17.9 (o que é esperado) e passa a ser conferido pelos testes T4 e T8.
 
 ## 5. Decisões (ver a seção 0)
+
+**As duas regras pendentes também foram aprovadas (A37 e A38):**
+- conclusão do capítulo só com todas as fases relacionadas concluídas;
+- selo "Novas fases" só na lista de livros, sem aviso na Central, reaparecendo a cada inclusão de fases novas.
 
 **Todas as decisões abaixo foram aprovadas em 24/11/2026:**
 - D1: gravar a maior medalha;

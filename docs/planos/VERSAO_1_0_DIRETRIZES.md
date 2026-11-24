@@ -5,7 +5,8 @@
 - atualizado em 24/11/2026 com as "Decisões preliminares";
 - **consolidado em 24/11/2026** com os "Ajustes finais do planejamento" (avaliação do commit `a4dd3f2`);
 - **atualizado em 24/11/2026** com a "Aprovação da direção e próximas providências" (avaliação do commit `4b8af34`);
-- **atualizado em 24/11/2026** com a "Avaliação e aprovação das decisões da PR7" (D1 a D5, avaliação do commit `6354aed`).
+- **atualizado em 24/11/2026** com a "Avaliação e aprovação das decisões da PR7" (D1 a D5, avaliação do commit `6354aed`);
+- **atualizado em 24/11/2026** com a "Conclusão das duas regras pendentes da PR7" (avaliação do commit `e4b6083`).
 
 **Situação:** documento de planejamento. **Não altera** os documentos oficiais (ROADMAP, README, CHANGELOG, índice de documentos).
 
@@ -65,6 +66,8 @@
 | A34 | **PR7 · D3, porcentagens:** <br>• a porcentagem geral da jornada considera **todos os capítulos da Bíblia**; <br>• a de cada Testamento considera **todos os capítulos daquele Testamento**; <br>• capítulos ainda não disponíveis **não contam como concluídos**; <br>• na página de cada livro, **diferenciar claramente** as fases disponíveis concluídas dos capítulos em preparação; <br>• **não confundir** a conclusão do conteúdo publicado com a conclusão do livro inteiro |
 | A35 | **PR7 · D4, etiqueta:** etiqueta curta **"Fases em dia"**; **"Fases disponíveis concluídas"** onde houver espaço suficiente |
 | A36 | **PR7 · D5, versão:** a PR7 faz parte do **escopo da versão 1.0**. A implementação será feita **no momento adequado**, depois da prioridade atual (testes físicos e diagnóstico do ANR). **Não está autorizada agora** |
+| A37 | **PR7, regra de conclusão dos capítulos:** <br>• um capítulo só conta como concluído quando **todas as fases relacionadas a ele** estiverem concluídas; <br>• se o capítulo tiver **mais de uma fase**, **todas** precisam estar concluídas; <br>• se **uma fase abranger vários capítulos**, sua conclusão **conta para todos eles**; <br>• **nenhum capítulo** conta como concluído porque **só parte** do seu conteúdo foi concluída; <br>• os dados e o histórico existentes são preservados |
+| A38 | **PR7, aviso de novas fases:** <br>• selo discreto **"Novas fases" só na lista de livros**; <br>• **nenhum aviso no painel de missões da Central**; <br>• o selo **some quando o jogador abre o livro** e vê as fases novas; <br>• quando outras fases forem adicionadas no futuro, o selo **reaparece** até que sejam vistas. Substitui a parte de "linha na página do livro" e "painel de missões" da proposta inicial de D2 |
 | A26 | **Nenhum conteúdo incompleto deve aparecer ou dar acesso como se estivesse concluído.** Os livros em preparação continuam sem acesso a fases. Ver o conflito novo sobre "Concluído" na seção 4 e a pendência P11 |
 | A12 | **Preservar as perguntas gerais do Modo Livre.** São as 34 de `geral.ts`. As 2 perguntas temáticas sem fase (`cr-05` e `jo-16`) também continuam no jogo (planejamento, seção 16) |
 | A13 e A24 | **Revisão humana obrigatória** de todos os trechos bíblicos, referências e perguntas. O conteúdo **só é considerado revisado** depois das revisões **textual, teológica e pedagógica** |
@@ -121,7 +124,7 @@
 | P7 | **Documentos oficiais:** quando atualizar CHANGELOG, README, ROADMAP e o índice com estas diretrizes |
 | P9 | **Personagem feminino:** <br>• quando começar a etapa (depois dos testes físicos?); <br>• com que origem: o mesmo pipeline do masculino (imagem de referência gerada por IA e malha pelo TRELLIS.2, com licenças registradas) ou outra; <br>• o que fazer com os perfis que usam as 6 bases que deixam de ser oferecidas: converter para o corpo correspondente, mantendo cores e roupas (proposta da seção 15) |
 | P10 | **Ações do GitHub Actions** baseadas no Node 20: quando atualizar |
-| P11 | **PR7: decisões D1 a D5 aprovadas** (A32 a A36). **Pendente só a autorização para implementar**, no momento adequado (A36). Detalhes de execução que serão confirmados na implementação: a regra para "capítulo concluído" e o momento em que o aviso de fases novas some (proposta, seção 0) |
+| P11 | **PR7: planejamento concluído.** D1 a D5 (A32 a A36) e as duas regras pendentes (A37 e A38) estão aprovadas. **Falta só a autorização para implementar**, na **etapa 6** da versão 1.0, depois dos testes físicos e do diagnóstico do ANR |
 
 A antiga P8 (livros em preparação no Modo História) foi resolvida por A11.
 
