@@ -9,7 +9,8 @@
  *   2. animações do sistema LIGADAS
  *   3. animações do sistema DESLIGADAS de novo
  * Em cada rodada, três cenários:
- *   normal        fecha o processo e abre o aplicativo
+ *   normal        fecha o processo e abre o aplicativo (Playwright conecta aos 45 s)
+ *   normal-conexao-aos-70s  igual, mas o Playwright só se conecta aos 70 s
  *   aviao         o mesmo, em modo avião
  *   segundo-plano abre, espera a cena, vai para a tela inicial (HOME), espera 10 s e volta
  * De cada cenário guarda: o registro da página (window.__bqDiag), as linhas BQDiag
@@ -36,7 +37,11 @@ async function pagina(device) {
     const vistas = device.webViews().filter((w) => w.pkg() === PACOTE)
     const wv = vistas.length ? vistas[vistas.length - 1] : await device.webView({ pkg: PACOTE }).catch(() => null)
     const page = wv ? await wv.page().catch(() => null) : null
-    if (page && !page.isClosed() && (await page.evaluate(() => Boolean(window.__bqDiag)).catch(() => false))) return page
+    if (page && !page.isClosed() && (await page.evaluate(() => Boolean(window.__bqDiag)).catch(() => false))) {
+      // marca o instante em que o Playwright (DevTools) se conectou à página
+      await page.evaluate(() => window.__bqDiag.marca('teste: Playwright conectado ao WebView')).catch(() => {})
+      return page
+    }
     await espera(1000)
   }
   throw new Error('WebView do aplicativo não encontrado')
@@ -113,6 +118,20 @@ async function cenario(device, rodada, nome, fn) {
   await espera(8000)
   let page = await pagina(device)
   await page.evaluate((itens) => { for (const [k, v] of Object.entries(itens)) localStorage.setItem(k, JSON.stringify(v)) }, PERFIL)
+  // recarrega e espera a Central, para o WebView gravar o perfil antes de o processo ser fechado
+  await page.evaluate(() => { location.hash = '#/painel' })
+  await page.reload()
+  await espera(15000)
+  const hashPerfil = await page.evaluate(() => location.hash)
+  console.log('perfil gravado; tela:', hashPerfil)
+  if (hashPerfil !== '#/painel') throw new Error('o perfil de teste não foi gravado (a Central não abriu)')
+  await espera(5000)
+  await sh(device, `am force-stop ${PACOTE}`)
+  await espera(1500)
+  await sh(device, `am start -n ${PACOTE}/.MainActivity`)
+  await espera(20000)
+  page = await pagina(device)
+  if ((await page.evaluate(() => location.hash)) !== '#/painel') throw new Error('o perfil não continuou salvo depois de fechar o aplicativo')
   await sh(device, `am force-stop ${PACOTE}`)
 
   const abrirFrio = async (espera_s) => {
@@ -130,6 +149,8 @@ async function cenario(device, rodada, nome, fn) {
     const linhas = []
     await modoAviao(device, false)
     linhas.push(await cenario(device, rodada, 'normal', () => abrirFrio(45)))
+    // mesma abertura, mas conectando o Playwright só aos 70 s: mostra se alguma mudança acompanha a conexão
+    linhas.push(await cenario(device, rodada, 'normal-conexao-aos-70s', () => abrirFrio(70)))
     await modoAviao(device, true)
     linhas.push(await cenario(device, rodada, 'aviao', () => abrirFrio(45)))
     await modoAviao(device, false)
