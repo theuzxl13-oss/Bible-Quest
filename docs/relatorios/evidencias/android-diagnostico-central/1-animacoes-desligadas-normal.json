@@ -2,8 +2,8 @@
   "cenario": "1-animacoes-desligadas-normal",
   "execucoesDoEfeito": [
     {
-      "t": 1571,
-      "hora": "2026-11-24T12:50:01.781Z",
+      "t": 1800,
+      "hora": "2026-11-24T15:21:06.038Z",
       "tipo": "efeito executa #1",
       "motivo": [
         "(primeira vez)"
@@ -22,57 +22,65 @@
     }
   ],
   "resumo": [
-    "   1133 ms  prefers-reduced-motion inicial true",
-    "   1168 ms  pageshow",
-    "   1486 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
-    "   1571 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
-    "  12375 ms  +canvas",
-    "  17927 ms  cena pronta",
-    "  43686 ms  prefers-reduced-motion mudou",
-    "  44403 ms  teste: Playwright conectado ao WebView"
+    "   1175 ms  prefers-reduced-motion inicial true",
+    "   1235 ms  pageshow",
+    "   1786 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
+    "   1800 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
+    "  18551 ms  +canvas",
+    "  26026 ms  cena pronta",
+    "  43755 ms  prefers-reduced-motion mudou",
+    "  43855 ms  teste: Playwright conectado ao WebView"
   ],
   "bloqueiosDaThreadPrincipal": [
-    "11-24 12:49:56.130 I/BQDiag  ( 5860): cenario: 1-animacoes-desligadas-normal",
-    "11-24 12:50:00.296 I/BQDiag  ( 5966): onCreate | desde o início do processo=1413 ms | relogio=1795524600296 | inicioDoProcessoRelogio=1795524598883",
-    "11-24 12:50:00.334 I/BQDiag  ( 5966): onResume | relogio=1795524600334",
-    "11-24 12:50:01.345 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|página iniciada|relogio=1795524601341|t=1125|{\"url\":\"https://localhost/\",\"userAgent\":\"Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36\"}",
-    "11-24 12:50:01.346 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|prefers-reduced-motion inicial|relogio=1795524601343|t=1133|true",
-    "11-24 12:50:01.379 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|pageshow|relogio=1795524601378|t=1168|{\"persisted\":false}",
-    "11-24 12:50:01.698 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|render: valores mudaram|relogio=1795524601696|t=1486|{\"mudou\":[\"(primeira vez)\"],\"valores\":{\"qualidade\":\"leve\",\"animacoesReduzidas\":true,\"reduceMotionConfiguracao\":false,\"prefersReducedMotion\":true,\"configuracaoGraficos\":\"auto\",\"elementos\":\"tenda,fogueira,mesa,quadro,bau\",\"bauPronto\":false,\"estado\":\"carregando\"}}",
-    "11-24 12:50:01.866 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|efeito executa #1|relogio=1795524601781|t=1571|{\"motivo\":[\"(primeira vez)\"],\"antes\":null,\"depois\":{\"qualidade\":\"leve\",\"animacoesReduzidas\":true,\"reduceMotionConfiguracao\":false,\"prefersReducedMotion\":true,\"configuracaoGraficos\":\"auto\",\"elementos\":\"tenda,fogueira,mesa,quadro,bau\",\"bauPronto\":false,\"estado\":\"carregando\"}}",
-    "11-24 12:50:01.895 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|Central visível|relogio=1795524601883|t=1673|",
-    "11-24 12:50:01.910 I/BQDiag  ( 5966): foco da janela=true | relogio=1795524601910",
-    "11-24 12:50:08.545 W/BQDiag  ( 5966): thread principal bloqueada por 6531 ms (fim do bloqueio) | relogio=1795524608545",
-    "11-24 12:50:12.595 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|+canvas|relogio=1795524612592|t=12375|",
-    "11-24 12:50:12.661 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795524612651|t=12441|{\"ms\":10688,\"inicio\":1695}",
-    "11-24 12:50:14.765 W/BQDiag  ( 5966): thread principal bloqueada por 1943 ms (fim do bloqueio) | relogio=1795524614765",
-    "11-24 12:50:16.614 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795524616610|t=16400|{\"ms\":10733}",
-    "11-24 12:50:16.663 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795524616657|t=16447|{\"ms\":3958,\"inicio\":12442}",
-    "11-24 12:50:16.694 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795524616680|t=16470|{\"ms\":3983}",
-    "11-24 12:50:18.138 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|cena pronta|relogio=1795524618137|t=17927|",
-    "11-24 12:50:20.216 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795524620214|t=20004|{\"ms\":1968,\"inicio\":17693}",
-    "11-24 12:50:20.216 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795524620214|t=20004|{\"ms\":323,\"inicio\":19662}",
-    "11-24 12:50:20.230 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795524620229|t=20019|{\"ms\":2283}",
-    "11-24 12:50:21.082 W/BQDiag  ( 5966): thread principal bloqueada por 763 ms (fim do bloqueio) | relogio=1795524621082",
-    "11-24 12:50:21.293 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795524621293|t=21083|{\"ms\":1039,\"inicio\":20033}",
-    "11-24 12:50:21.304 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795524621304|t=21094|{\"ms\":1050}",
-    "11-24 12:50:22.023 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795524622022|t=21812|{\"ms\":550}",
-    "11-24 12:50:22.046 W/BQDiag  ( 5966): thread principal bloqueada por 541 ms (fim do bloqueio) | relogio=1795524622046",
-    "11-24 12:50:43.901 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|prefers-reduced-motion mudou|relogio=1795524643896|t=43686|false",
-    "11-24 12:50:44.702 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|teste: Playwright conectado ao WebView|relogio=1795524644613|t=44403|",
-    "11-24 12:50:45.560 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795524645449|t=45238|{\"evento\":\"pointerdown\",\"duracaoMs\":552,\"atrasoDeEntradaMs\":269}",
-    "11-24 12:50:45.560 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795524645449|t=45239|{\"evento\":\"pointerup\",\"duracaoMs\":552,\"atrasoDeEntradaMs\":273}",
-    "11-24 12:50:45.777 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795524645582|t=45372|{\"evento\":\"click\",\"duracaoMs\":688,\"atrasoDeEntradaMs\":417}",
-    "11-24 12:50:47.169 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795524647018|t=46807|{\"evento\":\"pointerdown\",\"duracaoMs\":248,\"atrasoDeEntradaMs\":69}",
-    "11-24 12:50:47.171 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795524647020|t=46810|{\"evento\":\"pointerup\",\"duracaoMs\":248,\"atrasoDeEntradaMs\":69}",
-    "11-24 12:50:47.457 I/Capacitor/Console( 5966): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795524647440|t=47230|{\"evento\":\"click\",\"duracaoMs\":536,\"atrasoDeEntradaMs\":244}"
+    "11-24 15:20:59.916 I/BQDiag  ( 6414): cenario: 1-animacoes-desligadas-normal",
+    "11-24 15:21:04.271 I/BQDiag  ( 6489): onCreate | desde o início do processo=1431 ms | relogio=1795533664271 | inicioDoProcessoRelogio=1795533662840",
+    "11-24 15:21:04.337 I/BQDiag  ( 6489): onResume | relogio=1795533664337",
+    "11-24 15:21:05.418 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|página iniciada|relogio=1795533665411|t=1171|{\"url\":\"https://localhost/\",\"userAgent\":\"Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36\"}",
+    "11-24 15:21:05.418 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|prefers-reduced-motion inicial|relogio=1795533665413|t=1175|true",
+    "11-24 15:21:05.476 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|pageshow|relogio=1795533665474|t=1235|{\"persisted\":false}",
+    "11-24 15:21:05.931 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795533665930|t=1692|{\"ms\":220,\"inicio\":1260}",
+    "11-24 15:21:06.075 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|render: valores mudaram|relogio=1795533666025|t=1786|{\"mudou\":[\"(primeira vez)\"],\"valores\":{\"qualidade\":\"leve\",\"animacoesReduzidas\":true,\"reduceMotionConfiguracao\":false,\"prefersReducedMotion\":true,\"configuracaoGraficos\":\"auto\",\"elementos\":\"tenda,fogueira,mesa,quadro,bau\",\"bauPronto\":false,\"estado\":\"carregando\"}}",
+    "11-24 15:21:06.081 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|efeito executa #1|relogio=1795533666038|t=1800|{\"motivo\":[\"(primeira vez)\"],\"antes\":null,\"depois\":{\"qualidade\":\"leve\",\"animacoesReduzidas\":true,\"reduceMotionConfiguracao\":false,\"prefersReducedMotion\":true,\"configuracaoGraficos\":\"auto\",\"elementos\":\"tenda,fogueira,mesa,quadro,bau\",\"bauPronto\":false,\"estado\":\"carregando\"}}",
+    "11-24 15:21:16.433 W/BQDiag  ( 6489): thread principal bloqueada por 9984 ms (fim do bloqueio) | relogio=1795533676433",
+    "11-24 15:21:16.447 I/BQDiag  ( 6489): foco da janela=true | relogio=1795533676447",
+    "11-24 15:21:22.815 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|+canvas|relogio=1795533682790|t=18551|",
+    "11-24 15:21:22.815 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|Central visível|relogio=1795533682810|t=18571|",
+    "11-24 15:21:22.860 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795533682858|t=18620|{\"ms\":16544,\"inicio\":2013}",
+    "11-24 15:21:22.893 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533682861|t=18622|{\"ms\":16567}",
+    "11-24 15:21:25.328 W/BQDiag  ( 6489): thread principal bloqueada por 2307 ms (fim do bloqueio) | relogio=1795533685328",
+    "11-24 15:21:28.134 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533688134|t=23895|{\"ms\":2650}",
+    "11-24 15:21:28.156 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795533688156|t=23917|{\"ms\":2538,\"inicio\":21348}",
+    "11-24 15:21:28.163 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533688162|t=23924|{\"ms\":2567}",
+    "11-24 15:21:30.266 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|cena pronta|relogio=1795533690264|t=26026|",
+    "11-24 15:21:33.261 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795533693245|t=29007|{\"ms\":2739,\"inicio\":25806}",
+    "11-24 15:21:33.268 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795533693245|t=29007|{\"ms\":369,\"inicio\":28545}",
+    "11-24 15:21:33.268 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533693260|t=29021|{\"ms\":3117}",
+    "11-24 15:21:34.602 W/BQDiag  ( 6489): thread principal bloqueada por 1212 ms (fim do bloqueio) | relogio=1795533694602",
+    "11-24 15:21:34.732 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|tarefa longa (JS)|relogio=1795533694732|t=30493|{\"ms\":1387,\"inicio\":29047}",
+    "11-24 15:21:34.781 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533694778|t=30539|{\"ms\":1433}",
+    "11-24 15:21:36.146 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533695705|t=31467|{\"ms\":733}",
+    "11-24 15:21:36.162 W/BQDiag  ( 6489): thread principal bloqueada por 1136 ms (fim do bloqueio) | relogio=1795533696162",
+    "11-24 15:21:42.234 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533702166|t=37928|{\"ms\":550}",
+    "11-24 15:21:42.255 W/BQDiag  ( 6489): thread principal bloqueada por 603 ms (fim do bloqueio) | relogio=1795533702255",
+    "11-24 15:21:42.965 W/BQDiag  ( 6489): thread principal bloqueada por 502 ms (fim do bloqueio) | relogio=1795533702965",
+    "11-24 15:21:45.066 W/BQDiag  ( 6489): thread principal bloqueada por 520 ms (fim do bloqueio) | relogio=1795533705066",
+    "11-24 15:21:47.500 W/BQDiag  ( 6489): thread principal bloqueada por 544 ms (fim do bloqueio) | relogio=1795533707500",
+    "11-24 15:21:47.993 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|prefers-reduced-motion mudou|relogio=1795533707993|t=43755|false",
+    "11-24 15:21:48.127 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|teste: Playwright conectado ao WebView|relogio=1795533708093|t=43855|",
+    "11-24 15:21:49.366 W/BQDiag  ( 6489): thread principal bloqueada por 1038 ms (fim do bloqueio) | relogio=1795533709366",
+    "11-24 15:21:49.451 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|quadro atrasado|relogio=1795533709435|t=45197|{\"ms\":667}",
+    "11-24 15:21:49.499 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795533709498|t=45260|{\"evento\":\"pointerdown\",\"duracaoMs\":1168,\"atrasoDeEntradaMs\":458}",
+    "11-24 15:21:49.501 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795533709500|t=45262|{\"evento\":\"pointerup\",\"duracaoMs\":1232,\"atrasoDeEntradaMs\":1149}",
+    "11-24 15:21:52.033 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795533711894|t=47655|{\"evento\":\"pointerdown\",\"duracaoMs\":480,\"atrasoDeEntradaMs\":193}",
+    "11-24 15:21:52.034 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795533711894|t=47656|{\"evento\":\"pointerup\",\"duracaoMs\":784,\"atrasoDeEntradaMs\":281}",
+    "11-24 15:21:52.218 I/Capacitor/Console( 6489): File: https://localhost/assets/index-CUWWKCsR.js - Line 2 - Msg: BQDiag|toque|relogio=1795533712043|t=47804|{\"evento\":\"click\",\"duracaoMs\":1048,\"atrasoDeEntradaMs\":442}"
   ],
   "anr": [],
   "amAnr": [],
   "eventos": [
     {
-      "t": 1125,
-      "hora": "2026-11-24T12:50:01.335Z",
+      "t": 1171,
+      "hora": "2026-11-24T15:21:05.410Z",
       "tipo": "página iniciada",
       "detalhe": {
         "url": "https://localhost/",
@@ -80,22 +88,31 @@
       }
     },
     {
-      "t": 1133,
-      "hora": "2026-11-24T12:50:01.343Z",
+      "t": 1175,
+      "hora": "2026-11-24T15:21:05.413Z",
       "tipo": "prefers-reduced-motion inicial",
       "detalhe": true
     },
     {
-      "t": 1168,
-      "hora": "2026-11-24T12:50:01.378Z",
+      "t": 1235,
+      "hora": "2026-11-24T15:21:05.474Z",
       "tipo": "pageshow",
       "detalhe": {
         "persisted": false
       }
     },
     {
-      "t": 1486,
-      "hora": "2026-11-24T12:50:01.696Z",
+      "t": 1692,
+      "hora": "2026-11-24T15:21:05.930Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 220,
+        "inicio": 1260
+      }
+    },
+    {
+      "t": 1786,
+      "hora": "2026-11-24T15:21:06.025Z",
       "tipo": "render: valores mudaram",
       "detalhe": {
         "mudou": [
@@ -114,8 +131,8 @@
       }
     },
     {
-      "t": 1571,
-      "hora": "2026-11-24T12:50:01.781Z",
+      "t": 1800,
+      "hora": "2026-11-24T15:21:06.038Z",
       "tipo": "efeito executa #1",
       "detalhe": {
         "motivo": [
@@ -135,174 +152,188 @@
       }
     },
     {
-      "t": 1673,
-      "hora": "2026-11-24T12:50:01.883Z",
-      "tipo": "Central visível"
-    },
-    {
-      "t": 12375,
-      "hora": "2026-11-24T12:50:12.585Z",
+      "t": 18551,
+      "hora": "2026-11-24T15:21:22.789Z",
       "tipo": "+canvas"
     },
     {
-      "t": 12441,
-      "hora": "2026-11-24T12:50:12.651Z",
+      "t": 18571,
+      "hora": "2026-11-24T15:21:22.809Z",
+      "tipo": "Central visível"
+    },
+    {
+      "t": 18620,
+      "hora": "2026-11-24T15:21:22.858Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 10688,
-        "inicio": 1695
+        "ms": 16544,
+        "inicio": 2013
       }
     },
     {
-      "t": 16400,
-      "hora": "2026-11-24T12:50:16.610Z",
+      "t": 18622,
+      "hora": "2026-11-24T15:21:22.861Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 10733
+        "ms": 16567
       }
     },
     {
-      "t": 16447,
-      "hora": "2026-11-24T12:50:16.657Z",
+      "t": 23895,
+      "hora": "2026-11-24T15:21:28.134Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 2650
+      }
+    },
+    {
+      "t": 23917,
+      "hora": "2026-11-24T15:21:28.156Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 3958,
-        "inicio": 12442
+        "ms": 2538,
+        "inicio": 21348
       }
     },
     {
-      "t": 16470,
-      "hora": "2026-11-24T12:50:16.680Z",
+      "t": 23924,
+      "hora": "2026-11-24T15:21:28.162Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 3983
+        "ms": 2567
       }
     },
     {
-      "t": 17927,
-      "hora": "2026-11-24T12:50:18.137Z",
+      "t": 26026,
+      "hora": "2026-11-24T15:21:30.264Z",
       "tipo": "cena pronta"
     },
     {
-      "t": 20004,
-      "hora": "2026-11-24T12:50:20.214Z",
+      "t": 29007,
+      "hora": "2026-11-24T15:21:33.245Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 1968,
-        "inicio": 17693
+        "ms": 2739,
+        "inicio": 25806
       }
     },
     {
-      "t": 20004,
-      "hora": "2026-11-24T12:50:20.214Z",
+      "t": 29007,
+      "hora": "2026-11-24T15:21:33.245Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 323,
-        "inicio": 19662
+        "ms": 369,
+        "inicio": 28545
       }
     },
     {
-      "t": 20019,
-      "hora": "2026-11-24T12:50:20.229Z",
+      "t": 29021,
+      "hora": "2026-11-24T15:21:33.260Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 2283
+        "ms": 3117
       }
     },
     {
-      "t": 21083,
-      "hora": "2026-11-24T12:50:21.293Z",
+      "t": 30493,
+      "hora": "2026-11-24T15:21:34.732Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 1039,
-        "inicio": 20033
+        "ms": 1387,
+        "inicio": 29047
       }
     },
     {
-      "t": 21094,
-      "hora": "2026-11-24T12:50:21.304Z",
+      "t": 30539,
+      "hora": "2026-11-24T15:21:34.778Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 1050
+        "ms": 1433
       }
     },
     {
-      "t": 21812,
-      "hora": "2026-11-24T12:50:22.022Z",
+      "t": 31467,
+      "hora": "2026-11-24T15:21:35.705Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 733
+      }
+    },
+    {
+      "t": 37928,
+      "hora": "2026-11-24T15:21:42.166Z",
       "tipo": "quadro atrasado",
       "detalhe": {
         "ms": 550
       }
     },
     {
-      "t": 43686,
-      "hora": "2026-11-24T12:50:43.896Z",
+      "t": 43755,
+      "hora": "2026-11-24T15:21:47.993Z",
       "tipo": "prefers-reduced-motion mudou",
       "detalhe": false
     },
     {
-      "t": 44403,
-      "hora": "2026-11-24T12:50:44.613Z",
+      "t": 43855,
+      "hora": "2026-11-24T15:21:48.093Z",
       "tipo": "teste: Playwright conectado ao WebView"
     },
     {
-      "t": 45238,
-      "hora": "2026-11-24T12:50:45.449Z",
+      "t": 45197,
+      "hora": "2026-11-24T15:21:49.435Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 667
+      }
+    },
+    {
+      "t": 45260,
+      "hora": "2026-11-24T15:21:49.498Z",
       "tipo": "toque",
       "detalhe": {
         "evento": "pointerdown",
-        "duracaoMs": 552,
-        "atrasoDeEntradaMs": 269
+        "duracaoMs": 1168,
+        "atrasoDeEntradaMs": 458
       }
     },
     {
-      "t": 45239,
-      "hora": "2026-11-24T12:50:45.449Z",
+      "t": 45262,
+      "hora": "2026-11-24T15:21:49.500Z",
       "tipo": "toque",
       "detalhe": {
         "evento": "pointerup",
-        "duracaoMs": 552,
-        "atrasoDeEntradaMs": 273
+        "duracaoMs": 1232,
+        "atrasoDeEntradaMs": 1149
       }
     },
     {
-      "t": 45372,
-      "hora": "2026-11-24T12:50:45.582Z",
-      "tipo": "toque",
-      "detalhe": {
-        "evento": "click",
-        "duracaoMs": 688,
-        "atrasoDeEntradaMs": 417
-      }
-    },
-    {
-      "t": 46807,
-      "hora": "2026-11-24T12:50:47.018Z",
+      "t": 47655,
+      "hora": "2026-11-24T15:21:51.894Z",
       "tipo": "toque",
       "detalhe": {
         "evento": "pointerdown",
-        "duracaoMs": 248,
-        "atrasoDeEntradaMs": 69
+        "duracaoMs": 480,
+        "atrasoDeEntradaMs": 193
       }
     },
     {
-      "t": 46810,
-      "hora": "2026-11-24T12:50:47.020Z",
+      "t": 47656,
+      "hora": "2026-11-24T15:21:51.894Z",
       "tipo": "toque",
       "detalhe": {
         "evento": "pointerup",
-        "duracaoMs": 248,
-        "atrasoDeEntradaMs": 69
+        "duracaoMs": 784,
+        "atrasoDeEntradaMs": 281
       }
     },
     {
-      "t": 47230,
-      "hora": "2026-11-24T12:50:47.440Z",
+      "t": 47804,
+      "hora": "2026-11-24T15:21:52.043Z",
       "tipo": "toque",
       "detalhe": {
         "evento": "click",
-        "duracaoMs": 536,
-        "atrasoDeEntradaMs": 244
+        "duracaoMs": 1048,
+        "atrasoDeEntradaMs": 442
       }
     }
   ]
