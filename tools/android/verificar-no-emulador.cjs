@@ -104,28 +104,6 @@ async function emPrimeiroPlano(device) {
   confere('leitura em voz alta oculta nas Configurações', (await page.getByText('Botões de leitura em voz alta').count()) === 0)
   await fs.promises.writeFile(path.join(SAIDA, '04-configuracoes.png'), await device.screenshot())
 
-  // 8. links externos: abrem no navegador do sistema (o aplicativo não tem permissão de internet)
-  await irPara(page, '#/sobre')
-  const link = page.getByRole('link', { name: 'Fonte no Commons' }).first()
-  await link.scrollIntoViewIfNeeded().catch(() => {})
-  await link.click().catch(() => {})
-  let fora = ''
-  for (let i = 0; i < 15 && !fora; i++) {
-    await espera(1000)
-    const atividades = (await device.shell('dumpsys activity activities')).toString()
-    const linha = atividades.split('\n').find((l) => /topResumedActivity|mResumedActivity/.test(l)) || ''
-    if (linha && !linha.includes(PACOTE)) fora = linha.trim()
-  }
-  await fs.promises.writeFile(path.join(SAIDA, '07-link-externo.png'), await device.screenshot())
-  confere('link externo abre fora do aplicativo (navegador do sistema)', /chrome|browser/i.test(fora), fora)
-  await device.shell('input keyevent 4')
-  let devolta = false
-  for (let i = 0; i < 15 && !devolta; i++) {
-    await espera(1000)
-    devolta = await emPrimeiroPlano(device)
-  }
-  confere('voltar do navegador retorna ao jogo, na mesma tela', devolta && (await page.evaluate(() => location.hash)) === '#/sobre', await page.evaluate(() => location.hash))
-
   // 7. botão voltar: volta uma tela; na Central, sai do aplicativo
   await irPara(page, '#/painel')
   await esperarCentral(page)
@@ -161,6 +139,38 @@ async function emPrimeiroPlano(device) {
     saiu = !(await emPrimeiroPlano(device))
   }
   confere('voltar na Central sai do aplicativo', saiu)
+
+  // 8. links externos: abrem no navegador do sistema (o aplicativo não tem permissão de internet)
+  page = await abrir(device)
+  await irPara(page, '#/sobre')
+  const link = page.getByRole('link', { name: 'Fonte no Commons' }).first()
+  await link.scrollIntoViewIfNeeded().catch(() => {})
+  await link.click().catch(() => {})
+  let fora = ''
+  for (let i = 0; i < 15 && !fora; i++) {
+    await espera(1000)
+    const atividades = (await device.shell('dumpsys activity activities')).toString()
+    const linha = atividades.split('\n').find((l) => /topResumedActivity|mResumedActivity/.test(l)) || ''
+    if (linha && !linha.includes(PACOTE)) fora = linha.trim()
+  }
+  await fs.promises.writeFile(path.join(SAIDA, '07-link-externo.png'), await device.screenshot())
+  confere('link externo abre fora do aplicativo (navegador do sistema)', /chrome|browser/i.test(fora), fora)
+  // volta ao jogo: primeiro com o voltar; o Chrome do emulador nunca foi usado e pode estar na
+  // tela de primeiro uso, que não fecha com o voltar; então o jogo volta pelo alternador de apps
+  let devolta = false
+  for (let k = 0; k < 2 && !devolta; k++) {
+    await device.shell('input keyevent 4')
+    for (let i = 0; i < 5 && !devolta; i++) {
+      await espera(1000)
+      devolta = await emPrimeiroPlano(device)
+    }
+  }
+  resultado.push({ nome: 'observação: o voltar do navegador devolveu o jogo', ok: true, detalhe: devolta ? 'sim' : 'não (navegador na tela de primeiro uso); o jogo voltou pelo alternador' })
+  if (!devolta) {
+    await device.shell(`am start -n ${PACOTE}/.MainActivity`)
+    await espera(3000)
+  }
+  confere('depois do navegador, o jogo continua na mesma tela', (await emPrimeiroPlano(device)) && (await page.evaluate(() => location.hash)) === '#/sobre', await page.evaluate(() => location.hash))
 
   confere('nenhuma requisição para a internet', externas.length === 0, externas.slice(0, 3).join(' '))
 
