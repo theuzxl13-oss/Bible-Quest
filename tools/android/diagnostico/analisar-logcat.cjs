@@ -13,15 +13,42 @@
  * Para cada abertura, mostra (em ms desde o início do processo do aplicativo):
  *   onCreate · página iniciada · boas-vindas visível · Central visível · cena 3D pronta
  *   bloqueios da thread principal (quantidade, maior, soma) · ANR · toques (maior duração e maior atraso)
+ *
+ * Codificação do arquivo: detectada automaticamente.
+ *   UTF-8 (com ou sem BOM), que é o que o Prompt de Comando do Windows, o Linux e o macOS gravam;
+ *   UTF-16 LE ou BE (com ou sem BOM), que é o que o PowerShell 5 grava com ">".
+ * Quebras de linha do Windows (CRLF) e do Linux (LF) são aceitas.
  */
 const fs = require('fs')
+
+/** Decodifica o arquivo do registro detectando a codificação (UTF-8 ou UTF-16 LE/BE). */
+function decodificar(buf) {
+  if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xfe) return { texto: buf.subarray(2).toString('utf16le'), codificacao: 'UTF-16 LE (com BOM)' }
+  if (buf.length >= 2 && buf[0] === 0xfe && buf[1] === 0xff) return { texto: trocarBytes(buf.subarray(2)).toString('utf16le'), codificacao: 'UTF-16 BE (com BOM)' }
+  if (buf.length >= 3 && buf[0] === 0xef && buf[1] === 0xbb && buf[2] === 0xbf) return { texto: buf.subarray(3).toString('utf8'), codificacao: 'UTF-8 (com BOM)' }
+  // sem BOM: texto deste registro é quase todo ASCII; em UTF-16 metade dos bytes é zero
+  const amostra = buf.subarray(0, Math.min(buf.length, 4096))
+  let zerosPares = 0
+  let zerosImpares = 0
+  for (let i = 0; i < amostra.length; i++) if (amostra[i] === 0) (i % 2 === 0 ? zerosPares++ : zerosImpares++)
+  const metade = amostra.length / 2
+  if (metade > 0 && zerosImpares > metade * 0.3 && zerosPares < metade * 0.05) return { texto: buf.toString('utf16le'), codificacao: 'UTF-16 LE (sem BOM)' }
+  if (metade > 0 && zerosPares > metade * 0.3 && zerosImpares < metade * 0.05) return { texto: trocarBytes(buf).toString('utf16le'), codificacao: 'UTF-16 BE (sem BOM)' }
+  return { texto: buf.toString('utf8'), codificacao: 'UTF-8' }
+}
+
+function trocarBytes(buf) {
+  const copia = Buffer.from(buf.subarray(0, buf.length - (buf.length % 2)))
+  return copia.swap16()
+}
 
 const [ARQ, APARELHO = 'aparelho'] = process.argv.slice(2)
 if (!ARQ) {
   console.error('uso: node analisar-logcat.cjs registro.txt [nome-do-aparelho]')
   process.exit(1)
 }
-const linhas = fs.readFileSync(ARQ, 'utf8').split(/\r?\n/)
+const { texto, codificacao } = decodificar(fs.readFileSync(ARQ))
+const linhas = texto.split(/\r?\n/)
 
 const epoca = (l) => {
   const m = l.match(/^\s*(\d{9,}\.\d{3})\s/)
@@ -89,6 +116,7 @@ for (const l of linhas) {
 const seg = (v) => `${(v / 1000).toFixed(1).replace('.', ',')} s`
 const ms = (abs, ini) => (abs && ini ? seg(abs - ini) : '—')
 console.log(`# ${APARELHO}: ${aberturas.length} abertura(s) do aplicativo\n`)
+console.log(`Arquivo lido como ${codificacao}.\n`)
 console.log('| Cenário | onCreate | Página iniciada | Boas-vindas visível | Central visível | Cena 3D pronta | Bloqueios ≥ 0,5 s (qtd · maior · soma) | ANR | Toques (qtd · maior duração · maior atraso) | Retornos do 2º plano |')
 console.log('|---|---|---|---|---|---|---|---|---|---|')
 for (const a of aberturas) {
