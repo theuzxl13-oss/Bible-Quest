@@ -68,6 +68,7 @@ async function estado(page) {
       quadrosPorSegundo: quadros,
       renderizador,
       tempoDesdeAbertura: Math.round(performance.now()),
+      eventosCena: (window.__eventosCena || []).slice(),
     }
   })
 }
@@ -75,11 +76,40 @@ async function estado(page) {
 async function abrir(device) {
   await device.shell(`am start -W -n ${PACOTE}/.MainActivity`)
   await espera(3000)
-  const webview = await device.webView({ pkg: PACOTE })
-  return webview.page()
+  // depois que o aplicativo sai (voltar na Central) ou é fechado, o WebView antigo deixa de existir:
+  // espera um WebView novo e aberto
+  for (let i = 0; i < 30; i++) {
+    const vistas = device.webViews().filter((w) => w.pkg() === PACOTE)
+    const wv = vistas.length ? vistas[vistas.length - 1] : await device.webView({ pkg: PACOTE }).catch(() => null)
+    const page = wv ? await wv.page().catch(() => null) : null
+    if (page && !page.isClosed()) {
+      const ok = await page.waitForLoadState('domcontentloaded').then(() => true).catch(() => false)
+      if (ok) return page
+    }
+    await espera(1000)
+  }
+  throw new Error('o WebView do aplicativo não abriu')
+}
+
+/** Registra na página quando o canvas 3D entra ou sai e quando o estado da cena muda. */
+async function observar(page) {
+  await page.evaluate(() => {
+    if (window.__obsCena) return
+    window.__obsCena = true
+    window.__eventosCena = []
+    const marca = (t) => window.__eventosCena.push(`${t} @${Math.round(performance.now())}ms`)
+    new MutationObserver((ms) => {
+      for (const m of ms) {
+        for (const n of m.addedNodes) if (n.nodeName === 'CANVAS') marca('+canvas')
+        for (const n of m.removedNodes) if (n.nodeName === 'CANVAS') marca('-canvas')
+        if (m.type === 'attributes' && m.target.classList && m.target.classList.contains('camp-scene')) marca(`classe="${m.target.className.trim()}"`)
+      }
+    }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] })
+  }).catch(() => {})
 }
 
 async function seguir(device, page, nome, marcos = [5, 15, 30, 60]) {
+  await observar(page)
   const linhas = []
   let t = 0
   for (const m of marcos) {

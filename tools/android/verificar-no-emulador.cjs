@@ -37,10 +37,19 @@ const espera = (ms) => new Promise((r) => setTimeout(r, ms))
 async function abrir(device) {
   await device.shell(`am start -W -n ${PACOTE}/.MainActivity`)
   await espera(6000)
-  const webview = await device.webView({ pkg: PACOTE })
-  const page = await webview.page()
-  await page.waitForLoadState('domcontentloaded')
-  return page
+  // depois que o aplicativo sai (voltar na Central) ou é fechado, o WebView antigo deixa de existir:
+  // espera um WebView novo e aberto
+  for (let i = 0; i < 30; i++) {
+    const vistas = device.webViews().filter((w) => w.pkg() === PACOTE)
+    const wv = vistas.length ? vistas[vistas.length - 1] : await device.webView({ pkg: PACOTE }).catch(() => null)
+    const page = wv ? await wv.page().catch(() => null) : null
+    if (page && !page.isClosed()) {
+      const ok = await page.waitForLoadState('domcontentloaded').then(() => true).catch(() => false)
+      if (ok) return page
+    }
+    await espera(1000)
+  }
+  throw new Error('o WebView do aplicativo não abriu')
 }
 async function irPara(page, rota) {
   await page.evaluate((r) => { window.location.hash = r }, rota)
