@@ -105,7 +105,11 @@ A cena é montada por um efeito do React em `src/components/camp/CenaAcampamento
 
 **Reprodução no Chromium:** abrindo a Central e ligando "reduzir movimento" 1 s depois, acontece exatamente a mesma sequência (o canvas sai e volta logo depois de pronto), em cerca de 0,3 s. No emulador, por causa do software, leva segundos.
 
-**Mas o gatilho no emulador não é essa preferência:** ela ficou falsa o tempo todo nos registros, sem nenhuma mudança. O que dispara a remontagem ainda não foi identificado. A execução final registra também se o componente inteiro é montado de novo, o que distingue as duas possibilidades (resultado na seção 3.4).
+**Mas o gatilho no emulador não é essa preferência:** ela ficou falsa o tempo todo nos registros, sem nenhuma mudança.
+
+**Execução final (45303556202):** não registrou nenhuma montagem ou desmontagem do componente da cena. Portanto, **não é o componente inteiro que é montado de novo**: é o efeito que cria a cena que roda outra vez. Isso significa que um dos quatro valores de que ele depende (qualidade, animações reduzidas, elementos liberados, baú pronto) muda logo depois que a cena fica pronta. Qual deles muda ainda não foi identificado.
+
+**Ressalva sobre o cenário E:** ele roda depois dos outros. Por isso, a ligação com as animações do sistema desligadas é uma correlação observada, não uma prova.
 
 ### 3.3 ANR no emulador
 
@@ -125,7 +129,8 @@ O ANR agora é registrado em toda verificação (`anr.txt` e um aviso no GitHub 
 2. **Não há perda do contexto gráfico** nem falha de inicialização do WebGL ou de carregamento dos modelos.
 3. **A tela vazia é a cena sendo refeita logo depois de pronta**, sem o aviso de carregamento.
 4. O emulador desenha por software, o que transforma uma remontagem de décimos de segundo em vários segundos e provoca ANR.
-5. O gatilho exato da remontagem no emulador ainda não foi identificado; o resultado da execução final está abaixo.
+5. **Não é o componente inteiro que é montado de novo**, e sim o efeito que cria a cena: um dos valores de que ele depende muda logo depois que a cena fica pronta. Qual deles, ainda não se sabe.
+6. **Próximo passo de diagnóstico, se autorizado:** um build só para diagnóstico, que registre no console os quatro valores a cada vez que o efeito roda. Ele não seria publicado nem entraria no APK oficial. Com isso, saberíamos qual valor muda e por quê.
 
 **Confirmação em aparelho físico ainda necessária.** Num celular com GPU, a remontagem, se acontecer, deve ser curta, e o ANR pode não acontecer. Isso só pode ser afirmado depois do teste num aparelho real, com as animações do sistema ligadas e desligadas.
 
@@ -142,9 +147,9 @@ O ANR agora é registrado em toda verificação (`anr.txt` e um aviso no GitHub 
 | `npm test` | 213 testes em 19 arquivos, todos passando |
 | `npm run build` | sem erros; **os 106 arquivos do site têm o mesmo SHA-256 da 0.17.9** |
 | `npm run build:android` | sem erros |
-| Fluxo do APK, build e verificação | execução 45298299473 (`5348df9`): APK compilado; `aapt2` confirma o pacote, a versão 0.17.9, API 24/36 e **nenhuma permissão INTERNET** |
-| Emulador Android 16 (`google_apis`) | execução 45298299473: **todas as verificações passaram**, incluindo o link externo |
-| Verificações complementares (sistema "user") | depuração do WebView só no APK de depuração (confirmado de novo); tela de abertura e ícone capturados; diagnóstico da Central. O teste do voltar falhou nessa imagem por causa do aviso de ANR (seção 3.3) |
+| Fluxo do APK, build e verificação | **execução 45303733939, no commit final `4955ffa`: sucesso**. APK compilado; `aapt2` confirma o pacote, a versão 0.17.9, API 24/36 e **nenhuma permissão INTERNET** |
+| Emulador Android 16 (`google_apis`) | execução 45303733939: **todas as verificações passaram**, incluindo o link externo e a volta ao jogo; o ANR, quando ocorre, fica registrado como observação |
+| Verificações complementares (sistema "user") | execução 45303556202: a depuração do WebView fica só no APK de depuração (5 de 5 verificações); tela de abertura e ícone capturados; diagnóstico da Central concluído. **Falharam os dois testes do voltar**, porque o aviso de ANR estava na tela e recebeu a tecla (seção 3.3). Por isso a execução aparece como falha |
 | Verificação do site (GitHub Pages) | sucesso |
 
 **Correções feitas só nos scripts de verificação durante esta entrega (o jogo não mudou):**
