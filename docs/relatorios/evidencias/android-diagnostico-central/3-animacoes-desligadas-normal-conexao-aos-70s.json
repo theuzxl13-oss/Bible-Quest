@@ -2,8 +2,8 @@
   "cenario": "3-animacoes-desligadas-normal-conexao-aos-70s",
   "execucoesDoEfeito": [
     {
-      "t": 431,
-      "hora": "2026-11-24T03:00:37.608Z",
+      "t": 554,
+      "hora": "2026-11-24T03:24:03.217Z",
       "tipo": "efeito executa #1",
       "motivo": [
         "(primeira vez)"
@@ -22,30 +22,37 @@
     }
   ],
   "resumo": [
-    "    313 ms  prefers-reduced-motion inicial true",
-    "    322 ms  pageshow",
-    "    417 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
-    "    431 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
-    "  11766 ms  +canvas",
-    "  15988 ms  cena pronta",
-    "  70053 ms  prefers-reduced-motion mudou",
-    "  71466 ms  teste: Playwright conectado ao WebView"
+    "    345 ms  prefers-reduced-motion inicial true",
+    "    352 ms  pageshow",
+    "    475 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
+    "    554 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
+    "  12023 ms  +canvas",
+    "  16352 ms  cena pronta",
+    "  70080 ms  prefers-reduced-motion mudou",
+    "  70485 ms  teste: Playwright conectado ao WebView"
   ],
   "bloqueiosDaThreadPrincipal": [
-    "11-24 03:00:45.419 W/BQDiag  (15590): thread principal bloqueada por 7607 ms (fim do bloqueio)",
-    "11-24 03:00:50.523 W/BQDiag  (15590): thread principal bloqueada por 1462 ms (fim do bloqueio)",
-    "11-24 03:01:31.037 W/BQDiag  (15590): thread principal bloqueada por 607 ms (fim do bloqueio)",
-    "11-24 03:01:39.137 W/BQDiag  (15590): thread principal bloqueada por 573 ms (fim do bloqueio)",
-    "11-24 03:01:43.461 W/BQDiag  (15590): thread principal bloqueada por 607 ms (fim do bloqueio)",
-    "11-24 03:01:45.034 W/BQDiag  (15590): thread principal bloqueada por 537 ms (fim do bloqueio)",
-    "11-24 03:01:48.665 W/BQDiag  (15590): thread principal bloqueada por 1144 ms (fim do bloqueio)"
+    "11-24 03:24:10.989 W/BQDiag  (15178): thread principal bloqueada por 7462 ms (fim do bloqueio)",
+    "11-24 03:24:16.343 W/BQDiag  (15178): thread principal bloqueada por 1489 ms (fim do bloqueio)",
+    "11-24 03:24:22.104 W/BQDiag  (15178): thread principal bloqueada por 878 ms (fim do bloqueio)",
+    "11-24 03:24:23.393 W/BQDiag  (15178): thread principal bloqueada por 771 ms (fim do bloqueio)",
+    "11-24 03:24:41.141 W/BQDiag  (15178): thread principal bloqueada por 505 ms (fim do bloqueio)",
+    "11-24 03:24:57.509 W/BQDiag  (15178): thread principal bloqueada por 520 ms (fim do bloqueio)",
+    "11-24 03:25:03.305 W/BQDiag  (15178): thread principal bloqueada por 500 ms (fim do bloqueio)",
+    "11-24 03:25:11.248 W/BQDiag  (15178): thread principal bloqueada por 507 ms (fim do bloqueio)",
+    "11-24 03:25:14.066 W/BQDiag  (15178): thread principal bloqueada por 1016 ms (fim do bloqueio)"
   ],
-  "anr": [],
-  "amAnr": [],
+  "anr": [
+    "11-24 03:24:09.414 E/ActivityManager(  628): ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity)",
+    "11-24 03:24:09.414 E/ActivityManager(  628): Reason: Input dispatching timed out (946497c com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true))."
+  ],
+  "amAnr": [
+    "11-24 03:24:08.345 I/am_anr  (  628): [0,15178,com.kzanntech.biblequest,552123974,Input dispatching timed out (946497c com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true)).]"
+  ],
   "eventos": [
     {
-      "t": 313,
-      "hora": "2026-11-24T03:00:37.490Z",
+      "t": 345,
+      "hora": "2026-11-24T03:24:03.007Z",
       "tipo": "página iniciada",
       "detalhe": {
         "url": "https://localhost/",
@@ -53,22 +60,22 @@
       }
     },
     {
-      "t": 313,
-      "hora": "2026-11-24T03:00:37.490Z",
+      "t": 345,
+      "hora": "2026-11-24T03:24:03.008Z",
       "tipo": "prefers-reduced-motion inicial",
       "detalhe": true
     },
     {
-      "t": 322,
-      "hora": "2026-11-24T03:00:37.499Z",
+      "t": 352,
+      "hora": "2026-11-24T03:24:03.014Z",
       "tipo": "pageshow",
       "detalhe": {
         "persisted": false
       }
     },
     {
-      "t": 417,
-      "hora": "2026-11-24T03:00:37.594Z",
+      "t": 475,
+      "hora": "2026-11-24T03:24:03.137Z",
       "tipo": "render: valores mudaram",
       "detalhe": {
         "mudou": [
@@ -87,8 +94,8 @@
       }
     },
     {
-      "t": 431,
-      "hora": "2026-11-24T03:00:37.608Z",
+      "t": 554,
+      "hora": "2026-11-24T03:24:03.217Z",
       "tipo": "efeito executa #1",
       "detalhe": {
         "motivo": [
@@ -108,116 +115,108 @@
       }
     },
     {
-      "t": 11766,
-      "hora": "2026-11-24T03:00:48.943Z",
+      "t": 12023,
+      "hora": "2026-11-24T03:24:14.685Z",
       "tipo": "+canvas"
     },
     {
-      "t": 11784,
-      "hora": "2026-11-24T03:00:48.961Z",
+      "t": 12038,
+      "hora": "2026-11-24T03:24:14.700Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 11305,
-        "inicio": 461
+        "ms": 11371,
+        "inicio": 651
       }
     },
     {
-      "t": 15333,
-      "hora": "2026-11-24T03:00:52.510Z",
+      "t": 15681,
+      "hora": "2026-11-24T03:24:18.344Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 11233
+        "ms": 11367
       }
     },
     {
-      "t": 15344,
-      "hora": "2026-11-24T03:00:52.521Z",
+      "t": 15696,
+      "hora": "2026-11-24T03:24:18.359Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 3548,
-        "inicio": 11784
+        "ms": 3643,
+        "inicio": 12038
       }
     },
     {
-      "t": 15346,
-      "hora": "2026-11-24T03:00:52.523Z",
+      "t": 15702,
+      "hora": "2026-11-24T03:24:18.365Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 3550
+        "ms": 3650
       }
     },
     {
-      "t": 15988,
-      "hora": "2026-11-24T03:00:53.165Z",
+      "t": 16352,
+      "hora": "2026-11-24T03:24:19.014Z",
       "tipo": "cena pronta"
     },
     {
-      "t": 18019,
-      "hora": "2026-11-24T03:00:55.196Z",
+      "t": 18354,
+      "hora": "2026-11-24T03:24:21.016Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 1948,
-        "inicio": 15902
+        "ms": 1905,
+        "inicio": 16275
       }
     },
     {
-      "t": 18023,
-      "hora": "2026-11-24T03:00:55.200Z",
+      "t": 18362,
+      "hora": "2026-11-24T03:24:21.025Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 1933
+        "ms": 2050
       }
     },
     {
-      "t": 19080,
-      "hora": "2026-11-24T03:00:56.257Z",
+      "t": 19610,
+      "hora": "2026-11-24T03:24:22.272Z",
       "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 1041,
-        "inicio": 18028
+        "ms": 1232,
+        "inicio": 18365
       }
     },
     {
-      "t": 19082,
-      "hora": "2026-11-24T03:00:56.259Z",
+      "t": 19611,
+      "hora": "2026-11-24T03:24:22.274Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 1033
+        "ms": 1233
       }
     },
     {
-      "t": 19819,
-      "hora": "2026-11-24T03:00:56.996Z",
+      "t": 20508,
+      "hora": "2026-11-24T03:24:23.170Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 600
+        "ms": 717
       }
     },
     {
-      "t": 70053,
-      "hora": "2026-11-24T03:01:47.230Z",
+      "t": 70080,
+      "hora": "2026-11-24T03:25:12.742Z",
       "tipo": "prefers-reduced-motion mudou",
       "detalhe": false
     },
     {
-      "t": 70818,
-      "hora": "2026-11-24T03:01:47.995Z",
-      "tipo": "quadro atrasado",
-      "detalhe": {
-        "ms": 567
-      }
-    },
-    {
-      "t": 71466,
-      "hora": "2026-11-24T03:01:48.643Z",
+      "t": 70485,
+      "hora": "2026-11-24T03:25:13.147Z",
       "tipo": "teste: Playwright conectado ao WebView"
     },
     {
-      "t": 71473,
-      "hora": "2026-11-24T03:01:48.650Z",
+      "t": 71349,
+      "hora": "2026-11-24T03:25:14.012Z",
       "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 650
+        "ms": 867
       }
     }
   ]

@@ -1,0 +1,394 @@
+{
+  "cenario": "3-animacoes-desligadas-normal-conexao-aos-5s",
+  "execucoesDoEfeito": [
+    {
+      "t": 474,
+      "hora": "2026-11-24T03:25:18.459Z",
+      "tipo": "efeito executa #1",
+      "motivo": [
+        "(primeira vez)"
+      ],
+      "antes": null,
+      "depois": {
+        "qualidade": "leve",
+        "animacoesReduzidas": true,
+        "reduceMotionConfiguracao": false,
+        "prefersReducedMotion": true,
+        "configuracaoGraficos": "auto",
+        "elementos": "tenda,fogueira,mesa,quadro,bau",
+        "bauPronto": false,
+        "estado": "carregando"
+      }
+    },
+    {
+      "t": 26167,
+      "hora": "2026-11-24T03:25:44.151Z",
+      "tipo": "efeito executa #2",
+      "motivo": [
+        "animacoesReduzidas: true → false",
+        "prefersReducedMotion: true → false"
+      ],
+      "antes": {
+        "qualidade": "leve",
+        "animacoesReduzidas": true,
+        "reduceMotionConfiguracao": false,
+        "prefersReducedMotion": true,
+        "configuracaoGraficos": "auto",
+        "elementos": "tenda,fogueira,mesa,quadro,bau",
+        "bauPronto": false,
+        "estado": "carregando"
+      },
+      "depois": {
+        "qualidade": "leve",
+        "animacoesReduzidas": false,
+        "reduceMotionConfiguracao": false,
+        "prefersReducedMotion": false,
+        "configuracaoGraficos": "auto",
+        "elementos": "tenda,fogueira,mesa,quadro,bau",
+        "bauPronto": false,
+        "estado": "pronto"
+      }
+    }
+  ],
+  "resumo": [
+    "    350 ms  prefers-reduced-motion inicial true",
+    "    356 ms  pageshow",
+    "    446 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
+    "    474 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
+    "  11167 ms  +canvas",
+    "  14743 ms  prefers-reduced-motion mudou",
+    "  15688 ms  teste: Playwright conectado ao WebView",
+    "  16401 ms  cena pronta",
+    "  24101 ms  render: valores mudaram mudou=[\"animacoesReduzidas: true → false\",\"prefersReducedMotion: true → false\"]",
+    "  25846 ms  efeito limpeza (antes da execução #2 ou ao sair)",
+    "  26167 ms  efeito executa #2 motivo=[\"animacoesReduzidas: true → false\",\"prefersReducedMotion: true → false\"]",
+    "  26167 ms  -canvas",
+    "  29631 ms  +canvas",
+    "  29633 ms  cena pronta"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 03:25:25.564 W/BQDiag  (15833): thread principal bloqueada por 6739 ms (fim do bloqueio)",
+    "11-24 03:25:30.711 W/BQDiag  (15833): thread principal bloqueada por 1330 ms (fim do bloqueio)",
+    "11-24 03:25:33.544 W/BQDiag  (15833): thread principal bloqueada por 577 ms (fim do bloqueio)",
+    "11-24 03:25:34.927 W/BQDiag  (15833): thread principal bloqueada por 871 ms (fim do bloqueio)",
+    "11-24 03:25:37.529 W/BQDiag  (15833): thread principal bloqueada por 724 ms (fim do bloqueio)",
+    "11-24 03:25:39.287 W/BQDiag  (15833): thread principal bloqueada por 527 ms (fim do bloqueio)",
+    "11-24 03:25:43.510 W/BQDiag  (15833): thread principal bloqueada por 1330 ms (fim do bloqueio)",
+    "11-24 03:25:49.192 W/BQDiag  (15833): thread principal bloqueada por 1045 ms (fim do bloqueio)",
+    "11-24 03:25:50.842 W/BQDiag  (15833): thread principal bloqueada por 500 ms (fim do bloqueio)",
+    "11-24 03:25:51.372 W/BQDiag  (15833): thread principal bloqueada por 528 ms (fim do bloqueio)",
+    "11-24 03:25:52.604 W/BQDiag  (15833): thread principal bloqueada por 541 ms (fim do bloqueio)",
+    "11-24 03:26:04.923 W/BQDiag  (15833): thread principal bloqueada por 533 ms (fim do bloqueio)",
+    "11-24 03:26:08.762 W/BQDiag  (15833): thread principal bloqueada por 507 ms (fim do bloqueio)",
+    "11-24 03:26:11.657 W/BQDiag  (15833): thread principal bloqueada por 572 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 349,
+      "hora": "2026-11-24T03:25:18.333Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 350,
+      "hora": "2026-11-24T03:25:18.334Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": true
+    },
+    {
+      "t": 356,
+      "hora": "2026-11-24T03:25:18.340Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 446,
+      "hora": "2026-11-24T03:25:18.430Z",
+      "tipo": "render: valores mudaram",
+      "detalhe": {
+        "mudou": [
+          "(primeira vez)"
+        ],
+        "valores": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 474,
+      "hora": "2026-11-24T03:25:18.459Z",
+      "tipo": "efeito executa #1",
+      "detalhe": {
+        "motivo": [
+          "(primeira vez)"
+        ],
+        "antes": null,
+        "depois": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 11167,
+      "hora": "2026-11-24T03:25:29.151Z",
+      "tipo": "+canvas"
+    },
+    {
+      "t": 11198,
+      "hora": "2026-11-24T03:25:29.182Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 10677,
+        "inicio": 490
+      }
+    },
+    {
+      "t": 14743,
+      "hora": "2026-11-24T03:25:32.727Z",
+      "tipo": "prefers-reduced-motion mudou",
+      "detalhe": false
+    },
+    {
+      "t": 14743,
+      "hora": "2026-11-24T03:25:32.727Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 10683
+      }
+    },
+    {
+      "t": 14757,
+      "hora": "2026-11-24T03:25:32.741Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 3544,
+        "inicio": 11198
+      }
+    },
+    {
+      "t": 14766,
+      "hora": "2026-11-24T03:25:32.750Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 3567
+      }
+    },
+    {
+      "t": 15589,
+      "hora": "2026-11-24T03:25:33.573Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 733
+      }
+    },
+    {
+      "t": 15688,
+      "hora": "2026-11-24T03:25:33.672Z",
+      "tipo": "teste: Playwright conectado ao WebView"
+    },
+    {
+      "t": 16401,
+      "hora": "2026-11-24T03:25:34.385Z",
+      "tipo": "cena pronta"
+    },
+    {
+      "t": 24101,
+      "hora": "2026-11-24T03:25:42.085Z",
+      "tipo": "render: valores mudaram",
+      "detalhe": {
+        "mudou": [
+          "animacoesReduzidas: true → false",
+          "prefersReducedMotion: true → false"
+        ],
+        "valores": {
+          "qualidade": "leve",
+          "animacoesReduzidas": false,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": false,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "pronto"
+        }
+      }
+    },
+    {
+      "t": 24107,
+      "hora": "2026-11-24T03:25:42.091Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 6001,
+        "inicio": 16335
+      }
+    },
+    {
+      "t": 24107,
+      "hora": "2026-11-24T03:25:42.091Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 1763,
+        "inicio": 22336
+      }
+    },
+    {
+      "t": 24120,
+      "hora": "2026-11-24T03:25:42.104Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 7650
+      }
+    },
+    {
+      "t": 25838,
+      "hora": "2026-11-24T03:25:43.822Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 867
+      }
+    },
+    {
+      "t": 25846,
+      "hora": "2026-11-24T03:25:43.830Z",
+      "tipo": "efeito limpeza (antes da execução #2 ou ao sair)",
+      "detalhe": {
+        "valoresDaExecucaoAnterior": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 26167,
+      "hora": "2026-11-24T03:25:44.151Z",
+      "tipo": "efeito executa #2",
+      "detalhe": {
+        "motivo": [
+          "animacoesReduzidas: true → false",
+          "prefersReducedMotion: true → false"
+        ],
+        "antes": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        },
+        "depois": {
+          "qualidade": "leve",
+          "animacoesReduzidas": false,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": false,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "pronto"
+        }
+      }
+    },
+    {
+      "t": 26167,
+      "hora": "2026-11-24T03:25:44.151Z",
+      "tipo": "-canvas"
+    },
+    {
+      "t": 26167,
+      "hora": "2026-11-24T03:25:44.151Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 900
+      }
+    },
+    {
+      "t": 26168,
+      "hora": "2026-11-24T03:25:44.152Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 1708,
+        "inicio": 24129
+      }
+    },
+    {
+      "t": 26168,
+      "hora": "2026-11-24T03:25:44.152Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 321,
+        "inicio": 25846
+      }
+    },
+    {
+      "t": 29631,
+      "hora": "2026-11-24T03:25:47.615Z",
+      "tipo": "+canvas"
+    },
+    {
+      "t": 29633,
+      "hora": "2026-11-24T03:25:47.617Z",
+      "tipo": "cena pronta"
+    },
+    {
+      "t": 30070,
+      "hora": "2026-11-24T03:25:48.054Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 3393,
+        "inicio": 26240
+      }
+    },
+    {
+      "t": 30070,
+      "hora": "2026-11-24T03:25:48.054Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 436,
+        "inicio": 29633
+      }
+    },
+    {
+      "t": 30071,
+      "hora": "2026-11-24T03:25:48.055Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 3850
+      }
+    },
+    {
+      "t": 31143,
+      "hora": "2026-11-24T03:25:49.127Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1050
+      }
+    }
+  ]
+}
