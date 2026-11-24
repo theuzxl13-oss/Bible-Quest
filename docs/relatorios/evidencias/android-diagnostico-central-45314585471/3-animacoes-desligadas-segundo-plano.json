@@ -1,0 +1,257 @@
+{
+  "cenario": "3-animacoes-desligadas-segundo-plano",
+  "execucoesDoEfeito": [
+    {
+      "t": 499,
+      "hora": "2026-11-24T03:02:58.552Z",
+      "tipo": "efeito executa #1",
+      "motivo": [
+        "(primeira vez)"
+      ],
+      "antes": null,
+      "depois": {
+        "qualidade": "leve",
+        "animacoesReduzidas": true,
+        "reduceMotionConfiguracao": false,
+        "prefersReducedMotion": true,
+        "configuracaoGraficos": "auto",
+        "elementos": "tenda,fogueira,mesa,quadro,bau",
+        "bauPronto": false,
+        "estado": "carregando"
+      }
+    }
+  ],
+  "resumo": [
+    "    392 ms  prefers-reduced-motion inicial true",
+    "    406 ms  pageshow",
+    "    487 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
+    "    499 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
+    "  11491 ms  +canvas",
+    "  15701 ms  cena pronta",
+    "  40168 ms  prefers-reduced-motion mudou",
+    "  41216 ms  teste: Playwright conectado ao WebView",
+    "  41283 ms  teste: indo para a tela inicial (HOME)",
+    "  71969 ms  teste: 20 s depois de voltar do segundo plano"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 03:03:05.917 W/BQDiag  (17113): thread principal bloqueada por 7022 ms (fim do bloqueio)",
+    "11-24 03:03:11.225 W/BQDiag  (17113): thread principal bloqueada por 1475 ms (fim do bloqueio)",
+    "11-24 03:03:16.834 W/BQDiag  (17113): thread principal bloqueada por 971 ms (fim do bloqueio)",
+    "11-24 03:03:17.716 W/BQDiag  (17113): thread principal bloqueada por 661 ms (fim do bloqueio)",
+    "11-24 03:03:37.605 W/BQDiag  (17113): thread principal bloqueada por 537 ms (fim do bloqueio)",
+    "11-24 03:03:39.286 W/BQDiag  (17113): thread principal bloqueada por 853 ms (fim do bloqueio)",
+    "11-24 03:03:40.930 W/BQDiag  (17113): thread principal bloqueada por 528 ms (fim do bloqueio)",
+    "11-24 03:03:51.085 W/BQDiag  (17113): thread principal bloqueada por 588 ms (fim do bloqueio)",
+    "11-24 03:03:52.709 W/BQDiag  (17113): thread principal bloqueada por 508 ms (fim do bloqueio)",
+    "11-24 03:04:02.908 W/BQDiag  (17113): thread principal bloqueada por 512 ms (fim do bloqueio)",
+    "11-24 03:04:05.688 W/BQDiag  (17113): thread principal bloqueada por 575 ms (fim do bloqueio)",
+    "11-24 03:04:09.961 W/BQDiag  (17113): thread principal bloqueada por 531 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 389,
+      "hora": "2026-11-24T03:02:58.442Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 392,
+      "hora": "2026-11-24T03:02:58.444Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": true
+    },
+    {
+      "t": 406,
+      "hora": "2026-11-24T03:02:58.458Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 487,
+      "hora": "2026-11-24T03:02:58.539Z",
+      "tipo": "render: valores mudaram",
+      "detalhe": {
+        "mudou": [
+          "(primeira vez)"
+        ],
+        "valores": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 499,
+      "hora": "2026-11-24T03:02:58.552Z",
+      "tipo": "efeito executa #1",
+      "detalhe": {
+        "motivo": [
+          "(primeira vez)"
+        ],
+        "antes": null,
+        "depois": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 11491,
+      "hora": "2026-11-24T03:03:09.543Z",
+      "tipo": "+canvas"
+    },
+    {
+      "t": 11508,
+      "hora": "2026-11-24T03:03:09.560Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 10973,
+        "inicio": 518
+      }
+    },
+    {
+      "t": 11509,
+      "hora": "2026-11-24T03:03:09.561Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 10983
+      }
+    },
+    {
+      "t": 15311,
+      "hora": "2026-11-24T03:03:13.364Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1667
+      }
+    },
+    {
+      "t": 15324,
+      "hora": "2026-11-24T03:03:13.377Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 2111,
+        "inicio": 13200
+      }
+    },
+    {
+      "t": 15324,
+      "hora": "2026-11-24T03:03:13.377Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 2117
+      }
+    },
+    {
+      "t": 15701,
+      "hora": "2026-11-24T03:03:13.753Z",
+      "tipo": "cena pronta"
+    },
+    {
+      "t": 17750,
+      "hora": "2026-11-24T03:03:15.802Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 1934,
+        "inicio": 15654
+      }
+    },
+    {
+      "t": 17760,
+      "hora": "2026-11-24T03:03:15.813Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 2083
+      }
+    },
+    {
+      "t": 18898,
+      "hora": "2026-11-24T03:03:16.951Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 1110,
+        "inicio": 17773
+      }
+    },
+    {
+      "t": 18900,
+      "hora": "2026-11-24T03:03:16.952Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1117
+      }
+    },
+    {
+      "t": 19710,
+      "hora": "2026-11-24T03:03:17.762Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 600
+      }
+    },
+    {
+      "t": 40168,
+      "hora": "2026-11-24T03:03:38.221Z",
+      "tipo": "prefers-reduced-motion mudou",
+      "detalhe": false
+    },
+    {
+      "t": 41216,
+      "hora": "2026-11-24T03:03:39.268Z",
+      "tipo": "teste: Playwright conectado ao WebView"
+    },
+    {
+      "t": 41233,
+      "hora": "2026-11-24T03:03:39.286Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 683
+      }
+    },
+    {
+      "t": 41283,
+      "hora": "2026-11-24T03:03:39.335Z",
+      "tipo": "teste: indo para a tela inicial (HOME)"
+    },
+    {
+      "t": 42863,
+      "hora": "2026-11-24T03:03:40.916Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 533
+      }
+    },
+    {
+      "t": 52195,
+      "hora": "2026-11-24T03:03:50.248Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 9333
+      }
+    },
+    {
+      "t": 71969,
+      "hora": "2026-11-24T03:04:10.021Z",
+      "tipo": "teste: 20 s depois de voltar do segundo plano"
+    }
+  ]
+}

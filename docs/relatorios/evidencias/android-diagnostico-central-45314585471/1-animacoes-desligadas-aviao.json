@@ -1,0 +1,225 @@
+{
+  "cenario": "1-animacoes-desligadas-aviao",
+  "execucoesDoEfeito": [
+    {
+      "t": 711,
+      "hora": "2026-11-24T02:52:30.219Z",
+      "tipo": "efeito executa #1",
+      "motivo": [
+        "(primeira vez)"
+      ],
+      "antes": null,
+      "depois": {
+        "qualidade": "leve",
+        "animacoesReduzidas": true,
+        "reduceMotionConfiguracao": false,
+        "prefersReducedMotion": true,
+        "configuracaoGraficos": "auto",
+        "elementos": "tenda,fogueira,mesa,quadro,bau",
+        "bauPronto": false,
+        "estado": "carregando"
+      }
+    }
+  ],
+  "resumo": [
+    "    510 ms  prefers-reduced-motion inicial true",
+    "    528 ms  pageshow",
+    "    668 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
+    "    711 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
+    "  13438 ms  +canvas",
+    "  17462 ms  cena pronta",
+    "  45174 ms  prefers-reduced-motion mudou",
+    "  46434 ms  teste: Playwright conectado ao WebView"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 02:52:25.666 W/BQDiag  ( 7362): thread principal bloqueada por 588 ms (fim do bloqueio)",
+    "11-24 02:52:26.400 W/BQDiag  ( 7362): thread principal bloqueada por 520 ms (fim do bloqueio)",
+    "11-24 02:52:36.963 W/BQDiag  ( 9330): thread principal bloqueada por 6401 ms (fim do bloqueio)",
+    "11-24 02:52:44.557 W/BQDiag  ( 9330): thread principal bloqueada por 1555 ms (fim do bloqueio)",
+    "11-24 02:52:48.374 W/BQDiag  ( 9330): thread principal bloqueada por 1168 ms (fim do bloqueio)",
+    "11-24 02:53:14.446 W/BQDiag  ( 9330): thread principal bloqueada por 574 ms (fim do bloqueio)",
+    "11-24 02:53:16.035 W/BQDiag  ( 9330): thread principal bloqueada por 693 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 509,
+      "hora": "2026-11-24T02:52:30.018Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 510,
+      "hora": "2026-11-24T02:52:30.018Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": true
+    },
+    {
+      "t": 528,
+      "hora": "2026-11-24T02:52:30.037Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 668,
+      "hora": "2026-11-24T02:52:30.177Z",
+      "tipo": "render: valores mudaram",
+      "detalhe": {
+        "mudou": [
+          "(primeira vez)"
+        ],
+        "valores": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 711,
+      "hora": "2026-11-24T02:52:30.219Z",
+      "tipo": "efeito executa #1",
+      "detalhe": {
+        "motivo": [
+          "(primeira vez)"
+        ],
+        "antes": null,
+        "depois": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 10129,
+      "hora": "2026-11-24T02:52:39.637Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 9301,
+        "inicio": 826
+      }
+    },
+    {
+      "t": 10129,
+      "hora": "2026-11-24T02:52:39.638Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 9283
+      }
+    },
+    {
+      "t": 13438,
+      "hora": "2026-11-24T02:52:42.947Z",
+      "tipo": "+canvas"
+    },
+    {
+      "t": 13457,
+      "hora": "2026-11-24T02:52:42.966Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 3308,
+        "inicio": 10130
+      }
+    },
+    {
+      "t": 13458,
+      "hora": "2026-11-24T02:52:42.966Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 3317
+      }
+    },
+    {
+      "t": 15111,
+      "hora": "2026-11-24T02:52:44.619Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1633
+      }
+    },
+    {
+      "t": 17462,
+      "hora": "2026-11-24T02:52:46.970Z",
+      "tipo": "cena pronta"
+    },
+    {
+      "t": 17623,
+      "hora": "2026-11-24T02:52:47.132Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 2088,
+        "inicio": 15374
+      }
+    },
+    {
+      "t": 17626,
+      "hora": "2026-11-24T02:52:47.134Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 2183
+      }
+    },
+    {
+      "t": 18975,
+      "hora": "2026-11-24T02:52:48.483Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 1337,
+        "inicio": 17632
+      }
+    },
+    {
+      "t": 18978,
+      "hora": "2026-11-24T02:52:48.487Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1333
+      }
+    },
+    {
+      "t": 45174,
+      "hora": "2026-11-24T02:53:14.682Z",
+      "tipo": "prefers-reduced-motion mudou",
+      "detalhe": false
+    },
+    {
+      "t": 45181,
+      "hora": "2026-11-24T02:53:14.690Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 202,
+        "inicio": 44940
+      }
+    },
+    {
+      "t": 46429,
+      "hora": "2026-11-24T02:53:15.938Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 667
+      }
+    },
+    {
+      "t": 46434,
+      "hora": "2026-11-24T02:53:15.943Z",
+      "tipo": "teste: Playwright conectado ao WebView"
+    }
+  ]
+}
