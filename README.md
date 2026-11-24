@@ -328,7 +328,7 @@ O Supabase será ativado com valores públicos no build: `VITE_SUPABASE_URL` e `
 
 O histórico completo, com todas as versões desde a 0.1, está em [`CHANGELOG.md`](CHANGELOG.md). As mais recentes:
 
+- **Documentação** (24/11/2026): auditoria de prontidão para a 1.0 Android. Bloqueios: personagem feminino, ANR e compatibilidade (teste físico), requisitos da Google Play e branches a consolidar; plano de entregas. Sem nova versão do jogo.
 - **Android, teste em aparelhos físicos** (24/11/2026): build de diagnóstico com registro pelo `adb logcat`, analisador e roteiro com dez cenários e tabela comparativa; jogo, APK oficial e site sem mudanças. Em avaliação.
 - **Android, diagnóstico da Central 3D** (24/11/2026): build temporário e separado que registra por que a cena 3D é refeita depois de pronta e mede os bloqueios (ANR); APK oficial, jogo e site sem mudanças. Em avaliação.
 - **Android, etapa 1, fechamento** (24/11/2026): sem a permissão INTERNET, ícone com o medalhão reduzido (tela de abertura mantida) e diagnóstico da Central 3D ao reabrir sem internet; jogo e site sem mudanças. Em avaliação.
-- **Android, etapa 1, complemento** (23/11/2026): verificações pedidas na avaliação (capturas do emulador, tela de abertura e ícone, depuração do WebView, permissão INTERNET, ausência de segredos); jogo, APK e site sem mudanças. Em avaliação.

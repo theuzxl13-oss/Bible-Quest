@@ -2,6 +2,13 @@
 
 Todas as versões do Bible Quest, da mais recente para a mais antiga. Cada mudança no projeto ganha uma entrada no topo deste arquivo.
 
+## Documentação — 24/11/2026 — auditoria de prontidão para a versão 1.0 (sem mudança no jogo)
+
+- `docs/relatorios/AUDITORIA_PRONTIDAO_1_0.md` e `.pdf`: 23 áreas avaliadas, cada uma com evidência no código, situação, risco, prioridade, esforço e critério de aceitação.
+- O relatório traz também o plano de entregas em 9 passos e as decisões necessárias.
+- Evidência: `docs/relatorios/evidencias/auditoria-1.0/personagens-na-central.png`.
+- Nenhum código, configuração ou fluxo foi alterado.
+
 ## Android, preparação do teste em aparelhos físicos — 24/11/2026 (em avaliação)
 
 - **Build de diagnóstico ampliado:** os registros vão também para o `adb logcat` (etiqueta `BQDiag`), para medir num celular sem nenhuma ferramenta conectada. Registra:
