@@ -1,0 +1,110 @@
+{
+  "cenario": "1-animacoes-desligadas-segundo-plano",
+  "execucoesDoEfeito": [],
+  "resumo": [
+    "   1635 ms  prefers-reduced-motion inicial true",
+    "   1676 ms  pageshow",
+    "  40148 ms  prefers-reduced-motion mudou",
+    "  41553 ms  teste: indo para a tela inicial (HOME)",
+    "  72862 ms  teste: 20 s depois de voltar do segundo plano"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 02:35:20.826 W/BQDiag  ( 6760): thread principal bloqueada por 553 ms (fim do bloqueio)",
+    "11-24 02:35:27.712 W/BQDiag  ( 6760): thread principal bloqueada por 4865 ms (fim do bloqueio)",
+    "11-24 02:36:01.527 W/BQDiag  ( 6760): thread principal bloqueada por 1149 ms (fim do bloqueio)",
+    "11-24 02:36:03.405 W/BQDiag  ( 6760): thread principal bloqueada por 519 ms (fim do bloqueio)",
+    "11-24 02:36:13.166 W/BQDiag  ( 6760): thread principal bloqueada por 622 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 1634,
+      "hora": "2026-11-24T02:35:21.796Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 1635,
+      "hora": "2026-11-24T02:35:21.797Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": true
+    },
+    {
+      "t": 1676,
+      "hora": "2026-11-24T02:35:21.838Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 7546,
+      "hora": "2026-11-24T02:35:27.709Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 4900
+      }
+    },
+    {
+      "t": 40148,
+      "hora": "2026-11-24T02:36:00.312Z",
+      "tipo": "prefers-reduced-motion mudou",
+      "detalhe": false
+    },
+    {
+      "t": 40150,
+      "hora": "2026-11-24T02:36:00.312Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1033
+      }
+    },
+    {
+      "t": 40216,
+      "hora": "2026-11-24T02:36:00.379Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 821,
+        "inicio": 39033
+      }
+    },
+    {
+      "t": 41353,
+      "hora": "2026-11-24T02:36:01.516Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 800
+      }
+    },
+    {
+      "t": 41553,
+      "hora": "2026-11-24T02:36:01.716Z",
+      "tipo": "teste: indo para a tela inicial (HOME)"
+    },
+    {
+      "t": 43168,
+      "hora": "2026-11-24T02:36:03.331Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 583
+      }
+    },
+    {
+      "t": 53004,
+      "hora": "2026-11-24T02:36:13.166Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 9633
+      }
+    },
+    {
+      "t": 72862,
+      "hora": "2026-11-24T02:36:33.026Z",
+      "tipo": "teste: 20 s depois de voltar do segundo plano"
+    }
+  ]
+}

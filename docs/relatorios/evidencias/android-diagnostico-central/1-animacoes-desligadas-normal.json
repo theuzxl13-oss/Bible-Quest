@@ -1,0 +1,96 @@
+{
+  "cenario": "1-animacoes-desligadas-normal",
+  "execucoesDoEfeito": [],
+  "resumo": [
+    "   1047 ms  prefers-reduced-motion inicial true",
+    "   1119 ms  pageshow",
+    "  44383 ms  prefers-reduced-motion mudou"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 02:33:16.977 W/BQDiag  ( 4031): thread principal bloqueada por 4354 ms (fim do bloqueio)",
+    "11-24 02:33:17.759 W/BQDiag  ( 4031): thread principal bloqueada por 565 ms (fim do bloqueio)",
+    "11-24 02:33:57.123 W/BQDiag  ( 4031): thread principal bloqueada por 1017 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 1042,
+      "hora": "2026-11-24T02:33:11.929Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 1047,
+      "hora": "2026-11-24T02:33:11.933Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": true
+    },
+    {
+      "t": 1119,
+      "hora": "2026-11-24T02:33:12.005Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 5927,
+      "hora": "2026-11-24T02:33:16.813Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 4233
+      }
+    },
+    {
+      "t": 6796,
+      "hora": "2026-11-24T02:33:17.683Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 567
+      }
+    },
+    {
+      "t": 44383,
+      "hora": "2026-11-24T02:33:55.273Z",
+      "tipo": "prefers-reduced-motion mudou",
+      "detalhe": false
+    },
+    {
+      "t": 44448,
+      "hora": "2026-11-24T02:33:55.334Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1017
+      }
+    },
+    {
+      "t": 44495,
+      "hora": "2026-11-24T02:33:55.381Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 950,
+        "inicio": 43215
+      }
+    },
+    {
+      "t": 44896,
+      "hora": "2026-11-24T02:33:55.782Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 800
+      }
+    },
+    {
+      "t": 46036,
+      "hora": "2026-11-24T02:33:56.922Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 817
+      }
+    }
+  ]
+}

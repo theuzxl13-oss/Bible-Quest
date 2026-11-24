@@ -1,0 +1,140 @@
+{
+  "sistema": {
+    "tipo": "user",
+    "api": "36"
+  },
+  "versao": "0.17.9-diagnostico",
+  "rodadas": [
+    {
+      "rodada": "1-animacoes-desligadas",
+      "animacoesDoSistema": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      },
+      "cenarios": [
+        {
+          "id": "1-animacoes-desligadas-normal",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:33:16.977 W/BQDiag  ( 4031): thread principal bloqueada por 4354 ms (fim do bloqueio)",
+            "11-24 02:33:17.759 W/BQDiag  ( 4031): thread principal bloqueada por 565 ms (fim do bloqueio)",
+            "11-24 02:33:57.123 W/BQDiag  ( 4031): thread principal bloqueada por 1017 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "1-animacoes-desligadas-aviao",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:34:27.169 W/BQDiag  ( 5564): thread principal bloqueada por 4535 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "1-animacoes-desligadas-segundo-plano",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:35:20.826 W/BQDiag  ( 6760): thread principal bloqueada por 553 ms (fim do bloqueio)",
+            "11-24 02:35:27.712 W/BQDiag  ( 6760): thread principal bloqueada por 4865 ms (fim do bloqueio)",
+            "11-24 02:36:01.527 W/BQDiag  ( 6760): thread principal bloqueada por 1149 ms (fim do bloqueio)",
+            "11-24 02:36:03.405 W/BQDiag  ( 6760): thread principal bloqueada por 519 ms (fim do bloqueio)",
+            "11-24 02:36:13.166 W/BQDiag  ( 6760): thread principal bloqueada por 622 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        }
+      ]
+    },
+    {
+      "rodada": "2-animacoes-ligadas",
+      "animacoesDoSistema": {
+        "window_animation_scale": "1",
+        "transition_animation_scale": "1",
+        "animator_duration_scale": "1"
+      },
+      "cenarios": [
+        {
+          "id": "2-animacoes-ligadas-normal",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:36:59.490 W/BQDiag  ( 8550): thread principal bloqueada por 4472 ms (fim do bloqueio)",
+            "11-24 02:37:00.293 W/BQDiag  ( 8550): thread principal bloqueada por 789 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "2-animacoes-ligadas-aviao",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:37:57.851 W/BQDiag  ( 9765): thread principal bloqueada por 4203 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "2-animacoes-ligadas-segundo-plano",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:38:55.564 W/BQDiag  (10583): thread principal bloqueada por 3546 ms (fim do bloqueio)",
+            "11-24 02:39:42.416 W/BQDiag  (10583): thread principal bloqueada por 526 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        }
+      ]
+    },
+    {
+      "rodada": "3-animacoes-desligadas",
+      "animacoesDoSistema": {
+        "window_animation_scale": "0",
+        "transition_animation_scale": "0",
+        "animator_duration_scale": "0"
+      },
+      "cenarios": [
+        {
+          "id": "3-animacoes-desligadas-normal",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:40:22.958 W/BQDiag  (12159): thread principal bloqueada por 4242 ms (fim do bloqueio)",
+            "11-24 02:41:03.276 W/BQDiag  (12159): thread principal bloqueada por 759 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "3-animacoes-desligadas-aviao",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:41:14.711 W/BQDiag  (12982): thread principal bloqueada por 3396 ms (fim do bloqueio)",
+            "11-24 02:41:56.234 W/BQDiag  (12982): thread principal bloqueada por 692 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "3-animacoes-desligadas-segundo-plano",
+          "execucoes": 0,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:42:08.568 W/BQDiag  (13793): thread principal bloqueada por 3741 ms (fim do bloqueio)",
+            "11-24 02:42:43.714 W/BQDiag  (13793): thread principal bloqueada por 602 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        }
+      ]
+    }
+  ]
+}

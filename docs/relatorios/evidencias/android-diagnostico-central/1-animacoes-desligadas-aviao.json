@@ -1,0 +1,70 @@
+{
+  "cenario": "1-animacoes-desligadas-aviao",
+  "execucoesDoEfeito": [],
+  "resumo": [
+    "   1885 ms  prefers-reduced-motion inicial true",
+    "   1904 ms  pageshow",
+    "  43548 ms  prefers-reduced-motion mudou"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 02:34:27.169 W/BQDiag  ( 5564): thread principal bloqueada por 4535 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 1884,
+      "hora": "2026-11-24T02:34:21.538Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 1885,
+      "hora": "2026-11-24T02:34:21.538Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": true
+    },
+    {
+      "t": 1904,
+      "hora": "2026-11-24T02:34:21.557Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 7536,
+      "hora": "2026-11-24T02:34:27.189Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 4533
+      }
+    },
+    {
+      "t": 43548,
+      "hora": "2026-11-24T02:35:03.201Z",
+      "tipo": "prefers-reduced-motion mudou",
+      "detalhe": false
+    },
+    {
+      "t": 43548,
+      "hora": "2026-11-24T02:35:03.201Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 900
+      }
+    },
+    {
+      "t": 43563,
+      "hora": "2026-11-24T02:35:03.216Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 674,
+        "inicio": 42748
+      }
+    }
+  ]
+}

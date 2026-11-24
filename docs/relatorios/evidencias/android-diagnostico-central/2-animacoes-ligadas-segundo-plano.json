@@ -1,0 +1,75 @@
+{
+  "cenario": "2-animacoes-ligadas-segundo-plano",
+  "execucoesDoEfeito": [],
+  "resumo": [
+    "    689 ms  prefers-reduced-motion inicial",
+    "    717 ms  pageshow",
+    "  39724 ms  teste: indo para a tela inicial (HOME)",
+    "  70591 ms  teste: 20 s depois de voltar do segundo plano"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 02:38:55.564 W/BQDiag  (10583): thread principal bloqueada por 3546 ms (fim do bloqueio)",
+    "11-24 02:39:42.416 W/BQDiag  (10583): thread principal bloqueada por 526 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 686,
+      "hora": "2026-11-24T02:38:51.087Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 689,
+      "hora": "2026-11-24T02:38:51.089Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": false
+    },
+    {
+      "t": 717,
+      "hora": "2026-11-24T02:38:51.117Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 5176,
+      "hora": "2026-11-24T02:38:55.577Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 3400
+      }
+    },
+    {
+      "t": 39724,
+      "hora": "2026-11-24T02:39:30.125Z",
+      "tipo": "teste: indo para a tela inicial (HOME)"
+    },
+    {
+      "t": 50562,
+      "hora": "2026-11-24T02:39:40.962Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 8667
+      }
+    },
+    {
+      "t": 51966,
+      "hora": "2026-11-24T02:39:42.367Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 517
+      }
+    },
+    {
+      "t": 70591,
+      "hora": "2026-11-24T02:40:01.013Z",
+      "tipo": "teste: 20 s depois de voltar do segundo plano"
+    }
+  ]
+}

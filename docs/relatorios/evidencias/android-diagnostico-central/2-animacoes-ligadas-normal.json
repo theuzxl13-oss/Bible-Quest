@@ -1,0 +1,55 @@
+{
+  "cenario": "2-animacoes-ligadas-normal",
+  "execucoesDoEfeito": [],
+  "resumo": [
+    "   1768 ms  prefers-reduced-motion inicial",
+    "   1797 ms  pageshow"
+  ],
+  "bloqueiosDaThreadPrincipal": [
+    "11-24 02:36:59.490 W/BQDiag  ( 8550): thread principal bloqueada por 4472 ms (fim do bloqueio)",
+    "11-24 02:37:00.293 W/BQDiag  ( 8550): thread principal bloqueada por 789 ms (fim do bloqueio)"
+  ],
+  "anr": [],
+  "amAnr": [],
+  "eventos": [
+    {
+      "t": 1767,
+      "hora": "2026-11-24T02:36:53.989Z",
+      "tipo": "página iniciada",
+      "detalhe": {
+        "url": "https://localhost/",
+        "userAgent": "Mozilla/5.0 (Linux; Android 16; sdk_gphone64_x86_64 Build/BE2A.250530.026.D1; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/133.0.6943.137 Mobile Safari/537.36"
+      }
+    },
+    {
+      "t": 1768,
+      "hora": "2026-11-24T02:36:53.991Z",
+      "tipo": "prefers-reduced-motion inicial",
+      "detalhe": false
+    },
+    {
+      "t": 1797,
+      "hora": "2026-11-24T02:36:54.020Z",
+      "tipo": "pageshow",
+      "detalhe": {
+        "persisted": false
+      }
+    },
+    {
+      "t": 7074,
+      "hora": "2026-11-24T02:36:59.297Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 4367
+      }
+    },
+    {
+      "t": 7983,
+      "hora": "2026-11-24T02:37:00.206Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 733
+      }
+    }
+  ]
+}
