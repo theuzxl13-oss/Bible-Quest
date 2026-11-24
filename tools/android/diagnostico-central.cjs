@@ -9,7 +9,8 @@
  *   A. com internet: fecha o aplicativo (force-stop) e reabre;
  *   B. em modo avião: fecha e reabre;
  *   C. em modo avião, sem fechar: recarrega a página;
- *   D. em modo avião: fecha, reabre e, depois de 30 s, sai e volta para o aplicativo (tela inicial e volta).
+ *   D. em modo avião: fecha, reabre e, depois de 30 s, sai e volta para o aplicativo (tela inicial e volta);
+ *   E. com as animações do sistema ligadas (o emulador de testes roda com elas desligadas): fecha e reabre.
  * Em cada um, aos 5, 15, 30 e 60 s: visibilidade da página, estado da cena, canvas e
  * contexto WebGL, quadros de animação por segundo, renderizador e captura de tela.
  * Também guarda as mensagens do console (logcat Capacitor/Console e chromium).
@@ -62,6 +63,7 @@ async function estado(page) {
       visibilidade: document.visibilityState,
       foco: document.hasFocus(),
       online: navigator.onLine,
+      reduzirMovimento: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
       cena: cena ? cena.className : 'sem cena',
       canvas: canvas ? { largura: canvas.width, altura: canvas.height, naTela: r ? [Math.round(r.x), Math.round(r.y), Math.round(r.width), Math.round(r.height)] : null } : null,
       contexto,
@@ -98,6 +100,10 @@ async function observar(page) {
     window.__obsCena = true
     window.__eventosCena = []
     const marca = (t) => window.__eventosCena.push(`${t} @${Math.round(performance.now())}ms`)
+    // preferência do sistema "reduzir movimento" (no Android, vem de "remover animações")
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    marca(`reduzir-movimento=${mq.matches} (ao observar)`)
+    mq.addEventListener('change', (e) => marca(`reduzir-movimento mudou para ${e.matches}`))
     new MutationObserver((ms) => {
       for (const m of ms) {
         for (const n of m.addedNodes) if (n.nodeName === 'CANVAS') marca('+canvas')
@@ -163,7 +169,22 @@ async function modoAviao(device, ligar) {
   await device.shell(`am start -n ${PACOTE}/.MainActivity`)
   resultado.cenarios['D-modo-aviao-depois-de-voltar'] = await seguir(device, page, 'D-modo-aviao-depois-de-voltar', [5, 15])
 
+  // E. com as animações do sistema LIGADAS (o emulador de testes roda com elas desligadas)
   await modoAviao(device, false)
+  const escalas = {}
+  for (const k of ['window_animation_scale', 'transition_animation_scale', 'animator_duration_scale']) {
+    escalas[k] = (await device.shell(`settings get global ${k}`)).toString().trim()
+    await device.shell(`settings put global ${k} 1`)
+  }
+  resultado.escalasDeAnimacaoAntes = escalas
+  await device.shell(`am force-stop ${PACOTE}`)
+  await espera(1500)
+  page = await abrir(device)
+  resultado.cenarios['E-animacoes-ligadas-reaberto'] = await seguir(device, page, 'E-animacoes-ligadas-reaberto', [5, 15, 30])
+  for (const [k, v] of Object.entries(escalas)) await device.shell(`settings put global ${k} ${v === 'null' ? 1 : v}`)
+
+  const anr = (await device.shell('dumpsys activity processes')).toString().split('\n').filter((l) => /notResponding|ANR/i.test(l)).map((l) => l.trim())
+  resultado.registroDeANR = anr.slice(0, 20)
   const log = (await device.shell('logcat -d -v time -s Capacitor/Console:* Capacitor:* chromium:*')).toString()
   fs.writeFileSync(path.join(SAIDA, 'console.txt'), log)
   fs.writeFileSync(path.join(SAIDA, 'diagnostico.json'), JSON.stringify(resultado, null, 2))

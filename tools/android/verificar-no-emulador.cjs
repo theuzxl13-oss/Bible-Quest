@@ -201,6 +201,11 @@ async function emPrimeiroPlano(device) {
   confere('sem internet, o aplicativo abre direto na Central (progresso salvo)', hashOffline === '#/painel', hashOffline)
   confere('sem internet, a Central mostra o jogador', await page.getByText('Tobias').first().isVisible().catch(() => false))
 
+  // avisos de "o aplicativo não está respondendo" (ANR) durante a verificação
+  const anr = (await device.shell('logcat -d -s ActivityManager:E ActivityManager:W')).toString().split('\n').filter((l) => /ANR in com\.kzanntech|not responding.*kzanntech|kzanntech.*not responding/i.test(l))
+  fs.writeFileSync(path.join(SAIDA, 'anr.txt'), anr.join('\n'))
+  confere('nenhum aviso de "o aplicativo não está respondendo" (ANR)', anr.length === 0, anr.slice(0, 2).join(' | '))
+
   // registro de erros do aplicativo
   const log = (await device.shell(`logcat -d -s AndroidRuntime:E Capacitor:E chromium:E`)).toString()
   fs.writeFileSync(path.join(SAIDA, 'logcat-erros.txt'), log)
