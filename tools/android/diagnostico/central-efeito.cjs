@@ -11,6 +11,7 @@
  * Em cada rodada, três cenários:
  *   normal        fecha o processo e abre o aplicativo (Playwright conecta aos 45 s)
  *   normal-conexao-aos-70s  igual, mas o Playwright só se conecta aos 70 s
+ *   normal-conexao-aos-5s   igual, mas o Playwright se conecta aos 5 s (antes de a cena ficar pronta)
  *   aviao         o mesmo, em modo avião
  *   segundo-plano abre, espera a cena, vai para a tela inicial (HOME), espera 10 s e volta
  * De cada cenário guarda: o registro da página (window.__bqDiag), as linhas BQDiag
@@ -151,6 +152,14 @@ async function cenario(device, rodada, nome, fn) {
     linhas.push(await cenario(device, rodada, 'normal', () => abrirFrio(45)))
     // mesma abertura, mas conectando o Playwright só aos 70 s: mostra se alguma mudança acompanha a conexão
     linhas.push(await cenario(device, rodada, 'normal-conexao-aos-70s', () => abrirFrio(70)))
+    // conexão CEDO (5 s), antes de a cena ficar pronta, como nas verificações anteriores
+    linhas.push(
+      await cenario(device, rodada, 'normal-conexao-aos-5s', async () => {
+        const p = await abrirFrio(5)
+        await espera(40000)
+        return p
+      }),
+    )
     await modoAviao(device, true)
     linhas.push(await cenario(device, rodada, 'aviao', () => abrirFrio(45)))
     await modoAviao(device, false)
