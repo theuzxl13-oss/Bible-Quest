@@ -1,6 +1,6 @@
 {
   "api": "36",
-  "falhas": 2,
+  "falhas": 3,
   "resultado": [
     {
       "nome": "emulador com Android API 36",
@@ -65,7 +65,7 @@
     {
       "nome": "link externo abre fora do aplicativo (navegador do sistema)",
       "ok": true,
-      "detalhe": "topResumedActivity=ActivityRecord{199696965 u0 com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity t11}"
+      "detalhe": "topResumedActivity=ActivityRecord{48310262 u0 com.android.chrome/org.chromium.chrome.browser.firstrun.FirstRunActivity t10}"
     },
     {
       "nome": "observação: o voltar do navegador devolveu o jogo",
@@ -91,6 +91,11 @@
       "nome": "sem internet, a Central mostra o jogador",
       "ok": true,
       "detalhe": ""
+    },
+    {
+      "nome": "nenhum aviso de \"o aplicativo não está respondendo\" (ANR)",
+      "ok": false,
+      "detalhe": "11-24 01:00:33.751   612  5053 E ActivityManager: ANR in com.kzanntech.biblequest (com.kzanntech.biblequest/.MainActivity) | 11-24 01:00:33.751   612  5053 E ActivityManager: Reason: Input dispatching timed out (114f4a2 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true))."
     },
     {
       "nome": "nenhum travamento (FATAL EXCEPTION)",
