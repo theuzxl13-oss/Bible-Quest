@@ -5,20 +5,45 @@
 **Etapa:** planejamento. Nada foi implementado nem alterado no jogo, nos fluxos ou nos documentos oficiais.
 **Diretrizes registradas em:** `docs/planos/VERSAO_1_0_DIRETRIZES.md`.
 
-## 0. Atualização: decisões preliminares de 24/11/2026
+## 0. Versão consolidada (24/11/2026, depois dos "Ajustes finais do planejamento")
 
-O que foi aprovado, o que é proposta e o que está pendente está separado em `docs/planos/VERSAO_1_0_DIRETRIZES.md`, nas seções 1, 2 e 3. Os códigos A, PR e P usados abaixo são os daquele documento.
+As decisões estão em `docs/planos/VERSAO_1_0_DIRETRIZES.md`, separadas em aprovadas (A), propostas (PR) e pendências (P).
+**Nada será implementado sem autorização** (A27).
 
-**O que mudou neste planejamento:**
-- **Conflitos resolvidos:**
-  - personalização mantida, sem retirar nada (A4);
-  - os outros 64 livros e as perguntas gerais preservados (A11 e A12);
-  - "completo" passa a exigir todos os capítulos (A9).
-- **Testes complementares A a D** passam a fazer parte do plano (A16), com prioridade antes do vencimento do APK (A15).
-- **Novas seções:**
-  - **seção 12**, plano de revisão bíblica: trechos, referências, narrativas, perguntas por capítulo e perguntas gerais;
-  - **seção 13**, estimativa para completar Gênesis e Êxodo.
-- **Roteiro de teste físico:** continua pronto e sem alteração. O APK de diagnóstico está disponível até 01/12/2026, 15h39 (UTC).
+### 0.1 Etapas da 1.0, em ordem (PR4)
+
+| # | Etapa | Situação | Depende de |
+|---|---|---|---|
+| 1 | **Testes físicos:** <br>• roteiro de 10 cenários; <br>• grupos A (compatibilidade), B (acessibilidade), C (telas) e D (persistência) | **Pronta para executar** (kit conferido; APK disponível até 01/12/2026, 15h39 UTC) | aparelhos (P4) |
+| 2 | **Diagnóstico físico:** WebView × Central 3D; compatibilidade, acessibilidade, telas e persistência. Só análise | aguardando as evidências | etapa 1 |
+| 3 | **Revisão bíblica do conteúdo existente** (lotes 1 a 4, seção 12) | aguardando definição | revisores e fonte (P1) |
+| 4 | **Reformulação do personagem feminino** (seção 15) | **incluída no plano** (A23); **não iniciada** (A6) | autorização, P9 |
+| 5 | **Estabilidade:** correções de ANR e compatibilidade, tela de erro amigável, aviso de falha ao salvar | não iniciada | etapa 2 e autorização |
+| 6 | **Livros parciais:** "Fases disponíveis concluídas" em vez de "Concluído" e texto das conquistas (seção 5, conflito 7) | proposta (PR7) | P11 |
+| 7 | **Capítulos ausentes de Gênesis e Êxodo** (seção 13) e a revisão das fases novas (lote 5) | **produção não iniciada** (A25) | P2, P3 e autorização |
+| 8 | **Privacidade e textos da loja** | não iniciada | autorização |
+| 9 | **Build de lançamento:** versão 1.0.0, AAB assinado com a chave de vocês e imagens da loja | não iniciada (A22) | branch de lançamento (P6) e autorização |
+| 10 | **Acessibilidade e telas no Android:** correções vindas dos grupos B e C | não iniciada | etapa 2 |
+| 11 | **Aceitação e Google Play:** teste de aceitação, teste interno, teste fechado (12 testadores × 14 dias) e produção | não iniciada | todas as anteriores |
+
+As etapas 3 e 4 podem correr em paralelo com a 2, se autorizadas. A 7 é a mais longa (cerca de 22 a 29 dias de produção, seção 13).
+
+### 0.2 O que mudou nesta consolidação
+
+- **A11:** os 64 livros ficam "Em preparação" também no Modo História.
+- **A26:** nada incompleto pode aparecer como concluído. Isso revelou um **conflito novo**: hoje, Gênesis e Êxodo aparecem como "Concluído" quando o jogador termina as fases disponíveis (seção 5, conflito 7).
+- **A23:** a reformulação do personagem feminino entra como etapa, com critérios e avaliação visual (seção 15).
+- **A24:** os três papéis de revisão (textual, teológico e pedagógico) são requisito para o conteúdo ser considerado revisado.
+- **A25:** a produção das fases novas não começa.
+- **34 × 36 perguntas gerais:** a diferença foi explicada (seção 16).
+
+### 0.3 Histórico das versões deste planejamento
+
+| Quando | Commit | O que mudou |
+|---|---|---|
+| 24/11/2026 | `eeb53bd` | primeira versão |
+| 24/11/2026 | `a4dd3f2` | decisões preliminares, seção 12 (revisão bíblica) e seção 13 (estimativa) |
+| 24/11/2026 | esta versão | consolidação, seções 15 e 16 e conflito 7 |
 
 ## 1. Resumo (primeira versão deste planejamento)
 
@@ -133,6 +158,7 @@ Nos **dois aparelhos** (entrada, com 2 a 3 GB, e intermediário, com 4 a 6 GB), 
 | 4 | Revisão | **Aprovado** (A13): revisão humana de todos os trechos e perguntas. Plano na seção 12 |
 | 5 | Visual de Perfil, Quiz e História | **Aprovado com condição** (A14). A 0.17.8 e a 0.17.9 continuam aguardando avaliação (A20) |
 | 6 | Versão mínima do Android | **Aprovado** (A18): só depois dos testes |
+| 7 (**novo**) | **Nada incompleto como concluído** (A26) | **Conflito.** Ao terminar as 20 fases de Gênesis ou as 4 de Êxodo, o livro aparece como **"Concluído"**: <br>• `src/services/game/progression.ts`, linha 49; <br>• a conquista "Conhecedor das Escrituras" fala em "2 livros completos". <br>**Proposta:** PR7, "Fases disponíveis concluídas", que só será feita com autorização (P11). Os 64 livros em preparação já não abrem (`BooksIndex.tsx`, linha 81) |
 
 **Sem conflito:**
 - Central 3D preservada;
@@ -162,7 +188,7 @@ Nos **dois aparelhos** (entrada, com 2 a 3 GB, e intermediário, com 4 a 6 GB), 
 - os 64 livros continuam na Biblioteca como conteúdo em preparação;
 - as 34 perguntas gerais ficam (e entram na revisão).
 
-**Falta confirmar (P8)** se os livros também continuam na lista do **Modo História** (opção A, como está hoje) ou se aparecem só na Biblioteca (opção B).
+**Confirmado nos ajustes finais (A11):** os livros continuam "Em preparação" também na lista do **Modo História** (opção A, como está hoje), sem acesso a fases.
 
 ## 7. Decisões que dependem de vocês
 
@@ -354,11 +380,124 @@ Calculado pelas referências de cada fase, considerando os intervalos.
 
 A estimativa é feita **sem começar** a produção. A ordem proposta (PR4) coloca o conteúdo depois do diagnóstico físico, e a revisão do conteúdo existente pode correr em paralelo.
 
-## 14. Arquivos desta etapa
+## 15. Etapa de reformulação do personagem feminino (A23; não iniciada, A6)
 
-**Arquivos desta etapa** (os mesmos dois documentos, atualizados em 24/11, mais o PDF deste relatório):
-- `docs/planos/VERSAO_1_0_DIRETRIZES.md`: decisões aprovadas, propostas e pendências;
-- `docs/relatorios/PLANEJAMENTO_1_0_TESTES_FISICOS.md` e `.pdf`: este relatório, com as seções 0, 12 e 13 novas.
+### 15.1 Situação atual (evidência)
+
+| Aspecto | Masculino | Feminino |
+|---|---|---|
+| Modelo | `heroi-masculino.glb`, estilizado (versão 0.8), 1,8 MB | `heroi-feminino.glb`, estrutura realista do MakeHuman (versão 0.7), **4,6 MB** |
+| Estilo | animação 3D estilizada | **realista**: rosto, pele e proporções diferentes |
+| Cabelo | aparece como escolhido | **o estilo do personagem-base não aparece** (trança, longo, coque e ondulado viram um cabelo curto) |
+| Acessórios | cajado na mão | **o cajado atravessa o braço e o corpo** |
+| Retrato no topo da Central | aparece | carrega mais devagar ou fica vazio |
+
+Evidência: `docs/relatorios/evidencias/auditoria-1.0/personagens-na-central.png` (Viajante, Pastora e Guardiã). Código: `src/character3d/heroi.ts` (`MODELOS_POR_BASE` vazio) e `src/data/character/look.ts` (bases femininas).
+
+### 15.2 Escopo da etapa (a executar só com autorização)
+
+1. **Modelo feminino estilizado** no mesmo pipeline e padrão do masculino. A origem é decisão de vocês (P9). O pipeline atual é:
+   - imagem de referência gerada por IA;
+   - malha gerada pelo TRELLIS.2;
+   - esqueleto, regiões de cor, expressões e animações pelos scripts de `tools/personagem/`;
+   - licenças registradas em `public/models/personagem/LICENCAS.md`.
+2. **Mesmas proporções do masculino:**
+   - altura, escala da cabeça e comprimento de braços e pernas;
+   - o mesmo enquadramento na Central, no guarda-roupa, na tela de recompensa e no retrato.
+3. **Cabelos:** os estilos femininos atuais (trança, longo, coque e ondulado) e as cores de cabelo funcionando no modelo novo.
+4. **Roupas e acessórios** existentes, sem atravessar o corpo:
+   - túnicas, mantos, cintos e calçados;
+   - acessórios: cajado, pergaminho, bolsa, lamparina e cesto;
+   - acessórios de mão presos à mão, como no masculino.
+5. **Animações e expressões equivalentes:** parado, aceno, comemoração e reação.
+6. **Versão 2D** (`Character2D.tsx`, usada quando não há 3D) coerente com o novo visual feminino.
+7. **Seleção com 2 personagens** (A3):
+   - a criação do personagem oferece só masculino e feminino;
+   - os perfis que usam as outras 6 bases são **convertidos** para o corpo correspondente, mantendo cores, roupas e progresso (proposta; P9).
+8. **Sem novos sistemas de personalização** (A5). Os itens existentes continuam (A4).
+
+### 15.3 Critérios de aceitação
+
+| # | Critério |
+|---|---|
+| C1 | Mesmo estilo artístico: lado a lado, os dois parecem do mesmo jogo (avaliação visual de vocês, 15.4) |
+| C2 | Proporções equivalentes: altura e escala da cabeça dentro de ±5% das do masculino, nas mesmas poses |
+| C3 | Todos os estilos e cores de cabelo femininos aparecem como escolhidos |
+| C4 | Nenhuma roupa ou acessório atravessa o corpo nas 4 animações (inspeção em 360°) |
+| C5 | Acessórios de mão firmes na mão durante as animações |
+| C6 | O retrato do topo aparece no mesmo tempo que o do masculino |
+| C7 | Tamanho do arquivo do modelo até cerca de 2,5 MB, perto do masculino (o atual tem 4,6 MB) |
+| C8 | Nas qualidades Alta, Leve e 2D, a Central funciona sem erro, sem tela vazia e sem piorar os tempos do teste físico |
+| C9 | Perfis antigos de todas as 8 bases abrem sem erro, convertidos, e o progresso é preservado (teste automático) |
+| C10 | Licenças e origem de cada arquivo novo registradas em `LICENCAS.md` |
+| C11 | Os testes automáticos passam, e o site continua sem regressão (salvo as mudanças aprovadas do personagem) |
+
+### 15.4 Avaliação visual
+
+**Folha de comparação** entre masculino e feminino, nas mesmas condições:
+- Central (celular e tablet);
+- guarda-roupa;
+- tela de recompensa;
+- retrato do topo;
+- giro de 360°;
+- as 4 animações;
+- alto contraste;
+- cada estilo de cabelo e cada acessório de mão.
+
+**No Android**, as mesmas capturas num aparelho físico (ou no emulador, enquanto não houver aparelho).
+
+**Avaliação de vocês** em pelo menos uma rodada de ajustes. A etapa só termina com aprovação visual explícita.
+
+### 15.5 Esforço estimado
+
+| Parte | Esforço |
+|---|---|
+| Modelo estilizado, esqueleto, regiões de cor, expressões e animações | 3 a 5 dias |
+| Cabelos, roupas e acessórios no modelo novo; correção de posicionamento | 2 a 3 dias |
+| Integração, versão 2D, seleção com 2 personagens, conversão dos perfis e testes | 1 a 2 dias |
+| Folha de comparação e rodadas de ajuste | 1 a 2 dias, mais o tempo da avaliação de vocês |
+| **Total** | **cerca de 7 a 12 dias** |
+
+**Riscos:**
+- a qualidade da malha gerada (pode exigir mais de uma tentativa);
+- o encaixe das roupas no corpo novo;
+- o tamanho do arquivo.
+
+## 16. Perguntas gerais: 34 × 36
+
+**A diferença:**
+- **`src/data/questions/geral.ts`** tem **34** perguntas, que são as "perguntas gerais" de vários livros (A12);
+- outras **2** perguntas **não estão ligadas a nenhuma fase** e por isso também aparecem só no Modo Livre. Elas ficam nos arquivos de Gênesis;
+- somando, são **36** perguntas sem fase. Os dois números estão certos: 34 é o arquivo de perguntas gerais, e 36 é o total de perguntas sem fase.
+
+**As 2 perguntas fora de `geral.ts`:**
+
+| Id | Arquivo | Pergunta | Referência |
+|---|---|---|---|
+| `cr-05` | `criacao.ts` | Em qual livro está escrito "No princípio era o Verbo"? | João 1:1 |
+| `jo-16` | `jose.ts` | Em qual livro do Novo Testamento Estêvão resume a história de José em seu discurso? | Atos 7:9–14 |
+
+As duas são perguntas do tipo "Identifique o livro", ligadas a temas de Gênesis, mas sobre outros livros. Por isso ficaram sem fase.
+
+**As 34 de `geral.ts`:**
+
+| Ids | Tipo | Livros (referência) |
+|---|---|---|
+| `lv-01` a `lv-16` | identificar o livro | Salmos 23:1; João 3:16; Eclesiastes 3:1; Provérbios 1:7; 1 Coríntios 13:4; Hebreus 11:1; Apocalipse 3:20; Mateus 5:3; 1 Samuel 17; Daniel 6; Jonas 1:17; Atos 9:1–9; Atos 2:1–13; Neemias 2:17–18 e 6:15; Rute 1:16; Josué 6 |
+| `ge-01` a `ge-05` | quem sou eu | Davi (1 Samuel 16–17); Ester; Pedro (Mateus 4 e 14); Salomão (1 Reis 3 e 6); Elias (1 Reis 17; 2 Reis 2) |
+| `ge-06`, `ge-07` e `ge-17` | múltipla escolha | Belém (Mateus 2:1; Lucas 2:4–7); os 12 apóstolos (Lucas 6:13); Daniel (Daniel 6:10–16) |
+| `ge-08`, `ge-09`, `ge-10` e `ge-16` | verdadeiro ou falso | Caná (João 2:1–11); Davi não foi o primeiro rei (1 Samuel 10 e 16); Apocalipse é o último livro; Mateus abre o Novo Testamento |
+| `ge-11` e `ge-12` | ordenar | a história bíblica (de Gênesis a 2 Reis); a vida de Jesus segundo Lucas |
+| `ge-13`, `ge-14` e `ge-15` | completar o versículo | Salmos 23:1; João 3:16; Mateus 5:9 |
+| `ge-18` | memória | posições no cânon (Gênesis 1:1; Malaquias 4:6; Mateus 1:1; Apocalipse 22:21) |
+
+**Proposta (PR8):** revisar as 36 no **lote 4** (perguntas do Modo Livre), com os três papéis (A24). Elas citam livros que ainda não têm fases, e por isso a revisão precisa conferir cada referência com atenção.
+
+## 17. Arquivos desta etapa
+
+**Arquivos desta etapa** (os mesmos dois documentos, consolidados em 24/11, mais o PDF deste relatório):
+- `docs/planos/VERSAO_1_0_DIRETRIZES.md`: decisões aprovadas, propostas e pendências, versão consolidada;
+- `docs/relatorios/PLANEJAMENTO_1_0_TESTES_FISICOS.md` e `.pdf`: este relatório, com a seção 0 consolidada, as seções 12 e 13 e as novas 15 e 16.
 
 **Nenhum outro arquivo foi criado ou alterado:**
 - o roteiro de teste físico está igual;
