@@ -106,8 +106,15 @@ async function observar(page) {
     mq.addEventListener('change', (e) => marca(`reduzir-movimento mudou para ${e.matches}`))
     new MutationObserver((ms) => {
       for (const m of ms) {
-        for (const n of m.addedNodes) if (n.nodeName === 'CANVAS') marca('+canvas')
-        for (const n of m.removedNodes) if (n.nodeName === 'CANVAS') marca('-canvas')
+        const cena = (n) => n.nodeType === 1 && (n.classList?.contains('camp-scene') || n.querySelector?.('.camp-scene'))
+        for (const n of m.addedNodes) {
+          if (n.nodeName === 'CANVAS') marca('+canvas')
+          else if (cena(n)) marca('+cena (componente montado de novo)')
+        }
+        for (const n of m.removedNodes) {
+          if (n.nodeName === 'CANVAS') marca('-canvas')
+          else if (cena(n)) marca('-cena (componente desmontado)')
+        }
         if (m.type === 'attributes' && m.target.classList && m.target.classList.contains('camp-scene')) marca(`classe="${m.target.className.trim()}"`)
       }
     }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['class'] })
