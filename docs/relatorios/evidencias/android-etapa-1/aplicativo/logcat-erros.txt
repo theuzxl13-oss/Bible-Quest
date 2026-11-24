@@ -1,0 +1,33 @@
+--------- beginning of main
+11-24 00:12:10.069  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.072  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.486  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.490  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.536  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.538  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.538  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:10.539  3155  3262 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:12:12.400  3318  3318 E chromium: [1124/001212.399912:ERROR:aw_component_update_service.cc(285)] No directory found for component llkgjffcdpffmhiakmfcdcblohccpfmo
+11-24 00:13:00.641  4840  4916 E chromium: [ERROR:simple_version_upgrade.cc(151)] Failed to write a new fake index.
+11-24 00:13:02.585  4896  4964 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:02.586  4896  4964 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:02.653  4896  4964 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:02.653  4896  4964 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:02.671  4896  4964 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:02.671  4896  4964 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:33.513  5717  5803 E chromium: [ERROR:simple_version_upgrade.cc(151)] Failed to write a new fake index.
+11-24 00:13:33.526  5717  5803 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/js: No such file or directory (2)
+11-24 00:13:33.526  5717  5803 E chromium: [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
+11-24 00:13:35.956  5813  5879 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:35.971  5813  5879 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:35.981  5813  5879 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:35.985  5813  5879 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:35.997  5813  5879 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:13:36.005  5813  5879 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:15:57.107  5717  5717 E chromium: [ERROR:aw_browser_terminator.cc(165)] Renderer process (5813) crash detected (code -1).
+11-24 00:15:59.806  8281  8329 E chromium: [ERROR:simple_file_enumerator.cc(21)] opendir /data/user/0/com.kzanntech.biblequest/cache/WebView/Default/HTTP Cache/Code Cache/wasm: No such file or directory (2)
+11-24 00:15:59.806  8281  8329 E chromium: [ERROR:simple_index_file.cc(613)] Could not reconstruct index from disk
+11-24 00:16:00.758  8307  8360 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:16:00.758  8307  8360 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:16:00.789  8307  8360 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
+11-24 00:16:00.794  8307  8360 E chromium: [ERROR:tile_manager.cc(937)] WARNING: tile memory limits exceeded, some content may not draw
