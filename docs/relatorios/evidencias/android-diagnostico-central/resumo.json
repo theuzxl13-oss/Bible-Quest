@@ -15,36 +15,78 @@
       "cenarios": [
         {
           "id": "1-animacoes-desligadas-normal",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:33:16.977 W/BQDiag  ( 4031): thread principal bloqueada por 4354 ms (fim do bloqueio)",
-            "11-24 02:33:17.759 W/BQDiag  ( 4031): thread principal bloqueada por 565 ms (fim do bloqueio)",
-            "11-24 02:33:57.123 W/BQDiag  ( 4031): thread principal bloqueada por 1017 ms (fim do bloqueio)"
+            "11-24 02:50:10.642 W/BQDiag  ( 6398): thread principal bloqueada por 2891 ms (fim do bloqueio)",
+            "11-24 02:50:18.883 W/BQDiag  ( 6398): thread principal bloqueada por 8204 ms (fim do bloqueio)",
+            "11-24 02:50:26.821 W/BQDiag  ( 6398): thread principal bloqueada por 2407 ms (fim do bloqueio)",
+            "11-24 02:50:32.164 W/BQDiag  ( 6398): thread principal bloqueada por 983 ms (fim do bloqueio)",
+            "11-24 02:50:36.429 W/BQDiag  ( 6398): thread principal bloqueada por 1219 ms (fim do bloqueio)",
+            "11-24 02:50:37.940 W/BQDiag  ( 6398): thread principal bloqueada por 1074 ms (fim do bloqueio)",
+            "11-24 02:50:39.605 W/BQDiag  ( 6398): thread principal bloqueada por 527 ms (fim do bloqueio)",
+            "11-24 02:50:48.361 W/BQDiag  ( 6398): thread principal bloqueada por 752 ms (fim do bloqueio)",
+            "11-24 02:50:49.069 W/BQDiag  ( 6398): thread principal bloqueada por 694 ms (fim do bloqueio)",
+            "11-24 02:50:56.433 W/BQDiag  ( 6398): thread principal bloqueada por 552 ms (fim do bloqueio)",
+            "11-24 02:50:58.329 W/BQDiag  ( 6398): thread principal bloqueada por 564 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
         },
         {
-          "id": "1-animacoes-desligadas-aviao",
-          "execucoes": 0,
+          "id": "1-animacoes-desligadas-normal-conexao-aos-70s",
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:34:27.169 W/BQDiag  ( 5564): thread principal bloqueada por 4535 ms (fim do bloqueio)"
+            "11-24 02:51:21.690 W/BQDiag  ( 7362): thread principal bloqueada por 11756 ms (fim do bloqueio)",
+            "11-24 02:51:32.272 W/BQDiag  ( 7362): thread principal bloqueada por 2624 ms (fim do bloqueio)",
+            "11-24 02:51:43.009 W/BQDiag  ( 7362): thread principal bloqueada por 1297 ms (fim do bloqueio)",
+            "11-24 02:51:45.864 W/BQDiag  ( 7362): thread principal bloqueada por 564 ms (fim do bloqueio)",
+            "11-24 02:51:55.839 W/BQDiag  ( 7362): thread principal bloqueada por 505 ms (fim do bloqueio)",
+            "11-24 02:51:57.441 W/BQDiag  ( 7362): thread principal bloqueada por 725 ms (fim do bloqueio)",
+            "11-24 02:52:15.357 W/BQDiag  ( 7362): thread principal bloqueada por 1186 ms (fim do bloqueio)",
+            "11-24 02:52:20.353 W/BQDiag  ( 7362): thread principal bloqueada por 569 ms (fim do bloqueio)"
+          ],
+          "anr": 1,
+          "amAnr": [
+            "11-24 02:51:14.828 I/am_anr  (  555): [0,7362,com.kzanntech.biblequest,552123974,Input dispatching timed out (ef25071 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true)).]"
+          ]
+        },
+        {
+          "id": "1-animacoes-desligadas-aviao",
+          "execucoes": 1,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:52:25.666 W/BQDiag  ( 7362): thread principal bloqueada por 588 ms (fim do bloqueio)",
+            "11-24 02:52:26.400 W/BQDiag  ( 7362): thread principal bloqueada por 520 ms (fim do bloqueio)",
+            "11-24 02:52:36.963 W/BQDiag  ( 9330): thread principal bloqueada por 6401 ms (fim do bloqueio)",
+            "11-24 02:52:44.557 W/BQDiag  ( 9330): thread principal bloqueada por 1555 ms (fim do bloqueio)",
+            "11-24 02:52:48.374 W/BQDiag  ( 9330): thread principal bloqueada por 1168 ms (fim do bloqueio)",
+            "11-24 02:53:14.446 W/BQDiag  ( 9330): thread principal bloqueada por 574 ms (fim do bloqueio)",
+            "11-24 02:53:16.035 W/BQDiag  ( 9330): thread principal bloqueada por 693 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
         },
         {
           "id": "1-animacoes-desligadas-segundo-plano",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:35:20.826 W/BQDiag  ( 6760): thread principal bloqueada por 553 ms (fim do bloqueio)",
-            "11-24 02:35:27.712 W/BQDiag  ( 6760): thread principal bloqueada por 4865 ms (fim do bloqueio)",
-            "11-24 02:36:01.527 W/BQDiag  ( 6760): thread principal bloqueada por 1149 ms (fim do bloqueio)",
-            "11-24 02:36:03.405 W/BQDiag  ( 6760): thread principal bloqueada por 519 ms (fim do bloqueio)",
-            "11-24 02:36:13.166 W/BQDiag  ( 6760): thread principal bloqueada por 622 ms (fim do bloqueio)"
+            "11-24 02:53:34.633 W/BQDiag  (10073): thread principal bloqueada por 3430 ms (fim do bloqueio)",
+            "11-24 02:53:51.535 W/BQDiag  (10073): thread principal bloqueada por 1794 ms (fim do bloqueio)",
+            "11-24 02:53:56.581 W/BQDiag  (10073): thread principal bloqueada por 1214 ms (fim do bloqueio)",
+            "11-24 02:53:58.089 W/BQDiag  (10073): thread principal bloqueada por 695 ms (fim do bloqueio)",
+            "11-24 02:53:59.337 W/BQDiag  (10073): thread principal bloqueada por 643 ms (fim do bloqueio)",
+            "11-24 02:54:02.765 W/BQDiag  (10073): thread principal bloqueada por 513 ms (fim do bloqueio)",
+            "11-24 02:54:03.533 W/BQDiag  (10073): thread principal bloqueada por 525 ms (fim do bloqueio)",
+            "11-24 02:54:07.893 W/BQDiag  (10073): thread principal bloqueada por 616 ms (fim do bloqueio)",
+            "11-24 02:54:09.589 W/BQDiag  (10073): thread principal bloqueada por 1008 ms (fim do bloqueio)",
+            "11-24 02:54:11.619 W/BQDiag  (10073): thread principal bloqueada por 702 ms (fim do bloqueio)",
+            "11-24 02:54:12.697 W/BQDiag  (10073): thread principal bloqueada por 553 ms (fim do bloqueio)",
+            "11-24 02:54:21.625 W/BQDiag  (10073): thread principal bloqueada por 583 ms (fim do bloqueio)",
+            "11-24 02:54:22.142 W/BQDiag  (10073): thread principal bloqueada por 506 ms (fim do bloqueio)",
+            "11-24 02:54:24.842 W/BQDiag  (10073): thread principal bloqueada por 514 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
@@ -61,32 +103,92 @@
       "cenarios": [
         {
           "id": "2-animacoes-ligadas-normal",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:36:59.490 W/BQDiag  ( 8550): thread principal bloqueada por 4472 ms (fim do bloqueio)",
-            "11-24 02:37:00.293 W/BQDiag  ( 8550): thread principal bloqueada por 789 ms (fim do bloqueio)"
+            "11-24 02:55:05.178 W/BQDiag  (11534): thread principal bloqueada por 3227 ms (fim do bloqueio)",
+            "11-24 02:55:13.102 W/BQDiag  (11534): thread principal bloqueada por 541 ms (fim do bloqueio)",
+            "11-24 02:55:19.425 W/BQDiag  (11534): thread principal bloqueada por 571 ms (fim do bloqueio)",
+            "11-24 02:55:30.219 W/BQDiag  (11534): thread principal bloqueada por 6624 ms (fim do bloqueio)",
+            "11-24 02:55:32.401 W/BQDiag  (11534): thread principal bloqueada por 640 ms (fim do bloqueio)",
+            "11-24 02:55:33.778 W/BQDiag  (11534): thread principal bloqueada por 904 ms (fim do bloqueio)",
+            "11-24 02:55:36.293 W/BQDiag  (11534): thread principal bloqueada por 551 ms (fim do bloqueio)",
+            "11-24 02:55:38.625 W/BQDiag  (11534): thread principal bloqueada por 532 ms (fim do bloqueio)",
+            "11-24 02:55:42.051 W/BQDiag  (11534): thread principal bloqueada por 816 ms (fim do bloqueio)",
+            "11-24 02:55:42.715 W/BQDiag  (11534): thread principal bloqueada por 645 ms (fim do bloqueio)",
+            "11-24 02:55:45.546 W/BQDiag  (11534): thread principal bloqueada por 537 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
         },
         {
-          "id": "2-animacoes-ligadas-aviao",
-          "execucoes": 0,
+          "id": "2-animacoes-ligadas-normal-conexao-aos-70s",
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:37:57.851 W/BQDiag  ( 9765): thread principal bloqueada por 4203 ms (fim do bloqueio)"
+            "11-24 02:56:04.338 W/BQDiag  (12351): thread principal bloqueada por 9721 ms (fim do bloqueio)",
+            "11-24 02:56:11.449 W/BQDiag  (12351): thread principal bloqueada por 517 ms (fim do bloqueio)",
+            "11-24 02:56:14.324 W/BQDiag  (12351): thread principal bloqueada por 516 ms (fim do bloqueio)",
+            "11-24 02:56:21.193 W/BQDiag  (12351): thread principal bloqueada por 544 ms (fim do bloqueio)",
+            "11-24 02:56:26.432 W/BQDiag  (12351): thread principal bloqueada por 572 ms (fim do bloqueio)",
+            "11-24 02:56:27.325 W/BQDiag  (12351): thread principal bloqueada por 673 ms (fim do bloqueio)",
+            "11-24 02:56:31.044 W/BQDiag  (12351): thread principal bloqueada por 1030 ms (fim do bloqueio)",
+            "11-24 02:56:35.521 W/BQDiag  (12351): thread principal bloqueada por 518 ms (fim do bloqueio)",
+            "11-24 02:56:40.472 W/BQDiag  (12351): thread principal bloqueada por 539 ms (fim do bloqueio)",
+            "11-24 02:56:47.139 W/BQDiag  (12351): thread principal bloqueada por 542 ms (fim do bloqueio)",
+            "11-24 02:56:49.798 W/BQDiag  (12351): thread principal bloqueada por 534 ms (fim do bloqueio)",
+            "11-24 02:56:52.526 W/BQDiag  (12351): thread principal bloqueada por 510 ms (fim do bloqueio)",
+            "11-24 02:57:04.333 W/BQDiag  (12351): thread principal bloqueada por 634 ms (fim do bloqueio)",
+            "11-24 02:57:05.564 W/BQDiag  (12351): thread principal bloqueada por 531 ms (fim do bloqueio)",
+            "11-24 02:57:08.393 W/BQDiag  (12351): thread principal bloqueada por 596 ms (fim do bloqueio)"
+          ],
+          "anr": 1,
+          "amAnr": [
+            "11-24 02:55:59.469 I/am_anr  (  555): [0,12351,com.kzanntech.biblequest,552123974,Input dispatching timed out (40654a4 com.kzanntech.biblequest/com.kzanntech.biblequest.MainActivity is not responding. Waited 5000ms for FocusEvent(hasFocus=true)).]"
+          ]
+        },
+        {
+          "id": "2-animacoes-ligadas-aviao",
+          "execucoes": 1,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 02:57:25.720 W/BQDiag  (13378): thread principal bloqueada por 8097 ms (fim do bloqueio)",
+            "11-24 02:57:28.540 W/BQDiag  (13378): thread principal bloqueada por 537 ms (fim do bloqueio)",
+            "11-24 02:57:29.909 W/BQDiag  (13378): thread principal bloqueada por 861 ms (fim do bloqueio)",
+            "11-24 02:57:35.255 W/BQDiag  (13378): thread principal bloqueada por 570 ms (fim do bloqueio)",
+            "11-24 02:57:44.527 W/BQDiag  (13378): thread principal bloqueada por 742 ms (fim do bloqueio)",
+            "11-24 02:57:47.147 W/BQDiag  (13378): thread principal bloqueada por 720 ms (fim do bloqueio)",
+            "11-24 02:57:48.599 W/BQDiag  (13378): thread principal bloqueada por 638 ms (fim do bloqueio)",
+            "11-24 02:57:52.469 W/BQDiag  (13378): thread principal bloqueada por 1304 ms (fim do bloqueio)",
+            "11-24 02:57:59.117 W/BQDiag  (13378): thread principal bloqueada por 556 ms (fim do bloqueio)",
+            "11-24 02:58:01.627 W/BQDiag  (13378): thread principal bloqueada por 515 ms (fim do bloqueio)",
+            "11-24 02:58:02.523 W/BQDiag  (13378): thread principal bloqueada por 667 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
         },
         {
           "id": "2-animacoes-ligadas-segundo-plano",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:38:55.564 W/BQDiag  (10583): thread principal bloqueada por 3546 ms (fim do bloqueio)",
-            "11-24 02:39:42.416 W/BQDiag  (10583): thread principal bloqueada por 526 ms (fim do bloqueio)"
+            "11-24 02:58:19.629 W/BQDiag  (14146): thread principal bloqueada por 3141 ms (fim do bloqueio)",
+            "11-24 02:58:27.057 W/BQDiag  (14146): thread principal bloqueada por 503 ms (fim do bloqueio)",
+            "11-24 02:58:30.424 W/BQDiag  (14146): thread principal bloqueada por 606 ms (fim do bloqueio)",
+            "11-24 02:58:31.657 W/BQDiag  (14146): thread principal bloqueada por 526 ms (fim do bloqueio)",
+            "11-24 02:58:40.087 W/BQDiag  (14146): thread principal bloqueada por 5526 ms (fim do bloqueio)",
+            "11-24 02:58:43.265 W/BQDiag  (14146): thread principal bloqueada por 654 ms (fim do bloqueio)",
+            "11-24 02:58:44.411 W/BQDiag  (14146): thread principal bloqueada por 939 ms (fim do bloqueio)",
+            "11-24 02:58:49.909 W/BQDiag  (14146): thread principal bloqueada por 908 ms (fim do bloqueio)",
+            "11-24 02:58:51.222 W/BQDiag  (14146): thread principal bloqueada por 640 ms (fim do bloqueio)",
+            "11-24 02:58:54.541 W/BQDiag  (14146): thread principal bloqueada por 530 ms (fim do bloqueio)",
+            "11-24 02:58:55.304 W/BQDiag  (14146): thread principal bloqueada por 756 ms (fim do bloqueio)",
+            "11-24 02:58:56.094 W/BQDiag  (14146): thread principal bloqueada por 581 ms (fim do bloqueio)",
+            "11-24 02:58:57.011 W/BQDiag  (14146): thread principal bloqueada por 661 ms (fim do bloqueio)",
+            "11-24 02:58:57.625 W/BQDiag  (14146): thread principal bloqueada por 595 ms (fim do bloqueio)",
+            "11-24 02:58:58.765 W/BQDiag  (14146): thread principal bloqueada por 699 ms (fim do bloqueio)",
+            "11-24 02:59:08.796 W/BQDiag  (14146): thread principal bloqueada por 708 ms (fim do bloqueio)",
+            "11-24 02:59:28.661 W/BQDiag  (14146): thread principal bloqueada por 512 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
@@ -103,33 +205,72 @@
       "cenarios": [
         {
           "id": "3-animacoes-desligadas-normal",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:40:22.958 W/BQDiag  (12159): thread principal bloqueada por 4242 ms (fim do bloqueio)",
-            "11-24 02:41:03.276 W/BQDiag  (12159): thread principal bloqueada por 759 ms (fim do bloqueio)"
+            "11-24 02:59:50.592 W/BQDiag  (15048): thread principal bloqueada por 7342 ms (fim do bloqueio)",
+            "11-24 02:59:56.093 W/BQDiag  (15048): thread principal bloqueada por 1447 ms (fim do bloqueio)",
+            "11-24 02:59:59.124 W/BQDiag  (15048): thread principal bloqueada por 568 ms (fim do bloqueio)",
+            "11-24 03:00:01.844 W/BQDiag  (15048): thread principal bloqueada por 902 ms (fim do bloqueio)",
+            "11-24 03:00:05.138 W/BQDiag  (15048): thread principal bloqueada por 504 ms (fim do bloqueio)",
+            "11-24 03:00:28.896 W/BQDiag  (15048): thread principal bloqueada por 803 ms (fim do bloqueio)",
+            "11-24 03:00:30.381 W/BQDiag  (15048): thread principal bloqueada por 536 ms (fim do bloqueio)"
+          ],
+          "anr": 0,
+          "amAnr": []
+        },
+        {
+          "id": "3-animacoes-desligadas-normal-conexao-aos-70s",
+          "execucoes": 1,
+          "motivos": [],
+          "bloqueios": [
+            "11-24 03:00:45.419 W/BQDiag  (15590): thread principal bloqueada por 7607 ms (fim do bloqueio)",
+            "11-24 03:00:50.523 W/BQDiag  (15590): thread principal bloqueada por 1462 ms (fim do bloqueio)",
+            "11-24 03:01:31.037 W/BQDiag  (15590): thread principal bloqueada por 607 ms (fim do bloqueio)",
+            "11-24 03:01:39.137 W/BQDiag  (15590): thread principal bloqueada por 573 ms (fim do bloqueio)",
+            "11-24 03:01:43.461 W/BQDiag  (15590): thread principal bloqueada por 607 ms (fim do bloqueio)",
+            "11-24 03:01:45.034 W/BQDiag  (15590): thread principal bloqueada por 537 ms (fim do bloqueio)",
+            "11-24 03:01:48.665 W/BQDiag  (15590): thread principal bloqueada por 1144 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
         },
         {
           "id": "3-animacoes-desligadas-aviao",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:41:14.711 W/BQDiag  (12982): thread principal bloqueada por 3396 ms (fim do bloqueio)",
-            "11-24 02:41:56.234 W/BQDiag  (12982): thread principal bloqueada por 692 ms (fim do bloqueio)"
+            "11-24 03:02:07.455 W/BQDiag  (16402): thread principal bloqueada por 6550 ms (fim do bloqueio)",
+            "11-24 03:02:12.828 W/BQDiag  (16402): thread principal bloqueada por 1540 ms (fim do bloqueio)",
+            "11-24 03:02:18.559 W/BQDiag  (16402): thread principal bloqueada por 890 ms (fim do bloqueio)",
+            "11-24 03:02:19.499 W/BQDiag  (16402): thread principal bloqueada por 518 ms (fim do bloqueio)",
+            "11-24 03:02:26.269 W/BQDiag  (16402): thread principal bloqueada por 522 ms (fim do bloqueio)",
+            "11-24 03:02:40.465 W/BQDiag  (16402): thread principal bloqueada por 554 ms (fim do bloqueio)",
+            "11-24 03:02:43.903 W/BQDiag  (16402): thread principal bloqueada por 507 ms (fim do bloqueio)",
+            "11-24 03:02:46.742 W/BQDiag  (16402): thread principal bloqueada por 817 ms (fim do bloqueio)",
+            "11-24 03:02:48.321 W/BQDiag  (16402): thread principal bloqueada por 522 ms (fim do bloqueio)",
+            "11-24 03:02:49.781 W/BQDiag  (16402): thread principal bloqueada por 516 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []
         },
         {
           "id": "3-animacoes-desligadas-segundo-plano",
-          "execucoes": 0,
+          "execucoes": 1,
           "motivos": [],
           "bloqueios": [
-            "11-24 02:42:08.568 W/BQDiag  (13793): thread principal bloqueada por 3741 ms (fim do bloqueio)",
-            "11-24 02:42:43.714 W/BQDiag  (13793): thread principal bloqueada por 602 ms (fim do bloqueio)"
+            "11-24 03:03:05.917 W/BQDiag  (17113): thread principal bloqueada por 7022 ms (fim do bloqueio)",
+            "11-24 03:03:11.225 W/BQDiag  (17113): thread principal bloqueada por 1475 ms (fim do bloqueio)",
+            "11-24 03:03:16.834 W/BQDiag  (17113): thread principal bloqueada por 971 ms (fim do bloqueio)",
+            "11-24 03:03:17.716 W/BQDiag  (17113): thread principal bloqueada por 661 ms (fim do bloqueio)",
+            "11-24 03:03:37.605 W/BQDiag  (17113): thread principal bloqueada por 537 ms (fim do bloqueio)",
+            "11-24 03:03:39.286 W/BQDiag  (17113): thread principal bloqueada por 853 ms (fim do bloqueio)",
+            "11-24 03:03:40.930 W/BQDiag  (17113): thread principal bloqueada por 528 ms (fim do bloqueio)",
+            "11-24 03:03:51.085 W/BQDiag  (17113): thread principal bloqueada por 588 ms (fim do bloqueio)",
+            "11-24 03:03:52.709 W/BQDiag  (17113): thread principal bloqueada por 508 ms (fim do bloqueio)",
+            "11-24 03:04:02.908 W/BQDiag  (17113): thread principal bloqueada por 512 ms (fim do bloqueio)",
+            "11-24 03:04:05.688 W/BQDiag  (17113): thread principal bloqueada por 575 ms (fim do bloqueio)",
+            "11-24 03:04:09.961 W/BQDiag  (17113): thread principal bloqueada por 531 ms (fim do bloqueio)"
           ],
           "anr": 0,
           "amAnr": []

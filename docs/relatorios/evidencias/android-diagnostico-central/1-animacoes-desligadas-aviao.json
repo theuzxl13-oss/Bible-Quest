@@ -1,20 +1,51 @@
 {
   "cenario": "1-animacoes-desligadas-aviao",
-  "execucoesDoEfeito": [],
+  "execucoesDoEfeito": [
+    {
+      "t": 711,
+      "hora": "2026-11-24T02:52:30.219Z",
+      "tipo": "efeito executa #1",
+      "motivo": [
+        "(primeira vez)"
+      ],
+      "antes": null,
+      "depois": {
+        "qualidade": "leve",
+        "animacoesReduzidas": true,
+        "reduceMotionConfiguracao": false,
+        "prefersReducedMotion": true,
+        "configuracaoGraficos": "auto",
+        "elementos": "tenda,fogueira,mesa,quadro,bau",
+        "bauPronto": false,
+        "estado": "carregando"
+      }
+    }
+  ],
   "resumo": [
-    "   1885 ms  prefers-reduced-motion inicial true",
-    "   1904 ms  pageshow",
-    "  43548 ms  prefers-reduced-motion mudou"
+    "    510 ms  prefers-reduced-motion inicial true",
+    "    528 ms  pageshow",
+    "    668 ms  render: valores mudaram mudou=[\"(primeira vez)\"]",
+    "    711 ms  efeito executa #1 motivo=[\"(primeira vez)\"]",
+    "  13438 ms  +canvas",
+    "  17462 ms  cena pronta",
+    "  45174 ms  prefers-reduced-motion mudou",
+    "  46434 ms  teste: Playwright conectado ao WebView"
   ],
   "bloqueiosDaThreadPrincipal": [
-    "11-24 02:34:27.169 W/BQDiag  ( 5564): thread principal bloqueada por 4535 ms (fim do bloqueio)"
+    "11-24 02:52:25.666 W/BQDiag  ( 7362): thread principal bloqueada por 588 ms (fim do bloqueio)",
+    "11-24 02:52:26.400 W/BQDiag  ( 7362): thread principal bloqueada por 520 ms (fim do bloqueio)",
+    "11-24 02:52:36.963 W/BQDiag  ( 9330): thread principal bloqueada por 6401 ms (fim do bloqueio)",
+    "11-24 02:52:44.557 W/BQDiag  ( 9330): thread principal bloqueada por 1555 ms (fim do bloqueio)",
+    "11-24 02:52:48.374 W/BQDiag  ( 9330): thread principal bloqueada por 1168 ms (fim do bloqueio)",
+    "11-24 02:53:14.446 W/BQDiag  ( 9330): thread principal bloqueada por 574 ms (fim do bloqueio)",
+    "11-24 02:53:16.035 W/BQDiag  ( 9330): thread principal bloqueada por 693 ms (fim do bloqueio)"
   ],
   "anr": [],
   "amAnr": [],
   "eventos": [
     {
-      "t": 1884,
-      "hora": "2026-11-24T02:34:21.538Z",
+      "t": 509,
+      "hora": "2026-11-24T02:52:30.018Z",
       "tipo": "página iniciada",
       "detalhe": {
         "url": "https://localhost/",
@@ -22,49 +53,173 @@
       }
     },
     {
-      "t": 1885,
-      "hora": "2026-11-24T02:34:21.538Z",
+      "t": 510,
+      "hora": "2026-11-24T02:52:30.018Z",
       "tipo": "prefers-reduced-motion inicial",
       "detalhe": true
     },
     {
-      "t": 1904,
-      "hora": "2026-11-24T02:34:21.557Z",
+      "t": 528,
+      "hora": "2026-11-24T02:52:30.037Z",
       "tipo": "pageshow",
       "detalhe": {
         "persisted": false
       }
     },
     {
-      "t": 7536,
-      "hora": "2026-11-24T02:34:27.189Z",
-      "tipo": "quadro atrasado",
+      "t": 668,
+      "hora": "2026-11-24T02:52:30.177Z",
+      "tipo": "render: valores mudaram",
       "detalhe": {
-        "ms": 4533
+        "mudou": [
+          "(primeira vez)"
+        ],
+        "valores": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
       }
     },
     {
-      "t": 43548,
-      "hora": "2026-11-24T02:35:03.201Z",
+      "t": 711,
+      "hora": "2026-11-24T02:52:30.219Z",
+      "tipo": "efeito executa #1",
+      "detalhe": {
+        "motivo": [
+          "(primeira vez)"
+        ],
+        "antes": null,
+        "depois": {
+          "qualidade": "leve",
+          "animacoesReduzidas": true,
+          "reduceMotionConfiguracao": false,
+          "prefersReducedMotion": true,
+          "configuracaoGraficos": "auto",
+          "elementos": "tenda,fogueira,mesa,quadro,bau",
+          "bauPronto": false,
+          "estado": "carregando"
+        }
+      }
+    },
+    {
+      "t": 10129,
+      "hora": "2026-11-24T02:52:39.637Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 9301,
+        "inicio": 826
+      }
+    },
+    {
+      "t": 10129,
+      "hora": "2026-11-24T02:52:39.638Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 9283
+      }
+    },
+    {
+      "t": 13438,
+      "hora": "2026-11-24T02:52:42.947Z",
+      "tipo": "+canvas"
+    },
+    {
+      "t": 13457,
+      "hora": "2026-11-24T02:52:42.966Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 3308,
+        "inicio": 10130
+      }
+    },
+    {
+      "t": 13458,
+      "hora": "2026-11-24T02:52:42.966Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 3317
+      }
+    },
+    {
+      "t": 15111,
+      "hora": "2026-11-24T02:52:44.619Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1633
+      }
+    },
+    {
+      "t": 17462,
+      "hora": "2026-11-24T02:52:46.970Z",
+      "tipo": "cena pronta"
+    },
+    {
+      "t": 17623,
+      "hora": "2026-11-24T02:52:47.132Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 2088,
+        "inicio": 15374
+      }
+    },
+    {
+      "t": 17626,
+      "hora": "2026-11-24T02:52:47.134Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 2183
+      }
+    },
+    {
+      "t": 18975,
+      "hora": "2026-11-24T02:52:48.483Z",
+      "tipo": "tarefa longa (JS)",
+      "detalhe": {
+        "ms": 1337,
+        "inicio": 17632
+      }
+    },
+    {
+      "t": 18978,
+      "hora": "2026-11-24T02:52:48.487Z",
+      "tipo": "quadro atrasado",
+      "detalhe": {
+        "ms": 1333
+      }
+    },
+    {
+      "t": 45174,
+      "hora": "2026-11-24T02:53:14.682Z",
       "tipo": "prefers-reduced-motion mudou",
       "detalhe": false
     },
     {
-      "t": 43548,
-      "hora": "2026-11-24T02:35:03.201Z",
-      "tipo": "quadro atrasado",
+      "t": 45181,
+      "hora": "2026-11-24T02:53:14.690Z",
+      "tipo": "tarefa longa (JS)",
       "detalhe": {
-        "ms": 900
+        "ms": 202,
+        "inicio": 44940
       }
     },
     {
-      "t": 43563,
-      "hora": "2026-11-24T02:35:03.216Z",
-      "tipo": "tarefa longa (JS)",
+      "t": 46429,
+      "hora": "2026-11-24T02:53:15.938Z",
+      "tipo": "quadro atrasado",
       "detalhe": {
-        "ms": 674,
-        "inicio": 42748
+        "ms": 667
       }
+    },
+    {
+      "t": 46434,
+      "hora": "2026-11-24T02:53:15.943Z",
+      "tipo": "teste: Playwright conectado ao WebView"
     }
   ]
 }
