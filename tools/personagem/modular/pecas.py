@@ -1085,6 +1085,20 @@ def roupas():
         for m in list(o.modifiers):
             if m.type == 'COLLISION':
                 o.modifiers.remove(m)
+    # orçamento de triângulos por peça (as peças simuladas saem densas demais para o celular)
+    META = {'Lenco': 2600, 'Tunica_cima': 4200, 'Tunica_saia': 2600, 'Tunica_saia_curta': 2200, 'Manto': 2400, 'Manto_longo': 2600,
+            'Xale': 2000, 'Capuz': 1600, 'Botas': 1600, 'Sandalia_simples': 1400, 'Sandalia_tiras': 1600, 'Bolsa': 1200, 'Odre': 1200, 'Colar': 900,
+            'Cinto_couro': 800, 'Cinto_corda': 1400, 'Cinto_faixa': 800}
+    for p in out:
+        meta = META.get(p.name)
+        if meta:
+            p.data.calc_loop_triangles()
+            n = len(p.data.loop_triangles)
+            if n > meta:
+                ativar(p)
+                d = p.modifiers.new('Reduzir', 'DECIMATE')
+                d.ratio = meta / n
+                bpy.ops.object.modifier_apply(modifier=d.name)
     for p in out:
         if p.data.shape_keys:
             p.shape_key_clear()
