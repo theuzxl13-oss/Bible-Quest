@@ -1,13 +1,17 @@
 # Bible Quest — Plano de reformulação visual
 
-**Auditoria técnica e planejamento** · 25/11/2026 · branch `claude/bible-quest-android` (base: 0.17.9)
+**Auditoria técnica e planejamento** · versão 2 (25/11/2026: referências oficiais e decisões incorporadas) · branch `claude/bible-quest-android` (base: 0.17.9)
+
+**Folha de estilo oficial:** [`IDENTIDADE_VISUAL_BIBLE_QUEST.md`](IDENTIDADE_VISUAL_BIBLE_QUEST.md). Em caso de dúvida de arte, ela prevalece.
 
 > **Natureza deste documento.** Esta etapa é **só de auditoria e planejamento**. Nada foi alterado no código, no APK, nas configurações do Android, nas funcionalidades, no progresso, nas perguntas, nas recompensas ou nas fases. Nenhuma implementação começa sem autorização expressa do dono do projeto.
 
 ## 0. Referências usadas
 
 - `docs/relatorios/APONTAMENTOS_VISUAIS_2026-11-25.md`: imagens 01 a 10, com os comentários do dono do projeto.
-- O pedido mencionava **duas imagens de referência anexadas**, mas elas **não chegaram** na mensagem: o último lote recebido foi o das imagens 06 a 10. Por isso, a direção visual deste plano parte dos apontamentos e da referência de estilo do mapa (imagem 10). Quando as duas imagens chegarem, elas serão incluídas nos apontamentos e o plano será revisado, sobretudo a seção 3, no que mudar.
+- **Duas referências oficiais** enviadas pelo dono do projeto em 25/11/2026. Elas são **o padrão visual desejado**, e não inspirações genéricas, e estão descritas em detalhe na seção 1 da folha de estilo. Não foram publicadas no repositório, por direitos de terceiros.
+  - **Referência 1 (Central):** cena 3D de aventura em luz do dia, com materiais pintados à mão e interface integrada ao mundo (retrato do jogador, botões grandes coloridos por modo, placa de madeira, cartões de missão).
+  - **Referência 2 (mapa):** mapa ilustrado em vista aérea inclinada, com caminho orgânico marcado por pontos, fases como estandartes com três estrelas, floresta densa, água, penhascos e marcos.
 - Decisões aprovadas da versão 1.0 (`docs/planos/VERSAO_1_0_DIRETRIZES.md`), especialmente:
   - A2: preservar a Central 3D;
   - A3 e A28: dois personagens com o mesmo padrão, e personagem feminina obrigatória para a 1.0;
@@ -28,7 +32,7 @@
 | O que preservar? | Toda a lógica de jogo e os dados salvos, a cena da Central e sua estrutura, o renderizador compartilhado de miniaturas, a qualidade adaptativa (alta, leve, 2D), os botões acessíveis sobre a cena e o mapa, os tokens de cor, o alto contraste e o carregamento sob demanda do 3D. |
 | O que reconstruir visualmente? | Os modelos dos dois personagens (modulares e no mesmo estilo), a arte dos mapas da História e do Quiz, a iluminação e o acabamento da Central, e a identidade das telas internas. Também sai o que o dono pediu para retirar: a tela de chegada e a abertura do mundo. |
 | Maior risco | **Dados salvos dos personagens:** reduzir de 8 bases para 2 exige uma migração da aparência, com testes. **Segundo risco:** aparelhos de entrada, porque modelos e texturas novos precisam caber no orçamento de memória. |
-| Primeira entrega recomendada | **Entrega 3 (personagens)** começa já pela produção da arte, em paralelo com a **Entrega 2 (mapa)**. A Central (Entrega 1) recebe o acabamento depois que o personagem novo existir, porque ela o exibe. Ver a seção 6. |
+| Primeiras entregas | **Personagens** (masculino e feminino), **protótipo do mapa de Gênesis** e **nova Central**, nesta ordem de produção, com o plano técnico detalhado na seção 9. |
 
 ---
 
@@ -157,6 +161,17 @@
 ## 3. Arquitetura visual proposta
 
 ### 3.1 Direção de arte
+
+> **Atualização (versão 2):** a direção de arte agora segue as duas referências oficiais e está fixada na folha de estilo (`IDENTIDADE_VISUAL_BIBLE_QUEST.md`). Em resumo:
+> - **paleta:** tokens atuais, mais cores por modo e cores de cena e mapa (seção 3 da folha);
+> - **materiais:** pintados à mão, com textura e bordas chanfradas;
+> - **luz:** sol quente com contraluz e brilho da fogueira, assada na qualidade leve;
+> - **ambientação:** acampamento bíblico em clareira, com um caminho que conduz o olhar;
+> - **personagens:** estilizados, com qualidade equivalente e peças reais;
+> - **mapas:** vista aérea inclinada, caminho orgânico com marcadores e estandartes com estrelas;
+> - **interface:** dentro do mundo (retrato, botões de modo, placas e cartões de madeira).
+>
+> O texto abaixo continua válido onde não contradiz a folha.
 
 - **Gênero:** RPG de aventura bíblica, **ilustrado, quente e imersivo**, com o mesmo estilo nos personagens, nos cenários e na interface.
 - **Personagens:** estilizados, "de animação", com proporções levemente heroicas. Masculino e feminino com **a mesma** malha-base, esqueleto, acabamento de textura, número de peças e expressões.
@@ -297,14 +312,14 @@
 | R4 | Arte gerada por IA com estilo inconsistente | Médio | Uma folha de estilo com paleta, traço e luz, e aprovação de referências antes da produção |
 | R5 | Mudar a progressão sem querer | Alto | A lógica (`services/game/`) fica congelada nas entregas visuais; testes comparando os estados dos nós |
 | R6 | APK maior | Baixo a médio | WebP e GLB comprimidos; meta de até +10 MB no APK |
-| R7 | Conflito de escopo com decisões aprovadas (A14: o visual de Perfil, Quiz e História podia ficar para depois da 1.0) | Médio | **O dono do projeto decide** se as entregas 4 e 5 entram na 1.0 ou depois |
+| R7 | Conflito de escopo com decisões aprovadas (A14: o visual de Perfil, Quiz e História podia ficar para depois da 1.0) | Médio | **Resolvido pela decisão V3:** as entregas 4 e 5 só aplicam a pele visual, ficam depois das três primeiras e não podem atrasar a 1.0 |
 | R8 | Direitos autorais da referência visual | Médio | Nenhuma imagem de jogo comercial no repositório; inspiração só de design |
 
 ---
 
 ## 6. Ordem recomendada e primeiras tarefas
 
-**Ordem:** a numeração das entregas segue o pedido. A ordem de execução recomendada é esta:
+**Ordem:** a numeração das entregas segue o pedido. A ordem de execução recomendada é esta (o detalhamento técnico das três primeiras está na seção 9):
 
 1. **Preparação, sem mudança visível:**
    - folha de estilo artística (paleta, luz, traço) com 3 ou 4 imagens de referência geradas e aprovadas pelo dono do projeto;
@@ -313,7 +328,7 @@
 2. **Entrega 3 (personagens):** é o recurso que aparece na Central, no mapa e no Perfil. A produção dos modelos é a parte mais longa.
 3. **Entrega 2 (mapa)**, em paralelo com a produção dos personagens.
 4. **Entrega 1 (Central)**, já com o personagem novo.
-5. **Entregas 4 e 5** (conforme a decisão sobre a A14).
+5. **Entregas 4 e 5**, sem comprometer a 1.0 (decisão V3).
 6. **Entrega 6.**
 
 **Primeiras tarefas propostas (depois da autorização):**
@@ -339,10 +354,145 @@
 - Licença registrada para cada recurso gráfico novo.
 - Aprovação visual do dono do projeto, com capturas no celular e no computador, antes de seguir para a entrega seguinte.
 
-## 8. Decisões pendentes do dono do projeto
+## 8. Decisões do dono do projeto
 
-1. **Imagens 01 e 02:** o que mudar no fundo das boas-vindas e da identificação?
-2. **Depois da personalização**, o jogador vai direto para a Central? E, ao escolher um mundo, direto para o mapa?
-3. **A14:** as entregas 4 e 5 entram na versão 1.0 ou ficam para depois?
-4. **As duas imagens de referência** mencionadas no pedido: reenviar, para incluí-las nos apontamentos e ajustar a direção de arte.
-5. **Ordem de execução:** aprovar a ordem da seção 6 (personagens e mapa primeiro) ou seguir a numeração 1 a 6.
+### 8.1 Aprovadas em 25/11/2026 (incorporadas ao plano)
+
+| # | Decisão | Efeito no plano |
+|---|---|---|
+| V1 | **Depois da personalização, ir direto para a Central** | A tela de chegada (`/chegada`, imagem 07) sai. `/chegada` redireciona para `/painel`. Faz parte da Entrega 3. |
+| V2 | **Ao escolher um mundo, ir direto para o mapa** | O diálogo de abertura do mundo (imagem 08) sai. `worldsSeen` continua salvo. Faz parte da Entrega 2. |
+| V3 | **Preservar as funcionalidades** de História, Quiz, Biblioteca, Perfil e Conquistas, e planejar o acabamento visual **sem comprometer a versão 1.0** | As entregas 4 e 5 só aplicam a pele visual nova. Ficam **depois** das três primeiras e só entram na 1.0 se não atrasarem nem arriscarem o lançamento (resolve o R7 e a A14). |
+| V4 | **As duas referências são o padrão visual oficial** | Folha de estilo criada (`IDENTIDADE_VISUAL_BIBLE_QUEST.md`) |
+| V5 | **Primeiras entregas:** personagens masculino e feminino, protótipo do mapa de Gênesis e nova Central | Seção 9 |
+
+### 8.2 Ainda pendentes
+
+1. **Fundo das boas-vindas e da identificação** (imagens 01 e 02 dos apontamentos): o estilo está fixado na folha (seção 5.5), mas falta escolher a cena.
+2. **Aprovação da folha de estilo** (paleta, cores por modo e padrões) antes do início da produção.
+3. **Autorização para implementar** a primeira entrega.
+
+---
+
+## 9. Plano técnico das primeiras entregas
+
+Ordem de produção: **9.1 Personagens → 9.2 Protótipo do mapa de Gênesis → 9.3 Nova Central**. O mapa pode começar em paralelo à produção dos modelos, porque não depende deles. A Central vem por último, porque exibe o personagem novo. Cada entrega termina com o teste físico no Android e a aprovação visual do dono do projeto antes da seguinte.
+
+### 9.1 Personagens masculino e feminino
+
+**Produção da arte (sem tocar no jogo):**
+1. **Imagens de referência:** frente, lado e costas dos dois gêneros, no mesmo estilo e com a mesma luz, geradas por IA conforme a folha (seção 5.2). Aprovação do dono do projeto antes de seguir.
+2. **Corpos-base:** partir de `tools/personagem/estilizado/corpos-base/` (masculino e feminino no mesmo estilo, já com esqueleto). Refazer a malha só se a referência aprovada exigir.
+3. **Peças separadas no mesmo esqueleto:**
+   - cabelos: os 7 estilos do catálogo, para cada gênero;
+   - barbas: 2, além de "sem barba";
+   - túnicas, mantos, cintos e calçados do catálogo atual;
+   - acessórios atuais.
+4. **Rosto:** *morph targets* para Suave, Sobrancelhas marcantes e Sardas (sardas por máscara de textura) e para as expressões Serena, Sorriso, Alegre e Curiosa.
+5. **Exportação:** um GLB por gênero, com o corpo e todas as peças (meshopt), mais texturas de 1024 e 512 px. Registro em `LICENCAS.md`.
+
+**Integração (depois da autorização):**
+- `src/character3d/pecas.ts` (catálogo), `montagem.ts` (mostrar e esconder peças no mesmo esqueleto, sem recarregar) e `cores.ts` (troca de cor ao vivo), conforme o `EDITOR-3D-PLANO.md`.
+- `heroi.ts` passa a tratar os dois gêneros da mesma forma. Sai o caminho "estilizado de peça única".
+- `CharacterBase.tsx`: dois cartões (Masculino e Feminino). `Wardrobe.tsx` vai direto para a Central (V1).
+- **Migração da aparência v2 → v3** em `repositories.ts`:
+  - `base` antiga → `masculino` ou `feminino`, pelo `body`;
+  - preserva `equipped`, `cores`, `dyes`, `hairStyle`, `hairColor`, `beard`, `face`, `expressao` e `skin`;
+  - mantém `previousCharacter`.
+- 2D: `Character2D.tsx` ganha os cabelos e barbas que faltam, para a escolha valer também na qualidade 2D.
+
+**Critérios visuais objetivos:**
+
+| # | Critério | Como medir |
+|---|---|---|
+| P1 | Cada opção de cabelo, barba, rosto e expressão produz uma miniatura **diferente** das outras da mesma categoria | Comparação automática das miniaturas: diferença de pixels > 3 % na região do rosto ou da cabeça |
+| P2 | Masculino e feminino com o mesmo estilo e a mesma densidade de detalhe | C1 e C2 (altura da cabeça ±5 %) e avaliação lado a lado |
+| P3 | Nenhuma peça atravessa o corpo nas 4 animações | C4 e C5, com inspeção em 360° por capturas |
+| P4 | Mesma luz e enquadramento nas miniaturas dos dois gêneros | Capturas padronizadas (frente, lado, costas, retrato) |
+| P5 | Peso do modelo | ≤ 2,5 MB por gênero; ≤ 25 mil triângulos na alta |
+
+**Desempenho, acessibilidade e qualidades:**
+- **Tempos:** editor aberto e personagem visível em ≤ 2 s no Moto G75; trocar uma peça em ≤ 100 ms, sem recarregar o modelo; retrato do topo no mesmo tempo para os dois (C6).
+- **Aparelho modesto:** a qualidade leve usa as texturas de 512 px e no máximo 12 mil triângulos.
+- **Acessibilidade:** opções com nome acessível ("Cabelo: Trança, selecionado"), navegação por teclado e TalkBack, e foco visível.
+- **Qualidades:** alta, leve e 2D, todas mostrando a escolha.
+- **Testes:** migração das 8 bases (C9), miniaturas diferentes (P1), aparência salva e restaurada, e `/chegada` redirecionando.
+
+### 9.2 Protótipo do mapa de Gênesis
+
+**Escopo:** só o mundo **Gênesis** do Modo História (20 fases e os baús atuais), com o novo padrão. O Quiz recebe o mesmo componente depois da aprovação do protótipo.
+
+**Produção:**
+1. **Ilustração por região** (4 a 5 regiões em vista aérea inclinada, seção 5.3 da folha), com transições naturais:
+   - jardim e rios (criação, Éden);
+   - campos e altar (Caim e Abel);
+   - montes e arca (Noé);
+   - planície e torre (Babel);
+   - tendas, poço e celeiro (patriarcas e José).
+   - Cada uma em WebP de ≤ 400 KB, gerada por IA conforme a folha e registrada.
+2. **Traçado do caminho:** curva orgânica (spline) desenhada sobre a ilustração. As posições das 20 fases ficam num arquivo de dados por mundo (`src/data/mapas/`), e não mais na senoide fixa.
+3. **Componente comum** `MapaDeNiveis`: recebe nós já calculados (`phaseState`, baús e avatar, sem mudar `journeyMap.ts`) e desenha marcadores, estandartes numerados, estrelas, cadeados, baús e o avatar em SVG por cima da ilustração.
+4. Retirada do diálogo de abertura do mundo (V2).
+
+**Critérios visuais objetivos:**
+
+| # | Critério | Como medir |
+|---|---|---|
+| M1 | Nenhuma faixa reta de terreno nem paredão horizontal | Revisão das capturas |
+| M2 | Caminho com curvas de raio variável; nenhum trecho reto com mais de 2 fases alinhadas | Análise dos pontos do traçado |
+| M3 | Toda fase visível por inteiro (nenhuma copa ou rocha cobre o estandarte, o número ou as estrelas) | Teste automático da área livre em volta de cada fase |
+| M4 | Número da fase legível: ≥ 18 px e contraste ≥ 4,5:1 com o contorno | Captura no celular de 360 px de largura |
+| M5 | Estados distinguíveis sem cor: cadeado, estrelas e brilho | Captura em escala de cinza |
+| M6 | Estado de **cada** fase e baú idêntico ao do mapa atual | Teste automático com 5 progressos de exemplo |
+
+**Desempenho, acessibilidade e qualidades:**
+- **Rolagem:** sem quadros acima de 50 ms no Moto G75 e no aparelho modesto.
+- **Carregamento:** só as regiões visíveis e a seguinte; mapa utilizável em ≤ 1,5 s com a ilustração da região atual.
+- **Acessibilidade:** nomes acessíveis ("Fase 3, concluída, 2 de 3 estrelas"); ordem de teclado da fase 1 em diante; áreas de toque de 48 px; o alto contraste usa a versão vetorial; a redução de movimento desliga o brilho e as estrelas voando.
+- **Qualidades:** o mapa é igual em alta, leve e 2D. Na leve, sem animações contínuas.
+
+### 9.3 Nova Central
+
+**Produção:**
+1. **Modelos de cenário** (GLB ≤ 300 KB cada) no estilo da folha, com luz assada:
+   - tenda;
+   - fogueira;
+   - baú (fechado, pronto, aberto);
+   - quadro de missões;
+   - mesa de estudos;
+   - os 8 elementos liberados pelo progresso.
+2. **Ambiente:** terreno com o caminho que conduz ao horizonte, vegetação em instâncias (oliveiras, ciprestes, palmeiras, flores), montanhas e céu de dia com névoa em camadas.
+3. **Ilustração 2D** da Central para a qualidade 2D.
+
+**Integração:**
+- `acampamento.ts` dividido em módulos (céu, terreno, objetos, luz, personagem), primeiro sem mudança visual e com testes.
+- A cena **fica viva** entre idas e voltas à Central: pausada, sem desenhar, e retomada (corrige o P2 do teste físico).
+- HUD da folha (seção 5.1): retrato com nível e XP; estrelas, sequência e configurações; **botões de modo coloridos**; painel de missões em madeira; rótulos dos objetos como placas. **Os mesmos dados e destinos de hoje.**
+
+**Critérios visuais objetivos:**
+
+| # | Critério | Como medir |
+|---|---|---|
+| C-1 | Só o personagem do jogador na cena | Revisão da cena e teste da lista de objetos |
+| C-2 | Personagem com 35 a 45 % da altura útil no celular, com o rosto iluminado | Captura de 360 × 780 px |
+| C-3 | Todos os objetos interativos com textura e acabamento, sem geometria crua na alta | Revisão das capturas |
+| C-4 | Botões de modo com cor própria, ícone, título e subtítulo, com contraste ≥ 4,5:1 | Captura e medição |
+| C-5 | O mesmo clima (cor e luz) nas qualidades alta e leve | Capturas lado a lado |
+
+**Desempenho, acessibilidade e qualidades:**
+- **Moto G75:** 3D pronto em ≤ 3,5 s desde o início do processo; volta à Central sem tarefa longa acima de 200 ms; 0 ANR.
+- **Aparelho modesto:** Central utilizável em ≤ 5 s (leve), ≤ 80 chamadas de desenho e ≤ 70 MB de memória de GPU.
+- **Acessibilidade:** os rótulos dos objetos e os botões de modo são botões HTML com nome acessível e foco visível; a ordem de leitura segue HUD → modos → missões.
+- **Movimento:** com redução de movimento, sem câmera em movimento nem partículas.
+- **Qualidades:** alta (sombras e brilho), leve (luz assada, 30 quadros por segundo) e 2D (ilustração com os mesmos botões).
+
+### 9.4 Riscos específicos das primeiras entregas
+
+| Risco | Entrega | Mitigação |
+|---|---|---|
+| Arte gerada por IA inconsistente entre os gêneros ou entre as regiões | 9.1 e 9.2 | Aprovar as referências antes da produção; usar as mesmas instruções e a mesma paleta |
+| Peças que não encaixam no esqueleto | 9.1 | Testar um cabelo e uma barba antes de produzir todas as peças |
+| Migração da aparência perder itens | 9.1 | Testes C9 antes de integrar; `previousCharacter` preservado |
+| Ilustração do mapa pesar demais no APK | 9.2 | Orçamento de 400 KB por região; medir o APK a cada região |
+| Cena viva consumir memória fora da Central | 9.3 | Liberar as texturas grandes ao sair; medir a memória no aparelho modesto |
+| Regressão do ANR | 9.3 | Teste físico com o APK de diagnóstico antes da aprovação |
