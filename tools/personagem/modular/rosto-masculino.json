@@ -1,0 +1,49 @@
+{
+ "nota": "Medidas do rosto do corpo-base masculino (medir.py e conferência visual, 25/11/2026). x e z em metros; frente do rosto em -y.",
+ "centro_x": 0.0,
+ "olho_R": [
+  -0.0477,
+  1.5666
+ ],
+ "olho_L": [
+  0.0474,
+  1.5668
+ ],
+ "olho_raio": [
+  0.0175,
+  0.0135
+ ],
+ "sobrancelha_z": 1.605,
+ "boca": [
+  0.0,
+  1.497,
+  0.023
+ ],
+ "antigos": {
+  "olho_raio": [
+   0.033,
+   0.029
+  ],
+  "sobrancelha": [
+   0.01,
+   0.086,
+   1.59,
+   1.632
+  ],
+  "boca": [
+   0.046,
+   1.478,
+   1.52
+  ],
+  "bochecha": [
+   0.07,
+   1.52,
+   0.0
+  ],
+  "cilios": [
+   0.0,
+   0.0,
+   0.0
+  ]
+ }
+}
