@@ -1127,6 +1127,46 @@ def roupas():
 if not PROTO:
     pecas.extend(roupas())
 
+
+def esconder_sob_roupa():
+    """Remove do corpo as faces sempre cobertas pela túnica (toda roupa tem a parte de cima e,
+    no mínimo, a saia curta): a camiseta e a bermuda pintadas da IA nunca atravessam o tecido."""
+    from mathutils.bvhtree import BVHTree
+    arvores = []
+    for nome in ('Tunica_cima', 'Tunica_saia_curta'):
+        ob = bpy.data.objects.get(nome)
+        if ob:
+            arvores.append(BVHTree.FromObject(ob, bpy.context.evaluated_depsgraph_get(), deform=False))
+    if not arvores:
+        return
+    me = corpo.data
+    nv = len(me.vertices)
+    c = coords(corpo)
+    n = normais(corpo)
+    coberto = np.zeros(nv, bool)
+    for i in range(nv):
+        o = Vector(c[i]) + Vector(n[i]) * 0.0005
+        for arv in arvores:
+            hit = arv.ray_cast(o, Vector(n[i]), 0.06)
+            if hit[0] is not None:
+                coberto[i] = True
+                break
+    # margem: só some o que está coberto e cercado de pontos cobertos (bordas das mangas e da saia ficam)
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    bm.verts.ensure_lookup_table()
+    dentro = np.array([coberto[v.index] and all(coberto[w.index] for e in v.link_edges for w in e.verts) for v in bm.verts])
+    faces = [f for f in bm.faces if all(dentro[v.index] for v in f.verts)]
+    bmesh.ops.delete(bm, geom=faces, context='FACES')
+    bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context='VERTS')
+    bm.to_mesh(me)
+    bm.free()
+    print('corpo: faces sob a túnica removidas', len(faces))
+
+
+if not PROTO:
+    esconder_sob_roupa()
+
 # ---------------------------------------------------------------- couro cabeludo afundado
 # Todo penteado tem a casca sobre o couro cabeludo; a pele (com o cabelo pintado da IA) é afundada
 # 4 mm ali, para nunca atravessar a massa do cabelo.
