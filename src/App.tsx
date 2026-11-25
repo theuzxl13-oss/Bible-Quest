@@ -5,7 +5,6 @@ import { useGame } from './state/GameContext'
 import Welcome from './pages/onboarding/Welcome'
 import CharacterBase from './pages/onboarding/CharacterBase'
 import Wardrobe from './pages/onboarding/Wardrobe'
-import Arrival from './pages/onboarding/Arrival'
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import StoryMap from './pages/story/StoryMap'
@@ -87,7 +86,7 @@ export default function App() {
           <Route path="entrar" element={<Login />} />
           <Route path="personagem" element={<RequireProfile character={false}><CharacterBase /></RequireProfile>} />
           <Route path="personagem/personalizar" element={<RequireProfile character={false}><Wardrobe mode="criar" /></RequireProfile>} />
-          <Route path="chegada" element={p(<Arrival />)} />
+          <Route path="chegada" element={<Navigate to="/painel" replace />} />
           <Route path="guarda-roupa" element={p(<Wardrobe mode="editar" />)} />
           <Route path="painel" element={p(<Dashboard />)} />
           <Route path="historia" element={p(<StoryMap />)} />

@@ -191,6 +191,11 @@ export interface CharacterAppearance {
   body?: BodyBuild
   /** v0.5. Ausente: 'curta' quando face === 'barba', senão 'nenhuma'. */
   beard?: BeardStyle
+  /**
+   * Reformulação visual (entrega 1): id do personagem-base antigo (um dos oito até a versão 0.17),
+   * guardado quando o perfil é convertido para as bases "masculino" e "feminino". Permite desfazer a conversão.
+   */
+  baseOriginal?: string
   /** v0.5. Tingimento escolhido (índice em DYES) para a túnica e o manto; ausente = cor original do item. */
   dyes?: { tunica?: number; manto?: number }
   /** v0.8. Cor livre (#rrggbb) por região; tem prioridade sobre o tingimento e a cor do item. Ausente = cor padrão. */

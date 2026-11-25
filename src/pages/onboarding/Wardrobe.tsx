@@ -45,7 +45,7 @@ const HAIR: { id: HairStyle; label: string }[] = [
 const FACES: { id: FaceStyle; label: string; help: string }[] = [
   { id: 'suave', label: 'Suave', help: 'Sobrancelhas naturais' },
   { id: 'marcante', label: 'Sobrancelhas marcantes', help: 'Olhar mais intenso' },
-  { id: 'sardas', label: 'Sardas', help: 'Pele com sardas (no desenho 2D)' },
+  { id: 'sardas', label: 'Sardas', help: 'Sardas no nariz e nas bochechas' },
 ]
 const BODIES: { id: BodyBuild; label: string }[] = [
   { id: 'masculino', label: 'Masculino' },
@@ -105,9 +105,9 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
   const viewer = useRef<CharacterViewApi>(null)
   const [spin, setSpin] = useState(false)
 
-  // Só segue para a chegada depois que o personagem salvo estiver no estado.
+  // Só segue para a Central depois que o personagem salvo estiver no estado.
   useEffect(() => {
-    if (created && saved) navigate('/chegada', { replace: true })
+    if (created && saved) navigate('/painel', { replace: true })
   }, [created, saved, navigate])
 
   if (!profile) return <Navigate to="/entrar" replace />
@@ -215,8 +215,8 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                     <div className="option-grid">
                       {BODIES.map((b) => (
                         <Opcao key={b.id} name="body" label={b.label} checked={bodyOf(draft) === b.id} portrait={false}
-                          preview={{ ...draft, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard }}
-                          onChange={() => update({ ...draft, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard })} />
+                          preview={{ ...draft, base: b.id, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard }}
+                          onChange={() => update({ ...draft, base: b.id, body: b.id, beard: b.id === 'feminino' ? 'nenhuma' : draft.beard })} />
                       ))}
                     </div>
                   </fieldset>

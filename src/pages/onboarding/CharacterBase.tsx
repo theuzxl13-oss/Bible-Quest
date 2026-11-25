@@ -15,15 +15,15 @@ export default function CharacterBase() {
   const name = profile?.nickname ?? ''
 
   return (
-    <section className="onb">
+    <section className="onb onb-bases">
       <div className="container stack-lg">
         <StepBar current={3} />
         <header className="page-header">
           <p className="eyebrow">Escolha do personagem</p>
           <h1>Quem vai percorrer a jornada?</h1>
           <p className="page-header-lead">
-            Escolha o aventureiro que vai representar você no universo Bible Quest. Ele não é um personagem bíblico: é você,
-            acompanhando as histórias e aprendendo sobre as Escrituras. No próximo passo você personaliza cabelo, roupas e acessórios.
+            Escolha quem vai representar você no universo Bible Quest. Não é um personagem bíblico: é você, acompanhando as
+            histórias e aprendendo sobre as Escrituras. No próximo passo você escolhe cabelo, barba, rosto, roupas e acessórios.
           </p>
         </header>
         <fieldset className="base-grid-wrap">
@@ -32,7 +32,7 @@ export default function CharacterBase() {
             {BASES.map((b) => (
               <label key={b.id} className={`base-card ${base === b.id ? 'is-on' : ''}`}>
                 <input type="radio" name="base" value={b.id} checked={base === b.id} onChange={() => setBase(b.id)} />
-                <span className="base-stage"><Character appearance={newAppearance(b.id, name)} size={96} pose={base === b.id ? 'idle' : 'still'} /></span>
+                <span className="base-stage"><Character appearance={newAppearance(b.id, name)} size={200} pose={base === b.id ? 'idle' : 'still'} /></span>
                 <strong>{b.label}</strong>
                 <span className="small muted">{b.description}</span>
               </label>

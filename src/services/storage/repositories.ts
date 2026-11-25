@@ -1,5 +1,7 @@
 import type { CharacterAppearance, CharacterConfig, Expressao, Profile, Progress, RegiaoCor, Settings } from '../../types'
 import type { KeyValueStore } from './keyValueStore'
+import { BASES_ANTIGAS } from '../../data/character/bases'
+import { BASES_ATUAIS, converterParaBasesAtuais } from '../../data/character/look'
 
 /*
  * Repositórios: as telas nunca acessam o localStorage diretamente.
@@ -29,7 +31,11 @@ const KEYS = {
   progress: `${STORAGE_PREFIX}progress`,
   settings: `${STORAGE_PREFIX}settings`,
   customContent: `${STORAGE_PREFIX}custom-content`,
+  /** Cópia do perfil original antes da conversão das oito bases antigas (recuperação). */
+  backupBases: `${STORAGE_PREFIX}backup-perfil-bases-antigas`,
 }
+
+export const BACKUP_BASES_KEY = KEYS.backupBases
 
 export const CUSTOM_CONTENT_KEY = KEYS.customContent
 
@@ -206,7 +212,11 @@ function limparExtras(a: CharacterAppearance): CharacterAppearance {
 }
 
 export function migrateCharacter(c: CharacterAppearance | CharacterConfig): CharacterAppearance {
-  if ((c as CharacterAppearance).version === 2) return limparExtras(c as CharacterAppearance)
+  return converterParaBasesAtuais(migrarV2(c))
+}
+
+function migrarV2(c: CharacterAppearance | CharacterConfig): CharacterAppearance {
+  if ((c as CharacterAppearance).version === 2) return limparBaseOriginal(limparExtras(c as CharacterAppearance))
   const old = c as CharacterConfig
   const equipped: CharacterAppearance['equipped'] = { tunica: 'tunica-linho', manto: null, calcado: 'sandalias-simples', cinto: 'cinto-corda', acessorios: [] }
   if (old.outfit === 'tunica') equipped.tunica = OLD_TUNIC_BY_COLOR[old.outfitColor] ?? 'tunica-linho'
@@ -227,11 +237,33 @@ export function migrateCharacter(c: CharacterAppearance | CharacterConfig): Char
   }
 }
 
+/** `baseOriginal` só vale se for um id de base antiga conhecido. */
+function limparBaseOriginal(a: CharacterAppearance): CharacterAppearance {
+  if (a.baseOriginal === undefined || BASES_ANTIGAS.some((b) => b.id === a.baseOriginal)) return a
+  const out = { ...a }
+  delete out.baseOriginal
+  return out
+}
+
+/** O perfil salvo tem algum personagem de uma das oito bases antigas (precisa de conversão)? */
+function temBaseAntiga(p: Partial<Profile>): boolean {
+  return [p.character, p.previousCharacter].some((c) => {
+    const base = (c as CharacterAppearance | undefined)?.base ?? (c as CharacterConfig | undefined)?.archetype
+    return typeof base === 'string' && !(BASES_ATUAIS as readonly string[]).includes(base)
+  })
+}
+
 export class LocalProfileRepository implements ProfileRepository {
   constructor(private store: KeyValueStore) {}
   load(): Profile | null {
     const p = readJson<Profile>(this.store, KEYS.profile)
     if (!p || typeof p.nickname !== 'string' || typeof p.id !== 'string') return null
+    // Recuperação: antes da primeira conversão das bases antigas, o perfil original é copiado (uma vez)
+    // para uma chave própria. A conversão também guarda o id antigo em `baseOriginal`.
+    if (temBaseAntiga(p) && this.store.get(KEYS.backupBases) === null) {
+      const bruto = this.store.get(KEYS.profile)
+      if (bruto) this.store.set(KEYS.backupBases, bruto)
+    }
     return {
       id: p.id,
       nickname: p.nickname,

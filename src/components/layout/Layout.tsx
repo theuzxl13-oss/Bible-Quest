@@ -34,7 +34,7 @@ const SECONDARY: { to: string; label: string }[] = [
 ]
 
 /** Telas de jogo usam layout imersivo, sem barra inferior. */
-const IMMERSIVE = [/^\/$/, /^\/historia$/, /^\/quiz$/, /^\/personagem/, /^\/chegada$/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/quiz\/treino\/[^/]+$/, /^\/quiz\/desafio\/[^/]+$/, /^\/diario$/, /^\/boas-vindas$/, /^\/resultado$/]
+const IMMERSIVE = [/^\/$/, /^\/historia$/, /^\/quiz$/, /^\/personagem/, /^\/entrar$/, /\/desafio$/, /^\/historia\/[^/]+\/[^/]+\/historia$/, /^\/quiz\/treino\/[^/]+$/, /^\/quiz\/desafio\/[^/]+$/, /^\/diario$/, /^\/boas-vindas$/, /^\/resultado$/]
 
 export function Layout() {
   const { profile, progress, lastOutcome } = useGame()

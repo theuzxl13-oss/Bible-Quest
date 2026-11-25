@@ -2,8 +2,10 @@ import type { CharacterAppearance } from '../../types'
 
 /*
  * PERSONAGENS-BASE
- * Pontos de partida diversos para o aventureiro do jogador. Nenhum deles é
- * um personagem bíblico. Todos usam apenas itens iniciais.
+ * Desde a reformulação visual (entrega 1: personagens), o jogador escolhe entre
+ * dois personagens com a mesma qualidade: masculino e feminino. Cabelo, barba,
+ * rosto, expressão, roupas e acessórios são escolhidos no guarda-roupa.
+ * Nenhum deles é um personagem bíblico. Todos usam apenas itens iniciais.
  */
 export interface CharacterBase {
   id: string
@@ -17,6 +19,16 @@ export const HAIR_COLORS = ['#2b1d14', '#5a3a22', '#8a5a2b', '#b9772f', '#d9cdb8
 export const HAIR_COLOR_LABEL = ['Castanho-escuro', 'Castanho', 'Castanho-claro', 'Ruivo', 'Grisalho', 'Preto']
 
 export const BASES: CharacterBase[] = [
+  { id: 'masculino', label: 'Masculino', description: 'Aventureiro de túnica e cajado.', preset: { body: 'masculino', beard: 'nenhuma', skin: 1, face: 'suave', hairStyle: 'curto', hairColor: 1, equipped: { tunica: 'tunica-terra', manto: null, calcado: 'sandalias-simples', cinto: 'cinto-couro', acessorios: ['cajado'] } } },
+  { id: 'feminino', label: 'Feminino', description: 'Aventureira de túnica e bolsa de couro.', preset: { body: 'feminino', beard: 'nenhuma', skin: 2, face: 'suave', hairStyle: 'tranca', hairColor: 1, equipped: { tunica: 'tunica-azul', manto: null, calcado: 'sandalias-simples', cinto: 'cinto-corda', acessorios: ['bolsa'] } } },
+]
+
+/**
+ * Os oito personagens-base anteriores (até a versão 0.17). Não aparecem mais na
+ * escolha: ficam para converter perfis salvos (o id antigo é guardado em
+ * `baseOriginal`) e para restaurar a aparência original desses perfis.
+ */
+export const BASES_ANTIGAS: CharacterBase[] = [
   { id: 'viajante', label: 'Viajante', description: 'Passos leves e cajado na mão.', preset: { skin: 1, face: 'suave', hairStyle: 'curto', hairColor: 1, equipped: { tunica: 'tunica-terra', manto: null, calcado: 'sandalias-simples', cinto: 'cinto-couro', acessorios: ['cajado'] } } },
   { id: 'pastora', label: 'Pastora', description: 'Manto quente para os campos.', preset: { skin: 3, face: 'suave', hairStyle: 'tranca', hairColor: 5, equipped: { tunica: 'tunica-linho', manto: 'manto-marrom', calcado: 'sandalias-simples', cinto: 'cinto-corda', acessorios: ['cajado'] } } },
   { id: 'escriba', label: 'Escriba', description: 'Curioso, sempre com um pergaminho.', preset: { skin: 4, face: 'barba', hairStyle: 'raspado', hairColor: 0, equipped: { tunica: 'tunica-linho', manto: null, calcado: 'sandalias-claras', cinto: 'cinto-corda', acessorios: ['pergaminho'] } } },
@@ -27,8 +39,12 @@ export const BASES: CharacterBase[] = [
   { id: 'contadora', label: 'Contadora de histórias', description: 'Guarda na memória tudo o que ouve.', preset: { skin: 4, face: 'marcante', hairStyle: 'ondulado', hairColor: 0, equipped: { tunica: 'tunica-azul', manto: null, calcado: 'sandalias-claras', cinto: 'cinto-corda', acessorios: ['pergaminho'] } } },
 ]
 
+export function getBase(baseId: string): CharacterBase | undefined {
+  return BASES.find((x) => x.id === baseId) ?? BASES_ANTIGAS.find((x) => x.id === baseId)
+}
+
 export function newAppearance(baseId: string, name: string): CharacterAppearance {
-  const b = BASES.find((x) => x.id === baseId) ?? BASES[0]
+  const b = getBase(baseId) ?? BASES[0]
   const id = typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `aventureiro-${Date.now().toString(36)}`
   return { version: 2, id, name, base: b.id, ...structuredClone(b.preset) }
 }

@@ -115,13 +115,15 @@ describe('fluxos de ponta a ponta', () => {
 
     // etapa 3: escolha do personagem-base
     expect(await screen.findByRole('heading', { name: /quem vai percorrer a jornada/i })).toBeInTheDocument()
-    await user.click(screen.getByLabelText(/^Pastora/))
+    // só dois personagens, com a mesma qualidade: masculino e feminino
+    expect(screen.getAllByRole('radio', { name: /masculino|feminino/i })).toHaveLength(2)
+    await user.click(screen.getByLabelText(/^Feminino/))
     await user.click(screen.getByRole('button', { name: /personalizar/i }))
 
     // etapa 4: personalização com prévia em tempo real
     expect(await screen.findByRole('heading', { name: /personalize seu aventureiro/i })).toBeInTheDocument()
     const preview = () => screen.getByRole('img', { name: /prévia de/i }).getAttribute('data-appearance')
-    expect(preview()).toContain('pastora')
+    expect(preview()).toContain('feminino')
     const nameInput = screen.getByLabelText('Nome do personagem')
     await user.clear(nameInput)
     await user.type(nameInput, 'Rute Viajante')
@@ -131,7 +133,7 @@ describe('fluxos de ponta a ponta', () => {
     await user.click(screen.getByRole('button', { name: /túnica de linho\./i }))
     expect(preview()).toContain('tunica-linho')
     await user.click(screen.getByRole('tab', { name: 'Manto' }))
-    expect(screen.getByRole('button', { name: /manto marrom\. equipado; toque para retirar/i })).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /manto marrom\. toque para equipar/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /manto azul-escuro\. bloqueado: alcance o nível 2/i })).toBeInTheDocument()
     await user.click(screen.getByRole('tab', { name: 'Acessórios' }))
     await user.click(screen.getByRole('button', { name: /lamparina de barro \(na mão\)\. toque para equipar/i }))
@@ -139,11 +141,10 @@ describe('fluxos de ponta a ponta', () => {
     expect(preview()).not.toContain('cajado')
     await user.click(screen.getByRole('button', { name: /finalizar personagem/i }))
     const saved = services.auth.current()!.character!
-    expect(saved).toMatchObject({ name: 'Rute Viajante', base: 'pastora', hairStyle: 'longo', equipped: { tunica: 'tunica-linho', manto: 'manto-marrom', acessorios: ['lamparina'] } })
+    expect(saved).toMatchObject({ name: 'Rute Viajante', base: 'feminino', body: 'feminino', hairStyle: 'longo', equipped: { tunica: 'tunica-linho', acessorios: ['bolsa', 'lamparina'] } })
 
-    // etapa 5: chegada e entrada no jogo
-    expect(await screen.findByRole('heading', { name: /rute viajante chega ao universo bible quest/i })).toBeInTheDocument()
-    await user.click(screen.getByRole('link', { name: /entrar no jogo/i }))
+    // a personalização leva direto à Central (sem a tela de chegada)
+    expect(await screen.findByRole('heading', { name: 'Rute Viajante', level: 1 })).toBeInTheDocument()
     await user.click((await screen.findAllByRole('link', { name: /modo história/i }))[0])
 
     // mapa: abertura do mundo, fase 1 atual, fase 2 bloqueada
@@ -477,7 +478,8 @@ describe('fluxos de ponta a ponta', () => {
       unmount()
       return a
     })()
-    expect(expected).toBe('viajante|2|suave|cacheado|0|tunica-linho|manto-marrom|sandalias-simples|cinto-couro|cajado|masculino|nenhuma|-/-')
+    // perfil salvo com a base antiga "viajante": convertido para "masculino" sem perder nada
+    expect(expected).toBe('masculino|2|suave|cacheado|0|tunica-linho|manto-marrom|sandalias-simples|cinto-couro|cajado|masculino|nenhuma|-/-')
     for (const path of ['/painel', '/historia', '/quiz', '/quiz/desafio/vale-1', '/historia/genesis/gn-criacao', '/perfil', '/guarda-roupa']) {
       const { unmount } = setup(path, store) // nova montagem = recarregar a página
       await waitFor(() => expect(document.querySelectorAll('.character[data-appearance]').length).toBeGreaterThan(0))
@@ -506,7 +508,8 @@ describe('fluxos de ponta a ponta', () => {
     await user.click(screen.getByRole('button', { name: 'Remover acessórios' }))
     expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/\|sandalias-simples\|cinto-couro\|\|/)
     await user.click(screen.getByRole('button', { name: 'Restaurar aparência original' }))
-    expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/^viajante\|1\|suave\|curto/)
+    // com o corpo feminino escolhido, a aparência original é a da base feminina
+    expect(document.querySelector('.wardrobe-preview .character')!.getAttribute('data-appearance')).toMatch(/^feminino\|2\|suave\|tranca/)
   })
 
   it('editor: cores livres e expressão aparecem no personagem e são salvas', async () => {
@@ -535,7 +538,7 @@ describe('fluxos de ponta a ponta', () => {
   it('boas-vindas mostra o personagem de quem já começou a jornada', async () => {
     setup('/boas-vindas', withProfile())
     expect(await screen.findByRole('link', { name: /continuar jornada/i })).toBeInTheDocument()
-    expect(document.querySelector('.welcome-char .character')!.getAttribute('data-appearance')).toMatch(/^viajante\|2\|suave\|cacheado/)
+    expect(document.querySelector('.welcome-char .character')!.getAttribute('data-appearance')).toMatch(/^masculino\|2\|suave\|cacheado/)
   })
 
   it('página inexistente mostra mensagem amigável', async () => {

@@ -22,7 +22,7 @@ export const DYES: { label: string; color: string }[] = [
 ]
 
 /** Bases cujo padrão é a estrutura feminina. */
-const FEMININE_BASES = new Set(['pastora', 'exploradora', 'guardia', 'contadora'])
+const FEMININE_BASES = new Set(['feminino', 'pastora', 'exploradora', 'guardia', 'contadora'])
 
 export interface ResolvedLook {
   body: BodyBuild
@@ -48,6 +48,29 @@ export function bodyOf(a: CharacterAppearance): BodyBuild {
 export function beardOf(a: CharacterAppearance): BeardStyle {
   if (bodyOf(a) === 'feminino') return 'nenhuma'
   return a.beard ?? (a.face === 'barba' ? 'curta' : 'nenhuma')
+}
+
+/** Ids das duas bases atuais (reformulação visual). */
+export const BASES_ATUAIS = ['masculino', 'feminino'] as const
+
+/**
+ * Converte um perfil de um dos oito personagens-base antigos para a base atual do mesmo corpo,
+ * sem perder nada: corpo e barba ficam explícitos (antes eram deduzidos da base), o rosto "barba"
+ * vira "suave" (a barba continua como barba), e o id antigo fica em `baseOriginal`.
+ * Roupas, itens, cores, cabelo, pele e expressão continuam iguais. Perfis já convertidos não mudam.
+ */
+export function converterParaBasesAtuais(a: CharacterAppearance): CharacterAppearance {
+  if ((BASES_ATUAIS as readonly string[]).includes(a.base)) return a
+  const body = bodyOf(a)
+  const beard = beardOf(a)
+  return { ...a, base: body, body, beard, face: a.face === 'barba' ? 'suave' : a.face, baseOriginal: a.baseOriginal ?? a.base }
+}
+
+/** Desfaz a conversão (recuperação): volta ao personagem-base antigo, mantendo o resto. */
+export function desfazerConversao(a: CharacterAppearance): CharacterAppearance {
+  if (!a.baseOriginal) return a
+  const { baseOriginal, ...resto } = a
+  return { ...resto, base: baseOriginal }
 }
 
 export function resolveLook(a: CharacterAppearance): ResolvedLook {

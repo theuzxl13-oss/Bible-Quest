@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { newAppearance } from '../data/character/bases'
-import { appearanceKey, resolveLook } from '../data/character/look'
+import { appearanceKey, converterParaBasesAtuais, resolveLook } from '../data/character/look'
 import { equipItem, isEquipped, unequipItem } from '../services/game/items'
 import { REGIOES_COR, definirCor, definirExpressao, restaurarOriginal } from '../services/game/aparencia'
 import { MemoryStore } from '../services/storage/keyValueStore'
@@ -69,7 +69,8 @@ describe('editor de personagem', () => {
     expect(salvo.length).toBeLessThan(4000)
     expect(salvo).not.toMatch(/glb|data:/)
     const de_novo = createLocalServices(store).auth.current()?.character
-    expect(de_novo).toEqual(look)
+    // a aparência volta igual; a base antiga (viajante) é convertida para a atual do mesmo corpo
+    expect(de_novo).toEqual(converterParaBasesAtuais(look))
   })
 
   it('valores corrompidos no armazenamento são descartados', () => {

@@ -1,4 +1,5 @@
-const STEPS = ['Boas-vindas', 'Identificação', 'Personagem', 'Personalização', 'Entrada']
+// a etapa "Entrada" (tela de chegada) saiu na reformulação visual: a personalização leva direto à Central
+const STEPS = ['Boas-vindas', 'Identificação', 'Personagem', 'Personalização']
 
 /** Indicador das etapas de criação do jogador. */
 export function StepBar({ current }: { current: number }) {
