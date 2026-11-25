@@ -35,6 +35,7 @@ from vestes import ativar, coords, normais, novo_objeto, pesos_grupos, set_coord
 args = sys.argv[sys.argv.index('--') + 1:]
 ent, jj, rj, genero, saida = args[:5]
 PROTO = 'proto' in args[5:]
+SO_ROUPAS = 'roupas' in args[5:]  # iteração rápida das roupas (um cabelo só)
 J = json.load(open(jj))
 R = json.load(open(rj))
 FEM = genero == 'feminino'
@@ -922,7 +923,7 @@ def cabelo(estilo):
     return ob
 
 
-ESTILOS = ['curto'] if PROTO else ['curto', 'raspado', 'ondulado', 'longo', 'cacheado', 'coque', 'tranca']
+ESTILOS = ['curto'] if (PROTO or SO_ROUPAS) else ['curto', 'raspado', 'ondulado', 'longo', 'cacheado', 'coque', 'tranca']
 for e in ESTILOS:
     pecas.append(cabelo(e))
 
@@ -1036,6 +1037,78 @@ if not FEM:
         pecas.append(barba('cheia'))
 
 # ---------------------------------------------------------------- roupas e acessórios (funções de ../vestes.py)
+def tunica_cima(mat, z_cintura):
+    """Parte de cima da túnica nos corpos estilizados. A seleção é geométrica (tronco da cintura à base
+    do pescoço; mangas pelo eixo do braço até logo abaixo do cotovelo): os pesos do esqueleto estilizado
+    não servem para a seleção da v0.7, que deixava buracos no peito e nas mangas."""
+    c = coords(corpo)
+    zp_ = arm.data.bones['neck01'].head_local.z
+    mask = np.zeros(len(c), bool)
+    perto_braco = np.zeros(len(c), bool)
+    for lado in ('L', 'R'):
+        om = np.array(arm.data.bones[f'upperarm01.{lado}'].head_local)
+        co_ = np.array(arm.data.bones[f'lowerarm01.{lado}'].head_local)
+        pu = np.array(arm.data.bones[f'wrist.{lado}'].head_local)
+        eixo = pu - om
+        L = np.linalg.norm(eixo)
+        t = ((c - om) @ eixo) / (L * L)
+        proj = om + np.clip(t, 0, 1)[:, None] * eixo
+        dist = np.linalg.norm(c - proj, axis=1)
+        braco = (dist < 0.075) & (t > -0.05) & (np.sign(c[:, 0]) == np.sign(om[0]))
+        perto_braco |= braco
+        t_cot = ((co_ - om) @ eixo) / (L * L)
+        mask |= braco & (t < t_cot + 0.12)
+    tronco = ~perto_braco & (c[:, 2] > z_cintura - 0.07) & (c[:, 2] < zp_ + 0.004)
+    mask |= tronco
+    mask &= c[:, 2] > z_cintura - 0.07
+    ob = subconjunto(corpo, mask, 'Tunica_cima')
+    ob.vertex_groups.clear()
+    ob.data.materials.clear()
+    if ob.data.shape_keys:
+        ob.shape_key_clear()
+    # só a maior parte conectada (pedacinhos soltos da seleção saem)
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    bm.verts.ensure_lookup_table()
+    visto, partes = set(), []
+    for v in bm.verts:
+        if v.index in visto:
+            continue
+        comp, pilha = [], [v]
+        visto.add(v.index)
+        while pilha:
+            u = pilha.pop()
+            comp.append(u)
+            for e in u.link_edges:
+                w = e.other_vert(u)
+                if w.index not in visto:
+                    visto.add(w.index)
+                    pilha.append(w)
+        partes.append(comp)
+    maior = max(len(x) for x in partes)
+    bmesh.ops.delete(bm, geom=[u for x in partes if len(x) < maior * 0.2 for u in x], context='VERTS')
+    bm.to_mesh(ob.data)
+    bm.free()
+    n = normais(ob)
+    p = coords(ob)
+    z_ombro = float(np.percentile(p[:, 2], 98))
+    folga = 0.009 + 0.012 * np.clip((z_ombro - p[:, 2]) / 0.45, 0, 1)
+    set_coords(ob, p + n * folga[:, None])
+    suavizar(ob, 8, 0.55)
+    ativar(ob)
+    m = ob.modifiers.new('Sub', 'SUBSURF')
+    m.levels = 1
+    bpy.ops.object.modifier_apply(modifier=m.name)
+    vestes.uv_projecao(ob)
+    ob.data.materials.append(mat)
+    ativar(ob)
+    m = ob.modifiers.new('Espessura', 'SOLIDIFY')
+    m.thickness = 0.003
+    m.offset = 1
+    bpy.ops.object.modifier_apply(modifier=m.name)
+    return ob
+
+
 def roupas():
     pbr = construir.material_pbr
     tex = construir.TEX
@@ -1054,7 +1127,7 @@ def roupas():
     z_cintura = J['coluna1'][2] - 0.005
     out = []
     vestes.colisao(corpo)
-    cima = vestes.tunica_superior(ctx, linho, z_cintura)
+    cima = tunica_cima(linho, z_cintura)
     corpo.modifiers.remove(corpo.modifiers['Colisao'])
     out.append(cima)
     vestes.colisao(cima, 0.004)
