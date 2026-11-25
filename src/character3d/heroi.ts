@@ -9,10 +9,13 @@ import type { Pose3D, Quality3D, Rig } from './rig'
 
 /*
  * PERSONAGEM 3D A PARTIR DO MODELO GLB (tools/personagem → public/models/personagem)
- * Malha humana MakeHuman (CC0) com esqueleto de 163 ossos, roupas drapeadas por
- * simulação de tecido no Blender, animações e expressões. Cada variante (cabelo,
- * túnica, manto, cinto, calçado, acessório) é uma malha com nome próprio; a
- * aparência do jogador decide o que fica visível e as cores.
+ * Desde a reformulação visual (entrega 1), os dois modelos (masculino e feminino) são
+ * MODULARES e do mesmo estilo (tools/personagem/modular): corpo estilizado com o rosto
+ * repintado, e peças separadas no mesmo esqueleto (7 cabelos esculpidos, barbas,
+ * sobrancelhas, sardas, túnicas, mantos, cintos, calçados e acessórios), animações e
+ * expressões. A aparência do jogador decide o que fica visível e as cores.
+ * O caminho do modelo v0.7 (MakeHuman) e o do estilizado de peça única (v0.8) continuam
+ * aceitos, para um GLB antigo em cache não quebrar o jogo.
  */
 
 const BASE = (import.meta.env?.BASE_URL ?? './') + 'models/personagem/'
@@ -225,6 +228,9 @@ export function pecasVisiveis(a: CharacterAppearance): string[] {
   const look = resolveLook(a)
   const acess = look.accessories.map((x) => x.kind)
   const out: string[] = ['Tunica_cima', look.tunic.short ? 'Tunica_saia_curta' : 'Tunica_saia']
+  // rosto (modelo modular): sobrancelhas normais ou marcantes, e sardas
+  out.push(look.face === 'marcante' ? 'Sobrancelhas_marcantes' : 'Sobrancelhas')
+  if (look.face === 'sardas') out.push('Sardas')
   if (!acess.includes('lenco')) out.push(CABELO[look.hairStyle] ?? 'Cabelo_curto')
   if (look.mantle) out.push(...(MANTO[look.mantle.style] ?? ['Manto']))
   if (look.belt) out.push(CINTO[look.belt.style] ?? 'Cinto_couro')
@@ -240,6 +246,9 @@ export const PECAS_DO_MODELO = [
   ...Object.values(CINTO), ...Object.values(CALCADO), 'Barba_curta', 'Barba_cheia', ...Object.values(ACESSORIO),
 ]
 
+/** Peças do rosto do modelo modular (além de PECAS_DO_MODELO). */
+export const PECAS_DO_ROSTO = ['Sobrancelhas', 'Sobrancelhas_marcantes', 'Sardas']
+
 /**
  * Saturação extra da pele no modelo estilizado: só os tons claros ganham (a luz azulada do
  * palco e o tone mapping os acinzentam); os tons médios e escuros ficam como estão.
@@ -253,6 +262,11 @@ export function saturacaoPele(hex?: string) {
 
 /** Regiões do modelo estilizado (v0.8), em que a aparência troca a cor. */
 export const REGIOES_ESTILIZADO = ['Pele', 'Cabelo', 'Tunica', 'Manto', 'Faixa', 'Couro'] as const
+
+/** O GLB é o modelo modular da reformulação visual (peças separadas, mesmo estilo nos dois corpos)? */
+export function ehModular(gltf: { scene: { userData: Record<string, unknown> } }) {
+  return gltf.scene.userData?.estilo === 'modular'
+}
 
 /** O GLB é o modelo estilizado (gerado de imagem, peça única com regiões de cor)? */
 export function ehEstilizado(gltf: { scene: { userData: Record<string, unknown> } }) {
@@ -297,10 +311,12 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
   const mostrar = (nome: string, v: boolean) => meshes.get(nome)?.forEach((m) => (m.visible = v))
   const todos = [...meshes.keys()]
   for (const n of todos) {
-    if (/^(Cabelo_|Tunica_saia|Manto|Xale|Capuz|Cinto_|Sandalia_|Botas|Barba_|Acessorio_|Bolsa|Odre|Lenco|Colar)/.test(n)) mostrar(n, false)
+    if (/^(Cabelo_|Tunica_saia|Manto|Xale|Capuz|Cinto_|Sandalia_|Botas|Barba_|Acessorio_|Bolsa|Odre|Lenco|Colar|Sardas|Sobrancelhas_)/.test(n)) mostrar(n, false)
   }
 
   const acess = look.accessories.map((x) => x.kind)
+  const modular = ehModular(gltf)
+  if (modular) mostrar('Sobrancelhas', false)
   for (const n of pecasVisiveis(a)) mostrar(n, true)
   const estilizado = ehEstilizado(gltf)
   if (estilizado) {
@@ -330,7 +346,23 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
     const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.MeshStandardMaterial[]
     for (const m of mats) {
       const n = m.name.split('__')[0]
-      if (n.startsWith('Cabelo')) {
+      if (modular && (n.startsWith('Cabelo') || n === 'Barba')) {
+        // cabelo e barba esculpidos (sólidos): a textura em cinza dá os fios e a cor vem do jogador
+        tingirPorLuminancia(m, hairHex, 1.16)
+        m.roughness = 0.5
+      } else if (modular && n === 'Pele') {
+        // pele: só os texels com cor de pele mudam de tom (olhos, lábios e cílios pintados ficam)
+        const base = (m.userData as { base?: string }).base ?? '#dd9375'
+        tingirRegiao(m, base, look.skin, saturacaoPele(look.skin))
+        ;(m.userData.regiao as { uExp: { value: number } }).uExp.value = 0.5
+        m.roughness = 0.62
+      } else if (n === 'Sardas') {
+        m.color.set('#7a3f22')
+        m.transparent = true
+        m.depthWrite = false
+        m.polygonOffset = true
+        m.polygonOffsetFactor = -2
+      } else if (n.startsWith('Cabelo')) {
         tingirPorLuminancia(m, hairHex, 1.12)
         m.transparent = true
         m.depthWrite = true
@@ -380,8 +412,8 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
     const mesh = o as THREE.Mesh
     if (mesh.isMesh && !estilizado && (mesh.material as THREE.Material).name.startsWith('Pele')) peleMats.push(mesh.material as THREE.MeshStandardMaterial)
   })
-  if (!estilizado) peleMats.forEach((m) => m.color.set(ajuste))
-  const ready = estilizado || arquivo.endsWith('clara')
+  if (!estilizado && !modular) peleMats.forEach((m) => m.color.set(ajuste))
+  const ready = estilizado || modular || arquivo.endsWith('clara')
     ? Promise.resolve()
     : pele(arquivo).then((t) => peleMats.forEach((m) => {
         m.map = t

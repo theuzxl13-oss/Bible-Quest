@@ -63,7 +63,8 @@ describe('migração sem perder progresso', () => {
   it('personagem da v0.3 vira aparência por itens, preservando pele, cabelo e acessório', () => {
     const old: CharacterConfig = { name: 'Davi', archetype: 'pastora', skin: 3, hair: 'tranca', hairColor: 2, outfit: 'manto', outfitColor: 0, accessory: 'cajado' }
     const m = migrateCharacter(old)
-    expect(m).toMatchObject({ version: 2, name: 'Davi', base: 'pastora', skin: 3, hairStyle: 'tranca', hairColor: 2 })
+    // as oito bases antigas viram as duas atuais (o id antigo fica guardado em baseOriginal)
+    expect(m).toMatchObject({ version: 2, name: 'Davi', base: 'feminino', body: 'feminino', baseOriginal: 'pastora', skin: 3, hairStyle: 'tranca', hairColor: 2 })
     expect(m.equipped).toMatchObject({ manto: 'manto-marrom', acessorios: ['cajado'] })
     expect(migrateCharacter(m)).toBe(m)
   })
@@ -158,11 +159,17 @@ describe('aparência 3D (v0.5)', () => {
 
 describe('modelo 3D (GLB) e personalização', () => {
   it('cada item do jogo corresponde a uma peça do modelo e a aparência decide o que aparece', async () => {
-    const { pecasVisiveis, PECAS_DO_MODELO } = await import('../character3d/heroi')
+    const { pecasVisiveis, PECAS_DO_MODELO: SO_ROUPAS, PECAS_DO_ROSTO } = await import('../character3d/heroi')
+    const PECAS_DO_MODELO = [...SO_ROUPAS, ...PECAS_DO_ROSTO]
     const a = newAppearance('pastora', 'Ana')
     const v = pecasVisiveis(a)
-    expect(v).toEqual(expect.arrayContaining(['Tunica_cima', 'Tunica_saia', 'Cabelo_tranca', 'Manto', 'Cinto_corda', 'Sandalia_simples', 'Acessorio_cajado']))
+    expect(v).toEqual(expect.arrayContaining(['Tunica_cima', 'Tunica_saia', 'Cabelo_tranca', 'Manto', 'Cinto_corda', 'Sandalia_simples', 'Acessorio_cajado', 'Sobrancelhas']))
     for (const n of v) expect(PECAS_DO_MODELO, n).toContain(n)
+    // rosto: sobrancelhas marcantes no lugar das normais; sardas só no rosto com sardas
+    expect(pecasVisiveis({ ...a, face: 'marcante' })).toContain('Sobrancelhas_marcantes')
+    expect(pecasVisiveis({ ...a, face: 'marcante' })).not.toContain('Sobrancelhas')
+    expect(pecasVisiveis({ ...a, face: 'sardas' })).toContain('Sardas')
+    expect(pecasVisiveis(a)).not.toContain('Sardas')
     // todos os itens equipáveis têm uma peça visível no modelo
     for (const it of ITEMS) {
       const b = equipItem(newAppearance('viajante', 'Tobias'), it.id)
@@ -177,7 +184,7 @@ describe('modelo 3D (GLB) e personalização', () => {
 
   it('o modelo GLB publicado contém todas as peças, as animações e as expressões', async () => {
     const { readFileSync, existsSync } = await import('node:fs')
-    const { PECAS_DO_MODELO, REGIOES_ESTILIZADO } = await import('../character3d/heroi')
+    const { PECAS_DO_MODELO, PECAS_DO_ROSTO, REGIOES_ESTILIZADO } = await import('../character3d/heroi')
     for (const corpo of ['masculino', 'feminino']) {
       const f = `public/models/personagem/heroi-${corpo}.glb`
       expect(existsSync(f), f).toBe(true)
@@ -195,8 +202,12 @@ describe('modelo 3D (GLB) e personalização', () => {
         }
         for (const p of ['Acessorio_cajado', 'Acessorio_pergaminho', 'Acessorio_lamparina', 'Acessorio_cesto', 'Acessorio_louros']) expect(pecas.has(p), `${corpo}: ${p}`).toBe(true)
       } else {
-        const esperadas = PECAS_DO_MODELO.filter((p) => corpo === 'masculino' || !p.startsWith('Barba'))
+        // modelo modular (reformulação visual): o mesmo conjunto de peças nos dois corpos (barba só no masculino)
+        expect(j.scenes[0].extras?.estilo, corpo).toBe('modular')
+        const esperadas = [...PECAS_DO_MODELO, ...PECAS_DO_ROSTO].filter((p) => corpo === 'masculino' || !p.startsWith('Barba'))
         for (const p of esperadas) expect(pecas.has(p), `${corpo}: ${p}`).toBe(true)
+        const pele = (j.materials as { name: string; extras?: { base?: string } }[]).find((m) => m.name.startsWith('Pele__'))
+        expect(pele?.extras?.base, `${corpo}: cor de base da pele`).toMatch(/^#[0-9a-f]{6}$/)
       }
       expect(j.animations.map((a: { name: string }) => a.name)).toEqual(['Idle', 'Walk', 'Run', 'Victory', 'Greeting', 'Discovery'])
       const morph = j.meshes.flatMap((m: { extras?: { targetNames?: string[] } }) => m.extras?.targetNames ?? [])

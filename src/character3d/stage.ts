@@ -79,6 +79,33 @@ export function createScene(renderer: THREE.WebGLRenderer, quality: Quality3D) {
 }
 
 /** Distância da câmera para caber a altura desejada. */
+/**
+ * Enquadramento medido no próprio personagem (reformulação visual): os corpos masculino e
+ * feminino têm alturas diferentes, então o retrato, o busto e o corpo inteiro são calculados
+ * pela altura real (malhas visíveis) e pela posição do osso da cabeça. Sem o osso, usa FRAMES.
+ */
+export function enquadrar(root: THREE.Object3D, framing: Framing): { target: THREE.Vector3; height: number } {
+  root.updateMatrixWorld(true)
+  let nuca: number | null = null
+  root.traverse((o) => {
+    if (nuca === null && (o as THREE.Bone).isBone && o.name === 'head') nuca = o.getWorldPosition(new THREE.Vector3()).y
+  })
+  const caixa = new THREE.Box3()
+  root.traverse((o) => {
+    const m = o as THREE.Mesh
+    let visivel = m.visible
+    for (let p = m.parent; p && visivel; p = p.parent) visivel = p.visible
+    if (m.isMesh && visivel) caixa.expandByObject(m, false)
+  })
+  const base = FRAMES[framing]
+  if (nuca === null || caixa.isEmpty()) return base
+  const topo = caixa.max.y
+  const k = Math.max(0.6, Math.min(1.6, (topo - nuca) / 0.21))
+  if (framing === 'retrato') return { target: new THREE.Vector3(0, nuca + (topo - nuca) * 0.48, 0), height: 0.42 * k }
+  if (framing === 'busto') return { target: new THREE.Vector3(0, nuca - 0.12 * k, 0), height: 0.95 * k }
+  return { target: new THREE.Vector3(0, topo * 0.53, 0), height: topo * 1.165 }
+}
+
 export function fitDistance(camera: THREE.PerspectiveCamera, height: number) {
   const fov = THREE.MathUtils.degToRad(camera.fov)
   const byH = height / 2 / Math.tan(fov / 2)

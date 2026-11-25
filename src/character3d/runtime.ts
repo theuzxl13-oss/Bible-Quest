@@ -5,7 +5,7 @@ import { appearanceKey } from '../data/character/look'
 import { buildCharacter, type Pose3D, type Quality3D, type Rig } from './rig'
 import { buildHero, loadHero, modeloDe, soCores } from './heroi'
 import { bodyOf } from '../data/character/look'
-import { createRenderer, createScene, fitDistance, FRAMES, type Framing } from './stage'
+import { createRenderer, createScene, enquadrar, fitDistance, FRAMES, type Framing } from './stage'
 
 /*
  * PONTO DE ENTRADA 3D (carregado sob demanda, fora do pacote inicial)
@@ -62,7 +62,8 @@ export function createViewer(container: HTMLElement, appearance: CharacterAppear
   container.appendChild(canvas)
   const scene = createScene(renderer, opts.quality)
   const camera = new THREE.PerspectiveCamera(26, 1, 0.05, 30)
-  const frame = FRAMES[opts.framing]
+  let frame = FRAMES[opts.framing]
+  let enquadrado = false
   let rig: Rig | null = null
   let key = ''
   let pose = opts.pose
@@ -97,6 +98,14 @@ export function createViewer(container: HTMLElement, appearance: CharacterAppear
       }
       rig = next
       scene.add(rig.root)
+      if (!enquadrado) {
+        // primeiro personagem: o enquadramento passa a ser medido nele (altura e cabeça reais)
+        enquadrado = true
+        frame = enquadrar(rig.root, opts.framing)
+        controls.target.copy(frame.target)
+        baseDist = 0
+        resize()
+      }
       container.classList.remove('is-loading')
       opts.onReady?.()
     })
@@ -282,7 +291,7 @@ export function snapshot(a: CharacterAppearance, o: SnapshotOptions): Promise<st
           renderer.setSize(o.width, o.height, false)
           camera.aspect = o.width / o.height
           camera.updateProjectionMatrix()
-          const f = FRAMES[o.framing]
+          const f = enquadrar(rig.root, o.framing)
           const d = fitDistance(camera, f.height)
           const az = o.azimuth ?? 0.3
           camera.position.set(Math.sin(az) * d, f.target.y + d * 0.06, Math.cos(az) * d)
