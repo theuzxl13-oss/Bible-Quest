@@ -317,7 +317,7 @@ def baixar_bracos(arm, graus=11):
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
-def exportar(caminho, extras=False):
+def exportar(caminho, extras=False, qualidade=82):
     os.makedirs(os.path.dirname(caminho), exist_ok=True)
     # cada peça ganha um material próprio "<tipo>__<peça>": o compressor (gltfpack -km) não funde
     # peças diferentes, e o jogo identifica cada variante pelo nome do material
@@ -346,7 +346,7 @@ def exportar(caminho, extras=False):
         export_colors=True,
         export_normals=True,
         export_image_format='WEBP',
-        export_image_quality=82,
+        export_image_quality=qualidade,
         export_all_influences=False,
         export_def_bones=False,
         export_extras=extras,

@@ -49,6 +49,64 @@ ctx = {'corpo': corpo, 'arm': arm, 'female': FEM, 'TEX': construir.TEX, 'materia
 SAIDA_TEX = os.path.join(os.path.dirname(saida), f'tex-{genero}')
 os.makedirs(SAIDA_TEX, exist_ok=True)
 
+# ---------------------------------------------------------------- crânio sem o cabelo modelado da IA
+# O corpo-base feminino tem coque e rabo de cavalo modelados na cabeça; todo penteado seria
+# construído sobre esse volume. Pontos do couro cabeludo muito além do raio típico do crânio
+# voltam para a superfície do crânio (o volume vem só das peças de cabelo).
+def achatar_cranio():
+    c = coords(corpo)
+    w = pesos_grupos(corpo, ['head'])
+    cab = arm.data.bones['head']
+    zc = cab.head_local.z + (cab.tail_local.z - cab.head_local.z) * 0.45
+    sel = (w > 0.6) & (c[:, 2] > zc - 0.02)
+    if sel.sum() < 50:
+        return
+    pts = c[sel]
+    centro = np.array([float(np.median(pts[:, 0])), float(np.median(pts[:, 1])), zc])
+    d = np.linalg.norm(c - centro, axis=1)
+    r_med = float(np.median(d[sel]))
+    lim = r_med * 1.10
+    fora = sel & (d > lim)
+    if not fora.any():
+        print('crânio: nada a achatar')
+        return
+    alvo = centro + (c - centro) / d[:, None] * (r_med * 1.04 + (d[:, None] - lim) * 0.0)
+    k = suave(np.clip((d - lim) / (r_med * 0.08), 0, 1))[:, None] * fora[:, None]
+    c2 = c * (1 - k) + alvo * k
+    set_coords(corpo, c2)
+    print('crânio: achatados', int(fora.sum()), 'vértices (raio típico', round(r_med, 3), ')')
+    # rabo de cavalo modelado: peça estreita atrás da nuca, acima da base do pescoço -> removida
+    zp_ = arm.data.bones['neck01'].head_local.z
+    rabo = (c[:, 1] > centro[1] + r_med * 0.75) & (c[:, 2] > zp_ - 0.01) & (c[:, 2] < zc + 0.03) & (np.abs(c[:, 0] - centro[0]) < 0.065)
+    if rabo.any():
+        bm = bmesh.new()
+        bm.from_mesh(corpo.data)
+        bm.verts.ensure_lookup_table()
+        faces = [f for f in bm.faces if all(rabo[v.index] for v in f.verts)]
+        bmesh.ops.delete(bm, geom=faces, context='FACES')
+        bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context='VERTS')
+        # o buraco é fechado (fica sob a casca de todo penteado) e o remendo segue a forma do crânio
+        borda = [e for e in bm.edges if e.is_boundary and all((v.co.z > zp_ - 0.04 and v.co.y > centro[1]) for v in e.verts)]
+        novas = bmesh.ops.holes_fill(bm, edges=borda, sides=0)['faces']
+        tri = bmesh.ops.triangulate(bm, faces=novas)['faces']
+        for _ in range(2):
+            bmesh.ops.subdivide_edges(bm, edges=list({e for f in tri if f.is_valid for e in f.edges}), cuts=1, use_grid_fill=True)
+            tri = [f for f in bm.faces if f.is_valid and not f.select]
+            break
+        for v in bm.verts:
+            p = np.array(v.co)
+            if p[1] > centro[1] + r_med * 0.5 and zp_ - 0.04 < p[2] < zc + 0.03:
+                dd = np.linalg.norm(p - centro)
+                if dd < r_med * 0.95:
+                    v.co = Vector(centro + (p - centro) / max(dd, 1e-6) * r_med * 0.98)
+        bm.normal_update()
+        bm.to_mesh(corpo.data)
+        bm.free()
+        print('crânio: rabo de cavalo removido,', len(faces), 'faces; buraco fechado com', len(novas), 'faces')
+
+
+achatar_cranio()
+
 # ---------------------------------------------------------------- medidas
 co = coords(corpo)
 w_cab = pesos_grupos(corpo, ['head'])
@@ -250,6 +308,18 @@ def ruido3(P, escala, sementes=3):
 # ---------------------------------------------------------------- material da pele (cor de base para o tingimento)
 mat_pele = corpo.data.materials[0]
 mat_pele.name = 'Pele'
+# só a cor pintada: a textura de metal/rugosidade gerada pela IA sai (peso e brilho errado)
+_nt = mat_pele.node_tree
+_img = [n.image for n in _nt.nodes if n.type == 'TEX_IMAGE' and n.image and n.image.name in ('Pele_modular', 'Image_0')][0]
+for _n in list(_nt.nodes):
+    _nt.nodes.remove(_n)
+_b = _nt.nodes.new('ShaderNodeBsdfPrincipled')
+_b.inputs['Roughness'].default_value = 0.62
+_t = _nt.nodes.new('ShaderNodeTexImage')
+_t.image = _img
+_o = _nt.nodes.new('ShaderNodeOutputMaterial')
+_nt.links.new(_t.outputs['Color'], _b.inputs['Base Color'])
+_nt.links.new(_b.outputs[0], _o.inputs[0])
 mat_pele['base'] = '#%02x%02x%02x' % tuple(int(v * 255) for v in ((0.868, 0.576, 0.459) if FEM else (0.824, 0.506, 0.365)))
 # o jogo identifica as peças pelo nome do material "<tipo>__<peça>"
 pecas = []
@@ -834,7 +904,7 @@ def cabelo(estilo):
     for o in obs[1:]:
         ativar(o)
         bpy.ops.object.convert(target='MESH')
-    ob = unir_voxels(obs, nome, voxel=0.0019 if estilo in ('raspado', 'curto') else 0.0023, tris=11000 if estilo not in ('raspado',) else 3500, suav=2)
+    ob = unir_voxels(obs, nome, voxel=0.0019 if estilo in ('raspado', 'curto') else 0.0023, tris=8000 if estilo not in ('raspado',) else 3000, suav=2)
     limpar_rosto(ob, z_sob + 0.012)
     # (sem empurrar para fora: o couro cabeludo do corpo é afundado 4 mm no fim)
     todos = caminhos + so_textura
@@ -969,11 +1039,11 @@ if not FEM:
 def roupas():
     pbr = construir.material_pbr
     tex = construir.TEX
-    linho = pbr('Tunica', duplo=True, textura=os.path.join(tex, 'linho.jpg'), normal=os.path.join(tex, 'linho-normal.jpg'), rugosidade=0.9, especular=0.15)
-    la = pbr('Manto', duplo=True, textura=os.path.join(tex, 'la.jpg'), normal=os.path.join(tex, 'la-normal.jpg'), rugosidade=0.95, especular=0.1)
+    linho = pbr('Tunica', duplo=True, textura=os.path.join(tex, 'linho.jpg'), rugosidade=0.9, especular=0.15)
+    la = pbr('Manto', duplo=True, textura=os.path.join(tex, 'la.jpg'), rugosidade=0.95, especular=0.1)
     couro = pbr('Couro', textura=os.path.join(tex, 'couro.jpg'), rugosidade=0.6, especular=0.3)
     corda = pbr('Corda', textura=os.path.join(tex, 'corda.jpg'), rugosidade=0.85)
-    faixa = pbr('Faixa', duplo=True, textura=os.path.join(tex, 'linho.jpg'), normal=os.path.join(tex, 'linho-normal.jpg'), rugosidade=0.85)
+    faixa = pbr('Faixa', duplo=True, textura=os.path.join(tex, 'linho.jpg'), rugosidade=0.85)
     w_braco = pesos_grupos(corpo, ['upperarm01.L', 'upperarm01.R', 'lowerarm01.L', 'lowerarm01.R', 'wrist.L', 'wrist.R'])
     colisor = subconjunto(corpo, w_braco < 0.3, 'Colisor')
     colisor.vertex_groups.clear()
@@ -1001,7 +1071,7 @@ def roupas():
     out.append(vestes.manto(ctx, la, J['coluna3'][2] - 0.13, estilo='xale', nome='Xale'))
     out.append(vestes.capuz(ctx, la))
     saia.modifiers.remove(saia.modifiers['Colisao'])
-    out.append(vestes.lenco(ctx, pbr('Lenco', duplo=True, textura=os.path.join(tex, 'linho.jpg'), normal=os.path.join(tex, 'linho-normal.jpg'), rugosidade=0.9)))
+    out.append(vestes.lenco(ctx, pbr('Lenco', duplo=True, textura=os.path.join(tex, 'linho.jpg'), rugosidade=0.9)))
     out.append(vestes.sandalias(ctx, couro, 'simples'))
     out.append(vestes.sandalias(ctx, couro, 'tiras'))
     out.append(vestes.botas(ctx, couro))
@@ -1141,5 +1211,5 @@ bpy.context.scene['estilo'] = 'modular'
 for o in bpy.data.objects:
     if o.type == 'MESH':
         print('OBJ', o.name, len(o.data.vertices), len(o.data.loops), bool(o.data.shape_keys))
-construir.exportar(saida, extras=True)
+construir.exportar(saida, extras=True, qualidade=76)
 print('GLB', saida)
