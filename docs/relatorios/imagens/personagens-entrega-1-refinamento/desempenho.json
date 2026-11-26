@@ -1,0 +1,232 @@
+{
+ "data": "2026-11-26T23:35:08.286Z",
+ "ambiente": "Chromium sem GPU (SwiftShader), viewport 412x915 — não é o aparelho",
+ "estatico": [
+  {
+   "arquivo": "heroi-feminino-leve.glb",
+   "bytes": 1733220,
+   "triangulos_total": 77990,
+   "triangulos_visiveis": {
+    "cabelo_curto": 35621,
+    "cabelo_longo": 37134
+   },
+   "pecas": 33,
+   "texturas": 17,
+   "maior_textura": {
+    "w": 2048,
+    "h": 2048,
+    "bytes": 707300
+   },
+   "memoria_texturas_mb": 28.3
+  },
+  {
+   "arquivo": "heroi-feminino.glb",
+   "bytes": 2549152,
+   "triangulos_total": 125228,
+   "triangulos_visiveis": {
+    "cabelo_curto": 47755,
+    "cabelo_longo": 50781
+   },
+   "pecas": 33,
+   "texturas": 17,
+   "maior_textura": {
+    "w": 2048,
+    "h": 2048,
+    "bytes": 723044
+   },
+   "memoria_texturas_mb": 45.3
+  },
+  {
+   "arquivo": "heroi-masculino-leve.glb",
+   "bytes": 1987764,
+   "triangulos_total": 72880,
+   "triangulos_visiveis": {
+    "cabelo_curto": 25179,
+    "cabelo_longo": 26603
+   },
+   "pecas": 35,
+   "texturas": 19,
+   "maior_textura": {
+    "w": 2048,
+    "h": 2048,
+    "bytes": 967724
+   },
+   "memoria_texturas_mb": 29
+  },
+  {
+   "arquivo": "heroi-masculino.glb",
+   "bytes": 2802704,
+   "triangulos_total": 118579,
+   "triangulos_visiveis": {
+    "cabelo_curto": 36759,
+    "cabelo_longo": 39607
+   },
+   "pecas": 35,
+   "texturas": 19,
+   "maior_textura": {
+    "w": 2048,
+    "h": 2048,
+    "bytes": 994692
+   },
+   "memoria_texturas_mb": 46
+  }
+ ],
+ "jogo": [
+  {
+   "corpo": "masculino",
+   "qualidade": "alta",
+   "tela": "central",
+   "pronto_ms": 9230,
+   "fps": 6.1,
+   "glb": [
+    {
+     "arquivo": "heroi-masculino.glb",
+     "ms": 1503,
+     "bytes": 2803004
+    }
+   ],
+   "heap_mb": 49,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "masculino",
+   "qualidade": "alta",
+   "tela": "guarda-roupa",
+   "pronto_ms": 4024,
+   "fps": 10,
+   "glb": [
+    {
+     "arquivo": "heroi-masculino.glb",
+     "ms": 1629,
+     "bytes": 2803004
+    },
+    {
+     "arquivo": "heroi-feminino.glb",
+     "ms": 174,
+     "bytes": 2549452
+    }
+   ],
+   "heap_mb": 62,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "masculino",
+   "qualidade": "leve",
+   "tela": "central",
+   "pronto_ms": 7238,
+   "fps": 8.8,
+   "glb": [
+    {
+     "arquivo": "heroi-masculino-leve.glb",
+     "ms": 7,
+     "bytes": 1988064
+    }
+   ],
+   "heap_mb": 47,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "masculino",
+   "qualidade": "leve",
+   "tela": "guarda-roupa",
+   "pronto_ms": 3741,
+   "fps": 19.3,
+   "glb": [
+    {
+     "arquivo": "heroi-masculino-leve.glb",
+     "ms": 7,
+     "bytes": 1988064
+    },
+    {
+     "arquivo": "heroi-feminino-leve.glb",
+     "ms": 11,
+     "bytes": 1733520
+    }
+   ],
+   "heap_mb": 62,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "feminino",
+   "qualidade": "alta",
+   "tela": "central",
+   "pronto_ms": 9040,
+   "fps": 5.9,
+   "glb": [
+    {
+     "arquivo": "heroi-feminino.glb",
+     "ms": 3118,
+     "bytes": 2549452
+    }
+   ],
+   "heap_mb": 50,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "feminino",
+   "qualidade": "alta",
+   "tela": "guarda-roupa",
+   "pronto_ms": 3843,
+   "fps": 8.6,
+   "glb": [
+    {
+     "arquivo": "heroi-feminino.glb",
+     "ms": 1622,
+     "bytes": 2549452
+    },
+    {
+     "arquivo": "heroi-masculino.glb",
+     "ms": 195,
+     "bytes": 2803004
+    }
+   ],
+   "heap_mb": 58,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "feminino",
+   "qualidade": "leve",
+   "tela": "central",
+   "pronto_ms": 6833,
+   "fps": 8.6,
+   "glb": [
+    {
+     "arquivo": "heroi-feminino-leve.glb",
+     "ms": 7,
+     "bytes": 1733520
+    }
+   ],
+   "heap_mb": 47,
+   "perdido": 0,
+   "erros": []
+  },
+  {
+   "corpo": "feminino",
+   "qualidade": "leve",
+   "tela": "guarda-roupa",
+   "pronto_ms": 3787,
+   "fps": 16.9,
+   "glb": [
+    {
+     "arquivo": "heroi-feminino-leve.glb",
+     "ms": 16,
+     "bytes": 1733520
+    },
+    {
+     "arquivo": "heroi-masculino-leve.glb",
+     "ms": 8,
+     "bytes": 1988064
+    }
+   ],
+   "heap_mb": 57,
+   "perdido": 0,
+   "erros": []
+  }
+ ]
+}
