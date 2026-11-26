@@ -106,7 +106,8 @@ def achatar_cranio():
         print('crânio: rabo de cavalo removido,', len(faces), 'faces; buraco fechado com', len(novas), 'faces')
 
 
-achatar_cranio()
+if FEM:
+    achatar_cranio()  # só o corpo-base feminino tem coque e rabo de cavalo modelados
 
 # ---------------------------------------------------------------- medidas
 co = coords(corpo)
@@ -407,14 +408,14 @@ def sardas():
     rng = np.random.default_rng(21)
     yy, xx = np.mgrid[0:H_, 0:W_]
     # mais pontos no nariz e no alto das bochechas, nenhum perto dos olhos
-    for _ in range(70):
+    for _ in range(46):
         while True:
             u, v = rng.uniform(0.05, 0.95), rng.uniform(0.1, 0.85)
             x = x0 + (x1 - x0) * u
             dens = math.exp(-((x - H.x) / 0.05) ** 2) * 0.5 + 0.5 * math.exp(-((abs(x - H.x) - 0.04) / 0.025) ** 2)
             if rng.uniform() < dens:
                 break
-        r = rng.uniform(4.0, 7.0)
+        r = rng.uniform(10.0, 15.0)
         d = np.sqrt((xx - u * W_) ** 2 + ((yy - v * H_) * 1.0) ** 2)
         alfa = np.maximum(alfa, np.clip(1 - (d - r * 0.5) / (r * 0.6), 0, 1) * rng.uniform(0.7, 0.95))
     borda = np.minimum.reduce([xx / 30, (W_ - xx) / 30, yy / 20, (H_ - yy) / 20, np.ones_like(xx, dtype=float)])

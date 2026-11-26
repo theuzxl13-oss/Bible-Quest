@@ -359,7 +359,7 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
         ;(m.userData.regiao as { uExp: { value: number } }).uExp.value = 0.5
         m.roughness = 0.62
       } else if (n === 'Sardas') {
-        m.color.set('#7a3f22')
+        m.color.set('#6a3018')
         m.transparent = true
         m.depthWrite = false
         m.polygonOffset = true
@@ -371,7 +371,9 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
         m.alphaTest = 0.05
         m.side = THREE.DoubleSide
       } else if (n === 'Sobrancelhas') {
-        tingirPorLuminancia(m, hexShade(hairHex, look.face === 'marcante' ? -0.12 : -0.04), look.face === 'marcante' ? 0.75 : 0.95)
+        // sobrancelhas marcantes (peça própria no modelo modular): mais escuras que o cabelo
+        const marcante = look.face === 'marcante' || mesh.userData.peca === 'Sobrancelhas_marcantes'
+        tingirPorLuminancia(m, hexShade(hairHex, marcante ? -0.3 : -0.04), marcante ? 0.6 : 0.95)
       } else if (n === 'Barba') {
         tingirPorLuminancia(m, hairHex, 1.1)
         m.vertexColors = true
