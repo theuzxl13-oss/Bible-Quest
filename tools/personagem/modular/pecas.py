@@ -1038,13 +1038,14 @@ if not FEM:
 
 # ---------------------------------------------------------------- roupas e acessórios (funções de ../vestes.py)
 def tunica_cima(mat, z_cintura):
-    """Parte de cima da túnica nos corpos estilizados. A seleção é geométrica (tronco da cintura à base
-    do pescoço; mangas pelo eixo do braço até logo abaixo do cotovelo): os pesos do esqueleto estilizado
-    não servem para a seleção da v0.7, que deixava buracos no peito e nas mangas."""
+    """Parte de cima da túnica nos corpos estilizados, construída por anéis (não pela malha do corpo,
+    que tem trechos irregulares): tronco da cintura à base do pescoço, seguindo a forma do corpo em cada
+    altura e direção, e mangas em sino ao longo do eixo do braço até abaixo do cotovelo. As partes são
+    fundidas por voxels: peça fechada, sem buracos e com as normais consistentes."""
     c = coords(corpo)
     zp_ = arm.data.bones['neck01'].head_local.z
-    mask = np.zeros(len(c), bool)
     perto_braco = np.zeros(len(c), bool)
+    bracos = []
     for lado in ('L', 'R'):
         om = np.array(arm.data.bones[f'upperarm01.{lado}'].head_local)
         co_ = np.array(arm.data.bones[f'lowerarm01.{lado}'].head_local)
@@ -1054,58 +1055,110 @@ def tunica_cima(mat, z_cintura):
         t = ((c - om) @ eixo) / (L * L)
         proj = om + np.clip(t, 0, 1)[:, None] * eixo
         dist = np.linalg.norm(c - proj, axis=1)
-        braco = (dist < 0.075) & (t > -0.05) & (np.sign(c[:, 0]) == np.sign(om[0]))
+        braco = (dist < 0.07) & (t > 0.02) & (np.sign(c[:, 0]) == np.sign(om[0]))
         perto_braco |= braco
-        t_cot = ((co_ - om) @ eixo) / (L * L)
-        mask |= braco & (t < t_cot + 0.12)
-    tronco = ~perto_braco & (c[:, 2] > z_cintura - 0.07) & (c[:, 2] < zp_ + 0.004)
-    mask |= tronco
-    mask &= c[:, 2] > z_cintura - 0.07
-    ob = subconjunto(corpo, mask, 'Tunica_cima')
-    ob.vertex_groups.clear()
-    ob.data.materials.clear()
-    if ob.data.shape_keys:
-        ob.shape_key_clear()
-    # só a maior parte conectada (pedacinhos soltos da seleção saem)
+        bracos.append((om, eixo, L, t, dist, braco, ((co_ - om) @ eixo) / (L * L)))
+    cx = float(np.median(c[(c[:, 2] > z_cintura) & (c[:, 2] < zp_) & ~perto_braco][:, 0]))
+    cy = float(np.median(c[(c[:, 2] > z_cintura) & (c[:, 2] < zp_) & ~perto_braco][:, 1]))
+    S = 48
+    z0, z1 = z_cintura - 0.07, zp_ - 0.005
+    NZ = 26
+    verts, faces = [], []
+    tronco = ~perto_braco
+    ang = np.arctan2(c[:, 0] - cx, -(c[:, 1] - cy))
+    rad = np.hypot(c[:, 0] - cx, c[:, 1] - cy)
+    for k in range(NZ + 1):
+        z = z0 + (z1 - z0) * k / NZ
+        faixa = tronco & (np.abs(c[:, 2] - z) < 0.018)
+        r = np.zeros(S)
+        if faixa.any():
+            b = ((ang[faixa] + math.pi) / (2 * math.pi) * S).astype(int) % S
+            np.maximum.at(r, b, rad[faixa])
+        # buracos (direções sem pontos) recebem o vizinho; leve suavização em volta
+        for _ in range(S):
+            if (r == 0).any():
+                r = np.where(r == 0, np.maximum(np.roll(r, 1), np.roll(r, -1)), r)
+        r = (np.roll(r, 1) + 2 * r + np.roll(r, -1)) / 4
+        folga = 0.012 if z < z1 - 0.05 else 0.012 * max(0.3, (z1 - z) / 0.05)
+        for i in range(S):
+            a = -math.pi + 2 * math.pi * (i + 0.5) / S
+            rr = r[i] + folga
+            verts.append((cx + math.sin(a) * rr, cy - math.cos(a) * rr, z))
+    for k in range(NZ):
+        for i in range(S):
+            a_, b_ = k * S + i, k * S + (i + 1) % S
+            faces.append((a_, b_, b_ + S, a_ + S))
+    # tampa de cima (gola) e de baixo: a fusão por voxels precisa de volumes fechados
+    topo = len(verts)
+    verts.append((cx, cy, z1))
+    for i in range(S):
+        faces.append((NZ * S + i, NZ * S + (i + 1) % S, topo))
+    fundo = len(verts)
+    verts.append((cx, cy, z0))
+    for i in range(S):
+        faces.append(((i + 1) % S, i, fundo))
+    me = bpy.data.meshes.new('tronco')
+    me.from_pydata(verts, [], faces)
+    partes = [novo_objeto('tronco', me)]
+    # mangas
+    for om, eixo, L, t, dist, braco, t_cot in bracos:
+        u = eixo / L
+        ref = np.array([0, 0, 1.0]) if abs(u[2]) < 0.9 else np.array([1.0, 0, 0])
+        b1 = np.cross(u, ref)
+        b1 /= np.linalg.norm(b1)
+        b2 = np.cross(u, b1)
+        t_fim = t_cot + 0.12
+        NT, SM = 14, 20
+        vs, fs = [], []
+        for k in range(NT + 1):
+            tt = -0.06 + (t_fim + 0.06) * k / NT
+            fatia = braco & (np.abs(t - tt) < 0.05)
+            rr = float(np.percentile(dist[fatia], 95)) if fatia.sum() > 5 else 0.05
+            rr += 0.011 + 0.022 * max(0.0, (tt - t_cot * 0.5)) / max(t_fim, 1e-3)  # sino
+            ctr = om + u * (tt * L)
+            for i in range(SM):
+                a = 2 * math.pi * i / SM
+                vs.append(tuple(ctr + (b1 * math.cos(a) + b2 * math.sin(a)) * rr))
+        for k in range(NT):
+            for i in range(SM):
+                a_, b_ = k * SM + i, k * SM + (i + 1) % SM
+                fs.append((a_, b_, b_ + SM, a_ + SM))
+        for lado_, k in (('ini', 0), ('fim', NT)):
+            cc = len(vs)
+            vs.append(tuple(om + u * ((-0.06 + (t_fim + 0.06) * k / NT) * L)))
+            for i in range(SM):
+                a_, b_ = k * SM + i, k * SM + (i + 1) % SM
+                fs.append((b_, a_, cc) if k == 0 else (a_, b_, cc))
+        mm = bpy.data.meshes.new('manga')
+        mm.from_pydata(vs, [], fs)
+        partes.append(novo_objeto('manga', mm))
+    ativar(partes[0])
+    for o in partes:
+        o.select_set(True)
+    bpy.ops.object.join()
+    ob = bpy.context.view_layer.objects.active
+    ob.name = 'Tunica_cima'
+    m = ob.modifiers.new('Voxels', 'REMESH')
+    m.mode = 'VOXEL'
+    m.voxel_size = 0.004
+    bpy.ops.object.modifier_apply(modifier=m.name)
+    sm = ob.modifiers.new('Liso', 'SMOOTH')
+    sm.factor = 0.7
+    sm.iterations = 6
+    bpy.ops.object.modifier_apply(modifier=sm.name)
+    # a gola fica aberta: remove a tampa de cima (em volta do pescoço) e a de baixo (dentro da saia)
     bm = bmesh.new()
     bm.from_mesh(ob.data)
-    bm.verts.ensure_lookup_table()
-    visto, partes = set(), []
-    for v in bm.verts:
-        if v.index in visto:
-            continue
-        comp, pilha = [], [v]
-        visto.add(v.index)
-        while pilha:
-            u = pilha.pop()
-            comp.append(u)
-            for e in u.link_edges:
-                w = e.other_vert(u)
-                if w.index not in visto:
-                    visto.add(w.index)
-                    pilha.append(w)
-        partes.append(comp)
-    maior = max(len(x) for x in partes)
-    bmesh.ops.delete(bm, geom=[u for x in partes if len(x) < maior * 0.2 for u in x], context='VERTS')
+    tira = [f for f in bm.faces if (f.calc_center_median().z > z1 - 0.006 and f.normal.z > 0.6) or (f.calc_center_median().z < z0 + 0.006 and f.normal.z < -0.6)]
+    bmesh.ops.delete(bm, geom=tira, context='FACES')
+    for e in [e for e in bm.edges if e.is_wire]:
+        bm.edges.remove(e)
     bm.to_mesh(ob.data)
     bm.free()
-    n = normais(ob)
-    p = coords(ob)
-    z_ombro = float(np.percentile(p[:, 2], 98))
-    folga = 0.009 + 0.012 * np.clip((z_ombro - p[:, 2]) / 0.45, 0, 1)
-    set_coords(ob, p + n * folga[:, None])
-    suavizar(ob, 8, 0.55)
-    ativar(ob)
-    m = ob.modifiers.new('Sub', 'SUBSURF')
-    m.levels = 1
-    bpy.ops.object.modifier_apply(modifier=m.name)
+    for p in ob.data.polygons:
+        p.use_smooth = True
     vestes.uv_projecao(ob)
     ob.data.materials.append(mat)
-    ativar(ob)
-    m = ob.modifiers.new('Espessura', 'SOLIDIFY')
-    m.thickness = 0.003
-    m.offset = 1
-    bpy.ops.object.modifier_apply(modifier=m.name)
     return ob
 
 
