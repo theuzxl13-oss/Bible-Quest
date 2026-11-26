@@ -379,7 +379,7 @@ pecas.append(sobrancelha('Sobrancelhas_marcantes', True))
 
 def sardas():
     """Decalque fino sobre o nariz e as bochechas, com pontinhos (textura com transparência)."""
-    NU, NV = 28, 12
+    NU, NV = 44, 20
     x0, x1 = ex_R - rx_o * 1.3, ex_L + rx_o * 1.3
     z1, z0 = ez - rz_o * 1.3, ez - rz_o * 1.3 - 0.034
     verts, faces, uvs = [], [], []
@@ -387,7 +387,7 @@ def sardas():
         for i in range(NU + 1):
             x = x0 + (x1 - x0) * i / NU
             z = z0 + (z1 - z0) * j / NV
-            p, _ = raycast_rosto(x, z, 0.0007)
+            p, _ = raycast_rosto(x, z, 0.0016)
             verts.append(tuple(p) if p is not None else (x, y_frente, z))
             uvs.append((i / NU, j / NV))
     for j in range(NV):

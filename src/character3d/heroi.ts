@@ -90,9 +90,9 @@ const CLIPE: Record<Pose3D, string> = { idle: 'Idle', walk: 'Walk', celebrate: '
 const EXPRESSAO_BASE: Record<string, Record<string, number>> = {
   // intensidades acima de 1: no modelo modular as expressões precisam ser legíveis também nas miniaturas
   neutra: {},
-  sorriso: { Sorriso: 1.5 },
-  alegria: { Alegria: 1.55 },
-  surpresa: { Surpresa: 1.45 },
+  sorriso: { Sorriso: 1.1 },
+  alegria: { Alegria: 1.9 },
+  surpresa: { Surpresa: 1.6 },
 }
 const EXPRESSAO: Partial<Record<Pose3D, Record<string, number>>> = {
   celebrate: { Alegria: 1 },
@@ -346,7 +346,8 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
     if (!mesh.isMesh || estilizado) return
     const mats = (Array.isArray(mesh.material) ? mesh.material : [mesh.material]) as THREE.MeshStandardMaterial[]
     for (const m of mats) {
-      const n = m.name.split('__')[0]
+      // sem o sufixo numérico do Blender (Sobrancelhas.001, Barba.001, Cabelo.001)
+      const n = m.name.split('__')[0].replace(/\.\d+$/, '')
       if (modular && (n.startsWith('Cabelo') || n === 'Barba')) {
         // cabelo e barba esculpidos (sólidos): a textura em cinza dá os fios e a cor vem do jogador
         tingirPorLuminancia(m, hairHex, 1.16)
