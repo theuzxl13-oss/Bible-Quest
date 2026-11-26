@@ -88,10 +88,11 @@ const ACESSORIO: Record<string, string> = {
 const CLIPE: Record<Pose3D, string> = { idle: 'Idle', walk: 'Walk', celebrate: 'Victory', react: 'Discovery', wave: 'Greeting', still: 'Idle' }
 /** Expressão de repouso escolhida pelo jogador (v0.8): morph targets de cada uma. */
 const EXPRESSAO_BASE: Record<string, Record<string, number>> = {
+  // intensidades acima de 1: no modelo modular as expressões precisam ser legíveis também nas miniaturas
   neutra: {},
-  sorriso: { Sorriso: 0.8 },
-  alegria: { Alegria: 0.85 },
-  surpresa: { Surpresa: 0.7 },
+  sorriso: { Sorriso: 1.5 },
+  alegria: { Alegria: 1.55 },
+  surpresa: { Surpresa: 1.45 },
 }
 const EXPRESSAO: Partial<Record<Pose3D, Record<string, number>>> = {
   celebrate: { Alegria: 1 },

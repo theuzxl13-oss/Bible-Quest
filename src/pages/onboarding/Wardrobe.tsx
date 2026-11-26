@@ -79,11 +79,11 @@ function DyePicker({ slot, draft, onChange }: { slot: 'tunica' | 'manto'; draft:
 }
 
 /** Opção com prévia no próprio personagem (botão de rádio acessível). */
-function Opcao({ name, label, checked, onChange, preview, portrait = true, help }: { name: string; label: string; checked: boolean; onChange: () => void; preview: CharacterAppearance; portrait?: boolean; help?: string }) {
+function Opcao({ name, label, checked, onChange, preview, portrait = true, rosto = false, help }: { name: string; label: string; checked: boolean; onChange: () => void; preview: CharacterAppearance; portrait?: boolean; rosto?: boolean; help?: string }) {
   return (
     <label className={`option-card ${checked ? 'is-on' : ''}`}>
       <input type="radio" name={name} checked={checked} onChange={onChange} />
-      <span className="option-preview"><Character appearance={preview} size={portrait ? 76 : 64} portrait={portrait} pose="still" /></span>
+      <span className="option-preview"><Character appearance={preview} size={portrait ? 76 : 64} portrait={portrait} closeup={rosto} pose="still" /></span>
       <strong>{label}</strong>
       {help && <span className="small muted">{help}</span>}
     </label>
@@ -235,7 +235,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                     <legend>Rosto</legend>
                     <div className="option-grid">
                       {FACES.map((f) => (
-                        <Opcao key={f.id} name="face" label={f.label} checked={draft.face === f.id || (f.id === 'suave' && draft.face === 'barba')}
+                        <Opcao key={f.id} name="face" rosto label={f.label} checked={draft.face === f.id || (f.id === 'suave' && draft.face === 'barba')}
                           preview={{ ...draft, face: f.id, beard: beardOf(draft) }} onChange={() => update({ ...draft, face: f.id, beard: beardOf(draft) })} />
                       ))}
                     </div>
@@ -244,7 +244,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                     <legend>Expressão</legend>
                     <div className="option-grid">
                       {EXPRESSOES.map((e) => (
-                        <Opcao key={e.id} name="expressao" label={e.label} checked={(draft.expressao ?? 'neutra') === e.id}
+                        <Opcao key={e.id} name="expressao" rosto label={e.label} checked={(draft.expressao ?? 'neutra') === e.id}
                           preview={definirExpressao(draft, e.id)} onChange={() => update(definirExpressao(draft, e.id))} />
                       ))}
                     </div>
@@ -292,7 +292,7 @@ export default function Wardrobe({ mode }: { mode: 'criar' | 'editar' }) {
                   <legend>Barba</legend>
                   <div className="option-grid">
                     {BEARDS.map((b) => (
-                      <Opcao key={b.id} name="beard" label={b.label} checked={beardOf(draft) === b.id} preview={{ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face }}
+                      <Opcao key={b.id} name="beard" rosto label={b.label} checked={beardOf(draft) === b.id} preview={{ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face }}
                         onChange={() => update({ ...draft, beard: b.id, face: draft.face === 'barba' ? 'suave' : draft.face })} />
                     ))}
                   </div>

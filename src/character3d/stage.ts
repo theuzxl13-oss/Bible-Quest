@@ -9,12 +9,14 @@ import { contactShadow } from './textures'
  * câmera enquadrada no corpo inteiro ou no retrato.
  */
 
-export type Framing = 'corpo' | 'retrato' | 'busto'
+export type Framing = 'corpo' | 'retrato' | 'busto' | 'rosto'
 
 export const FRAMES: Record<Framing, { target: THREE.Vector3; height: number }> = {
   corpo: { target: new THREE.Vector3(0, 0.9, 0), height: 1.98 },
   busto: { target: new THREE.Vector3(0, 1.38, 0), height: 0.95 },
   retrato: { target: new THREE.Vector3(0, 1.6, 0), height: 0.42 },
+  /** Só o rosto (miniaturas de rosto e expressão no guarda-roupa). */
+  rosto: { target: new THREE.Vector3(0, 1.57, 0), height: 0.25 },
 }
 
 export function createRenderer(quality: Quality3D, canvas?: HTMLCanvasElement, preserve = false) {
@@ -101,6 +103,7 @@ export function enquadrar(root: THREE.Object3D, framing: Framing): { target: THR
   if (nuca === null || caixa.isEmpty()) return base
   const topo = caixa.max.y
   const k = Math.max(0.6, Math.min(1.6, (topo - nuca) / 0.21))
+  if (framing === 'rosto') return { target: new THREE.Vector3(0, nuca + (topo - nuca) * 0.4, 0), height: 0.25 * k }
   if (framing === 'retrato') return { target: new THREE.Vector3(0, nuca + (topo - nuca) * 0.48, 0), height: 0.42 * k }
   if (framing === 'busto') return { target: new THREE.Vector3(0, nuca - 0.12 * k, 0), height: 0.95 * k }
   return { target: new THREE.Vector3(0, topo * 0.53, 0), height: topo * 1.165 }

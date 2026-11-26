@@ -331,7 +331,7 @@ def sobrancelha(nome, grossa):
     """Faixa curva sobre cada olho, projetada na pele (afastada 1 mm)."""
     verts, faces = [], []
     NU, NV = 18, 4
-    esp = (0.0034 if FEM else 0.0046) * (1.55 if grossa else 1.0)
+    esp = (0.0034 if FEM else 0.0046) * (2.3 if grossa else 1.0)
     for lado, ex in ((-1, ex_R), (1, ex_L)):
         base = len(verts)
         x_in = ex - lado * rx_o * 0.95
@@ -407,16 +407,16 @@ def sardas():
     rng = np.random.default_rng(21)
     yy, xx = np.mgrid[0:H_, 0:W_]
     # mais pontos no nariz e no alto das bochechas, nenhum perto dos olhos
-    for _ in range(170):
+    for _ in range(70):
         while True:
             u, v = rng.uniform(0.05, 0.95), rng.uniform(0.1, 0.85)
             x = x0 + (x1 - x0) * u
             dens = math.exp(-((x - H.x) / 0.05) ** 2) * 0.5 + 0.5 * math.exp(-((abs(x - H.x) - 0.04) / 0.025) ** 2)
             if rng.uniform() < dens:
                 break
-        r = rng.uniform(1.6, 3.2)
+        r = rng.uniform(4.0, 7.0)
         d = np.sqrt((xx - u * W_) ** 2 + ((yy - v * H_) * 1.0) ** 2)
-        alfa = np.maximum(alfa, np.clip(1 - (d - r * 0.5) / (r * 0.6), 0, 1) * rng.uniform(0.45, 0.8))
+        alfa = np.maximum(alfa, np.clip(1 - (d - r * 0.5) / (r * 0.6), 0, 1) * rng.uniform(0.7, 0.95))
     borda = np.minimum.reduce([xx / 30, (W_ - xx) / 30, yy / 20, (H_ - yy) / 20, np.ones_like(xx, dtype=float)])
     alfa *= np.clip(borda, 0, 1)
     arr = np.zeros((H_, W_, 4), np.float32)

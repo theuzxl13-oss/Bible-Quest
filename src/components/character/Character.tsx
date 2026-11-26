@@ -25,6 +25,8 @@ export interface CharacterProps {
   size?: number
   pose?: CharacterPose
   portrait?: boolean
+  /** Retrato bem próximo, só o rosto (miniaturas de rosto e expressão). */
+  closeup?: boolean
   className?: string
   title?: string
   /** Personagem 3D animado (usar só em telas de destaque). */
@@ -65,7 +67,7 @@ function boxSize(size: number, portrait?: boolean) {
 }
 
 const CharacterLive = forwardRef<CharacterViewApi, CharacterProps & { quality: 'alta' | 'leve'; reduced: boolean }>(function CharacterLive(
-  { appearance, size = 120, pose = 'idle', portrait, className, title, controls = false, autoRotate = false, quality, reduced },
+  { appearance, size = 120, pose = 'idle', portrait, closeup, className, title, controls = false, autoRotate = false, quality, reduced },
   ref,
 ) {
   const box = useRef<HTMLDivElement>(null)
@@ -87,7 +89,7 @@ const CharacterLive = forwardRef<CharacterViewApi, CharacterProps & { quality: '
         if (cancelled || !box.current) return
         handle.current = rt.createViewer(box.current, latest.current.appearance, {
           quality,
-          framing: portrait ? 'retrato' : 'corpo',
+          framing: closeup ? 'rosto' : portrait ? 'retrato' : 'corpo',
           pose: latest.current.pose,
           controls,
           autoRotate,
@@ -101,7 +103,7 @@ const CharacterLive = forwardRef<CharacterViewApi, CharacterProps & { quality: '
       handle.current?.dispose()
       handle.current = null
     }
-  }, [quality, portrait, controls, autoRotate, reduced])
+  }, [quality, portrait, closeup, controls, autoRotate, reduced])
 
   useEffect(() => handle.current?.setAppearance(appearance), [appearance, state])
   useEffect(() => handle.current?.setPose(pose), [pose, state])
@@ -121,16 +123,16 @@ const CharacterLive = forwardRef<CharacterViewApi, CharacterProps & { quality: '
   )
 })
 
-function CharacterImage({ appearance, size = 120, pose = 'idle', portrait, className, title, quality }: CharacterProps & { quality: 'alta' | 'leve' }) {
+function CharacterImage({ appearance, size = 120, pose = 'idle', portrait, closeup, className, title, quality }: CharacterProps & { quality: 'alta' | 'leve' }) {
   const { width, height } = boxSize(size, portrait)
   const w = Math.round(width)
   const h = Math.round(height)
   const walking = pose === 'walk'
   const frames = walking ? [0.0, 0.12, 0.24, 0.36] : [0.6]
-  const opts = (time: number) => ({ quality, pose: pose === 'still' ? ('still' as const) : pose, framing: portrait ? ('retrato' as const) : ('corpo' as const), width: w, height: h, time })
+  const opts = (time: number) => ({ quality, pose: pose === 'still' ? ('still' as const) : pose, framing: closeup ? ('rosto' as const) : portrait ? ('retrato' as const) : ('corpo' as const), width: w, height: h, time })
   const [urls, setUrls] = useState<string[]>([])
   const [frame, setFrame] = useState(0)
-  const key = `${appearanceKey(appearance)}|${pose}|${portrait}|${w}x${h}|${quality}`
+  const key = `${appearanceKey(appearance)}|${pose}|${portrait}|${closeup}|${w}x${h}|${quality}`
 
   useEffect(() => {
     let cancelled = false
