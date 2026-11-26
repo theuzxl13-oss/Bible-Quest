@@ -43,6 +43,14 @@ export function soCores(a: CharacterAppearance, b: CharacterAppearance) {
   return modeloDe(a) === modeloDe(b) && a.equipped.acessorios.join(',') === b.equipped.acessorios.join(',')
 }
 
+/**
+ * Variante do modo gráfico leve: mesmas peças, esqueleto, animações e expressões; cabelos, roupas
+ * e acessórios com metade dos triângulos e texturas (exceto a pele do rosto) com metade da resolução.
+ */
+export function arquivoLeve(modelo: string) {
+  return `${modelo}-leve`
+}
+
 export function heroUrl(modelo: string) {
   return `${BASE}heroi-${modelo}.glb`
 }
@@ -87,12 +95,13 @@ const ACESSORIO: Record<string, string> = {
 }
 const CLIPE: Record<Pose3D, string> = { idle: 'Idle', walk: 'Walk', celebrate: 'Victory', react: 'Discovery', wave: 'Greeting', still: 'Idle' }
 /** Expressão de repouso escolhida pelo jogador (v0.8): morph targets de cada uma. */
-const EXPRESSAO_BASE: Record<string, Record<string, number>> = {
-  // intensidades acima de 1: no modelo modular as expressões precisam ser legíveis também nas miniaturas
+export const EXPRESSAO_BASE: Record<string, Record<string, number>> = {
+  // as formas do modelo modular já foram desenhadas para serem legíveis nas miniaturas na intensidade 1
+  // (sorriso: linha da boca curvada; alegria: sorriso largo e olhos sorrindo; surpresa: olhos e boca abertos)
   neutra: {},
-  sorriso: { Sorriso: 1.1 },
-  alegria: { Alegria: 1.9 },
-  surpresa: { Surpresa: 1.6 },
+  sorriso: { Sorriso: 1 },
+  alegria: { Alegria: 1 },
+  surpresa: { Surpresa: 1.3 },
 }
 const EXPRESSAO: Partial<Record<Pose3D, Record<string, number>>> = {
   celebrate: { Alegria: 1 },

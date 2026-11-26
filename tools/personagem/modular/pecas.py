@@ -363,9 +363,9 @@ def limpar_manchas_pele():
         ('pescoço', lambda c, n: (c[:, 2] > zp - 0.06) & (c[:, 2] < mz - 0.035) & (c[:, 1] < H.y + 0.01), 0.82),
         # só a orelha (parte que sai da cabeça, abaixo da linha do cabelo): o couro cabeludo em volta fica
         # em volta dos olhos, da altura do centro para baixo (os cílios de cima ficam): restos da pintura da IA
-        ('olhos', lambda c, n: (c[:, 1] < H.y) & (c[:, 2] < ez + rz_o * 0.2) & np.any([
-            (np.sqrt(((c[:, 0] - x) / rx_o) ** 2 + ((c[:, 2] - ez) / rz_o) ** 2) > 1.45)
-            & (np.sqrt(((c[:, 0] - x) / rx_o) ** 2 + ((c[:, 2] - ez) / rz_o) ** 2) < 2.8) for x in (ex_R, ex_L)], axis=0), 0.62),
+        ('olhos', lambda c, n: (c[:, 1] < H.y) & (c[:, 2] < ez + rz_o * 0.05) & np.any([
+            (np.sqrt(((c[:, 0] - x) / rx_o) ** 2 + ((c[:, 2] - ez) / rz_o) ** 2) > 1.18)
+            & (np.sqrt(((c[:, 0] - x) / rx_o) ** 2 + ((c[:, 2] - ez) / rz_o) ** 2) < 2.8) for x in (ex_R, ex_L)], axis=0), 0.55),
         ('orelhas', lambda c, n: (np.min([np.linalg.norm(c - np.array(o), axis=1) for o in ORELHAS], axis=0) < 0.03)
          & (np.abs(c[:, 0] - HX) > abs(ORELHAS[0].x - HX) - 0.022) & (c[:, 2] < ez + 0.01), 0.6),
     ):
@@ -408,8 +408,8 @@ def alisar_covas(prof=0.0012, vezes=4):
                 continue
             if abs(p[0] - mx) < mw * 1.4 and mz - 0.016 < p[2] < mz + 0.04 and p[1] < h[1]:
                 continue  # boca e narinas
-            if any(abs(p[0] - x) < rx_o * 1.25 and abs(p[2] - ez) < rz_o * 1.4 for x in (ex_R, ex_L)) and p[1] < h[1]:
-                continue  # olhos
+            if any(((p[0] - x) / (rx_o * 1.08)) ** 2 + ((p[2] - ez) / (rz_o * 1.2)) ** 2 < 1 for x in (ex_R, ex_L)) and p[1] < h[1]:
+                continue  # olhos (só o olho pintado; em volta, as covas do olho antigo da IA são alisadas)
             viz = [e.other_vert(v).co for e in v.link_edges]
             if len(viz) < 3:
                 continue
@@ -417,6 +417,10 @@ def alisar_covas(prof=0.0012, vezes=4):
             fora = p - h
             fora /= max(np.linalg.norm(fora), 1e-6)
             if (m - p) @ fora > prof:
+                mover.append((v, m))
+            elif (p - m) @ fora > 0.0018 and p[1] < h[1] and any(
+                    1.0 < ((p[0] - x) / rx_o) ** 2 + ((p[2] - ez) / rz_o) ** 2 < 9.0 for x in (ex_R, ex_L)):
+                # pontas em volta do olho (cílios modelados da IA, que faziam sombra escura no canto)
                 mover.append((v, m))
         for v, m in mover:
             v.co = Vector(m)
@@ -441,7 +445,7 @@ def sobrancelha(nome, grossa):
     """Faixa curva sobre cada olho, projetada na pele (afastada 1 mm)."""
     verts, faces = [], []
     NU, NV = 18, 4
-    esp = (0.0034 if FEM else 0.0046) * (2.0 if grossa else 1.0)
+    esp = (0.0034 if FEM else 0.0046) * (2.5 if grossa else 1.0)
     for lado, ex in ((-1, ex_R), (1, ex_L)):
         base = len(verts)
         x_in = ex - lado * rx_o * 0.95
@@ -523,7 +527,7 @@ def sardas():
     rng = np.random.default_rng(21)
     yy, xx = np.mgrid[0:H_, 0:W_]
     # mais pontos no nariz e no alto das bochechas, nenhum perto dos olhos
-    for _ in range(46):
+    for _ in range(72):
         while True:
             u, v = rng.uniform(0.05, 0.95), rng.uniform(0.1, 0.85)
             x = x0 + (x1 - x0) * u
@@ -532,7 +536,7 @@ def sardas():
                 break
         r = rng.uniform(10.0, 15.0)
         d = np.sqrt((xx - u * W_) ** 2 + ((yy - v * H_) * 1.0) ** 2)
-        alfa = np.maximum(alfa, np.clip(1 - (d - r * 0.5) / (r * 0.6), 0, 1) * rng.uniform(0.7, 0.95))
+        alfa = np.maximum(alfa, np.clip(1 - (d - r * 0.5) / (r * 0.6), 0, 1) * rng.uniform(0.85, 1.0))
     borda = np.minimum.reduce([xx / 30, (W_ - xx) / 30, yy / 20, (H_ - yy) / 20, np.ones_like(xx, dtype=float)])
     alfa *= np.clip(borda, 0, 1)
     arr = np.zeros((H_, W_, 4), np.float32)
@@ -1012,12 +1016,14 @@ def cabelo(estilo):
             if estilo in ('curto', 'cacheado', 'coque', 'tranca'):
                 corte = []
                 for q in pts:
-                    if q.z < linha_cabelo(q, frente_z, lado_z, nuca_z) + (0.012 if estilo != 'cacheado' else -0.01) or any((q - o).length < (0.046 if estilo == 'curto' else 0.034) for o in ORELHAS):
+                    if q.z < linha_cabelo(q, frente_z, lado_z, nuca_z) + (0.012 if estilo != 'cacheado' else -0.01) or any((q - o).length < (0.046 if estilo == 'curto' else 0.04) for o in ORELHAS):
                         break  # a mecha termina antes da linha do cabelo e longe das orelhas
-                    if (q - H).length > r_cab * 1.12:
+                    if estilo == 'curto' and (q - H).length > r_cab * 1.3:
                         break  # cabelo curto não espeta para fora da cabeça (mecha solta atrás)
                     corte.append(q)
-                pts = corte if len(corte) >= 3 else pts[:3]
+                if len(corte) < 3:
+                    continue  # mecha curta demais depois do corte: não vira toco pendurado junto da orelha
+                pts = corte
             n = len(pts)
             rr = cfg['r'] * rng.uniform(0.85, 1.15)
             if estilo == 'curto' and rel.y > r_cab * 0.2:
@@ -1068,7 +1074,7 @@ def cabelo(estilo):
         # franja: as mechas se abrem no meio da testa e deixavam uma falha; um volume raso preenche
         pf, nf = raycast_rosto(HX, frente_z + 0.009, 0.0)
         if pf is not None:
-            obs.append(bolas([(tuple(pf + nf * 0.008), (0.045, 0.009, 0.012), 0)], 'franja'))
+            obs.append(bolas([(tuple(pf + nf * 0.005), (0.045, 0.0075, 0.011), 0)], 'franja'))
     if estilo in ('longo', 'ondulado'):
         # comprimento do penteado pelas pontas de trás; as mechas terminam dentro da manta (sem pingos)
         fins = [c[-1] for c in caminhos if len(c) > 2 and (c[-1] - H).y > 0]
@@ -1090,7 +1096,16 @@ def cabelo(estilo):
         bpy.ops.object.convert(target='MESH')
     ob = unir_voxels(obs, nome, voxel=0.0019 if estilo in ('raspado', 'curto') else 0.0023,
                      tris=3000 if estilo == 'raspado' else (11000 if estilo in ('longo', 'ondulado') else 8000), suav=2)
-    limpar_rosto(ob, z_sob + 0.012)
+    if orelha:
+        # nada de cabelo encostado na orelha (sobravam pedaços escuros como resíduo junto dela)
+        bm = bmesh.new()
+        bm.from_mesh(ob.data)
+        tira = [v for v in bm.verts if min((v.co - o).length for o in ORELHAS) < 0.034 and v.co.z < lado_z + 0.012]
+        bmesh.ops.delete(bm, geom=tira, context='VERTS')
+        bm.to_mesh(ob.data)
+        bm.free()
+    # franja acima das sobrancelhas (elas ficam à vista, também nas miniaturas, vistas um pouco de cima)
+    limpar_rosto(ob, z_sob + (0.028 if estilo in ('curto', 'cacheado', 'coque', 'tranca') else 0.019))
     # (sem empurrar para fora: o couro cabeludo do corpo é afundado 4 mm no fim)
     todos = caminhos + so_textura
     if not todos:
@@ -1386,10 +1401,12 @@ pn[np.einsum('ij,ij->i', pn, pc - np.array(H)) < 0] *= -1  # normal invertida da
 wcab = pesos_grupos(corpo, ['head', 'neck01'])
 afundar = np.zeros(len(pc))
 for i, p in enumerate(pc):
-    if wcab[i] < 0.3 or any((Vector(p) - o).length < 0.03 for o in ORELHAS):
+    if wcab[i] < 0.3:
         continue
     lz = linha_cabelo(p, frente_z0 + 0.006, ez + 0.01, zp + 0.045)
-    afundar[i] = suave(np.array((p[2] - lz) / 0.012)).item()
+    # perto da orelha o afundamento some aos poucos (a emenda da orelha abria e mostrava o interior escuro)
+    d_or = min((Vector(p) - o).length for o in ORELHAS)
+    afundar[i] = suave(np.array((p[2] - lz) / 0.012)).item() * suave(np.array((d_or - 0.035) / 0.025)).item()
 pc = pc - pn * (0.004 * afundar)[:, None]
 set_coords(corpo, pc)
 print('couro cabeludo afundado:', int((afundar > 0.5).sum()), 'vértices')
@@ -1428,11 +1445,11 @@ def deslocamentos(pts, nome):
         # sorriso: a linha da boca (lábios pintados) se curva — os cantos sobem e abrem, o centro
         # quase não sai do lugar; as maçãs do rosto sobem. Alegria: sorriso mais largo e olhos
         # "sorrindo" (pálpebra de baixo sobe, a de cima desce um pouco), sem caricatura.
-        k = 1.0 if nome == 'Sorriso' else 1.45
+        k = 1.3 if nome == 'Sorriso' else 2.0
         u = (pts[:, 0] - mx) / mw
         w_boca = np.exp(-((pts[:, 2] - mz) / 0.017) ** 2) * (1 - suave((np.abs(pts[:, 0] - mx) - mw * 1.05) / 0.022)) * frente
         curva = np.minimum(1.0, u ** 2) ** 0.8
-        d[:, 2] += 0.0062 * k * curva * w_boca
+        d[:, 2] += 0.0072 * k * curva * w_boca
         d[:, 0] += 0.0024 * k * np.clip(u, -1.2, 1.2) * w_boca
         d[:, 1] += 0.0016 * k * curva * w_boca  # cantos recuam um pouco (bochecha cheia)
         for s in (1, -1):
@@ -1440,7 +1457,9 @@ def deslocamentos(pts, nome):
             w2 = campo(cx, by, mz + 0.026, 0.026)
             d[:, 2] += 0.0032 * k * w2
             d[:, 1] -= 0.0018 * k * w2
-        if nome == 'Alegria':
+        # sorriso verdadeiro também aperta os olhos (pálpebra de baixo sobe); na alegria, bem mais
+        sobe_b, desce_c = (0.4, 0.1) if nome == 'Sorriso' else (0.85, 0.32)
+        if True:
             for x, y, z, rx, rz in olhos:
                 hor = 1 - suave((np.abs(pts[:, 0] - x) - rx * 0.95) / (rx * 0.6))
                 w = hor * frente * (pts[:, 1] < y + 0.03)
@@ -1448,8 +1467,8 @@ def deslocamentos(pts, nome):
                 # pálpebra de baixo sobe ~35 % do olho; a de cima desce ~12 %
                 baixo = (zz > z - rz * 2.2) & (zz < z)
                 cima_ = (zz >= z) & (zz < z + rz * 1.6)
-                d[:, 2] += np.where(baixo, rz * 0.7 * (1 - suave((z - zz) / (rz * 2.2))), 0) * w
-                d[:, 2] -= np.where(cima_, rz * 0.24 * (1 - suave((zz - z) / (rz * 1.6))), 0) * w
+                d[:, 2] += np.where(baixo, rz * sobe_b * (1 - suave((z - zz) / (rz * 2.2))), 0) * w
+                d[:, 2] -= np.where(cima_, rz * desce_c * (1 - suave((zz - z) / (rz * 1.6))), 0) * w
     if nome == 'Surpresa':
         for x, y, z, rx, rz in olhos:
             w = campo(x, y, z + rz + 0.012, 0.034)

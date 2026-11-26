@@ -3,7 +3,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import type { CharacterAppearance } from '../types'
 import { appearanceKey } from '../data/character/look'
 import { buildCharacter, type Pose3D, type Quality3D, type Rig } from './rig'
-import { buildHero, loadHero, modeloDe, soCores } from './heroi'
+import { arquivoLeve, buildHero, loadHero, modeloDe, soCores } from './heroi'
 import { bodyOf } from '../data/character/look'
 import { createRenderer, createScene, enquadrar, fitDistance, FRAMES, type Framing } from './stage'
 
@@ -24,7 +24,10 @@ export let modeloEmUso: 'glb' | 'procedural' = 'glb'
 export async function montar(a: CharacterAppearance, quality: Quality3D): Promise<Rig> {
   try {
     // modelo próprio da base; se ainda não existir ou falhar, o modelo do corpo
-    const gltf = await loadHero(modeloDe(a)).catch(() => loadHero(bodyOf(a)))
+    // modo leve: variante otimizada do mesmo modelo (heroi-<modelo>-leve.glb); se faltar, o completo
+    const modelo = modeloDe(a)
+    const gltf = await (quality === 'leve' ? loadHero(arquivoLeve(modelo)).catch(() => loadHero(modelo)) : loadHero(modelo))
+      .catch(() => loadHero(bodyOf(a)))
     const rig = buildHero(gltf, a, quality)
     await (rig as Rig & { ready?: Promise<void> }).ready
     modeloEmUso = 'glb'
