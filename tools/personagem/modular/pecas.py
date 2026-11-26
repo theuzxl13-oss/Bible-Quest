@@ -1388,6 +1388,17 @@ print('expressões ok')
 for t in arm.animation_data.nla_tracks:
     t.mute = False
 bpy.context.scene['estilo'] = 'modular'
+# todas as malhas passam pela validação logo antes de exportar (o exportador descarta malhas inconsistentes)
+for o in bpy.data.objects:
+    if o.type == 'MESH' and len(o.data.vertices):
+        bm = bmesh.new()
+        bm.from_mesh(o.data)
+        bmesh.ops.delete(bm, geom=[e for e in bm.edges if not e.link_faces], context='EDGES')
+        bmesh.ops.delete(bm, geom=[v for v in bm.verts if not v.link_faces], context='VERTS')
+        bm.to_mesh(o.data)
+        bm.free()
+        if not o.data.shape_keys:
+            validar(o)
 for o in bpy.data.objects:
     if o.type == 'MESH':
         print('OBJ', o.name, len(o.data.vertices), len(o.data.loops), bool(o.data.shape_keys))
