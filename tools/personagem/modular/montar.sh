@@ -3,7 +3,8 @@
 # Corpo-base estilizado (../saida/corpo-<genero>-rig.blend, ver ../README.md) ->
 #   pintar.py  (rosto repintado: olhos, lábios e bochechas; margem das ilhas de UV)
 #   refazer.py (faces internas removidas, orientação das faces corrigida, malha reduzida)
-#   pecas.py   (cabelos, barbas, sobrancelhas, sardas, roupas, acessórios e expressões)
+#   pecas.py   (cabelos, barbas, sobrancelhas, sardas, túnica (tunica.py), roupas, acessórios e expressões;
+#               no fim, a variante leve)
 #   gltfpack   (compressão meshopt; nomes, materiais e extras preservados)
 # Uso: tools/personagem/modular/montar.sh [masculino|feminino]   (sem argumento: os dois)
 set -euo pipefail
@@ -14,5 +15,7 @@ for g in ${1:-masculino feminino}; do
   blender -b -P refazer.py -- ../saida/modular-$g-1.blend 36000 2048 ../saida/modular-$g-2.blend 2>&1 | grep -E "faces|triângulos|Error" || true
   blender -b -P pecas.py -- ../saida/modular-$g-2.blend ../estilizado/juntas-corpo-$g.json rosto-$g.json $g ../saida/modular-$g.glb 2>&1 | grep -E "cabelo|barba |roupas|GLB|Error" || true
   npx -y gltfpack@0.25.0 -i ../saida/modular-$g.glb -o "$DEST/heroi-$g.glb" -cc -kn -km -ke -vp 14 -vt 12
-  ls -la "$DEST/heroi-$g.glb"
+  # variante do modo gráfico leve (gerada no fim de pecas.py)
+  npx -y gltfpack@0.25.0 -i ../saida/modular-$g-leve.glb -o "$DEST/heroi-$g-leve.glb" -cc -kn -km -ke -vp 14 -vt 12
+  ls -la "$DEST/heroi-$g.glb" "$DEST/heroi-$g-leve.glb"
 done
