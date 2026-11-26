@@ -1445,7 +1445,7 @@ def deslocamentos(pts, nome):
         # sorriso: a linha da boca (lábios pintados) se curva — os cantos sobem e abrem, o centro
         # quase não sai do lugar; as maçãs do rosto sobem. Alegria: sorriso mais largo e olhos
         # "sorrindo" (pálpebra de baixo sobe, a de cima desce um pouco), sem caricatura.
-        k = 1.3 if nome == 'Sorriso' else 2.0
+        k = 1.15 if nome == 'Sorriso' else 1.6
         u = (pts[:, 0] - mx) / mw
         w_boca = np.exp(-((pts[:, 2] - mz) / 0.017) ** 2) * (1 - suave((np.abs(pts[:, 0] - mx) - mw * 1.05) / 0.022)) * frente
         curva = np.minimum(1.0, u ** 2) ** 0.8
