@@ -362,6 +362,10 @@ def limpar_manchas_pele():
     for nome, filtro, limiar in (
         ('pescoço', lambda c, n: (c[:, 2] > zp - 0.06) & (c[:, 2] < mz - 0.035) & (c[:, 1] < H.y + 0.01), 0.82),
         # só a orelha (parte que sai da cabeça, abaixo da linha do cabelo): o couro cabeludo em volta fica
+        # em volta dos olhos, da altura do centro para baixo (os cílios de cima ficam): restos da pintura da IA
+        ('olhos', lambda c, n: (c[:, 1] < H.y) & (c[:, 2] < ez + rz_o * 0.2) & np.any([
+            (np.sqrt(((c[:, 0] - x) / rx_o) ** 2 + ((c[:, 2] - ez) / rz_o) ** 2) > 1.45)
+            & (np.sqrt(((c[:, 0] - x) / rx_o) ** 2 + ((c[:, 2] - ez) / rz_o) ** 2) < 2.8) for x in (ex_R, ex_L)], axis=0), 0.62),
         ('orelhas', lambda c, n: (np.min([np.linalg.norm(c - np.array(o), axis=1) for o in ORELHAS], axis=0) < 0.03)
          & (np.abs(c[:, 0] - HX) > abs(ORELHAS[0].x - HX) - 0.022) & (c[:, 2] < ez + 0.01), 0.6),
     ):
@@ -383,6 +387,49 @@ def limpar_manchas_pele():
     return total
 
 
+
+def alisar_covas(prof=0.0012, vezes=4):
+    """Covas pequenas e fundas da malha da IA (canto do olho, sob o queixo) apareciam como manchas
+    escuras: cada vértice da cabeça e do pescoço muito abaixo da média dos vizinhos (para dentro)
+    vai para essa média. Boca, narinas, olhos e orelhas ficam como estão."""
+    bm = bmesh.new()
+    bm.from_mesh(corpo.data)
+    bm.verts.ensure_lookup_table()
+    w = pesos_grupos(corpo, ['head', 'neck01', 'neck02', 'neck03'])
+    h = np.array(H)
+    total = 0
+    for _ in range(vezes):
+        mover = []
+        for v in bm.verts:
+            p = np.array(v.co)
+            if w[v.index] < 0.3 or p[2] < zp - 0.07:
+                continue
+            if any(np.linalg.norm(p - np.array(o)) < 0.035 for o in ORELHAS):
+                continue
+            if abs(p[0] - mx) < mw * 1.4 and mz - 0.016 < p[2] < mz + 0.04 and p[1] < h[1]:
+                continue  # boca e narinas
+            if any(abs(p[0] - x) < rx_o * 1.25 and abs(p[2] - ez) < rz_o * 1.4 for x in (ex_R, ex_L)) and p[1] < h[1]:
+                continue  # olhos
+            viz = [e.other_vert(v).co for e in v.link_edges]
+            if len(viz) < 3:
+                continue
+            m = np.mean([np.array(q) for q in viz], axis=0)
+            fora = p - h
+            fora /= max(np.linalg.norm(fora), 1e-6)
+            if (m - p) @ fora > prof:
+                mover.append((v, m))
+        for v, m in mover:
+            v.co = Vector(m)
+        total += len(mover)
+        if not mover:
+            break
+    bm.normal_update()
+    bm.to_mesh(corpo.data)
+    bm.free()
+    print('corpo: covas alisadas', total)
+
+
+alisar_covas()
 limpar_manchas_pele()
 
 # o jogo identifica as peças pelo nome do material "<tipo>__<peça>"
@@ -524,7 +571,7 @@ def casca_couro(espessura, frente_z, lado_z, nuca_z, orelha_livre=True, extra=0.
             continue
         if p[2] < linha_cabelo(p, frente_z, lado_z, nuca_z):
             continue
-        if orelha_livre and any((Vector(p) - o).length < 0.03 for o in ORELHAS):
+        if orelha_livre and any((Vector(p) - o).length < 0.04 for o in ORELHAS):
             continue
         mask[i] = True
     ob = subconjunto(corpo, mask, 'casca')
@@ -843,18 +890,17 @@ def textura_por_fluxo(caminhos, estilo):
         rel = P - np.array(H)
         el = np.arctan2(rel[:, 2], np.hypot(rel[:, 0], rel[:, 1]))
         brilho = np.exp(-((el - 0.72) / 0.2) ** 2) * np.clip(N[:, 2] * 0.8 + 0.2, 0, 1) * 0.16
-        ao = 0.76 + 0.24 * np.clip(A, 0, 1)
-        return np.clip((0.78 * fios + brilho) * ao, 0.08, 1.0)[:, None]
+        # cavidades bem mais escuras: entre as mechas o fundo lê como profundidade, não como falha
+        ao = 0.5 + 0.5 * np.clip(A, 0, 1) ** 1.4
+        return np.clip((0.78 * fios + brilho * np.clip(A, 0, 1)) * ao, 0.08, 1.0)[:, None]
     return f
 
 
-def manta_de_tras(estilo, caminhos):
+def manta_de_tras(estilo, caminhos, z_fim):
     """Massa contínua atrás e dos lados (cabelos médio e longo): as mechas soltas deixavam vãos na
     nuca e nas costas. Uma lâmina grossa segue a cabeça, o pescoço e as costas, da altura das orelhas
     até o comprimento do penteado (mais longa atrás, mais curta dos lados, pontas irregulares), e é
     fundida por voxels com as mechas: o volume fica inteiro e as mechas dão o relevo por cima."""
-    fins = [c[-1] for c in caminhos if len(c) > 2 and (c[-1] - H).y > 0]
-    z_fim = float(np.percentile([q.z for q in fins], 12)) + 0.008 if fins else H.z - 0.12
     print('manta:', estilo, 'de', round(ez + 0.01, 3), 'até', round(z_fim, 3))
     z_ini = ez + 0.01
     NA, NZ = 30, 22
@@ -862,13 +908,16 @@ def manta_de_tras(estilo, caminhos):
     rng = np.random.default_rng(5 if estilo == 'longo' else 6)
     pontas = rng.uniform(-1, 1, NA + 1)
     for i in range(NA + 1):
-        phi = math.radians(-105 + 210 * i / NA)  # 0 = atrás
-        lado = abs(math.degrees(phi)) / 105
+        f_ang = -1 + 2 * i / NA
+        lado = abs(f_ang)
         z_baixo = z_fim + (H.z - z_fim) * 0.35 * lado ** 2 + 0.012 * pontas[i]
-        d = Vector((math.sin(phi), math.cos(phi), 0))
         for j in range(NZ + 1):
             t = j / NZ
             z = z_ini + (z_baixo - z_ini) * t
+            # abaixo do pescoço a manta se estreita (cai nas costas, não abre sobre os ombros)
+            abre = 105 - 50 * float(suave(np.array((zp + 0.02 - z) / 0.06)))
+            phi = math.radians(f_ang * abre)  # 0 = atrás
+            d = Vector((math.sin(phi), math.cos(phi), 0))
             o = Vector((H.x, H.y, z)) + d * 0.6
             ok, loc, nor, _ = corpo.ray_cast(o, -d, distance=0.6)
             r = (Vector((loc.x, loc.y, 0)) - Vector((H.x, H.y, 0))).length if ok else r_cab
@@ -897,7 +946,7 @@ def cabelo(estilo):
     lado_z = ez + 0.004
     nuca_z = zp + 0.035
     orelha = estilo in ('raspado', 'curto', 'coque', 'tranca', 'cacheado')
-    massa = {'raspado': 0.0035, 'curto': 0.0105, 'ondulado': 0.011, 'longo': 0.011, 'cacheado': 0.013, 'coque': 0.0075, 'tranca': 0.008}[estilo]
+    massa = {'raspado': 0.0035, 'curto': 0.0105, 'ondulado': 0.014, 'longo': 0.014, 'cacheado': 0.013, 'coque': 0.0075, 'tranca': 0.008}[estilo]
     casca = casca_couro(massa, frente_z + (0.004 if estilo == 'raspado' else 0.0), lado_z, nuca_z, orelha_livre=orelha)
     coroa = H + Vector((0, r_cab * 0.35, r_cab * 0.92))
     rng = random.Random(sum(map(ord, estilo)))
@@ -911,8 +960,9 @@ def cabelo(estilo):
     if estilo != 'raspado':
         cfg = {
             'curto': dict(esp=0.013, comp=(0.06, 0.09), r=0.0085, alto=0.0085, grav=0.45),
-            'ondulado': dict(esp=0.012, comp=(0.13, 0.18), r=0.0135, alto=0.008, grav=0.75),
-            'longo': dict(esp=0.011, comp=(0.30, 0.40), r=0.0145, alto=0.009, grav=0.85),
+            # médio e longo: mechas mais grossas e mais juntas (volume contínuo, sem vãos entre elas)
+            'ondulado': dict(esp=0.010, comp=(0.13, 0.18), r=0.0175, alto=0.008, grav=0.75),
+            'longo': dict(esp=0.010, comp=(0.40, 0.50), r=0.0175, alto=0.009, grav=0.85),
             'cacheado': dict(esp=0.017, comp=(0.045, 0.065), r=0.0115, alto=0.010, grav=0.2),
             'coque': dict(esp=0.02, comp=(0, 0), r=0.0085, alto=0.0035, grav=0.0),
             'tranca': dict(esp=0.02, comp=(0, 0), r=0.009, alto=0.004, grav=0.0),
@@ -953,7 +1003,7 @@ def cabelo(estilo):
                         g = (g + Vector((0, 0.2, 0))).normalized()
                     v = d * (1 - grav * t) + g * (grav * (0.4 + t))
                     if estilo == 'ondulado':
-                        v += d.cross(Vector((0, 0, 1))) * math.sin(t * 9 + fase) * 0.5
+                        v += d.cross(Vector((0, 0, 1))) * math.sin(t * 9 + fase) * 0.3
                     if estilo == 'cacheado' and nr is not None:
                         v = d + d.cross(nr) * 1.7 * math.sin(t * 6 + fase) + nr * 0.35
                     return v
@@ -962,7 +1012,7 @@ def cabelo(estilo):
             if estilo in ('curto', 'cacheado', 'coque', 'tranca'):
                 corte = []
                 for q in pts:
-                    if q.z < linha_cabelo(q, frente_z, lado_z, nuca_z) + (0.012 if estilo != 'cacheado' else -0.01) or any((q - o).length < 0.034 for o in ORELHAS):
+                    if q.z < linha_cabelo(q, frente_z, lado_z, nuca_z) + (0.012 if estilo != 'cacheado' else -0.01) or any((q - o).length < (0.046 if estilo == 'curto' else 0.034) for o in ORELHAS):
                         break  # a mecha termina antes da linha do cabelo e longe das orelhas
                     if (q - H).length > r_cab * 1.12:
                         break  # cabelo curto não espeta para fora da cabeça (mecha solta atrás)
@@ -970,7 +1020,9 @@ def cabelo(estilo):
                 pts = corte if len(corte) >= 3 else pts[:3]
             n = len(pts)
             rr = cfg['r'] * rng.uniform(0.85, 1.15)
-            if estilo == 'curto' and rel.y > r_cab * 0.3 and rel.z < r_cab * 0.15:
+            if estilo == 'curto' and rel.y > r_cab * 0.2:
+                # da coroa para trás: só os sulcos da textura seguem o fluxo (a massa fica limpa;
+                # as mechas em relevo ali formavam uma crista espetada)
                 # atrás: só os sulcos da textura seguem o fluxo (sem relevo, a massa fica limpa)
                 so_textura.append(pts)
                 continue
@@ -1012,15 +1064,32 @@ def cabelo(estilo):
             caminhos.append([fim + Vector((0, 0, 0.004)), fim + Vector((0, 0, -0.004))])
             raios.append([0.011, 0.011])
     obs = [casca]
+    if estilo == 'curto':
+        # franja: as mechas se abrem no meio da testa e deixavam uma falha; um volume raso preenche
+        pf, nf = raycast_rosto(HX, frente_z + 0.009, 0.0)
+        if pf is not None:
+            obs.append(bolas([(tuple(pf + nf * 0.008), (0.045, 0.009, 0.012), 0)], 'franja'))
     if estilo in ('longo', 'ondulado'):
-        obs.append(manta_de_tras(estilo, caminhos))
+        # comprimento do penteado pelas pontas de trás; as mechas terminam dentro da manta (sem pingos)
+        fins = [c[-1] for c in caminhos if len(c) > 2 and (c[-1] - H).y > 0]
+        z_fim = float(np.percentile([q.z for q in fins], 30)) if fins else H.z - 0.12
+        for k, c in enumerate(caminhos):
+            corte = []
+            for q in c:
+                if q.z <= z_fim - 0.006:
+                    break  # a mecha termina na barra da manta (o que passaria vira toco solto)
+                corte.append(q)
+            caminhos[k] = corte if len(corte) >= 2 else []
+            raios[k] = raios[k][:len(caminhos[k])]
+        obs.append(manta_de_tras(estilo, caminhos, z_fim))
     for c, r in zip(caminhos, raios):
         if len(c) >= 2:
             obs.append(tubo_caminho(c, r))
     for o in obs[1:]:
         ativar(o)
         bpy.ops.object.convert(target='MESH')
-    ob = unir_voxels(obs, nome, voxel=0.0019 if estilo in ('raspado', 'curto') else 0.0023, tris=8000 if estilo not in ('raspado',) else 3000, suav=2)
+    ob = unir_voxels(obs, nome, voxel=0.0019 if estilo in ('raspado', 'curto') else 0.0023,
+                     tris=3000 if estilo == 'raspado' else (11000 if estilo in ('longo', 'ondulado') else 8000), suav=2)
     limpar_rosto(ob, z_sob + 0.012)
     # (sem empurrar para fora: o couro cabeludo do corpo é afundado 4 mm no fim)
     todos = caminhos + so_textura
@@ -1125,10 +1194,10 @@ def barba(estilo):
         print('barba cheia: queixo', None if pc is None else tuple(round(v, 3) for v in pc))
         if pc is not None:
             # a barba cheia desce abaixo do queixo (comprimento), arredondada na ponta
-            obs.append(bolas([(tuple(pc), (0.034, 0.024, 0.03), 0),
-                              (tuple(pc + Vector((0, 0.006, -0.022))), (0.03, 0.022, 0.03), 0),
-                              (tuple(pc + Vector((0, 0.01, -0.045))), (0.022, 0.018, 0.024), 0)], 'queixo'))
-        ob = unir_voxels(obs, nome, voxel=0.0022, tris=2600, suav=2)
+            obs.append(bolas([(tuple(pc + Vector((0, 0.016, 0.002))), (0.046, 0.026, 0.03), 0),
+                              (tuple(pc + Vector((0, 0.024, -0.02))), (0.04, 0.026, 0.028), 0),
+                              (tuple(pc + Vector((0, 0.03, -0.036))), (0.028, 0.022, 0.022), 0)], 'queixo'))
+        ob = unir_voxels(obs, nome, voxel=0.0024, tris=3000, suav=5)
     else:
         ob = unir_voxels(obs, nome, voxel=0.0016, tris=2000, suav=3)
     # a boca continua livre depois da fusão

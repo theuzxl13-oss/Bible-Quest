@@ -1,6 +1,6 @@
 # Licenças dos modelos 3D do personagem
 
-## Personagens modulares da reformulação visual (25/11/2026): `heroi-masculino.glb` e `heroi-feminino.glb`
+## Personagens modulares da reformulação visual (25 e 26/11/2026): `heroi-masculino.glb`, `heroi-feminino.glb` e as variantes `-leve`
 
 Desde a entrega 1 da reformulação visual (personagens), os dois arquivos são os modelos MODULARES, do mesmo estilo e com a mesma estrutura, construídos pelos scripts de `tools/personagem/modular/` (Blender 4.0, sem interface). Eles substituem o herói estilizado de peça única (v0.8) e a estrutura feminina MakeHuman (v0.7).
 
@@ -13,6 +13,9 @@ Desde a entrega 1 da reformulação visual (personagens), os dois arquivos são 
 | Expressões (Piscar, Sorriso, Surpresa, Alegria) no corpo, nas sobrancelhas, nas sardas e na barba | `modular/pecas.py`, a partir das medidas do rosto (`modular/rosto-*.json`), 25/11/2026 | Mesma licença do projeto |
 | Roupas, calçados, mantos, capuz, lenço, bolsa, odre, colar e acessórios de mão | Funções de `tools/personagem/vestes.py` (simulação de tecido e peças rígidas presas aos ossos), aplicadas aos corpos novos em 25/11/2026 | Mesma licença do projeto |
 | Texturas de tecido (linho, lã, couro, corda, madeira) | Geradas pelo projeto (`tools/personagem/preparar_texturas.py`) | Mesma licença do projeto |
+| Túnica refeita (parte de cima com mangas, saia longa e saia curta) e textura de linho uniforme `linho-tunica.jpg` | Construídas e geradas por código (`modular/tunica.py`), rodada de refinamento, 26/11/2026 | Mesma licença do projeto |
+| Limpeza da malha e da pele (furos fechados, manchas escuras da textura limpas, normais invertidas corrigidas), barba cheia, sobrancelhas marcantes, expressões e cabelos médio e longo refeitos | `modular/pecas.py`, rodada de refinamento, 26/11/2026 | Mesma licença do projeto |
+| Variantes do modo gráfico leve `heroi-masculino-leve.glb` e `heroi-feminino-leve.glb` | Mesmas fontes e peças, com cabelos, roupas e acessórios reduzidos à metade dos triângulos e texturas (menos a pele) à metade da resolução (`modular/pecas.py`), 26/11/2026 | Mesma licença do projeto |
 
 Nenhum recurso de terceiros além dos listados acima foi usado. Nenhuma imagem de jogo comercial foi usada como recurso.
 
