@@ -41,6 +41,9 @@ AMOSTRAS = int(args[2]) if len(args) > 2 else 64
 os.makedirs(PASTA, exist_ok=True)
 random.seed(11)
 np.random.seed(11)
+# refinamento final: tudo o que foi acrescentado usa este gerador próprio, para não mexer na
+# sequência global (que decide a posição de toda a vegetação já aprovada)
+RR = random.Random(2026)
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 sc = bpy.context.scene
@@ -203,6 +206,16 @@ e_campo = np.hypot((GX - 6.4) / 2.7, (GY - 42.4) / 3.5) + 0.22 * borda_c
 campo = suave((1.0 - e_campo) / 0.18)[..., None] * (1 - cam)
 sulco = 0.85 + 0.15 * np.sin(GY * 9.0)[..., None]
 cor = cor * (1 - campo) + hexc('#d4b45a') * sulco * campo
+# clareira em volta da árvore da vida: grama clara e dourada, borda irregular
+VIDA_XY = (5.9, 27.6)
+d_vida = np.hypot(GX - VIDA_XY[0], GY - VIDA_XY[1]) + 0.35 * nz2
+clar = suave((3.1 - d_vida) / 0.9)[..., None] * (1 - cam)
+cor = cor * (1 - 0.8 * clar) + hexc('#b4cf6a') * 0.8 * clar
+# chão batido em volta do altar de Caim (ao norte do trigal)
+CAIM_XY = (5.6, 47.4)
+d_caim = np.hypot((GX - CAIM_XY[0]) / 1.5, (GY - CAIM_XY[1]) / 1.1) + 0.2 * nz2
+chao_c = suave((1.0 - d_caim) / 0.3)[..., None] * (1 - cam)
+cor = cor * (1 - 0.7 * chao_c) + hexc('#cdb27a') * 0.7 * chao_c
 # longe (norte): perspectiva aérea — mais claro e azulado
 longe = suave((GY - 50.0) / 12.0)[..., None]
 cor = cor * (1 - 0.55 * longe) + hexc('#9fb3c4') * 0.55 * longe
@@ -310,19 +323,63 @@ iq = int(np.argmin(np.abs(RIO[:, 1] - yq) + 10 * (RIO[:, 0] > -4)))
 xq = float(RIO[iq, 0])
 z_alto = z_em(xq, yq + 0.6) + 0.2
 z_baixo = z_em(xq, yq - 2.0) + 0.15
+z_topo = z_alto + 1.1  # a água sai de um paredão de rochas acima do terraço: queda mais alta
 vs, fs = [], []
-for k in range(9):
-    t = k / 8
-    for s_ in (-1, 1):
-        vs.append((xq + s_ * (0.32 + 0.12 * t), yq - 0.2 - 1.0 * t * t, z_alto + (z_baixo - z_alto) * t))
+LIN = 18
+for k in range(LIN + 1):
+    t = k / LIN
+    yy = yq + 0.35 - 1.55 * t ** 1.4
+    zz = z_topo + (z_baixo - z_topo) * t
+    meia = 0.5 + 0.28 * t  # abre ao cair
+    xe = xq - meia - 0.09 * math.sin(t * 13.0 + 0.4) - 0.05 * math.sin(t * 29.0)
+    xd = xq + meia + 0.08 * math.sin(t * 11.0 + 1.3) + 0.05 * math.sin(t * 23.0 + 2.0)
+    for xx in (xe, xq + 0.07 * math.sin(t * 9.0), xd):
+        vs.append((xx, yy, zz))
     if k:
-        a = 2 * (k - 1)
-        fs.append((a, a + 1, a + 3, a + 2))
+        a0 = 3 * (k - 1)
+        fs += [(a0, a0 + 1, a0 + 4, a0 + 3), (a0 + 1, a0 + 2, a0 + 5, a0 + 4)]
 mq = bpy.data.meshes.new('cachoeira')
 mq.from_pydata(vs, [], fs)
 oq = bpy.data.objects.new('cachoeira', mq)
 sc.collection.objects.link(oq)
 oq.data.materials.append(queda)
+# fios de água soltos dos lados (a queda não é uma lâmina só)
+for lado, ini, comp, larg in ((-1, 0.15, 0.75, 0.09), (1, 0.3, 0.65, 0.07), (-1, 0.5, 0.45, 0.06)):
+    vs2, fs2 = [], []
+    for k in range(9):
+        t = ini + comp * k / 8
+        yy = yq + 0.35 - 1.55 * t ** 1.4
+        zz = z_topo + (z_baixo - z_topo) * t
+        xc = xq + lado * (0.95 + 0.25 * t) + 0.05 * math.sin(t * 17)
+        vs2 += [(xc - larg, yy - 0.02, zz), (xc + larg, yy - 0.02, zz)]
+        if k:
+            a0 = 2 * (k - 1)
+            fs2.append((a0, a0 + 1, a0 + 3, a0 + 2))
+    m2 = bpy.data.meshes.new('cachoeira_fio')
+    m2.from_pydata(vs2, [], fs2)
+    o2 = bpy.data.objects.new('cachoeira_fio', m2)
+    sc.collection.objects.link(o2)
+    o2.data.materials.append(queda)
+rochedo = material('Rochedo', tuple(hexc('#8d8678')), 0.95)
+rochedo2 = material('Rochedo2', tuple(hexc('#a9a191')), 0.95)
+for k in range(22):  # paredão de rochas: dos dois lados e atrás da queda, mais alto que o terraço
+    lado = -1 if k % 2 else 1
+    t = RR.uniform(0.0, 1.0)
+    yy = yq + 0.55 - 1.5 * t ** 1.4 + RR.uniform(0.1, 0.5)
+    zz = z_topo + (z_baixo - z_topo) * t - 0.15
+    xx = xq + lado * (1.05 + 0.3 * t + RR.uniform(0.0, 0.5))
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=RR.uniform(0.35, 0.65), location=(xx, yy, zz))
+    o3 = bpy.context.active_object
+    o3.scale = (1.0, RR.uniform(0.8, 1.2), RR.uniform(0.7, 1.1))
+    o3.data.materials.append(rochedo if k % 3 else rochedo2)
+for k in range(7):  # rochas da borda de cima, por onde a água passa
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=RR.uniform(0.4, 0.6), location=(xq + RR.uniform(-1.4, 1.4), yq + 0.9 + RR.uniform(0, 0.5), z_topo - 0.3))
+    bpy.context.active_object.data.materials.append(rochedo)
+for k in range(28):  # névoa e espuma no pé da queda, mais larga
+    a = RR.uniform(0, 2 * math.pi)
+    r = RR.uniform(0.2, 1.3)
+    bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=RR.uniform(0.1, 0.24), location=(xq + math.cos(a) * r, yq - 1.25 + math.sin(a) * r * 0.45, z_baixo + 0.12))
+    bpy.context.active_object.data.materials.append(espuma)
 for k in range(10):  # espuma na borda de cima e pedras dos lados da queda
     bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=1, radius=random.uniform(0.07, 0.12), location=(xq + random.uniform(-0.35, 0.35), yq - 0.15, z_alto + 0.05))
     bpy.context.active_object.data.materials.append(espuma)
@@ -485,15 +542,36 @@ def objeto_unico(nome, partes, x, y, rot=0.0, esc=1.0):
 
 
 # 3. árvore da vida (frutos dourados, leve brilho) e árvore do conhecimento (frutos vermelhos)
-vida = arvore_copa('arvore_vida', 4.2, 2.0, 'copa1', 'fruto_d', 91)
-plantar(vida, 5.9, 27.6, 1.25, 0.4, 'arvore_vida_i')
+def arvore_da_vida():
+    rnd = random.Random(91)
+    copa_v = material('CopaVida', tuple(hexc('#7fb34c')), 0.85, emissao=tuple(hexc('#c9e07a')), forca=0.035)
+    copa_v2 = material('CopaVida2', tuple(hexc('#6fae49')), 0.85)
+    fruto = material('FrutoVida', tuple(hexc('#f5c536')), 0.35, emissao=tuple(hexc('#ffcf3a')), forca=1.6)
+    partes = [(cone((0, 0, 0), 0.42, 0.22, 3.0, 12), mats['tronco'])]
+    for k in range(5):  # raízes à mostra
+        a = k * 2 * math.pi / 5 + 0.3
+        partes.append((esfera((math.cos(a) * 0.45, math.sin(a) * 0.45, 0.08), (0.42, 0.16, 0.14), 1, 0.1, 120 + k), mats['tronco']))
+    partes.append((esfera((0, 0, 3.9), (2.2, 2.2, 1.45), 2, 0.14, 130), copa_v))  # cúpula larga
+    for k in range(8):  # coroa de lóbulos em volta (silhueta própria, diferente das outras árvores)
+        a = k * 2 * math.pi / 8 + rnd.uniform(-0.15, 0.15)
+        partes.append((esfera((math.cos(a) * 1.9, math.sin(a) * 1.9, 3.4 + rnd.uniform(-0.2, 0.3)), (0.95, 0.95, 0.8), 2, 0.18, 140 + k), copa_v2 if k % 2 else copa_v))
+    partes.append((esfera((0, 0, 4.9), (1.2, 1.2, 0.9), 2, 0.15, 150), copa_v))
+    for k in range(34):
+        a = rnd.uniform(0, 2 * math.pi)
+        r = rnd.uniform(1.4, 2.6)
+        partes.append((esfera((math.cos(a) * r, math.sin(a) * r, 3.2 + rnd.uniform(0, 1.9)), (0.14, 0.14, 0.16), 2, 0.0), fruto))
+    return juntar('arvore_vida', partes)
+
+
+vida = arvore_da_vida()
+plantar(vida, 5.9, 27.6, 1.15, 0.4, 'arvore_vida_i')
 luz_v = bpy.data.lights.new('brilho_vida', 'POINT')
-luz_v.energy = 45
+luz_v.energy = 75
 luz_v.color = (1.0, 0.85, 0.45)
 luz_v.shadow_soft_size = 2.0
 lo_v = bpy.data.objects.new('brilho_vida', luz_v)
 sc.collection.objects.link(lo_v)
-lo_v.location = (5.9, 26.4, z_em(5.9, 27.6) + 4.2)
+lo_v.location = (5.9, 26.2, z_em(5.9, 27.6) + 5.2)
 conh = arvore_copa('arvore_conhecimento', 3.8, 1.8, 'copa3', 'fruto_v', 97)
 plantar(conh, -5.4, 25.6, 1.2, 1.2, 'arvore_conhecimento_i')
 # nascente do rio: pedras em volta
@@ -502,7 +580,11 @@ for k in range(8):
     plantar(PED[k % 3], 6.6 + math.cos(a) * 0.9, 27.0 + math.sin(a) * 0.7 - 1.3, 0.55, nome='nascente')
 
 # 4. portão do jardim (leste), espada flamejante acima; sebe do jardim dos dois lados; espinhos fora
-xp, yp = -1.0, 35.2
+# recuado ao norte, sobre a própria trilha, para o estandarte da fase 4 não cobrir o arco
+_i = int(np.argmin(np.abs(CAMINHO[:, 1] - 37.6)))
+xp, yp = float(CAMINHO[_i, 0]), float(CAMINHO[_i, 1])
+_tg = CAMINHO[min(_i + 1, len(CAMINHO) - 1)] - CAMINHO[max(_i - 1, 0)]
+rot_portao = math.atan2(_tg[1], _tg[0]) - math.pi / 2
 _portao = []
 for lado in (-1, 1):
     _portao += [(caixa((lado * 1.5, 0, 0.25), (0.8, 0.8, 0.5)), mats['portal']),
@@ -511,7 +593,7 @@ for lado in (-1, 1):
 for k in range(9):  # verga em arco, de pedras
     a = math.pi * k / 8
     _portao.append((caixa((-1.5 * math.cos(a), 0, 3.7 + 0.9 * math.sin(a)), (0.55, 0.6, 0.42)), mats['portal']))
-objeto_unico('portao', _portao, xp, yp, 0.0)
+objeto_unico('portao', _portao, xp, yp, rot_portao)
 espada = objeto_unico('espada', [
     (caixa((0, 0, 0), (0.12, 0.06, 1.5)), mats['espada']),
     (caixa((0, 0, -0.68), (0.5, 0.08, 0.1)), mats['espada']),
@@ -523,13 +605,20 @@ for k in range(7):  # chamas em volta da lâmina (Gn 3.24: a espada inflamada)
     a = k * 2 * math.pi / 7
     bpy.ops.mesh.primitive_cone_add(vertices=6, radius1=0.16, depth=0.7, location=(xp + 0.25 * math.cos(a) + 0.2, yp + 0.12 * math.sin(a), z_em(xp, yp) + 5.2 + 0.35 * k))
     bpy.context.active_object.data.materials.append(mats['fogo'])
+# a sebe acompanha o portão; os sorteios dela saem de uma cópia do gerador global, que depois
+# avança exatamente como antes (o resto da vegetação continua no mesmo lugar)
+_rs = random.Random()
+_rs.setstate(random.getstate())
+_n_antes = sum(1 for k in range(30) for lado in (-1, 1) if abs(-1.0 + lado * (2.2 + k * 0.42)) <= 9.2)
+for _ in range(3 * _n_antes):
+    random.random()
 for k in range(30):  # sebe viva do jardim, em arco irregular, interrompida no portão
     for lado in (-1, 1):
         x = xp + lado * (2.2 + k * 0.42)
         if abs(x) > 9.2:
             continue
-        y = yp - 0.07 * (x - xp) ** 2 + 0.6 * math.sin(x * 1.3) + random.uniform(-0.2, 0.2)
-        plantar(ARB[k % 3], x, y, random.uniform(0.65, 0.9), nome='sebe')
+        y = yp - 0.07 * (x - xp) ** 2 + 0.6 * math.sin(x * 1.3) + _rs.uniform(-0.2, 0.2)
+        plantar(ARB[k % 3], x, y, _rs.uniform(0.65, 0.9), _rs.uniform(0, 6.28), nome='sebe')
 for k in range(14):  # espinhos e cardos do lado de fora
     x, y = random.uniform(-8.5, 8.5), random.uniform(36.5, 40.0)
     if dist_caminho(np.array([x]), np.array([y]))[0] > 1.6:
@@ -559,7 +648,30 @@ def altar(nome, x, y, fumaca_alta):
 
 
 altar('altar_abel', -4.0, 43.6, True)
-altar('altar_caim', 6.0, 44.5, False)
+
+
+def altar_caim(x, y):
+    lavrada = material('PedraLavrada', tuple(hexc('#cbb68a')), 0.9)
+    partes = [(caixa((0, 0, 0.32), (1.25, 0.9, 0.64)), lavrada),
+              (caixa((0, 0, 0.7), (1.45, 1.05, 0.14)), lavrada)]
+    for k, (dx, dy) in enumerate(((-0.4, 0.15), (0.0, -0.2), (0.42, 0.12))):  # feixes de trigo (a oferta)
+        for j in range(11):  # hastes finas, com as espigas abrindo no alto
+            ang = j * 2 * math.pi / 11 + k
+            r0 = 0.05 + 0.06 * (j % 3) / 2
+            partes.append((cone((dx + math.cos(ang) * r0, dy + math.sin(ang) * r0, 0.77), 0.022, 0.018, 0.62, 5), mats['trigo']))
+            partes.append((esfera((dx + math.cos(ang) * (r0 + 0.1), dy + math.sin(ang) * (r0 + 0.1), 1.45), (0.045, 0.045, 0.11), 1, 0.0), mats['trigo']))
+        partes.append((cone((dx, dy, 1.0), 0.13, 0.13, 0.06, 8), mats['madeira']))  # amarra
+    partes.append((cone((0.05, 0.3, 0.77), 0.12, 0.0, 0.3, 6), mats['fogo']))
+    objeto_unico('altar_caim', partes, x, y, 0.35, 1.35)
+    for k in range(2):  # fumaça baixa, que se espalha de lado (a de Abel sobe alta)
+        bpy.ops.mesh.primitive_ico_sphere_add(subdivisions=2, radius=0.15 + k * 0.05, location=(x + 0.35 + 0.35 * k, y + 0.3, z_em(x, y) + 1.25 + 0.12 * k))
+        bpy.context.active_object.data.materials.append(mats['fumaca'])
+    for k in range(5):  # feixes no chão em volta
+        a = 0.6 + k * 0.9
+        plantar(TRIGO, x + math.cos(a) * 1.25, y + math.sin(a) * 0.95, 0.55, RR.uniform(0, 6.28), nome='feixe')
+
+
+altar_caim(*CAIM_XY)
 
 # baú: clareira de pedra (o baú interativo fica por cima, na interface)
 xb, yb = PONTOS[5][1]
@@ -646,6 +758,78 @@ cx_, cy_ = melhor[1]
 ang = math.atan2(*(CAMINHO[min(len(CAMINHO) - 1, np.argmin(np.hypot(CAMINHO[:, 0] - cx_, CAMINHO[:, 1] - cy_)) + 2)] - np.array([cx_, cy_]))[::-1])
 objeto_unico('ponte', [(caixa((0, k * 0.22 - 0.66, 0.3), (1.4, 0.18, 0.08)), mats['madeira']) for k in range(7)] +
              [(caixa((s * 0.72, 0, 0.55), (0.08, 1.6, 0.08)), mats['madeira']) for s in (-1, 1)], cx_, cy_, ang - math.pi / 2)
+
+# ------------------------------------------------------------------ refinamento: clareiras e variedade
+def variante(nome, tipo, sem):
+    rnd = random.Random(sem)
+    if tipo == 'oliveira':  # baixa, larga, verde acinzentado, tronco torto
+        partes = [(cone((0, 0, 0), 0.2, 0.12, 1.0, 8), mats['tronco']), (cone((0.15, 0, 0.8), 0.12, 0.08, 0.6, 8), mats['tronco'])]
+        for k in range(7):
+            a = k * 2 * math.pi / 7
+            partes.append((esfera((math.cos(a) * 0.8, math.sin(a) * 0.7, 1.45 + rnd.uniform(-0.15, 0.2)), (0.62, 0.58, 0.42), 2, 0.25, sem + k), mats['oliva' if k % 3 else 'oliva2']))
+        return juntar(nome, partes)
+    if tipo == 'terebinto':  # copa em guarda-chuva, achatada
+        partes = [(cone((0, 0, 0), 0.2, 0.13, 2.4, 8), mats['tronco']),
+                  (esfera((0, 0, 2.6), (1.9, 1.7, 0.6), 2, 0.2, sem), mats['copa5'])]
+        for k in range(4):
+            a = rnd.uniform(0, 2 * math.pi)
+            partes.append((esfera((math.cos(a) * 1.1, math.sin(a) * 1.0, 2.9), (0.8, 0.8, 0.45), 2, 0.2, sem + 5 + k), mats['copa4']))
+        return juntar(nome, partes)
+    if tipo == 'alamo':  # alto e estreito, verde-amarelado
+        return juntar(nome, [(cone((0, 0, 0), 0.13, 0.08, 1.2, 8), mats['tronco']),
+                             (esfera((0, 0, 2.6), (0.75, 0.75, 1.9), 2, 0.15, sem), mats['copa_clara']),
+                             (esfera((0.2, 0.1, 3.5), (0.45, 0.45, 0.9), 2, 0.15, sem + 1), mats['copa_clara'])])
+    if tipo == 'cedro':  # camadas escuras, em degraus
+        partes = [(cone((0, 0, 0), 0.18, 0.1, 1.2, 8), mats['tronco'])]
+        for k in range(4):
+            partes.append((esfera((rnd.uniform(-0.1, 0.1), 0, 1.3 + k * 0.75), (1.5 - k * 0.3, 1.4 - k * 0.28, 0.32), 2, 0.2, sem + k), mats['copa_escura']))
+        return juntar(nome, partes)
+    if tipo == 'amendoeira':  # em flor (Gn 43.11 cita amêndoas entre os bons frutos da terra)
+        return arvore_copa(nome, 2.3, 1.0, 'amendoa', None, sem)
+    return arvore_copa(nome, 2.0 + rnd.uniform(0, 1.2), 0.9 + rnd.uniform(0, 0.5), 'copa_escura', None, sem)
+
+
+mats.update({
+    'oliva': material('Oliva', tuple(hexc('#8e9c5e')), 0.9), 'oliva2': material('Oliva2', tuple(hexc('#a6ad7a')), 0.9),
+    'copa5': material('Copa5', tuple(hexc('#5f9a3e')), 0.9), 'copa_clara': material('CopaClara', tuple(hexc('#a9b949')), 0.9),
+    'copa_escura': material('CopaEscura', tuple(hexc('#2f5f3b')), 0.9), 'amendoa': material('Amendoa', tuple(hexc('#efcfd6')), 0.85),
+})
+VARIANTES = [variante(f'var_{t}{k}', t, 300 + 17 * k + i * 101) for i, t in enumerate(['oliveira', 'terebinto', 'alamo', 'cedro', 'amendoeira', 'escura']) for k in range(2)]
+PESOS = {'oliveira': 3, 'terebinto': 2, 'alamo': 2, 'cedro': 2, 'amendoeira': 1, 'escura': 2}
+
+PORTAO_XY = (xp, yp)
+ALTAS = ('arv', 'frut', 'cip', 'palm', 'arb', 'var_')
+for ob in list(sc.collection.objects):
+    if ob.data is None or not hasattr(ob.data, 'name'):
+        continue
+    d = ob.data.name
+    x, y = ob.location.x, ob.location.y
+    alta = d.startswith(ALTAS) and ob.name.startswith(('veg', 'sebe', 'espinho'))
+    if alta and math.hypot(x - VIDA_XY[0], y - VIDA_XY[1]) < 3.4 and ob.name != 'arvore_vida_i':
+        bpy.data.objects.remove(ob)  # clareira da árvore da vida
+        continue
+    if (alta or ob.name == 'espinho') and math.hypot(x - PORTAO_XY[0], y - PORTAO_XY[1]) < 2.6:  # (a espada fica)
+        bpy.data.objects.remove(ob)  # nada na frente do portão
+        continue
+    if (alta or d.startswith('trigo')) and ob.name != 'feixe' and math.hypot((x - CAIM_XY[0]) / 1.7, (y - CAIM_XY[1]) / 1.3) < 1.0:
+        bpy.data.objects.remove(ob)  # o altar de Caim fica à vista
+        continue
+    # metade de cima: troca parte das copas iguais por outras espécies, alturas e tons
+    if ob.name.startswith('veg') and d.startswith('arv') and y > 29.0 and RR.random() < 0.72:
+        tipos = [t for t, p in PESOS.items() for _ in range(p)]
+        t = RR.choice(tipos)
+        cand = [v for v in VARIANTES if v.name.startswith(f'var_{t}')]
+        ob.data = RR.choice(cand).data
+        perto = min(math.hypot(x - px, y - py) for _, (px, py) in PONTOS)
+        e = RR.uniform(0.8, 1.3) if perto > 4.0 else RR.uniform(0.75, 1.0)
+        ob.scale = (ob.scale[0] * e,) * 3
+# anel de flores em volta da clareira da árvore da vida
+for k in range(26):
+    a = k * 2 * math.pi / 26 + RR.uniform(-0.1, 0.1)
+    r = RR.uniform(2.7, 3.3)
+    x, y = VIDA_XY[0] + math.cos(a) * r, VIDA_XY[1] + math.sin(a) * r
+    if dist_caminho(np.array([x]), np.array([y]))[0] > 1.1 and dist_rio(np.array([x]), np.array([y]))[0] > 0.6:
+        plantar(FLOR[k % 4], x, y, RR.uniform(1.0, 1.4), RR.uniform(0, 6.28), nome='flor_vida')
 
 # ------------------------------------------------------------------ luz, céu e câmera
 w = bpy.data.worlds.new('ceu')
@@ -764,7 +948,14 @@ pontos = []
 for nome, (x, y) in PONTOS:
     co = world_to_camera_view(sc, cam, Vector((x, y, z_em(x, y))))
     pontos.append({'id': nome, 'x': round(co.x, 5), 'y': round(1 - co.y, 5)})
-info = {'largura': sc.render.resolution_x, 'altura': sc.render.resolution_y, 'pontos': pontos}
+# referências (só para conferência): onde caem na imagem o topo do arco do portão, a árvore da vida e os altares
+refs = {}
+for nome, co3 in (('arco_portao', (xp, yp, z_em(xp, yp) + 4.6)), ('base_portao', (xp, yp, z_em(xp, yp))),
+                  ('arvore_vida', (VIDA_XY[0], VIDA_XY[1], z_em(*VIDA_XY) + 4.5)), ('altar_caim', (*CAIM_XY, z_em(*CAIM_XY) + 0.8)),
+                  ('altar_abel', (-4.0, 43.6, z_em(-4.0, 43.6) + 0.6))):
+    co = world_to_camera_view(sc, cam, Vector(co3))
+    refs[nome] = {'x': round(co.x, 5), 'y': round(1 - co.y, 5)}
+info = {'largura': sc.render.resolution_x, 'altura': sc.render.resolution_y, 'pontos': pontos, 'referencias': refs}
 json.dump(info, open(os.path.join(PASTA, 'eden.json'), 'w'), indent=1)
 print('pontos', info)
 print('renderizando', sc.render.resolution_x, 'x', sc.render.resolution_y, 'amostras', AMOSTRAS)
