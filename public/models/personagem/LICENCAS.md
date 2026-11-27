@@ -15,6 +15,7 @@ Desde a entrega 1 da reformulação visual (personagens), os dois arquivos são 
 | Texturas de tecido (linho, lã, couro, corda, madeira) | Geradas pelo projeto (`tools/personagem/preparar_texturas.py`) | Mesma licença do projeto |
 | Túnica refeita (parte de cima com mangas, saia longa e saia curta) e textura de linho uniforme `linho-tunica.jpg` | Construídas e geradas por código (`modular/tunica.py`), rodada de refinamento, 26/11/2026 | Mesma licença do projeto |
 | Limpeza da malha e da pele (furos fechados, manchas escuras da textura limpas, normais invertidas corrigidas), barba cheia, sobrancelhas marcantes, expressões e cabelos médio e longo refeitos | `modular/pecas.py`, rodada de refinamento, 26/11/2026 | Mesma licença do projeto |
+| Gola, punhos e barra bordados, pespontos (`linho-tunica.jpg` com fios irregulares, `bordado.png`, `costura.png`), mantos paramétricos (`la-manto.jpg`), detalhes dos cintos e fivela | Construídos e gerados por código (`modular/tunica.py`, `modular/manto.py`, `modular/cintos.py`), rodada final de acabamento, 27/11/2026 | Mesma licença do projeto |
 | Variantes do modo gráfico leve `heroi-masculino-leve.glb` e `heroi-feminino-leve.glb` | Mesmas fontes e peças, com cabelos, roupas e acessórios reduzidos à metade dos triângulos e texturas (menos a pele) à metade da resolução (`modular/pecas.py`), 26/11/2026 | Mesma licença do projeto |
 
 Nenhum recurso de terceiros além dos listados acima foi usado. Nenhuma imagem de jogo comercial foi usada como recurso.

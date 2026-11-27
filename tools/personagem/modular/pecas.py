@@ -410,7 +410,7 @@ def alisar_covas(prof=0.0012, vezes=4):
                 continue
             if abs(p[0] - mx) < mw * 1.4 and mz - 0.016 < p[2] < mz + 0.04 and p[1] < h[1]:
                 continue  # boca e narinas
-            if any(((p[0] - x) / (rx_o * 1.08)) ** 2 + ((p[2] - ez) / (rz_o * 1.2)) ** 2 < 1 for x in (ex_R, ex_L)) and p[1] < h[1]:
+            if any(((p[0] - x) / (rx_o * 0.98)) ** 2 + ((p[2] - ez) / (rz_o * 1.1)) ** 2 < 1 for x in (ex_R, ex_L)) and p[1] < h[1]:
                 continue  # olhos (só o olho pintado; em volta, as covas do olho antigo da IA são alisadas)
             viz = [e.other_vert(v).co for e in v.link_edges]
             if len(viz) < 3:
@@ -444,6 +444,9 @@ def alisar_dobras_olho(vezes=12):
     bm.from_mesh(corpo.data)
     bm.verts.ensure_lookup_table()
     bm.faces.ensure_lookup_table()
+
+    def perto_do_olho(c, lim):
+        return c.y < H.y - r_cab * 0.3 and min(math.hypot((c.x - x) / rx_o, (c.z - ez) / rz_o) for x in (ex_R, ex_L)) < lim
     alvo = set()
     for f in bm.faces:
         c = f.calc_center_median()
@@ -463,12 +466,58 @@ def alisar_dobras_olho(vezes=12):
         for v, p in novos.items():
             v.co = v.co * 0.4 + p * 0.6
     bm.normal_update()
-    inv = [f for f in alvo if f.is_valid and f.normal.y > 0.0]
+    # a dobra é recortada e a pele fechada por cima (com o UV da borda): some a fenda escura
+    uvl = bm.loops.layers.uv.active
+    antes = set(bm.faces) - alvo
+    bmesh.ops.delete(bm, geom=list(alvo), context='FACES_ONLY')  # os vértices ficam (índices estáveis)
+    borda = [e for e in bm.edges if e.is_boundary]
+    novas = bmesh.ops.holes_fill(bm, edges=borda, sides=80)['faces']
+    for f in novas:
+        for l in f.loops:
+            viz = [l2[uvl].uv for l2 in l.vert.link_loops if l2.face in antes]
+            if viz:
+                l[uvl].uv = sum((Vector(v) for v in viz), Vector((0, 0))) / len(viz)
+        f.smooth = True
+    novas = bmesh.ops.triangulate(bm, faces=novas)['faces']
+    vs2 = {v for f in novas for v in f.verts}
+    for _ in range(4):
+        bmesh.ops.smooth_vert(bm, verts=list(vs2), factor=0.5, use_axis_x=True, use_axis_y=True, use_axis_z=True)
+    if FEM:
+        # o vinco do canto do olho antigo da IA (bem maior que o olho pintado) é alisado num anel em volta
+        # do olho novo, com peso que some nas bordas; o olho pintado não se mexe
+        anel = []
+        for v in bm.verts:
+            if v.co.y > H.y - r_cab * 0.3:
+                continue
+            e = min(math.hypot((v.co.x - x) / rx_o, (v.co.z - ez) / rz_o) for x in (ex_R, ex_L))
+            if 0.97 < e < 2.8:
+                anel.append((v, float(min(1.0, (e - 0.97) / 0.12, (2.8 - e) / 0.5))))
+        for _ in range(20):
+            novos = []
+            for v, w in anel:
+                viz = [e_.other_vert(v).co for e_ in v.link_edges]
+                m = sum(viz, Vector((0, 0, 0))) / len(viz)
+                novos.append((v, v.co + (m - v.co) * 0.5 * w))
+            for v, p in novos:
+                v.co = p
+        print('corpo: anel em volta dos olhos alisado', len(anel), 'vértices')
+    bm.normal_update()
+    # passada final: na frente do rosto, em volta dos olhos, nenhuma face aponta para trás
+    inv = []
+    for f in bm.faces:
+        c = f.calc_center_median()
+        if c.y > H.y - r_cab * 0.3 or f.normal.y <= 0.2:
+            continue
+        if abs(c.x - mx) < 0.03 and c.z < mz + 0.045:
+            continue
+        e = min(math.hypot((c.x - x) / rx_o, (c.z - ez) / rz_o) for x in (ex_R, ex_L))
+        if e < 3.0:
+            inv.append(f)
     bmesh.ops.reverse_faces(bm, faces=inv)
     bm.normal_update()
     bm.to_mesh(corpo.data)
     bm.free()
-    print('corpo: dobras em volta dos olhos desfeitas', len(alvo), 'faces;', len(inv), 'reorientadas')
+    print('corpo: dobras em volta dos olhos recortadas', len(alvo), 'faces; remendo com', len(novas), 'faces')
 
 
 alisar_dobras_olho()
