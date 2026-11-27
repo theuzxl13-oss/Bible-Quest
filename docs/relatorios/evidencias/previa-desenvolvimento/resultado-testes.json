@@ -1,0 +1,220 @@
+{
+ "celular": {
+  "rotas": {
+   "painel": {
+    "navegacao_ok": true,
+    "navegacao_ms": 109,
+    "recarga_ok": true,
+    "recarga_ms": 3543,
+    "hash": "#/painel"
+   },
+   "historia": {
+    "navegacao_ok": true,
+    "navegacao_ms": 5042,
+    "recarga_ok": true,
+    "recarga_ms": 282,
+    "hash": "#/historia"
+   },
+   "quiz": {
+    "navegacao_ok": true,
+    "navegacao_ms": 31,
+    "recarga_ok": true,
+    "recarga_ms": 239,
+    "hash": "#/quiz"
+   },
+   "guarda-roupa": {
+    "navegacao_ok": true,
+    "navegacao_ms": 10,
+    "recarga_ok": true,
+    "recarga_ms": 599,
+    "hash": "#/guarda-roupa"
+   },
+   "biblioteca": {
+    "navegacao_ok": true,
+    "navegacao_ms": 30,
+    "recarga_ok": true,
+    "recarga_ms": 308,
+    "hash": "#/biblioteca"
+   },
+   "linha-do-tempo": {
+    "navegacao_ok": true,
+    "navegacao_ms": 19,
+    "recarga_ok": true,
+    "recarga_ms": 815,
+    "hash": "#/linha-do-tempo"
+   },
+   "treino": {
+    "navegacao_ok": true,
+    "navegacao_ms": 133,
+    "recarga_ok": true,
+    "recarga_ms": 236,
+    "hash": "#/quiz/treino"
+   },
+   "configuracoes": {
+    "navegacao_ok": true,
+    "navegacao_ms": 145,
+    "recarga_ok": true,
+    "recarga_ms": 361,
+    "hash": "#/configuracoes"
+   }
+  },
+  "falhas": [],
+  "primeira_visita": {
+   "ms": 321,
+   "titulo": "Bible Quest — Prévia de desenvolvimento",
+   "texto": "Pular para o conteúdo Bible Quest Entrar 1 Boas-vindas 2 3 4 KZANN TECH APRESENTA Bible Quest Uma jornada pelas Escri"
+  },
+  "mapa": {
+   "pinturas": [
+    "genesis/diluvio-leve.webp",
+    "genesis/eden-leve.webp"
+   ],
+   "miniaturas": 2,
+   "emenda_px": 0,
+   "marcos": 29
+  },
+  "fontes": [
+   "Cinzel",
+   "Inter Variable"
+  ],
+  "recursos_baixados": {
+   "glb": [
+    "heroi-masculino-leve.glb",
+    "heroi-feminino-leve.glb"
+   ],
+   "webp": 13,
+   "fontes": 3
+  },
+  "dados": {
+   "oficial_intacto": true,
+   "chaves_do_oficial": [
+    "bible-quest:v1:profile"
+   ],
+   "chaves_da_previa": [
+    "bible-quest-previa:v1:settings",
+    "bible-quest-previa:v1:profile",
+    "bible-quest-previa:v1:progress"
+   ]
+  },
+  "meta": {
+   "titulo": "Bible Quest — Prévia de desenvolvimento",
+   "robots": "noindex, nofollow",
+   "commit": "32f8fc7294f1ba391453a85266374926ff7752ef"
+  },
+  "previa_json": {
+   "previa": true,
+   "versao": "0.17.9",
+   "commit": "32f8fc7294f1ba391453a85266374926ff7752ef",
+   "gerada_em": "2026-11-27T18:11:19.452Z"
+  }
+ },
+ "computador": {
+  "rotas": {
+   "painel": {
+    "navegacao_ok": true,
+    "navegacao_ms": 3631,
+    "recarga_ok": true,
+    "recarga_ms": 4399,
+    "hash": "#/painel"
+   },
+   "historia": {
+    "navegacao_ok": true,
+    "navegacao_ms": 254,
+    "recarga_ok": true,
+    "recarga_ms": 132,
+    "hash": "#/historia"
+   },
+   "quiz": {
+    "navegacao_ok": true,
+    "navegacao_ms": 44,
+    "recarga_ok": true,
+    "recarga_ms": 434,
+    "hash": "#/quiz"
+   },
+   "guarda-roupa": {
+    "navegacao_ok": true,
+    "navegacao_ms": 20,
+    "recarga_ok": true,
+    "recarga_ms": 299,
+    "hash": "#/guarda-roupa"
+   },
+   "biblioteca": {
+    "navegacao_ok": true,
+    "navegacao_ms": 2300,
+    "recarga_ok": true,
+    "recarga_ms": 1370,
+    "hash": "#/biblioteca"
+   },
+   "linha-do-tempo": {
+    "navegacao_ok": true,
+    "navegacao_ms": 63,
+    "recarga_ok": true,
+    "recarga_ms": 2254,
+    "hash": "#/linha-do-tempo"
+   },
+   "treino": {
+    "navegacao_ok": true,
+    "navegacao_ms": 90,
+    "recarga_ok": true,
+    "recarga_ms": 2738,
+    "hash": "#/quiz/treino"
+   },
+   "configuracoes": {
+    "navegacao_ok": true,
+    "navegacao_ms": 54,
+    "recarga_ok": true,
+    "recarga_ms": 1860,
+    "hash": "#/configuracoes"
+   }
+  },
+  "falhas": [],
+  "primeira_visita": {
+   "ms": 152,
+   "titulo": "Bible Quest — Prévia de desenvolvimento",
+   "texto": "Pular para o conteúdo Bible Quest Entrar 1 Boas-vindas 2 Identificação 3 Personagem 4 Personalização KZANN TECH APRESEN"
+  },
+  "mapa": {
+   "pinturas": [
+    "genesis/diluvio-leve.webp",
+    "genesis/eden-leve.webp"
+   ],
+   "miniaturas": 2,
+   "emenda_px": 0,
+   "marcos": 29
+  },
+  "fontes": [
+   "Cinzel",
+   "Inter Variable"
+  ],
+  "recursos_baixados": {
+   "glb": [
+    "heroi-masculino-leve.glb",
+    "heroi-feminino-leve.glb"
+   ],
+   "webp": 13,
+   "fontes": 3
+  },
+  "dados": {
+   "oficial_intacto": true,
+   "chaves_do_oficial": [
+    "bible-quest:v1:profile"
+   ],
+   "chaves_da_previa": [
+    "bible-quest-previa:v1:settings",
+    "bible-quest-previa:v1:profile",
+    "bible-quest-previa:v1:progress"
+   ]
+  },
+  "meta": {
+   "titulo": "Bible Quest — Prévia de desenvolvimento",
+   "robots": "noindex, nofollow",
+   "commit": "32f8fc7294f1ba391453a85266374926ff7752ef"
+  },
+  "previa_json": {
+   "previa": true,
+   "versao": "0.17.9",
+   "commit": "32f8fc7294f1ba391453a85266374926ff7752ef",
+   "gerada_em": "2026-11-27T18:11:19.452Z"
+  }
+ }
+}
