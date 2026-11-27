@@ -1,0 +1,522 @@
+[
+ {
+  "corpo": "masculino",
+  "categoria": "Corpo",
+  "a": "Masculino",
+  "b": "Feminino",
+  "diferenca": 48.1,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Rosto",
+  "a": "Suave",
+  "b": "Sobrancelhas marcantes",
+  "diferenca": 1.1,
+  "ok": false
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Rosto",
+  "a": "Suave",
+  "b": "Sardas",
+  "diferenca": 3.5,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Rosto",
+  "a": "Sobrancelhas marcantes",
+  "b": "Sardas",
+  "diferenca": 4.5,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Expressão",
+  "a": "Serena",
+  "b": "Sorriso",
+  "diferenca": 2.5,
+  "ok": false
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Expressão",
+  "a": "Serena",
+  "b": "Alegre",
+  "diferenca": 3.5,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Expressão",
+  "a": "Serena",
+  "b": "Curiosa",
+  "diferenca": 3.5,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Expressão",
+  "a": "Sorriso",
+  "b": "Alegre",
+  "diferenca": 1.4,
+  "ok": false
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Expressão",
+  "a": "Sorriso",
+  "b": "Curiosa",
+  "diferenca": 6,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Expressão",
+  "a": "Alegre",
+  "b": "Curiosa",
+  "diferenca": 7,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Bem curto",
+  "diferenca": 10,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Médio",
+  "diferenca": 19.2,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Longo",
+  "diferenca": 29.6,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Cacheado",
+  "diferenca": 8,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Preso",
+  "diferenca": 8.9,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Trança",
+  "diferenca": 8.7,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Médio",
+  "diferenca": 20.9,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Longo",
+  "diferenca": 30.5,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Cacheado",
+  "diferenca": 14.6,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Preso",
+  "diferenca": 9.9,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Trança",
+  "diferenca": 8,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Longo",
+  "diferenca": 18.6,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Cacheado",
+  "diferenca": 18.2,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Preso",
+  "diferenca": 18.1,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Trança",
+  "diferenca": 17.7,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Longo",
+  "b": "Cacheado",
+  "diferenca": 29.2,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Longo",
+  "b": "Preso",
+  "diferenca": 28.6,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Longo",
+  "b": "Trança",
+  "diferenca": 27.8,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Cacheado",
+  "b": "Preso",
+  "diferenca": 12.3,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Cacheado",
+  "b": "Trança",
+  "diferenca": 12.6,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Estilo do cabelo",
+  "a": "Preso",
+  "b": "Trança",
+  "diferenca": 5.9,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Barba",
+  "a": "Sem barba",
+  "b": "Curta",
+  "diferenca": 14.5,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Barba",
+  "a": "Sem barba",
+  "b": "Cheia",
+  "diferenca": 18,
+  "ok": true
+ },
+ {
+  "corpo": "masculino",
+  "categoria": "Barba",
+  "a": "Curta",
+  "b": "Cheia",
+  "diferenca": 10.1,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Corpo",
+  "a": "Masculino",
+  "b": "Feminino",
+  "diferenca": 35.9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Rosto",
+  "a": "Suave",
+  "b": "Sobrancelhas marcantes",
+  "diferenca": 1.6,
+  "ok": false
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Rosto",
+  "a": "Suave",
+  "b": "Sardas",
+  "diferenca": 3.9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Rosto",
+  "a": "Sobrancelhas marcantes",
+  "b": "Sardas",
+  "diferenca": 5.5,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Expressão",
+  "a": "Serena",
+  "b": "Sorriso",
+  "diferenca": 3.3,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Expressão",
+  "a": "Serena",
+  "b": "Alegre",
+  "diferenca": 4.8,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Expressão",
+  "a": "Serena",
+  "b": "Curiosa",
+  "diferenca": 4.9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Expressão",
+  "a": "Sorriso",
+  "b": "Alegre",
+  "diferenca": 2.4,
+  "ok": false
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Expressão",
+  "a": "Sorriso",
+  "b": "Curiosa",
+  "diferenca": 8,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Expressão",
+  "a": "Alegre",
+  "b": "Curiosa",
+  "diferenca": 9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Bem curto",
+  "diferenca": 24.1,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Médio",
+  "diferenca": 26.6,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Longo",
+  "diferenca": 33,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Cacheado",
+  "diferenca": 14.9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Preso",
+  "diferenca": 13.8,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Curto",
+  "b": "Trança",
+  "diferenca": 15.3,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Médio",
+  "diferenca": 33.6,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Longo",
+  "diferenca": 39.6,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Cacheado",
+  "diferenca": 28.7,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Preso",
+  "diferenca": 19.2,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Bem curto",
+  "b": "Trança",
+  "diferenca": 19.9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Longo",
+  "diferenca": 27.2,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Cacheado",
+  "diferenca": 21.2,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Preso",
+  "diferenca": 28,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Médio",
+  "b": "Trança",
+  "diferenca": 28.6,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Longo",
+  "b": "Cacheado",
+  "diferenca": 34.7,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Longo",
+  "b": "Preso",
+  "diferenca": 34,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Longo",
+  "b": "Trança",
+  "diferenca": 34.6,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Cacheado",
+  "b": "Preso",
+  "diferenca": 20.9,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Cacheado",
+  "b": "Trança",
+  "diferenca": 22.4,
+  "ok": true
+ },
+ {
+  "corpo": "feminino",
+  "categoria": "Estilo do cabelo",
+  "a": "Preso",
+  "b": "Trança",
+  "diferenca": 7.8,
+  "ok": true
+ }
+]
