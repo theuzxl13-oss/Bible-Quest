@@ -4,6 +4,8 @@
  * acabamento de pintura no compositor: tools/mapa/eden.py) com os pontos do caminho
  * exportados pela própria cena, em frações da imagem (x da esquerda, y do topo).
  * Origem e licença: public/mapas/LICENCAS.md.
+ * Cada região tem também uma miniatura embutida (~2 KB, tools/mapa/miniaturas.py), mostrada
+ * enquanto a pintura definitiva não está pronta (carregamento sob demanda).
  *
  * Cada região recebe, na ordem, os nós seguintes do trecho (5 fases e o baú depois delas):
  * Éden = fases 1 a 5 e o baú da fase 5; Terras do Dilúvio = fases 6 a 10 e o baú da fase 10.
@@ -16,11 +18,15 @@ export interface ArteRegiao {
   nome: string
   alta: string
   leve: string
+  /** Miniatura embutida (data URI de ~2 KB): fundo provisório da região. */
+  miniatura: string
   largura: number
   altura: number
   /** Pontos do caminho, na ordem da trilha (de baixo para cima). */
   pontos: { x: number; y: number }[]
 }
+
+import { MINIATURA_DILUVIO, MINIATURA_EDEN } from './miniaturas'
 
 const base = import.meta.env.BASE_URL ?? '/'
 
@@ -29,6 +35,7 @@ export const ARTE_EDEN: ArteRegiao = {
   nome: 'Jardim do Éden',
   alta: `${base}mapas/genesis/eden.webp`,
   leve: `${base}mapas/genesis/eden-leve.webp`,
+  miniatura: MINIATURA_EDEN,
   largura: 1080,
   altura: 2257,
   pontos: [
@@ -46,6 +53,7 @@ export const ARTE_DILUVIO: ArteRegiao = {
   nome: 'Terras do Dilúvio',
   alta: `${base}mapas/genesis/diluvio.webp`,
   leve: `${base}mapas/genesis/diluvio-leve.webp`,
+  miniatura: MINIATURA_DILUVIO,
   largura: 1080,
   altura: 2257,
   pontos: [

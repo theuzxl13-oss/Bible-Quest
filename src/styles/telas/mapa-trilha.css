@@ -7,7 +7,7 @@
 /* ---------- regiões ---------- */
 .tr-regiao { overflow: visible; }
 .tr-pintada { background: var(--mapa-mata); }
-.tr-arte {
+.tr-arte, .tr-miniatura {
   position: absolute; inset: 0; width: 100%; height: 100%; display: block;
   object-fit: cover; pointer-events: none; user-select: none; -webkit-user-drag: none;
   /* emenda com a região de cima: a pintura nasce da mata, sem corte reto */
@@ -16,7 +16,9 @@
 }
 /* regiões pintadas vizinhas são um mundo contínuo (renderizadas lado a lado da mesma cena):
    a de baixo não se dissolve; só a pintura mais alta se funde com o cenário vetorial acima dela */
-.tr-pintada + .tr-pintada .tr-arte { -webkit-mask-image: none; mask-image: none; }
+.tr-pintada + .tr-pintada :is(.tr-arte, .tr-miniatura) { -webkit-mask-image: none; mask-image: none; }
+/* carregamento sob demanda: a miniatura fica embaixo da pintura e se esconde quando a pintura já foi desenhada */
+.tr-miniatura.is-coberta { visibility: hidden; }
 .tr-emenda .av-cena { -webkit-mask-image: linear-gradient(to top, transparent 0, black 70px); mask-image: linear-gradient(to top, transparent 0, black 70px); }
 .av-trecho:has(.tr-pintada) { background: var(--mapa-mata); }
 

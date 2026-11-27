@@ -33,3 +33,12 @@ Terras do Dilúvio (região 2), sem texto e sem falas: a cidade de muros da corr
 casa de Noé (Gn 6.9), a construção da arca com madeira e betume (Gn 6.14-16), o dilúvio (Gn 7.17-24),
 as águas baixando e a pomba com o ramo de oliveira (Gn 8.3-11), o monte Ararate (Gn 8.4), o altar
 (Gn 8.20) e o arco-íris (Gn 9.13). Para regerar: `blender -b -P tools/mapa/diluvio.py -- <pasta> 1080 96`.
+
+## Miniaturas das regiões (carregamento sob demanda, 27/11/2026)
+
+| Arquivo | Origem | Ferramenta | Data | Licença |
+|---|---|---|---|---|
+| `src/data/mapas/miniaturas.ts` (`MINIATURA_EDEN`, `MINIATURA_DILUVIO`, embutidas em base64) | Derivadas de `genesis/eden.webp` e `genesis/diluvio.webp` (as pinturas aprovadas, sem alteração) | `tools/mapa/miniaturas.py` (Pillow: redução LANCZOS para 54 × 113 px e WebP qualidade 55) | 27/11/2026 | A mesma das pinturas de origem (obra própria do projeto) |
+
+São o fundo provisório de cada região enquanto a pintura definitiva não está pronta ou está longe
+da tela: 1.778 bytes (Éden) e 1.704 bytes (Dilúvio). Para regerar: `python3 tools/mapa/miniaturas.py`.

@@ -3,6 +3,7 @@ import type { IconName } from '../../Icon'
 import { PlayerCharacter } from '../../character/PlayerCharacter'
 import { ChestIcon } from '../Scenery'
 import { Estandarte } from './Estandarte'
+import { PinturaRegiao } from './PinturaRegiao'
 import type { EstadoMarco } from '../../../services/game/marcos'
 import type { ArteRegiao } from '../../../data/mapas/artes'
 
@@ -13,6 +14,8 @@ import type { ArteRegiao } from '../../../data/mapas/artes'
  * não há pintura, o cenário vetorial antigo. Por cima ficam os marcos, que são botões HTML
  * de verdade: a arte nunca cobre um marco e nunca recebe toque (pointer-events: none).
  * Os dois modos usam as mesmas peças; muda só a identidade visual (classe do mapa) e o conteúdo.
+ * A pintura é carregada sob demanda (PinturaRegiao + pinturas.ts): miniatura sempre embaixo,
+ * pintura definitiva só perto da tela, no máximo três ao mesmo tempo.
  */
 
 export interface MarcoFase {
@@ -63,16 +66,7 @@ export function RegiaoTrilha({ W, H, atributo, marcos, pontos, arte, fundo, avat
   return (
     <div className={`av-canvas tr-regiao ${arte ? 'tr-pintada' : 'tr-vetorial'} ${classe}`} style={{ aspectRatio: `${W} / ${H}` }}>
       {arte ? (
-        <img
-          className="tr-arte"
-          src={arte.leve ? arte.regiao.leve : arte.regiao.alta}
-          width={arte.regiao.largura}
-          height={arte.regiao.altura}
-          alt=""
-          aria-hidden="true"
-          decoding="async"
-          draggable={false}
-        />
+        <PinturaRegiao regiao={arte.regiao} leve={arte.leve} />
       ) : (
         fundo
       )}

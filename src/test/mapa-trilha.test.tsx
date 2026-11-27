@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { estadoDoMarco, rotuloDoEstado } from '../services/game/marcos'
 import { ARTE_DILUVIO, ARTE_EDEN, ARTES_DO_MUNDO } from '../data/mapas/artes'
 import { dividirTrecho } from '../components/map/JourneyMap'
@@ -90,12 +90,14 @@ describe('RegiaoTrilha', () => {
   }))
   const pontos = marcos.map((m, i) => ({ id: m.id, x: 100 + i * 50, y: 400 - i * 90 }))
 
-  it('mostra os quatro estados como botões, com a arte decorativa fora da acessibilidade', () => {
+  it('mostra os quatro estados como botões, com a arte decorativa fora da acessibilidade', async () => {
     const { container } = render(<RegiaoTrilha W={400} H={500} atributo="data-node" marcos={marcos} pontos={pontos} arte={{ regiao: ARTE_EDEN, leve: false }} />)
     expect(screen.getByRole('button', { name: /Concluída, 2 de 3 estrelas/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Fase atual/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Disponível/ })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Bloqueada/ })).toBeInTheDocument()
+    // carregamento sob demanda: a pintura entra assim que a região é avaliada como visível
+    await waitFor(() => expect(container.querySelector('img.tr-arte')).not.toBeNull())
     const img = container.querySelector('img.tr-arte')!
     expect(img.getAttribute('aria-hidden')).toBe('true')
     expect(img.getAttribute('src')).toBe(ARTE_EDEN.alta)
@@ -105,9 +107,9 @@ describe('RegiaoTrilha', () => {
     expect(container.querySelectorAll('.tr-estandarte.is-atual .tr-estrelas .on')).toHaveLength(0)
   })
 
-  it('na qualidade leve usa a imagem leve; sem arte, usa o cenário vetorial', () => {
+  it('na qualidade leve usa a imagem leve; sem arte, usa o cenário vetorial', async () => {
     const { container, rerender } = render(<RegiaoTrilha W={400} H={500} atributo="data-node" marcos={marcos} pontos={pontos} arte={{ regiao: ARTE_EDEN, leve: true }} />)
-    expect(container.querySelector('img.tr-arte')!.getAttribute('src')).toBe(ARTE_EDEN.leve)
+    await waitFor(() => expect(container.querySelector('img.tr-arte')!.getAttribute('src')).toBe(ARTE_EDEN.leve))
     rerender(<RegiaoTrilha W={400} H={500} atributo="data-qnode" marcos={marcos} pontos={pontos} fundo={<svg data-testid="vetorial" />} />)
     expect(container.querySelector('img.tr-arte')).toBeNull()
     expect(screen.getByTestId('vetorial')).toBeInTheDocument()

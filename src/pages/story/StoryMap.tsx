@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { use, useEffect, useMemo, useRef, useState } from 'react'
 import { AjudaMapa, CabecalhoMapa, ContadorEstrelas, PlacaRegiao } from '../../components/map/aventura/Interface'
 import { JanelaFaseHistoria } from '../../components/map/aventura/JanelaFaseHistoria'
 import { ArtImage } from '../../components/ArtImage'
 import { Icon } from '../../components/Icon'
-import { JourneyMap } from '../../components/map/JourneyMap'
+import { JourneyMap, dividirTrecho } from '../../components/map/JourneyMap'
+import { aguardarAbertura } from '../../components/map/trilha/pinturas'
 import { ChestIcon } from '../../components/map/Scenery'
 import { getCharacter } from '../../data/library/characters'
 import { STORY_SEQUENCE } from '../../data/story'
@@ -37,6 +38,18 @@ export default function StoryMap() {
   const reduceMotion = settings.reduceMotion || (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
   const contentWorlds = new Set(sections.map((s) => s.world.id))
   const leve = resolveQuality(settings.graphics) !== 'alta' // imagens do mapa mais leves em aparelhos modestos
+  // Abertura: a pintura da região onde o mapa abre fica pronta antes do primeiro quadro do mapa
+  // (a troca de tela é uma transição do roteador: enquanto isso, a tela anterior continua visível).
+  // Calculada uma vez, na entrada: a mesma promessa em todas as renderizações desta visita.
+  // Entram a região da fase e as vizinhas (cabem na mesma tela): no máximo três pinturas.
+  const [abertura] = useState(() => {
+    const secao = sections.find((s) => s.nodes.some((n) => n.id === startAt))
+    const pintadas = secao ? dividirTrecho(secao).pintadas : []
+    const k = pintadas.findIndex((r) => r.nos.some((n) => n.id === startAt))
+    const alvos = k < 0 ? [] : [pintadas[k], pintadas[k + 1], pintadas[k - 1]].filter(Boolean)
+    return aguardarAbertura(alvos.map((r) => ({ regiao: r.arte.id, url: leve ? r.arte.leve : r.arte.alta })))
+  })
+  use(abertura)
 
   const scrollTo = (id: string, smooth = true) => {
     const el = document.querySelector(`[data-node="${id}"]`) ?? document.getElementById(id)
