@@ -1,0 +1,30 @@
+{
+ "alinhamento_melhor_deslocamento": [
+  {
+   "dy": 0,
+   "dx": 0,
+   "dif_media": 1.29
+  },
+  {
+   "dy": -1,
+   "dx": 0,
+   "dif_media": 2.39
+  },
+  {
+   "dy": 1,
+   "dx": 0,
+   "dif_media": 2.44
+  }
+ ],
+ "faixa_extra_x_topo_eden": {
+  "dif_media": 1.32,
+  "pixels_acima_de_12": 759,
+  "total": 51840
+ },
+ "salto_na_emenda": 5.1,
+ "linhas_vizinhas": {
+  "media": 3.25,
+  "p95": 4.6,
+  "max": 6.04
+ }
+}
