@@ -1,0 +1,583 @@
+{
+ "raster": "gpu",
+ "qualidade": "alta",
+ "args": [
+  "--enable-gpu-rasterization",
+  "--ignore-gpu-blocklist",
+  "--use-angle=swiftshader",
+  "--enable-unsafe-swiftshader"
+ ],
+ "passos": [
+  {
+   "passo": "1-menu-inicial",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 107.8,
+    "gpu": 198.63,
+    "browser": 16.01,
+    "total": 344.81
+   },
+   "pss": {
+    "renderer": {
+     "rss": 235.1,
+     "pss": 170.2
+    },
+    "gpu": {
+     "rss": 369,
+     "pss": 310.1
+    },
+    "browser": {
+     "rss": 98.4,
+     "pss": 42.2
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 0,
+    "tiles": 4.46,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 10.83,
+    "blink_gc": 1.4,
+    "partition_alloc": 17.64,
+    "malloc": 54.15,
+    "gpu_cliente": 7.69
+   },
+   "gpu": {
+    "shared_images": 25.8,
+    "transfer_cache": 0,
+    "gl": 0,
+    "skia": 7.2,
+    "cc": 6.92,
+    "malloc": 257.72
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 10.85
+  },
+  {
+   "passo": "2-mapa-aberto",
+   "imgs": [
+    "genesis/diluvio.webp",
+    "genesis/eden.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 101.63,
+    "gpu": 187.54,
+    "browser": 16.48,
+    "total": 329.48
+   },
+   "pss": {
+    "renderer": {
+     "rss": 228.2,
+     "pss": 170.6
+    },
+    "gpu": {
+     "rss": 272.5,
+     "pss": 220.9
+    },
+    "browser": {
+     "rss": 101,
+     "pss": 43.9
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 3.5,
+    "tiles": 7.7,
+    "skia_cache": 0.02,
+    "imagens_codificadas": 0.45,
+    "v8": 12.48,
+    "blink_gc": 1.93,
+    "partition_alloc": 20.38,
+    "malloc": 57.8,
+    "gpu_cliente": 24.19
+   },
+   "gpu": {
+    "shared_images": 5.17,
+    "transfer_cache": 0.01,
+    "gl": 0,
+    "skia": 20.76,
+    "cc": 2.44,
+    "malloc": 253.82
+   },
+   "browser_discardable": 0.13,
+   "js_heap_usado": 10.63,
+   "ms_ate_carregar": 31,
+   "ms_ate_decodificar": 40
+  },
+  {
+   "passo": "3-no-eden",
+   "imgs": [
+    "genesis/diluvio.webp",
+    "genesis/eden.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 102.59,
+    "gpu": 192.17,
+    "browser": 17.23,
+    "total": 336.18
+   },
+   "pss": {
+    "renderer": {
+     "rss": 223.9,
+     "pss": 167.3
+    },
+    "gpu": {
+     "rss": 271.4,
+     "pss": 220.8
+    },
+    "browser": {
+     "rss": 102.1,
+     "pss": 44.4
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 3.53,
+    "tiles": 8.52,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.52,
+    "v8": 12.53,
+    "blink_gc": 1.96,
+    "partition_alloc": 20.29,
+    "malloc": 58.38,
+    "gpu_cliente": 21.12
+   },
+   "gpu": {
+    "shared_images": 8.83,
+    "transfer_cache": 4.7,
+    "gl": 0,
+    "skia": 3,
+    "cc": 2.36,
+    "malloc": 266.95
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 9.92
+  },
+  {
+   "passo": "4-no-diluvio",
+   "imgs": [
+    "genesis/diluvio.webp",
+    "genesis/eden.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 102.04,
+    "gpu": 192.05,
+    "browser": 17.31,
+    "total": 336.54
+   },
+   "pss": {
+    "renderer": {
+     "rss": 223.9,
+     "pss": 167.3
+    },
+    "gpu": {
+     "rss": 271.8,
+     "pss": 221.2
+    },
+    "browser": {
+     "rss": 102.6,
+     "pss": 44.9
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 3.53,
+    "tiles": 5.2,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.52,
+    "v8": 12.54,
+    "blink_gc": 1.97,
+    "partition_alloc": 20.29,
+    "malloc": 56.95,
+    "gpu_cliente": 21.12
+   },
+   "gpu": {
+    "shared_images": 5.51,
+    "transfer_cache": 4.7,
+    "gl": 0,
+    "skia": 3,
+    "cc": 2.36,
+    "malloc": 267.42
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 9.92
+  },
+  {
+   "passo": "5-vai-e-volta",
+   "imgs": [
+    "genesis/diluvio.webp",
+    "genesis/eden.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 102.27,
+    "gpu": 197.77,
+    "browser": 17.77,
+    "total": 343.05
+   },
+   "pss": {
+    "renderer": {
+     "rss": 224.3,
+     "pss": 167.6
+    },
+    "gpu": {
+     "rss": 276.4,
+     "pss": 225.8
+    },
+    "browser": {
+     "rss": 102.6,
+     "pss": 44.8
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 3.53,
+    "tiles": 6.05,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.52,
+    "v8": 12.41,
+    "blink_gc": 1.95,
+    "partition_alloc": 20.29,
+    "malloc": 57.71,
+    "gpu_cliente": 21.12
+   },
+   "gpu": {
+    "shared_images": 6.36,
+    "transfer_cache": 4.7,
+    "gl": 0,
+    "skia": 3.88,
+    "cc": 2.36,
+    "malloc": 266.88
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 9.99
+  },
+  {
+   "passo": "6-voltou-ao-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 100.84,
+    "gpu": 325.14,
+    "browser": 17.84,
+    "total": 469.12
+   },
+   "pss": {
+    "renderer": {
+     "rss": 240.9,
+     "pss": 175.6
+    },
+    "gpu": {
+     "rss": 412.2,
+     "pss": 353
+    },
+    "browser": {
+     "rss": 102.5,
+     "pss": 44.8
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 3.53,
+    "tiles": 7.55,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.15,
+    "v8": 13.68,
+    "blink_gc": 2.11,
+    "partition_alloc": 22.17,
+    "malloc": 59.23,
+    "gpu_cliente": 41.19
+   },
+   "gpu": {
+    "shared_images": 24.87,
+    "transfer_cache": 4.7,
+    "gl": 0,
+    "skia": 9.37,
+    "cc": 6.74,
+    "malloc": 402.63
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 11.57
+  },
+  {
+   "passo": "7-menu-apos-pressao",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 101.2,
+    "gpu": 314.91,
+    "browser": 17.86,
+    "total": 459.68
+   },
+   "pss": {
+    "renderer": {
+     "rss": 237,
+     "pss": 171.7
+    },
+    "gpu": {
+     "rss": 413.4,
+     "pss": 354.1
+    },
+    "browser": {
+     "rss": 102.8,
+     "pss": 44.9
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 3.53,
+    "tiles": 2.75,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.15,
+    "v8": 13.66,
+    "blink_gc": 2.1,
+    "partition_alloc": 22.17,
+    "malloc": 59.04,
+    "gpu_cliente": 38.12
+   },
+   "gpu": {
+    "shared_images": 4.8,
+    "transfer_cache": 0,
+    "gl": 0,
+    "skia": 0.26,
+    "cc": 6.74,
+    "malloc": 404.67
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 11.41
+  },
+  {
+   "passo": "8-mapa-de-novo",
+   "imgs": [
+    "genesis/diluvio.webp",
+    "genesis/eden.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 102.13,
+    "gpu": 205.48,
+    "browser": 15.94,
+    "total": 348.11
+   },
+   "pss": {
+    "renderer": {
+     "rss": 222.4,
+     "pss": 164.6
+    },
+    "gpu": {
+     "rss": 287,
+     "pss": 235.2
+    },
+    "browser": {
+     "rss": 101.8,
+     "pss": 43.9
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 7.02,
+    "tiles": 8.36,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.52,
+    "v8": 13,
+    "blink_gc": 2.17,
+    "partition_alloc": 21.13,
+    "malloc": 52.59,
+    "gpu_cliente": 24.19
+   },
+   "gpu": {
+    "shared_images": 8.67,
+    "transfer_cache": 4.68,
+    "gl": 0,
+    "skia": 23.16,
+    "cc": 2.36,
+    "malloc": 270.1
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 10.43,
+   "ms_ate_carregar": 30,
+   "ms_ate_decodificar": 36
+  },
+  {
+   "passo": "9-trocou-para-leve",
+   "imgs": [
+    "genesis/diluvio-leve.webp",
+    "genesis/eden-leve.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 133.69,
+    "gpu": 223.64,
+    "browser": 16.94,
+    "total": 401.26
+   },
+   "pss": {
+    "renderer": {
+     "rss": 272.7,
+     "pss": 205.8
+    },
+    "gpu": {
+     "rss": 322.7,
+     "pss": 262.1
+    },
+    "browser": {
+     "rss": 103.1,
+     "pss": 45
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 6.07,
+    "tiles": 6.42,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.4,
+    "v8": 14.43,
+    "blink_gc": 2.51,
+    "partition_alloc": 31.83,
+    "malloc": 73.94,
+    "gpu_cliente": 43.19
+   },
+   "gpu": {
+    "shared_images": 6.98,
+    "transfer_cache": 8.07,
+    "gl": 0,
+    "skia": 10.2,
+    "cc": 2.36,
+    "malloc": 292.77
+   },
+   "browser_discardable": 0.13,
+   "js_heap_usado": 11.74,
+   "ms_ate_carregar": 95,
+   "ms_ate_decodificar": 117
+  },
+  {
+   "passo": "10-rolou-nova-qualidade",
+   "imgs": [
+    "genesis/diluvio-leve.webp",
+    "genesis/eden-leve.webp"
+   ],
+   "rota": "#/historia",
+   "pegada": {
+    "renderer": 133.64,
+    "gpu": 221.77,
+    "browser": 17.43,
+    "total": 399.98
+   },
+   "pss": {
+    "renderer": {
+     "rss": 270.4,
+     "pss": 205.2
+    },
+    "gpu": {
+     "rss": 318.9,
+     "pss": 259.9
+    },
+    "browser": {
+     "rss": 103.1,
+     "pss": 45
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 6.07,
+    "tiles": 6.42,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.4,
+    "v8": 14.43,
+    "blink_gc": 2.53,
+    "partition_alloc": 31.83,
+    "malloc": 73.12,
+    "gpu_cliente": 38.12
+   },
+   "gpu": {
+    "shared_images": 6.98,
+    "transfer_cache": 8.07,
+    "gl": 0,
+    "skia": 1.08,
+    "cc": 2.36,
+    "malloc": 292.06
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 11.74
+  },
+  {
+   "passo": "11-menu-final",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 134.76,
+    "gpu": 276.38,
+    "browser": 16.87,
+    "total": 455.12
+   },
+   "pss": {
+    "renderer": {
+     "rss": 287.7,
+     "pss": 214
+    },
+    "gpu": {
+     "rss": 390.1,
+     "pss": 322.6
+    },
+    "browser": {
+     "rss": 102.7,
+     "pss": 44.6
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 6.08,
+    "tiles": 7.33,
+    "skia_cache": 0.02,
+    "imagens_codificadas": 0.3,
+    "v8": 15.15,
+    "blink_gc": 2.99,
+    "partition_alloc": 34.35,
+    "malloc": 75.78,
+    "gpu_cliente": 58.19
+   },
+   "gpu": {
+    "shared_images": 12.32,
+    "transfer_cache": 8.09,
+    "gl": 0,
+    "skia": 7.58,
+    "cc": 3.76,
+    "malloc": 379.11
+   },
+   "browser_discardable": 0.11,
+   "js_heap_usado": 13.38
+  }
+ ],
+ "baixados": [
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  }
+ ]
+}

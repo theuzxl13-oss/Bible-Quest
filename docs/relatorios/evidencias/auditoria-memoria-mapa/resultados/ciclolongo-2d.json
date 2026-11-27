@@ -1,0 +1,521 @@
+{
+ "raster": "gpu",
+ "qualidade": "2d",
+ "args": [
+  "--enable-gpu-rasterization",
+  "--ignore-gpu-blocklist",
+  "--use-angle=swiftshader",
+  "--enable-unsafe-swiftshader"
+ ],
+ "passos": [
+  {
+   "passo": "ciclo-0-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 28.72,
+    "gpu": 88.53,
+    "browser": 15.03,
+    "total": 151.46
+   },
+   "pss": {
+    "renderer": {
+     "rss": 121.2,
+     "pss": 74.8
+    },
+    "gpu": {
+     "rss": 149.7,
+     "pss": 108.6
+    },
+    "browser": {
+     "rss": 96.9,
+     "pss": 41.6
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 0,
+    "tiles": 2.11,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 5.06,
+    "blink_gc": 1.28,
+    "partition_alloc": 1.73,
+    "malloc": 15.27,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 2.11,
+    "transfer_cache": 0,
+    "gl": 0,
+    "skia": 2.29,
+    "cc": 2,
+    "malloc": 147.94
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 2.91,
+   "documents": 4,
+   "nodes": 637,
+   "jsEventListeners": 192
+  },
+  {
+   "passo": "ciclo-4-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 39.57,
+    "gpu": 141.82,
+    "browser": 16.32,
+    "total": 217.77
+   },
+   "pss": {
+    "renderer": {
+     "rss": 137.5,
+     "pss": 90.3
+    },
+    "gpu": {
+     "rss": 203.1,
+     "pss": 161.7
+    },
+    "browser": {
+     "rss": 99.1,
+     "pss": 42.9
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 2.51,
+    "tiles": 7.42,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.3,
+    "blink_gc": 2.29,
+    "partition_alloc": 3.52,
+    "malloc": 22.09,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 7.42,
+    "transfer_cache": 3.36,
+    "gl": 0,
+    "skia": 3.02,
+    "cc": 2.11,
+    "malloc": 197.37
+   },
+   "browser_discardable": 2.67,
+   "js_heap_usado": 4.1,
+   "documents": 1,
+   "nodes": 3353,
+   "jsEventListeners": 256
+  },
+  {
+   "passo": "ciclo-8-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 40.52,
+    "gpu": 143.71,
+    "browser": 17.16,
+    "total": 221.75
+   },
+   "pss": {
+    "renderer": {
+     "rss": 139.4,
+     "pss": 92.2
+    },
+    "gpu": {
+     "rss": 205,
+     "pss": 163.6
+    },
+    "browser": {
+     "rss": 100.6,
+     "pss": 43.7
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 5.02,
+    "tiles": 7.42,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.58,
+    "blink_gc": 2.42,
+    "partition_alloc": 4.14,
+    "malloc": 23.31,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 7.42,
+    "transfer_cache": 6.72,
+    "gl": 0,
+    "skia": 3.02,
+    "cc": 2.11,
+    "malloc": 197.47
+   },
+   "browser_discardable": 2.67,
+   "js_heap_usado": 4.38,
+   "documents": 1,
+   "nodes": 3388,
+   "jsEventListeners": 236
+  },
+  {
+   "passo": "ciclo-12-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 41.9,
+    "gpu": 148.81,
+    "browser": 17.57,
+    "total": 229.31
+   },
+   "pss": {
+    "renderer": {
+     "rss": 140.4,
+     "pss": 93.1
+    },
+    "gpu": {
+     "rss": 210.2,
+     "pss": 168.8
+    },
+    "browser": {
+     "rss": 101.4,
+     "pss": 44.2
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 7.53,
+    "tiles": 7.42,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.66,
+    "blink_gc": 2.52,
+    "partition_alloc": 4.37,
+    "malloc": 23.87,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 7.42,
+    "transfer_cache": 10.08,
+    "gl": 0,
+    "skia": 3.03,
+    "cc": 2.11,
+    "malloc": 197.68
+   },
+   "browser_discardable": 2.67,
+   "js_heap_usado": 4.45,
+   "documents": 1,
+   "nodes": 3388,
+   "jsEventListeners": 236
+  },
+  {
+   "passo": "ciclo-16-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 41.62,
+    "gpu": 156.87,
+    "browser": 17.83,
+    "total": 237.81
+   },
+   "pss": {
+    "renderer": {
+     "rss": 140.7,
+     "pss": 93.4
+    },
+    "gpu": {
+     "rss": 219.7,
+     "pss": 178.3
+    },
+    "browser": {
+     "rss": 101.6,
+     "pss": 44.4
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 10.04,
+    "tiles": 7.42,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.7,
+    "blink_gc": 2.67,
+    "partition_alloc": 4.16,
+    "malloc": 24.1,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 7.42,
+    "transfer_cache": 13.44,
+    "gl": 0,
+    "skia": 3.04,
+    "cc": 2.11,
+    "malloc": 205.71
+   },
+   "browser_discardable": 2.67,
+   "js_heap_usado": 4.5,
+   "documents": 1,
+   "nodes": 3122,
+   "jsEventListeners": 242
+  },
+  {
+   "passo": "ciclo-20-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 42.96,
+    "gpu": 160.98,
+    "browser": 18.1,
+    "total": 243.66
+   },
+   "pss": {
+    "renderer": {
+     "rss": 142.2,
+     "pss": 94.8
+    },
+    "gpu": {
+     "rss": 222.5,
+     "pss": 181
+    },
+    "browser": {
+     "rss": 101.7,
+     "pss": 44.5
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 12.55,
+    "tiles": 7.42,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.75,
+    "blink_gc": 3.24,
+    "partition_alloc": 4.7,
+    "malloc": 24.56,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 7.42,
+    "transfer_cache": 16.8,
+    "gl": 0,
+    "skia": 3.05,
+    "cc": 2.11,
+    "malloc": 214.01
+   },
+   "browser_discardable": 2.67,
+   "js_heap_usado": 4.52,
+   "documents": 1,
+   "nodes": 6637,
+   "jsEventListeners": 407
+  },
+  {
+   "passo": "ciclo-24-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 43.02,
+    "gpu": 167.04,
+    "browser": 15.94,
+    "total": 247.08
+   },
+   "pss": {
+    "renderer": {
+     "rss": 136.9,
+     "pss": 89.4
+    },
+    "gpu": {
+     "rss": 228.6,
+     "pss": 187.1
+    },
+    "browser": {
+     "rss": 100.5,
+     "pss": 43.2
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 7.53,
+    "tiles": 7.42,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.78,
+    "blink_gc": 3.32,
+    "partition_alloc": 5.69,
+    "malloc": 16.03,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 7.42,
+    "transfer_cache": 10.08,
+    "gl": 0,
+    "skia": 3.06,
+    "cc": 2.11,
+    "malloc": 213.12
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 4.53,
+   "documents": 1,
+   "nodes": 12493,
+   "jsEventListeners": 514
+  },
+  {
+   "passo": "apos-pressao-moderada",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 39.07,
+    "gpu": 166.18,
+    "browser": 16.61,
+    "total": 242.93
+   },
+   "pss": {
+    "renderer": {
+     "rss": 136.9,
+     "pss": 89.3
+    },
+    "gpu": {
+     "rss": 227.9,
+     "pss": 186.2
+    },
+    "browser": {
+     "rss": 100.9,
+     "pss": 43.5
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 7.53,
+    "tiles": 2.22,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.78,
+    "blink_gc": 3.32,
+    "partition_alloc": 5.69,
+    "malloc": 16.04,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 2.22,
+    "transfer_cache": 10.08,
+    "gl": 0,
+    "skia": 3.06,
+    "cc": 2.11,
+    "malloc": 212.05
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 4.53
+  },
+  {
+   "passo": "apos-pressao-critica",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 40.4,
+    "gpu": 164.75,
+    "browser": 16.29,
+    "total": 242.26
+   },
+   "pss": {
+    "renderer": {
+     "rss": 136.9,
+     "pss": 89.3
+    },
+    "gpu": {
+     "rss": 226.5,
+     "pss": 184.8
+    },
+    "browser": {
+     "rss": 101.3,
+     "pss": 43.9
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 7.53,
+    "tiles": 2.22,
+    "skia_cache": 0,
+    "imagens_codificadas": 0,
+    "v8": 6.78,
+    "blink_gc": 3.32,
+    "partition_alloc": 5.69,
+    "malloc": 16.03,
+    "gpu_cliente": 0.12
+   },
+   "gpu": {
+    "shared_images": 2.22,
+    "transfer_cache": 0,
+    "gl": 0,
+    "skia": 10.31,
+    "cc": 2.11,
+    "malloc": 211.23
+   },
+   "browser_discardable": 0,
+   "js_heap_usado": 4.53
+  }
+ ],
+ "baixados": [
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio-leve.webp",
+   "bytes": 66444,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden-leve.webp",
+   "bytes": 73616,
+   "status": 200,
+   "cache": false
+  }
+ ]
+}

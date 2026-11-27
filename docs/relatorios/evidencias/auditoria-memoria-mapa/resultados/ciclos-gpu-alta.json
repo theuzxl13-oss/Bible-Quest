@@ -1,0 +1,331 @@
+{
+ "raster": "gpu",
+ "qualidade": "alta",
+ "args": [
+  "--enable-gpu-rasterization",
+  "--ignore-gpu-blocklist",
+  "--use-angle=swiftshader",
+  "--enable-unsafe-swiftshader"
+ ],
+ "passos": [
+  {
+   "passo": "ciclo-0-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 93.96,
+    "gpu": 287.15,
+    "browser": 14.82,
+    "total": 418.3
+   },
+   "pss": {
+    "renderer": {
+     "rss": 231.1,
+     "pss": 166
+    },
+    "gpu": {
+     "rss": 387.3,
+     "pss": 328.2
+    },
+    "browser": {
+     "rss": 97.5,
+     "pss": 43
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 0.01,
+    "tiles": 3.65,
+    "skia_cache": 0.02,
+    "imagens_codificadas": 0.08,
+    "v8": 13.43,
+    "blink_gc": 1.43,
+    "partition_alloc": 20.98,
+    "malloc": 54.41,
+    "gpu_cliente": 40.25
+   },
+   "gpu": {
+    "shared_images": 20.82,
+    "transfer_cache": 0.01,
+    "gl": 0,
+    "skia": 6.02,
+    "cc": 6.52,
+    "malloc": 377.09
+   },
+   "browser_discardable": 0.13,
+   "js_heap_usado": 10.32,
+   "documents": 4,
+   "nodes": 527,
+   "jsEventListeners": 199
+  },
+  {
+   "passo": "ciclo-2-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 104.2,
+    "gpu": 358.98,
+    "browser": 16.5,
+    "total": 503.56
+   },
+   "pss": {
+    "renderer": {
+     "rss": 244.3,
+     "pss": 179
+    },
+    "gpu": {
+     "rss": 447,
+     "pss": 387.7
+    },
+    "browser": {
+     "rss": 99.6,
+     "pss": 44.2
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 7.02,
+    "tiles": 9.43,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.15,
+    "v8": 14.14,
+    "blink_gc": 2.6,
+    "partition_alloc": 24.96,
+    "malloc": 59.35,
+    "gpu_cliente": 43.19
+   },
+   "gpu": {
+    "shared_images": 30.85,
+    "transfer_cache": 9.35,
+    "gl": 0,
+    "skia": 15.15,
+    "cc": 6.59,
+    "malloc": 440.25
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 11.76,
+   "documents": 1,
+   "nodes": 2918,
+   "jsEventListeners": 217
+  },
+  {
+   "passo": "ciclo-4-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 106.97,
+    "gpu": 369.08,
+    "browser": 16.09,
+    "total": 515.83
+   },
+   "pss": {
+    "renderer": {
+     "rss": 246.9,
+     "pss": 181.6
+    },
+    "gpu": {
+     "rss": 444.2,
+     "pss": 384.8
+    },
+    "browser": {
+     "rss": 100.6,
+     "pss": 44.6
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 10.51,
+    "tiles": 7.4,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.15,
+    "v8": 15.16,
+    "blink_gc": 3.35,
+    "partition_alloc": 29.59,
+    "malloc": 52.89,
+    "gpu_cliente": 41.19
+   },
+   "gpu": {
+    "shared_images": 4.79,
+    "transfer_cache": 4.7,
+    "gl": 0,
+    "skia": 15.22,
+    "cc": 6.59,
+    "malloc": 426.56
+   },
+   "browser_discardable": 3.75,
+   "js_heap_usado": 12.54,
+   "documents": 1,
+   "nodes": 5994,
+   "jsEventListeners": 365
+  },
+  {
+   "passo": "ciclo-6-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 115.27,
+    "gpu": 397.66,
+    "browser": 15.9,
+    "total": 552.53
+   },
+   "pss": {
+    "renderer": {
+     "rss": 252.9,
+     "pss": 187.5
+    },
+    "gpu": {
+     "rss": 493.1,
+     "pss": 433.7
+    },
+    "browser": {
+     "rss": 100.6,
+     "pss": 44.5
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 13.99,
+    "tiles": 8.62,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.15,
+    "v8": 15.77,
+    "blink_gc": 3.6,
+    "partition_alloc": 32.73,
+    "malloc": 51.08,
+    "gpu_cliente": 49.19
+   },
+   "gpu": {
+    "shared_images": 0.7,
+    "transfer_cache": 14,
+    "gl": 0,
+    "skia": 29.86,
+    "cc": 6.59,
+    "malloc": 465.08
+   },
+   "browser_discardable": 7.38,
+   "js_heap_usado": 13.17,
+   "documents": 1,
+   "nodes": 3646,
+   "jsEventListeners": 356
+  },
+  {
+   "passo": "ciclo-8-menu",
+   "imgs": [],
+   "rota": "#/painel",
+   "pegada": {
+    "renderer": 112.38,
+    "gpu": 406.79,
+    "browser": 15.74,
+    "total": 559.23
+   },
+   "pss": {
+    "renderer": {
+     "rss": 258.1,
+     "pss": 192.6
+    },
+    "gpu": {
+     "rss": 480.2,
+     "pss": 420.8
+    },
+    "browser": {
+     "rss": 100.8,
+     "pss": 44.7
+    }
+   },
+   "renderer": {
+    "imagens_decodificadas": 17.48,
+    "tiles": 7.4,
+    "skia_cache": 0.04,
+    "imagens_codificadas": 0.15,
+    "v8": 16,
+    "blink_gc": 3.79,
+    "partition_alloc": 34.61,
+    "malloc": 51.64,
+    "gpu_cliente": 50.19
+   },
+   "gpu": {
+    "shared_images": 0.06,
+    "transfer_cache": 9.35,
+    "gl": 0,
+    "skia": 27.4,
+    "cc": 6.59,
+    "malloc": 447.26
+   },
+   "browser_discardable": 11,
+   "js_heap_usado": 13.58,
+   "documents": 1,
+   "nodes": 3179,
+   "jsEventListeners": 229
+  }
+ ],
+ "baixados": [
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/diluvio.webp",
+   "bytes": 180886,
+   "status": 200,
+   "cache": false
+  },
+  {
+   "arq": "genesis/eden.webp",
+   "bytes": 200454,
+   "status": 200,
+   "cache": false
+  }
+ ]
+}

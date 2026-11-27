@@ -1,0 +1,217 @@
+{
+ "qualidade": "2d",
+ "cpu": 4,
+ "abertura_fria": [
+  {
+   "carregou_ms": 396,
+   "decodificou_ms": 498,
+   "primeiro_quadro_ms": 782,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 7.7,
+     "mediana": 7.8,
+     "p95": 7.8,
+     "max": 7.8
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 7.7,
+     "mediana": 7.8,
+     "p95": 7.8,
+     "max": 7.8
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 7.5,
+     "mediana": 7.6,
+     "p95": 7.6,
+     "max": 7.6
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 376,
+   "decodificou_ms": 460,
+   "primeiro_quadro_ms": 509,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 10.7,
+     "mediana": 11.2,
+     "p95": 11.2,
+     "max": 11.2
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 10.7,
+     "mediana": 11.2,
+     "p95": 11.2,
+     "max": 11.2
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 10.4,
+     "mediana": 11.1,
+     "p95": 11.1,
+     "max": 11.1
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 411,
+   "decodificou_ms": 538,
+   "primeiro_quadro_ms": 617,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 7.9,
+     "mediana": 8.1,
+     "p95": 8.1,
+     "max": 8.1
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 7.9,
+     "mediana": 8,
+     "p95": 8,
+     "max": 8
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 7.5,
+     "mediana": 7.7,
+     "p95": 7.7,
+     "max": 7.7
+    }
+   },
+   "por_url": {}
+  }
+ ],
+ "abertura_quente": [
+  {
+   "carregou_ms": 222,
+   "decodificou_ms": 223,
+   "primeiro_quadro_ms": 259,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 251,
+   "decodificou_ms": 252,
+   "primeiro_quadro_ms": 277,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 236,
+   "decodificou_ms": 238,
+   "primeiro_quadro_ms": 271,
+   "decodificacoes": {},
+   "por_url": {}
+  }
+ ],
+ "rolagem": {
+  "quadros": {
+   "n": 539,
+   "media": 16.8,
+   "mediana": 16.7,
+   "p95": 16.7,
+   "max": 83.3
+  },
+  "acima_33ms": 2,
+  "acima_50ms": 1,
+  "tarefas_longas": {
+   "n": 1,
+   "media": 97,
+   "mediana": 97,
+   "p95": 97,
+   "max": 97
+  },
+  "altura_pagina": 4187,
+  "decodificacoes": {},
+  "por_url": {}
+ },
+ "toques": {
+  "janela": {
+   "n": 10,
+   "media": 1166.6,
+   "mediana": 210,
+   "p95": 5044,
+   "max": 5044
+  },
+  "eventos": {
+   "n": 204,
+   "media": 34.4,
+   "mediana": 24,
+   "p95": 112,
+   "max": 248
+  },
+  "detalhes": [
+   {
+    "id": "gn-corrupcao",
+    "ms_ate_janela": 205
+   },
+   {
+    "id": "gn-noe",
+    "ms_ate_janela": 212
+   },
+   {
+    "id": "gn-arca",
+    "ms_ate_janela": 178
+   },
+   {
+    "id": "gn-diluvio",
+    "ms_ate_janela": 5044
+   },
+   {
+    "id": "gn-alianca-noe",
+    "ms_ate_janela": 5017
+   },
+   {
+    "id": "gn-criacao",
+    "ms_ate_janela": 207
+   },
+   {
+    "id": "gn-homem-mulher",
+    "ms_ate_janela": 210
+   },
+   {
+    "id": "gn-eden",
+    "ms_ate_janela": 246
+   },
+   {
+    "id": "gn-queda",
+    "ms_ate_janela": 148
+   },
+   {
+    "id": "gn-caim-abel",
+    "ms_ate_janela": 199
+   }
+  ]
+ },
+ "decodificacao_isolada": {
+  "eden": {
+   "mediana_ms": 32.3,
+   "min_ms": 30,
+   "max_ms": 85.1
+  },
+  "eden-leve": {
+   "mediana_ms": 22,
+   "min_ms": 13.2,
+   "max_ms": 32.1
+  },
+  "diluvio": {
+   "mediana_ms": 27,
+   "min_ms": 26.2,
+   "max_ms": 33.9
+  },
+  "diluvio-leve": {
+   "mediana_ms": 13.8,
+   "min_ms": 13.3,
+   "max_ms": 15.2
+  }
+ }
+}

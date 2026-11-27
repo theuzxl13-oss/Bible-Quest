@@ -1,0 +1,81 @@
+{
+ "raster": "gpu",
+ "qualidade": "leve",
+ "passos": [
+  {
+   "passo": "A-mapa-aberto-sem-forcar-decodificacao",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 2.54,
+   "gpu_transfer": 3.38,
+   "total_imagens": 5.92,
+   "pegada_renderer": 85.06,
+   "pegada_gpu": 162.14
+  },
+  {
+   "passo": "B-2-regioes-percorridas",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 2.54,
+   "gpu_transfer": 3.38,
+   "total_imagens": 5.92,
+   "pegada_renderer": 84.6,
+   "pegada_gpu": 161.3
+  },
+  {
+   "passo": "C-4-regioes-percorridas-hoje",
+   "regioes_com_imagem": 4,
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 6.73,
+   "total_imagens": 11.78,
+   "pegada_renderer": 86.33,
+   "pegada_gpu": 162.8
+  },
+  {
+   "passo": "D-regioes-distantes-liberadas",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 6.73,
+   "total_imagens": 11.78,
+   "pegada_renderer": 87.31,
+   "pegada_gpu": 162.34
+  },
+  {
+   "passo": "E-apos-pressao-moderada",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 6.73,
+   "total_imagens": 11.78,
+   "pegada_renderer": 86.81,
+   "pegada_gpu": 162.14
+  },
+  {
+   "passo": "F-apos-pressao-critica",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 0,
+   "total_imagens": 5.05,
+   "pegada_renderer": 86.88,
+   "pegada_gpu": 161.09
+  },
+  {
+   "passo": "G-4-imagebitmap-abertos",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 0,
+   "total_imagens": 5.05,
+   "pegada_renderer": 100.38,
+   "pegada_gpu": 161.1
+  },
+  {
+   "passo": "H-imagebitmap-fechados",
+   "regioes_com_imagem": 2,
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 0,
+   "total_imagens": 5.05,
+   "pegada_renderer": 87.08,
+   "pegada_gpu": 161.08
+  }
+ ],
+ "bm": {
+  "ms_4_bitmaps": 47
+ }
+}

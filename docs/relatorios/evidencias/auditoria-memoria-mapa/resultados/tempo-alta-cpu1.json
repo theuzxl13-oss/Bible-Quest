@@ -1,0 +1,304 @@
+{
+ "qualidade": "alta",
+ "cpu": 1,
+ "abertura_fria": [
+  {
+   "carregou_ms": 7991,
+   "decodificou_ms": 8573,
+   "primeiro_quadro_ms": 8761,
+   "decodificacoes": {
+    "Decode Image": {
+     "n": 21,
+     "media": 9.9,
+     "mediana": 4.2,
+     "p95": 14,
+     "max": 114.6
+    },
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 4,
+     "media": 25.1,
+     "mediana": 23.1,
+     "p95": 35.3,
+     "max": 35.3
+    },
+    "ImageDecodeTask": {
+     "n": 4,
+     "media": 25.1,
+     "mediana": 23.1,
+     "p95": 35.3,
+     "max": 35.3
+    },
+    "Decode LazyPixelRef": {
+     "n": 4,
+     "media": 20.8,
+     "mediana": 21.4,
+     "p95": 22.4,
+     "max": 22.4
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 5576,
+   "decodificou_ms": 5647,
+   "primeiro_quadro_ms": 5999,
+   "decodificacoes": {
+    "Decode Image": {
+     "n": 21,
+     "media": 17.7,
+     "mediana": 12,
+     "p95": 34.6,
+     "max": 174.5
+    },
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 4,
+     "media": 33,
+     "mediana": 36.3,
+     "p95": 46.7,
+     "max": 46.7
+    },
+    "ImageDecodeTask": {
+     "n": 4,
+     "media": 33,
+     "mediana": 36.3,
+     "p95": 46.7,
+     "max": 46.7
+    },
+    "Decode LazyPixelRef": {
+     "n": 4,
+     "media": 26,
+     "mediana": 26.9,
+     "p95": 29.8,
+     "max": 29.8
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 7918,
+   "decodificou_ms": 8314,
+   "primeiro_quadro_ms": 8319,
+   "decodificacoes": {
+    "Decode Image": {
+     "n": 21,
+     "media": 11.6,
+     "mediana": 3.7,
+     "p95": 39.8,
+     "max": 87.9
+    },
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 15.2,
+     "mediana": 22.6,
+     "p95": 22.7,
+     "max": 22.7
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 15.2,
+     "mediana": 22.5,
+     "p95": 22.7,
+     "max": 22.7
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 14.4,
+     "mediana": 21.1,
+     "p95": 21.7,
+     "max": 21.7
+    }
+   },
+   "por_url": {}
+  }
+ ],
+ "abertura_quente": [
+  {
+   "carregou_ms": 11022,
+   "decodificou_ms": 11079,
+   "primeiro_quadro_ms": 11104,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 30.7,
+     "mediana": 33.6,
+     "p95": 39.4,
+     "max": 39.4
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 30.7,
+     "mediana": 33.6,
+     "p95": 39.3,
+     "max": 39.3
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 26.1,
+     "mediana": 25.7,
+     "p95": 33.5,
+     "max": 33.5
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 11096,
+   "decodificou_ms": 11143,
+   "primeiro_quadro_ms": 11177,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 22.4,
+     "mediana": 24,
+     "p95": 24,
+     "max": 24
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 22.4,
+     "mediana": 24,
+     "p95": 24,
+     "max": 24
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 21.9,
+     "mediana": 23.9,
+     "p95": 23.9,
+     "max": 23.9
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 11194,
+   "decodificou_ms": 11246,
+   "primeiro_quadro_ms": 11265,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 24,
+     "mediana": 27.2,
+     "p95": 27.2,
+     "max": 27.2
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 24,
+     "mediana": 27.1,
+     "p95": 27.1,
+     "max": 27.1
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 24,
+     "mediana": 27.1,
+     "p95": 27.1,
+     "max": 27.1
+    }
+   },
+   "por_url": {}
+  }
+ ],
+ "rolagem": {
+  "quadros": {
+   "n": 545,
+   "media": 16.6,
+   "mediana": 16.7,
+   "p95": 16.7,
+   "max": 16.8
+  },
+  "acima_33ms": 0,
+  "acima_50ms": 0,
+  "tarefas_longas": {
+   "n": 0,
+   "media": 0,
+   "mediana": null,
+   "p95": null,
+   "max": null
+  },
+  "altura_pagina": 4187,
+  "decodificacoes": {},
+  "por_url": {}
+ },
+ "toques": {
+  "janela": {
+   "n": 10,
+   "media": 1045,
+   "mediana": 56,
+   "p95": 5012,
+   "max": 5012
+  },
+  "eventos": {
+   "n": 78,
+   "media": 33.6,
+   "mediana": 24,
+   "p95": 80,
+   "max": 112
+  },
+  "detalhes": [
+   {
+    "id": "gn-corrupcao",
+    "ms_ate_janela": 54
+   },
+   {
+    "id": "gn-noe",
+    "ms_ate_janela": 60
+   },
+   {
+    "id": "gn-arca",
+    "ms_ate_janela": 70
+   },
+   {
+    "id": "gn-diluvio",
+    "ms_ate_janela": 5012
+   },
+   {
+    "id": "gn-alianca-noe",
+    "ms_ate_janela": 5006
+   },
+   {
+    "id": "gn-criacao",
+    "ms_ate_janela": 40
+   },
+   {
+    "id": "gn-homem-mulher",
+    "ms_ate_janela": 55
+   },
+   {
+    "id": "gn-eden",
+    "ms_ate_janela": 51
+   },
+   {
+    "id": "gn-queda",
+    "ms_ate_janela": 56
+   },
+   {
+    "id": "gn-caim-abel",
+    "ms_ate_janela": 46
+   }
+  ]
+ },
+ "decodificacao_isolada": {
+  "eden": {
+   "mediana_ms": 36.8,
+   "min_ms": 36.3,
+   "max_ms": 40
+  },
+  "eden-leve": {
+   "mediana_ms": 12.1,
+   "min_ms": 10.8,
+   "max_ms": 13.9
+  },
+  "diluvio": {
+   "mediana_ms": 26.4,
+   "min_ms": 25.7,
+   "max_ms": 59.7
+  },
+  "diluvio-leve": {
+   "mediana_ms": 11.7,
+   "min_ms": 11.2,
+   "max_ms": 13.5
+  }
+ }
+}
