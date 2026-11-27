@@ -27,6 +27,8 @@ import numpy as np  # noqa: E402
 from mathutils import Vector  # noqa: E402
 from comum import RAIZ, margem, rasterizar_tri, repouso, suave  # noqa: E402
 import tunica  # noqa: E402
+import manto as mantos  # noqa: E402
+import cintos  # noqa: E402
 
 sys.path.insert(0, RAIZ)
 import construir  # noqa: E402
@@ -433,6 +435,43 @@ def alisar_covas(prof=0.0012, vezes=4):
     print('corpo: covas alisadas', total)
 
 
+
+def alisar_dobras_olho(vezes=12):
+    """Dobras viradas para trás em volta dos olhos (pálpebra de baixo do olho antigo da IA): eram a
+    marca escura ao lado do olho. Os vértices dessas faces vão para a média dos vizinhos (a dobra
+    se desfaz) e as faces voltam a apontar para a frente. Narinas ficam como estão."""
+    bm = bmesh.new()
+    bm.from_mesh(corpo.data)
+    bm.verts.ensure_lookup_table()
+    bm.faces.ensure_lookup_table()
+    alvo = set()
+    for f in bm.faces:
+        c = f.calc_center_median()
+        if c.y > H.y - r_cab * 0.3 or f.normal.y < 0.15:
+            continue
+        if abs(c.x - mx) < 0.03 and c.z < mz + 0.045:
+            continue  # narinas
+        e = min(math.hypot((c.x - x) / rx_o, (c.z - ez) / rz_o) for x in (ex_R, ex_L))
+        if 0.85 < e < 2.4:
+            alvo.add(f)
+    vs = {v for f in alvo for v in f.verts}
+    for _ in range(vezes):
+        novos = {}
+        for v in vs:
+            viz = [e.other_vert(v).co for e in v.link_edges]
+            novos[v] = sum(viz, Vector((0, 0, 0))) / len(viz)
+        for v, p in novos.items():
+            v.co = v.co * 0.4 + p * 0.6
+    bm.normal_update()
+    inv = [f for f in alvo if f.is_valid and f.normal.y > 0.0]
+    bmesh.ops.reverse_faces(bm, faces=inv)
+    bm.normal_update()
+    bm.to_mesh(corpo.data)
+    bm.free()
+    print('corpo: dobras em volta dos olhos desfeitas', len(alvo), 'faces;', len(inv), 'reorientadas')
+
+
+alisar_dobras_olho()
 alisar_covas()
 limpar_manchas_pele()
 
@@ -772,6 +811,12 @@ def mecha(raiz, direcao0, comp, larg, alto, fluxo, segs=10, sobe=0.0, colado=Non
                 p = loc + nor * (alt if na_cabeca else alt_min)
             elif colado is not None and p.z < ez and dist > alt_min + colado:
                 p = loc + nor * (alt_min + colado)  # médio e longo: cai rente às costas, sem espetar
+        if colado is not None and p.z < zp - 0.01 and abs(p.x - H.x) > 0.1:
+            # abaixo do pescoço o cabelo cai pelas costas numa coluna (não abre sobre os ombros)
+            p.x = H.x + math.copysign(0.1, p.x - H.x)
+            loc2, nor2 = perto_corpo(p)
+            if loc2 is not None and (p - loc2).dot(nor2) < alt_min:
+                p = loc2 + nor2 * alt_min
         # rosto livre: na frente das orelhas, nada desce abaixo da franja
         y_orelha = min(o.y for o in ORELHAS)
         if p.y < y_orelha and abs(p.x - H.x) < abs(ORELHAS[1].x - H.x) - 0.012 and p.z < z_sob + 0.016:
@@ -919,14 +964,14 @@ def manta_de_tras(estilo, caminhos, z_fim):
             t = j / NZ
             z = z_ini + (z_baixo - z_ini) * t
             # abaixo do pescoço a manta se estreita (cai nas costas, não abre sobre os ombros)
-            abre = 105 - 50 * float(suave(np.array((zp + 0.02 - z) / 0.06)))
+            abre = 105 - 64 * float(suave(np.array((zp + 0.02 - z) / 0.06)))
             phi = math.radians(f_ang * abre)  # 0 = atrás
             d = Vector((math.sin(phi), math.cos(phi), 0))
             o = Vector((H.x, H.y, z)) + d * 0.6
             ok, loc, nor, _ = corpo.ray_cast(o, -d, distance=0.6)
             r = (Vector((loc.x, loc.y, 0)) - Vector((H.x, H.y, 0))).length if ok else r_cab
             r = max(r, r_cab * 0.62) + 0.010 + 0.012 * t  # afasta e abre um pouco para baixo
-            r += 0.03 * float(suave(np.array((zp + 0.03 - z) / 0.04)))  # abaixo do pescoço, por fora da túnica
+            r += 0.022 * float(suave(np.array((zp + 0.03 - z) / 0.09)))  # abaixo do pescoço, por fora da túnica (sem degrau)
             verts.append((H.x + d.x * r, H.y + d.y * r, z))
     for i in range(NA):
         for j in range(NZ):
@@ -1106,6 +1151,13 @@ def cabelo(estilo):
         bm.free()
     # franja acima das sobrancelhas (elas ficam à vista, também nas miniaturas, vistas um pouco de cima)
     limpar_rosto(ob, z_sob + (0.028 if estilo in ('curto', 'cacheado', 'coque', 'tranca') else 0.019))
+    # furinhos deixados pelos cortes (franja, orelhas): fechados, normais para fora (o furo escuro na franja)
+    bm = bmesh.new()
+    bm.from_mesh(ob.data)
+    bmesh.ops.holes_fill(bm, edges=[e for e in bm.edges if e.is_boundary], sides=12)
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
+    bm.to_mesh(ob.data)
+    bm.free()
     # (sem empurrar para fora: o couro cabeludo do corpo é afundado 4 mm no fim)
     todos = caminhos + so_textura
     if not todos:
@@ -1257,7 +1309,11 @@ def roupas():
     if corpo.data.shape_keys:
         corpo.shape_key_clear()
     coberto = tunica.arredondar_sob_tunica(corpo, ossos, pesos, z_cintura)
-    la = pbr('Manto', duplo=True, textura=os.path.join(tex, 'la.jpg'), rugosidade=0.95, especular=0.1)
+    la = pbr('Manto', duplo=True, textura=mantos.textura_la(os.path.join(SAIDA_TEX, 'la-manto.jpg')), rugosidade=0.95, especular=0.1)
+    # acabamento costurado: faixa bordada (R = tecido, G = fio do bordado; o jogo dá as cores) e pesponto
+    barra = pbr('Barra', duplo=True, textura=tunica.textura_bordado(os.path.join(SAIDA_TEX, 'bordado.png')), rugosidade=0.8, especular=0.2)
+    pesponto = pbr('Costura', textura=tunica.textura_costura(os.path.join(SAIDA_TEX, 'costura.png')), rugosidade=0.9, alfa=True)
+    metal = pbr('Metal', cor=(0.62, 0.43, 0.2, 1), rugosidade=0.35, especular=0.6)
     couro = pbr('Couro', textura=os.path.join(tex, 'couro.jpg'), rugosidade=0.6, especular=0.3)
     corda = pbr('Corda', textura=os.path.join(tex, 'corda.jpg'), rugosidade=0.85)
     faixa = pbr('Faixa', duplo=True, textura=os.path.join(tex, 'linho.jpg'), rugosidade=0.85)
@@ -1271,12 +1327,12 @@ def roupas():
     out = []
     # túnica paramétrica (tunica.py): parte de cima com mangas, saia longa e saia curta; malha regular
     # com caimento, dobras, bainhas e UV em escala constante
-    feitas, cint, z_cinto, anel = tunica.construir(
+    feitas, cint, z_cinto, anel, detalhes, info = tunica.construir(
         coords(corpo), pesos, ossos, J, linho,
         [('Tunica_saia', 0.07), ('Tunica_saia_curta', J['joelho'][2] - 0.03)],
-        feminino=FEM, poligonos=[tuple(p_.vertices) for p_ in corpo.data.polygons])
+        feminino=FEM, poligonos=[tuple(p_.vertices) for p_ in corpo.data.polygons], mat_barra=barra, mat_costura=pesponto)
     cima, saia, curta = feitas
-    out += [cima, saia, curta]
+    out += [cima, saia, curta] + detalhes
     # nenhum ponto do corpo atravessa o tecido (ombros, costas, quadril sob a saia curta)
     tunica.recolher_corpo(corpo, cima, coberto, z_max=ossos['neck01'][0][2] - 0.035)
     cq = coords(corpo)
@@ -1287,12 +1343,17 @@ def roupas():
     for estilo_c, mat in (('couro', couro), ('corda', corda), ('faixa', faixa)):
         ci = vestes.cinto(ctx, mat, (cint[0], cint[1], cint[2] - 0.02, cint[3] - 0.02), z_cinto, estilo_c)
         tunica.ajustar_cinto(ci, cint[0], cint[1], cint[2], cint[3], anel)
+        cintos.detalhar(ci, estilo_c, saia, cint[0], cint[1], z_cinto, anel)
         out.append(ci)
+    out.append(cintos.fivela('Cinto_fivela', metal, cint[0], cint[1], z_cinto, anel))
     vestes.colisao(corpo)
     vestes.colisao(saia, 0.005)
-    out.append(vestes.manto(ctx, la, J['joelho'][2] - 0.08))
-    out.append(vestes.manto(ctx, la, 0.12, nome='Manto_longo'))
-    out.append(vestes.manto(ctx, la, J['coluna3'][2] - 0.13, estilo='xale', nome='Xale'))
+    # mantos paramétricos sobre a túnica pronta (manto.py): capa nos ombros e painel nas costas
+    cintos_obs = [o for o in out if o.name.startswith('Cinto_')]
+    for nome_m, z_b, est in (('Manto', J['joelho'][2] - 0.08, 'manto'), ('Manto_longo', 0.12, 'longo'), ('Xale', J['coluna3'][2] - 0.13, 'xale')):
+        mo = mantos.construir(nome_m, cima, saia, info['centro'], info['z_axila'], info['z_gola'], info['r_gola'], z_b, estilo=est, extras=cintos_obs)
+        mo.data.materials.append(la)
+        out.append(mo)
     out.append(vestes.capuz(ctx, la))
     saia.modifiers.remove(saia.modifiers['Colisao'])
     out.append(vestes.lenco(ctx, pbr('Lenco', duplo=True, textura=os.path.join(tex, 'linho.jpg'), rugosidade=0.9)))
@@ -1310,8 +1371,8 @@ def roupas():
             if m.type == 'COLLISION':
                 o.modifiers.remove(m)
     # orçamento de triângulos por peça (as peças simuladas saem densas demais para o celular)
-    META = {'Lenco': 2600, 'Manto': 2400, 'Manto_longo': 2600,
-            'Xale': 2000, 'Capuz': 1600, 'Botas': 1600, 'Sandalia_simples': 1400, 'Sandalia_tiras': 1600, 'Bolsa': 1200, 'Odre': 1200, 'Colar': 900,
+    META = {'Lenco': 2600, 'Manto': 4200, 'Manto_longo': 4800,
+            'Xale': 3200, 'Capuz': 1600, 'Botas': 1600, 'Sandalia_simples': 1400, 'Sandalia_tiras': 1600, 'Bolsa': 1200, 'Odre': 1200, 'Colar': 900,
             'Cinto_couro': 800, 'Cinto_corda': 1400, 'Cinto_faixa': 800}
     for p in out:
         meta = META.get(p.name)
@@ -1326,11 +1387,14 @@ def roupas():
     for p in out:
         if p.data.shape_keys:
             p.shape_key_clear()
-        vestes.transferir_pesos(p, corpo, arm, suavidade=3 if 'saia' in p.name or p.name.startswith('Manto') else 1)
+        vestes.transferir_pesos(p, corpo, arm, suavidade=3 if ('saia' in p.name or 'barra' in p.name or p.name.startswith(('Manto', 'Xale'))) else 1)
         if p.name.startswith('Manto') or p.name == 'Xale':
+            # a capa sobre os ombros acompanha os braços; o painel das costas, não (cai reto)
+            z_lim = info['z_axila'] - 0.04
+            abaixo = [v.index for v in p.data.vertices if v.co.z < z_lim]
             for vg in list(p.vertex_groups):
                 if any(k in vg.name for k in ('arm', 'wrist')):
-                    p.vertex_groups.remove(vg)
+                    vg.remove(abaixo)
             ativar(p)
             bpy.ops.object.vertex_group_normalize_all(lock_active=False)
         validar(p)
@@ -1449,14 +1513,16 @@ def deslocamentos(pts, nome):
         u = (pts[:, 0] - mx) / mw
         w_boca = np.exp(-((pts[:, 2] - mz) / 0.017) ** 2) * (1 - suave((np.abs(pts[:, 0] - mx) - mw * 1.05) / 0.022)) * frente
         curva = np.minimum(1.0, u ** 2) ** 0.8
-        d[:, 2] += 0.0072 * k * curva * w_boca
-        d[:, 0] += 0.0024 * k * np.clip(u, -1.2, 1.2) * w_boca
-        d[:, 1] += 0.0016 * k * curva * w_boca  # cantos recuam um pouco (bochecha cheia)
+        # no rosto feminino (boca menor) os cantos quase não recuam e abrem mais para os lados: sem "bico"
+        sub, abre_x, recua = (0.0062, 0.0034, 0.0003) if FEM else (0.0072, 0.0024, 0.0016)
+        d[:, 2] += sub * k * curva * w_boca
+        d[:, 0] += abre_x * k * np.clip(u, -1.2, 1.2) * w_boca
+        d[:, 1] += recua * k * curva * w_boca  # cantos recuam um pouco (bochecha cheia)
         for s in (1, -1):
             cx = mx + s * (mw + 0.012)
             w2 = campo(cx, by, mz + 0.026, 0.026)
             d[:, 2] += 0.0032 * k * w2
-            d[:, 1] -= 0.0018 * k * w2
+            d[:, 1] -= (0.0008 if FEM else 0.0018) * k * w2
         # sorriso verdadeiro também aperta os olhos (pálpebra de baixo sobe); na alegria, bem mais
         sobe_b, desce_c = (0.4, 0.1) if nome == 'Sorriso' else (0.85, 0.32)
         if True:

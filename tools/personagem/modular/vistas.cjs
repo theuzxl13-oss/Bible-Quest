@@ -13,12 +13,14 @@ fs.mkdirSync(PASTA, { recursive: true })
 
 const VISUAIS = {
   masculino: [
-    { nome: 'tunica', hairStyle: 'curto', beard: 'nenhuma', tunica: 'tunica-terra', cinto: 'cinto-couro' },
-    { nome: 'barba', hairStyle: 'ondulado', beard: 'cheia', tunica: 'tunica-azul', cinto: 'cinto-corda' },
+    { nome: 'tunica', hairStyle: 'curto', beard: 'nenhuma', tunica: 'tunica-terra', cinto: 'faixa-vermelha', manto: 'manto-azul' },
+    { nome: 'barba', hairStyle: 'ondulado', beard: 'cheia', tunica: 'tunica-bordada', cinto: 'cinto-bronze', manto: null },
+    { nome: 'simples', hairStyle: 'curto', beard: 'nenhuma', tunica: 'tunica-terra', cinto: 'cinto-couro', manto: null },
   ],
   feminino: [
-    { nome: 'tunica', hairStyle: 'longo', beard: 'nenhuma', tunica: 'tunica-azul', cinto: 'cinto-corda' },
-    { nome: 'medio', hairStyle: 'ondulado', beard: 'nenhuma', tunica: 'tunica-terra', cinto: 'cinto-couro' },
+    { nome: 'tunica', hairStyle: 'longo', beard: 'nenhuma', tunica: 'tunica-azul', cinto: 'faixa-dourada', manto: 'manto-marrom' },
+    { nome: 'medio', hairStyle: 'ondulado', beard: 'nenhuma', tunica: 'tunica-purpura', cinto: 'cinto-corda', manto: 'xale-listrado' },
+    { nome: 'simples', hairStyle: 'longo', beard: 'nenhuma', tunica: 'tunica-azul', cinto: 'cinto-corda', manto: null },
   ],
 }
 
@@ -27,7 +29,7 @@ function perfil(corpo, v) {
     id: 'teste', nickname: 'Teste', avatar: 'lamp', ageRange: '18mais', createdAt: '2026-11-26T00:00:00.000Z', storage: 'local',
     character: {
       version: 2, id: 'p-teste', name: 'Teste', base: corpo, body: corpo, beard: v.beard, skin: corpo === 'feminino' ? 2 : 1, face: 'suave',
-      hairStyle: v.hairStyle, hairColor: 1, equipped: { tunica: v.tunica, manto: null, calcado: 'sandalias-simples', cinto: v.cinto, acessorios: [] },
+      hairStyle: v.hairStyle, hairColor: 1, equipped: { tunica: v.tunica, manto: v.manto ?? null, calcado: 'sandalias-simples', cinto: v.cinto, acessorios: [] },
     },
   }
 }

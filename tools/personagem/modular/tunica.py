@@ -118,7 +118,16 @@ def textura_linho(caminho, n=512, fios=96, semente=3):
     trama = np.where(xadrez > 0, U, V) * 0.6 + 0.4 * (U + V) / 2
     ruido = rng.standard_normal((n, n))
     ruido = (ruido + np.roll(ruido, 1, 0) + np.roll(ruido, 1, 1)) / 3
-    lum = 0.9 + 0.045 * (trama - trama.mean()) / trama.std() + 0.012 * ruido
+    # fios mais grossos aqui e ali (linho fiado à mão): faixinhas finas um pouco mais claras ou escuras
+    slub = np.zeros((n, n))
+    for _ in range(26):
+        y0 = rng.integers(0, n)
+        x0 = rng.integers(0, n)
+        L = rng.integers(n // 8, n // 3)
+        xs = (x0 + np.arange(L)) % n
+        slub[y0, xs] += rng.choice([-1, 1]) * np.hanning(L)
+    slub = (slub + np.roll(slub, 1, 0)) / 2
+    lum = 0.9 + 0.045 * (trama - trama.mean()) / trama.std() + 0.012 * ruido + 0.035 * slub
     lum = np.clip(lum, 0, 1)
     rgb = np.stack([lum * 1.0, lum * 0.985, lum * 0.955], -1)
     Image.fromarray((rgb * 255).astype(np.uint8)).save(caminho, quality=92)
@@ -212,7 +221,110 @@ def bainha_anel(grade, ultimo, centro, dentro=0.0035, altura=0.012, v0=0.0, sent
     grade.anel(p3, v0 + 0.02 * sentido)
 
 
-def construir(corpo_c, pesos, ossos, J, mat, saias, S=64, nome_cima='Tunica_cima', feminino=False, poligonos=None):
+def _interp_aneis(aneis, f):
+    """Anel na posição fracionária f da lista de anéis (cada anel: S x 3)."""
+    f = min(max(f, 0.0), len(aneis) - 1.0)
+    i = min(int(f), len(aneis) - 2)
+    t = f - i
+    return aneis[i] * (1 - t) + aneis[i + 1] * t
+
+
+def faixa_costurada(nome, aneis, f_borda, f_fim, n=5, desloc=0.0016, eixo=None, motivo_cm=0.055, espessura=0.0012):
+    """Faixa aplicada sobre o tecido (gola, punho, barra): acompanha os anéis da própria peça entre
+    as posições f_borda (a borda da roupa: v = 0) e f_fim, afastada `desloc` para fora; UV com o
+    motivo do bordado repetido a cada `motivo_cm` e V de 0 (borda) a 1. Tem espessura (peça costurada)."""
+    S = len(aneis[0])
+    g = Grade(S)
+    for j in range(n + 1):
+        f = f_borda + (f_fim - f_borda) * j / n
+        a = _interp_aneis(aneis, f)
+        ctr = a.mean(axis=0)
+        fora = a - ctr
+        if eixo is not None:
+            ax = np.asarray(eixo, float)
+            fora -= np.outer(fora @ ax, ax)
+        else:
+            fora[:, 2] = 0
+        fora /= np.linalg.norm(fora, axis=1)[:, None] + 1e-9
+        g.anel(a + fora * desloc, j / n)
+    ob = g.objeto(nome)
+    circ = float(np.mean([np.sum(np.linalg.norm(np.roll(a, -1, 0) - a, axis=1)) for a in aneis]))
+    reps = max(1, round(circ / motivo_cm))
+    for d in ob.data.uv_layers['UV'].data:
+        d.uv = (d.uv.x * reps, d.uv.y)
+    centro = np.mean([a.mean(axis=0) for a in aneis], axis=0)
+    if eixo is None:
+        orientar(ob, lambda q: np.array([q[0] - centro[0], q[1] - centro[1], 0.0]))
+    if espessura:
+        bpy.context.view_layer.objects.active = ob
+        m = ob.modifiers.new('Espessura', 'SOLIDIFY')
+        m.thickness = espessura
+        m.offset = -1
+        bpy.ops.object.modifier_apply(modifier=m.name)
+    return ob
+
+
+def costura(aneis, i, k0, k1, larg=0.0022, desloc=0.0011):
+    """Tira estreita de pesponto ao longo da coluna i dos anéis k0..k1 (costura lateral, da manga)."""
+    S = len(aneis[0])
+    verts, faces, uvs = [], [], []
+    comp = 0.0
+    ant = None
+    for k in range(k0, k1 + 1):
+        a = aneis[k]
+        p = a[i % S]
+        t = a[(i + 1) % S] - a[(i - 1) % S]
+        t /= np.linalg.norm(t) + 1e-9
+        ctr = a.mean(axis=0)
+        fora = p - ctr
+        fora /= np.linalg.norm(fora) + 1e-9
+        if ant is not None:
+            comp += float(np.linalg.norm(p - ant))
+        ant = p
+        base = len(verts)
+        verts += [tuple(p - t * larg + fora * desloc), tuple(p + t * larg + fora * desloc)]
+        uvs += [(0.0, comp / 0.02), (1.0, comp / 0.02)]
+        if k > k0:
+            faces.append((base - 2, base - 1, base + 1, base))
+    return verts, faces, uvs
+
+
+def textura_bordado(caminho, w=256, h=128):
+    """Bordado discreto da faixa (R = claro-escuro do tecido da faixa; G = fio do bordado):
+    filetes na borda e no topo, corrente de losangos e pontinhos no meio, pontos de costura."""
+    y, x = np.mgrid[0:h, 0:w].astype(float)
+    u, v = x / w, y / h  # v = 0 na borda da roupa (linha de baixo da imagem gravada invertida)
+    R = 0.82 + 0.06 * np.sin(u * 2 * math.pi * 24) * np.sin(v * 2 * math.pi * 6)
+    fio = np.zeros_like(u)
+    for c, lw in ((0.12, 0.035), (0.88, 0.035)):
+        fio = np.maximum(fio, np.clip(1 - np.abs(v - c) / lw, 0, 1))
+    # losangos: |u-0.5| + |v-0.5| = raio (um por repetição)
+    d = np.abs(u - 0.5) * 1.6 + np.abs(v - 0.5)
+    fio = np.maximum(fio, np.clip(1 - np.abs(d - 0.26) / 0.035, 0, 1))
+    fio = np.maximum(fio, np.clip(1 - np.hypot((u - 0.5) * 1.6, v - 0.5) / 0.06, 0, 1))
+    for cx_ in (0.0, 1.0):
+        fio = np.maximum(fio, np.clip(1 - np.hypot((u - cx_) * 1.6, v - 0.5) / 0.045, 0, 1))
+    # pontos de costura junto das bordas
+    pont = ((np.floor(u * 16) % 2) == 0) & ((np.abs(v - 0.03) < 0.012) | (np.abs(v - 0.97) < 0.012))
+    R = np.where(pont, R * 0.72, R)
+    img = np.stack([R, fio, np.zeros_like(R)], -1)
+    Image.fromarray((np.clip(img, 0, 1)[::-1] * 255).astype(np.uint8)).save(caminho)
+    return caminho
+
+
+def textura_costura(caminho, w=32, h=64):
+    """Pesponto: tracinhos claros ao longo da tira (cor da costura vem do jogo)."""
+    y, x = np.mgrid[0:h, 0:w].astype(float)
+    u, v = x / w, y / h
+    traco = (np.abs(u - 0.5) < 0.22) & ((v * 4) % 1 < 0.62)
+    lum = np.where(traco, 1.0, 0.0)
+    a = np.where(traco, 1.0, 0.0)
+    img = np.stack([lum, lum, lum, a], -1)
+    Image.fromarray((img * 255).astype(np.uint8), 'RGBA').save(caminho)
+    return caminho
+
+
+def construir(corpo_c, pesos, ossos, J, mat, saias, S=64, nome_cima='Tunica_cima', feminino=False, poligonos=None, mat_barra=None, mat_costura=None):
     """Túnica completa. corpo_c: coordenadas do corpo em repouso; pesos(nomes) -> pesos por vértice;
     ossos: dict nome -> (cabeça, cauda) em repouso; saias: [(nome, z_barra)].
     Devolve ([objetos], cintura=(cx, cy, rx, ry), z_cinto)."""
@@ -409,6 +521,7 @@ def construir(corpo_c, pesos, ossos, J, mat, saias, S=64, nome_cima='Tunica_cima
     _escala_uv(cima, 2 * math.pi * float(np.mean(r_tr)), 1.0)
 
     # ------------------------------------------------ mangas
+    mangas_aneis = []
     for b in bracos:
         om, u, L, t, dist, braco = b['om'], b['u'], b['L'], b['t'], b['dist'], b['braco']
         ref = np.array([0, -1.0, 0])
@@ -461,6 +574,7 @@ def construir(corpo_c, pesos, ossos, J, mat, saias, S=64, nome_cima='Tunica_cima
             gm.anel(p, v)
             ant = p
         bainha_anel(gm, aneis[-1][0], aneis[-1][1], v0=v, sentido=1, eixo=u)
+        mangas_aneis.append(([p_ for p_, _ in aneis], u, om))
         ob = gm.objeto('manga', ru=1.0)
         orientar(ob, lambda q, om=om, u=u: (q - om) - ((q - om) @ u) * u)
         _escala_uv(ob, 2 * math.pi * float(np.mean(R)) + 0.1, 1.0)
@@ -479,6 +593,7 @@ def construir(corpo_c, pesos, ossos, J, mat, saias, S=64, nome_cima='Tunica_cima
     pecas = [cima]
 
     # ------------------------------------------------ saias
+    saias_aneis = {}
     for nome, z_barra in saias:
         z_top = z_cinto + 0.022
         NZ = max(16, int((z_top - z_barra) / 0.018))
@@ -516,12 +631,78 @@ def construir(corpo_c, pesos, ossos, J, mat, saias, S=64, nome_cima='Tunica_cima
             gs.anel(p, v)
             ant = p
         bainha_anel(gs, aneis[-1], np.array([cx, cy, zz[-1]]), v0=v, sentido=-1, altura=0.018)
+        saias_aneis[nome] = (aneis, zz)
         ob = gs.objeto(nome)
         orientar(ob, lambda q: np.array([q[0] - cx, q[1] - cy, 0.0]))
         _escala_uv(ob, 2 * math.pi * float(np.mean(r_s)), 1.0)
         ob.data.materials.append(mat)
         pecas.append(ob)
-    return pecas, (cx, cy, rx_c, ry_c), z_cinto, r_elip
+
+    # ------------------------------------------------ acabamento costurado (peças próprias, mesma geometria)
+    # gola: faixa bordada a partir da borda do decote; punhos nas mangas; barra bordada em cada saia;
+    # pespontos nas laterais do tronco, das saias e por fora das mangas
+    detalhes = []
+    if mat_barra is not None:
+        def montar(nome, faixas, tiras):
+            vs, fs, us = [], [], []
+            for vv, ff, uu in tiras:
+                b0 = len(vs)
+                vs += vv
+                us += uu
+                fs += [tuple(i + b0 for i in f) for f in ff]
+            obs = list(faixas)
+            if fs:
+                cos = _malha(nome + '_costuras', vs, fs, us)
+                bpy.context.view_layer.objects.active = cos
+                m = cos.modifiers.new('Espessura', 'SOLIDIFY')
+                m.thickness = 0.0006
+                m.offset = -1
+                bpy.ops.object.modifier_apply(modifier=m.name)
+                obs.append(cos)
+            for o in bpy.context.view_layer.objects:
+                o.select_set(False)
+            for o in obs:
+                o.data.materials.clear()
+                o.data.materials.append(mat_barra)
+                o.data.materials.append(mat_costura)
+            for o in obs[len(faixas):]:
+                for pl in o.data.polygons:
+                    pl.material_index = 1
+            bpy.context.view_layer.objects.active = obs[0]
+            for o in obs:
+                o.select_set(True)
+            bpy.ops.object.join()
+            ob_ = bpy.context.view_layer.objects.active
+            ob_.name = nome
+            for pl in ob_.data.polygons:
+                pl.use_smooth = True
+            return ob_
+
+        # tronco: gola (seq[0] é a borda do decote) e costuras laterais da axila ao cinto
+        faixas = [faixa_costurada('gola', seq, 0.0, 3.2 if not feminino else 2.6, n=5, desloc=0.0017)]
+        tiras = []
+        tronco_ini = NC
+        tronco_fim = max(i for i, a in enumerate(seq) if a[:, 2].mean() > z_cinto + 0.035)
+        for i in (S // 4, 3 * S // 4):
+            tiras.append(costura(seq, i, tronco_ini, tronco_fim))
+        for aneis_m, u_m, om_m in mangas_aneis:
+            n_ = len(aneis_m)
+            faixas.append(faixa_costurada('punho', aneis_m, n_ - 1, n_ - 3.2, n=4, desloc=0.0017, eixo=u_m))
+            fora_i = len(aneis_m[0]) // 2 if om_m[0] > cx else 0
+            tiras.append(costura(aneis_m, fora_i, 9, n_ - 4))
+        detalhes.append(montar('Tunica_gola', faixas, tiras))
+        for nome, _ in saias:
+            aneis_s, zz_s = saias_aneis[nome]
+            n_ = len(aneis_s)
+            altura = 0.05 if 'curta' not in nome else 0.04
+            f_fim = n_ - 1 - altura / abs(zz_s[1] - zz_s[0])
+            faixa_b = faixa_costurada('barra', aneis_s, n_ - 1, f_fim, n=5, desloc=0.0018, motivo_cm=0.06)
+            k0 = next(k for k, z in enumerate(zz_s) if z < z_cinto - 0.035)
+            k1 = int(f_fim) - 1
+            tiras_s = [costura(aneis_s, i, k0, k1) for i in (S // 4, 3 * S // 4)]
+            detalhes.append(montar(nome.replace('Tunica_saia', 'Tunica_barra'), [faixa_b], tiras_s))
+    info = {'centro': (cx, cy), 'z_axila': z_axila, 'z_gola': float(np.mean(z_gola)), 'r_gola': r_gola}
+    return pecas, (cx, cy, rx_c, ry_c), z_cinto, r_elip, detalhes, info
 
 
 def _escala_uv(ob, circunferencia, _v, cm=0.12):

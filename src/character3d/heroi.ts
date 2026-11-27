@@ -165,6 +165,42 @@ function tingirRegiao(m: THREE.MeshStandardMaterial, base: string, alvo: string,
   m.customProgramCacheKey = () => 'regiao'
 }
 
+/** Cores da faixa bordada (fundo, fio): a barra do item, ou um tom profundo da túnica puxado para o ocre. */
+export function coresDaBarra(tunica: string, trim?: string): [string, string] {
+  const fundo = trim ?? `#${new THREE.Color(hexShade(tunica, -0.3)).lerp(new THREE.Color('#6e3a1a'), 0.35).getHexString()}`
+  const lf = new THREE.Color(fundo)
+  const l = 0.2126 * lf.r + 0.7152 * lf.g + 0.0722 * lf.b
+  // fio claro sobre fundo escuro; sobre barra já dourada, um ouro mais claro
+  const fio = l > 0.35 ? hexShade(fundo, 0.22) : '#e2bf6e'
+  return [fundo, fio]
+}
+
+/** Linha do pesponto: um pouco mais escura que a túnica clara, mais clara que a túnica escura. */
+export function corDaCostura(tunica: string) {
+  const c = new THREE.Color(tunica)
+  const l = 0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b
+  return hexShade(tunica, l > 0.4 ? -0.22 : 0.2)
+}
+
+/** Faixa bordada: a textura traz o claro-escuro do tecido (R) e o desenho do fio (G). */
+function bordado(m: THREE.MeshStandardMaterial, fundo: string, fio: string) {
+  const u = { uFundo: { value: new THREE.Color(fundo) }, uFio: { value: new THREE.Color(fio) } }
+  m.color.set('#ffffff')
+  m.onBeforeCompile = (sh) => {
+    Object.assign(sh.uniforms, u)
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\nuniform vec3 uFundo; uniform vec3 uFio;')
+      .replace(
+        '#include <map_fragment>',
+        `#ifdef USE_MAP
+        vec4 t = texture2D( map, vMapUv );
+        diffuseColor.rgb = mix( uFundo * t.r, uFio * ( 0.75 + 0.35 * t.r ), clamp( t.g, 0.0, 1.0 ) );
+      #endif`,
+      )
+  }
+  m.customProgramCacheKey = () => 'bordado'
+}
+
 interface Faixas { listra?: string; barra?: string; bainha: number; bordas?: boolean }
 
 /** Tecido com listras e barra bordada desenhadas no shader (pela posição de repouso). */
@@ -238,12 +274,15 @@ export function pecasVisiveis(a: CharacterAppearance): string[] {
   const look = resolveLook(a)
   const acess = look.accessories.map((x) => x.kind)
   const out: string[] = ['Tunica_cima', look.tunic.short ? 'Tunica_saia_curta' : 'Tunica_saia']
+  // acabamento costurado da túnica (modelo modular): gola e punhos bordados, barra da saia em uso
+  out.push('Tunica_gola', look.tunic.short ? 'Tunica_barra_curta' : 'Tunica_barra')
   // rosto (modelo modular): sobrancelhas normais ou marcantes, e sardas
   out.push(look.face === 'marcante' ? 'Sobrancelhas_marcantes' : 'Sobrancelhas')
   if (look.face === 'sardas') out.push('Sardas')
   if (!acess.includes('lenco')) out.push(CABELO[look.hairStyle] ?? 'Cabelo_curto')
   if (look.mantle) out.push(...(MANTO[look.mantle.style] ?? ['Manto']))
   if (look.belt) out.push(CINTO[look.belt.style] ?? 'Cinto_couro')
+  if (look.belt?.buckle) out.push('Cinto_fivela')
   out.push(CALCADO[look.foot.style] ?? 'Sandalia_simples')
   if (look.beard !== 'nenhuma') out.push(look.beard === 'cheia' ? 'Barba_cheia' : 'Barba_curta')
   for (const k of acess) out.push(ACESSORIO[k])
@@ -252,7 +291,8 @@ export function pecasVisiveis(a: CharacterAppearance): string[] {
 
 /** Todas as peças opcionais que o modelo GLB precisa conter. */
 export const PECAS_DO_MODELO = [
-  ...Object.values(CABELO), 'Tunica_cima', 'Tunica_saia', 'Tunica_saia_curta', 'Manto', 'Manto_longo', 'Xale', 'Capuz',
+  ...Object.values(CABELO), 'Tunica_cima', 'Tunica_saia', 'Tunica_saia_curta', 'Tunica_gola', 'Tunica_barra', 'Tunica_barra_curta',
+  'Cinto_fivela', 'Manto', 'Manto_longo', 'Xale', 'Capuz',
   ...Object.values(CINTO), ...Object.values(CALCADO), 'Barba_curta', 'Barba_cheia', ...Object.values(ACESSORIO),
 ]
 
@@ -321,7 +361,7 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
   const mostrar = (nome: string, v: boolean) => meshes.get(nome)?.forEach((m) => (m.visible = v))
   const todos = [...meshes.keys()]
   for (const n of todos) {
-    if (/^(Cabelo_|Tunica_saia|Manto|Xale|Capuz|Cinto_|Sandalia_|Botas|Barba_|Acessorio_|Bolsa|Odre|Lenco|Colar|Sardas|Sobrancelhas_)/.test(n)) mostrar(n, false)
+    if (/^(Cabelo_|Tunica_saia|Tunica_gola|Tunica_barra|Manto|Xale|Capuz|Cinto_|Sandalia_|Botas|Barba_|Acessorio_|Bolsa|Odre|Lenco|Colar|Sardas|Sobrancelhas_)/.test(n)) mostrar(n, false)
   }
 
   const acess = look.accessories.map((x) => x.kind)
@@ -393,7 +433,22 @@ export function buildHero(gltf: GLTF, a: CharacterAppearance, quality: Quality3D
       } else if (n === 'Tunica') {
         m.color.set(look.tunic.color)
         const nome = mesh.userData.peca as string
-        tecidoComFaixas(m, { listra: look.tunic.stripes, barra: look.tunic.trim, bainha: BAINHA[nome] ?? -1 })
+        // no modelo modular a barra é uma peça costurada (Tunica_barra); o shader só faz as listras
+        tecidoComFaixas(m, { listra: look.tunic.stripes, barra: modular ? undefined : look.tunic.trim, bainha: modular ? -1 : BAINHA[nome] ?? -1 })
+      } else if (n === 'Barra') {
+        // faixa bordada da gola, dos punhos e da barra: cor da barra do item (ou um tom profundo da
+        // túnica com ocre) e fio do bordado em ouro claro
+        const [fundo, fio] = coresDaBarra(look.tunic.color, look.tunic.trim)
+        bordado(m, fundo, fio)
+        m.roughness = 0.75
+      } else if (n === 'Costura') {
+        m.color.set(corDaCostura(look.tunic.color))
+        m.alphaTest = 0.5
+        m.transparent = false
+      } else if (n === 'Metal') {
+        m.color.set(look.belt?.buckle ?? '#b08840')
+        m.metalness = 0.7
+        m.roughness = 0.35
       } else if (n === 'Manto' && look.mantle) {
         m.color.set(look.mantle.color)
         const nome = mesh.userData.peca as string

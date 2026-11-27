@@ -141,3 +141,52 @@ describe('expressões do modelo modular', () => {
     for (const e of Object.values(EXPRESSAO_BASE)) for (const v of Object.values(e)) expect(v).toBeLessThanOrEqual(1.3)
   })
 })
+
+describe('acabamento final das roupas', () => {
+  it('a túnica sempre leva gola bordada e a barra da saia em uso; a fivela só no cinto que tem fivela', async () => {
+    const { pecasVisiveis } = await import('../character3d/heroi')
+    const { newAppearance } = await import('../data/character/bases')
+    const { equipItem } = await import('../services/game/items')
+    const a = newAppearance('masculino', 'Tobias')
+    const v = pecasVisiveis(a)
+    expect(v).toContain('Tunica_gola')
+    expect(v.filter((p) => p.startsWith('Tunica_barra'))).toHaveLength(1)
+    expect(pecasVisiveis(equipItem(a, 'cinto-bronze'))).toContain('Cinto_fivela')
+    expect(pecasVisiveis(equipItem(a, 'cinto-couro'))).not.toContain('Cinto_fivela')
+    expect(pecasVisiveis(equipItem(a, 'manto-azul'))).toContain('Manto')
+  })
+
+  it('cores da barra bordada: a barra do item quando existe; senão, um tom profundo da própria túnica', async () => {
+    const { coresDaBarra, corDaCostura } = await import('../character3d/heroi')
+    expect(coresDaBarra('#efe3c4', '#c9a24a')[0]).toBe('#c9a24a')
+    const [fundo, fio] = coresDaBarra('#efe3c4')
+    expect(fundo).toMatch(/^#[0-9a-f]{6}$/)
+    expect(fundo).not.toBe('#efe3c4')
+    expect(fio).not.toBe(fundo)
+    // costura visível sobre túnica clara e escura
+    expect(corDaCostura('#efe3c4')).not.toBe('#efe3c4')
+    expect(corDaCostura('#2b2b44')).not.toBe('#2b2b44')
+  })
+
+  for (const corpo of CORPOS) {
+    it(`${corpo}: gola, barras, fivela e mantos existem no modelo com materiais próprios (bordado, pesponto, metal, lã)`, () => {
+      const j = ler(`public/models/personagem/heroi-${corpo}.glb`)
+      const nomes = new Set(j.materials.map((m) => m.name))
+      for (const n of ['Barra__Tunica_gola', 'Costura__Tunica_gola', 'Barra__Tunica_barra', 'Costura__Tunica_barra', 'Barra__Tunica_barra_curta', 'Metal__Cinto_fivela', 'Manto__Manto', 'Manto__Manto_longo', 'Manto__Xale']) {
+        expect(nomes.has(n), n).toBe(true)
+      }
+      const t = trisPorPeca(j)
+      // detalhes leves: gola e barra custam pouco perto da túnica; mantos dentro do orçamento
+      expect(t.Tunica_gola).toBeLessThan(t.Tunica_cima * 0.5)
+      expect(t.Tunica_barra).toBeLessThan(t.Tunica_saia * 0.5)
+      for (const m of ['Manto', 'Manto_longo', 'Xale']) expect(t[m], m).toBeLessThan(6000)
+      // a barra fica na altura da bainha da saia longa (embaixo) e a gola no alto da túnica
+      const barra = caixa(j, 'Tunica_barra')
+      const saia = caixa(j, 'Tunica_saia')
+      expect(barra.min[1]).toBeLessThan(saia.min[1] + saia.tam[1] * 0.1)
+      const gola = caixa(j, 'Tunica_gola')
+      const cima = caixa(j, 'Tunica_cima')
+      expect(gola.max[1]).toBeGreaterThan(cima.max[1] - cima.tam[1] * 0.1)
+    })
+  }
+})
