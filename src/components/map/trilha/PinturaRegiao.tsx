@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ArteRegiao } from '../../../data/mapas/artes'
-import { inscrever, liberarPintura, pinturaPronta, prepararPintura } from './pinturas'
+import { inscrever, pinturaPronta, prepararPintura, soltarPintura } from './pinturas'
 
 /*
  * Fundo pintado de uma região, com carregamento sob demanda (pinturas.ts).
  * - A miniatura (~2 KB, embutida) está sempre embaixo: a região nunca fica vazia.
- * - A pintura definitiva só entra na página depois de baixada e decodificada; então a
- *   miniatura se esconde (depois que a própria <img> confirma que está pronta para desenhar).
+ * - A pintura definitiva só entra na página depois de baixada, com decoding="sync" (o navegador
+ *   não mostra o quadro dela pela metade); dois quadros depois, a miniatura se esconde.
  * - Trocar a qualidade troca o endereço da mesma <img>: o navegador mantém a imagem anterior
  *   até a nova estar pronta, sem piscar.
  * - Longe da tela (mais de 3 telas), a pintura sai e a miniatura volta.
@@ -29,7 +29,7 @@ export function PinturaRegiao({ regiao, leve }: { regiao: ArteRegiao; leve: bool
 
   useEffect(() => {
     if (!carregar) {
-      if (exibida) liberarPintura(exibida)
+      if (exibida) soltarPintura(exibida)
       setExibida(null)
       setCoberta(false)
       return
@@ -51,11 +51,10 @@ export function PinturaRegiao({ regiao, leve }: { regiao: ArteRegiao; leve: bool
     }
   }, [carregar, url, regiao.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const pronta = (img: HTMLImageElement) => {
-    const cobrir = () => requestAnimationFrame(() => setCoberta(true))
-    if (typeof img.decode === 'function') img.decode().then(cobrir, cobrir)
-    else cobrir()
-  }
+  // decoding="sync": o quadro com a pintura só chega à tela com ela decodificada; dois quadros
+  // depois do carregamento a miniatura já está coberta e pode sair (sem decode(), que forçaria
+  // uma cópia em resolução cheia no cache do navegador).
+  const pronta = () => requestAnimationFrame(() => requestAnimationFrame(() => setCoberta(true)))
 
   return (
     <>
@@ -77,10 +76,10 @@ export function PinturaRegiao({ regiao, leve }: { regiao: ArteRegiao; leve: bool
           height={regiao.altura}
           alt=""
           aria-hidden="true"
-          decoding="async"
+          decoding="sync"
           draggable={false}
           data-regiao={regiao.id}
-          onLoad={(e) => pronta(e.currentTarget)}
+          onLoad={pronta}
         />
       )}
     </>

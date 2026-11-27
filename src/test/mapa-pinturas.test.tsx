@@ -4,8 +4,9 @@ import { ARTE_DILUVIO, ARTE_EDEN, type ArteRegiao } from '../data/mapas/artes'
 import { MINIATURA_DILUVIO, MINIATURA_EDEN } from '../data/mapas/miniaturas'
 import { PinturaRegiao } from '../components/map/trilha/PinturaRegiao'
 import {
-  ESPERA_MAXIMA_ABERTURA_MS, MAX_PINTURAS, aguardarAbertura, avaliar, distanciaEmTelas, escolherCarregadas,
-  limparRegistroParaTestes, pinturaPronta, pinturasNoRegistro, prepararPintura, proximoEstado,
+  ESPERA_MAXIMA_ABERTURA_MS, LIMITE_REGISTRO, MAX_PINTURAS, aguardarAbertura, avaliar, distanciaEmTelas, escolherCarregadas,
+  limparRegistroParaTestes, pinturaPronta, pinturasNoRegistro, prepararPintura, proximoEstado, soltarPintura,
+  trocarCarregadorParaTestes,
 } from '../components/map/trilha/pinturas'
 
 /*
@@ -15,7 +16,20 @@ import {
  * qualidade, abertura do mapa e a miniatura sempre presente.
  */
 
-afterEach(() => limparRegistroParaTestes())
+afterEach(() => {
+  limparRegistroParaTestes()
+  trocarCarregadorParaTestes(null)
+})
+
+/** Simula o navegador baixando as pinturas (o jsdom não carrega imagens). */
+function navegador(comportamento: (url: string) => Promise<void> = () => Promise.resolve()) {
+  const pedidos: string[] = []
+  trocarCarregadorParaTestes((url) => {
+    pedidos.push(url)
+    return { img: null, promessa: comportamento(url) }
+  })
+  return pedidos
+}
 
 describe('distância e estados', () => {
   it('mede a distância em telas até a área visível', () => {
@@ -55,59 +69,62 @@ describe('distância e estados', () => {
 })
 
 describe('registro de pinturas decodificadas', () => {
-  it('cada pintura é pedida uma vez só (sem cópias por visita)', async () => {
-    // o jsdom não tem decode(): um contador faz o papel do navegador
-    let decodificacoes = 0
-    const original = HTMLImageElement.prototype.decode
-    HTMLImageElement.prototype.decode = () => (decodificacoes++, Promise.resolve())
-    try {
-      const a = prepararPintura('eden', ARTE_EDEN.alta)
-      const b = prepararPintura('eden', ARTE_EDEN.alta)
-      await Promise.all([a, b])
-      await prepararPintura('eden', ARTE_EDEN.alta)
-      expect(pinturasNoRegistro()).toEqual([ARTE_EDEN.alta])
-      expect(pinturaPronta(ARTE_EDEN.alta)).toBe(true)
-      expect(decodificacoes).toBe(1)
-    } finally {
-      HTMLImageElement.prototype.decode = original
-    }
+  it('cada pintura é baixada uma vez só (sem cópias por visita)', async () => {
+    const pedidos = navegador()
+    await Promise.all([prepararPintura('eden', ARTE_EDEN.alta), prepararPintura('eden', ARTE_EDEN.alta)])
+    await prepararPintura('eden', ARTE_EDEN.alta)
+    expect(pinturasNoRegistro()).toEqual([ARTE_EDEN.alta])
+    expect(pinturaPronta(ARTE_EDEN.alta)).toBe(true)
+    expect(pedidos).toEqual([ARTE_EDEN.alta])
+  })
+
+  it('a região que sai da página continua referenciada: a volta reaproveita a mesma imagem', async () => {
+    const pedidos = navegador()
+    await prepararPintura('eden', ARTE_EDEN.alta)
+    soltarPintura(ARTE_EDEN.alta)
+    expect(pinturaPronta(ARTE_EDEN.alta)).toBe(true)
+    await prepararPintura('eden', ARTE_EDEN.alta)
+    expect(pedidos).toEqual([ARTE_EDEN.alta])
   })
 
   it('trocar a qualidade descarta a versão anterior da mesma região', async () => {
+    navegador()
     await prepararPintura('eden', ARTE_EDEN.alta)
     await prepararPintura('diluvio', ARTE_DILUVIO.alta)
     await prepararPintura('eden', ARTE_EDEN.leve)
     expect(pinturasNoRegistro().sort()).toEqual([ARTE_DILUVIO.alta, ARTE_EDEN.leve].sort())
   })
 
-  it('guarda no máximo três pinturas (as usadas há mais tempo saem primeiro)', async () => {
-    for (let i = 1; i <= 5; i++) await prepararPintura(`r${i}`, `/mapas/r${i}.webp`)
-    expect(pinturasNoRegistro()).toEqual(['/mapas/r3.webp', '/mapas/r4.webp', '/mapas/r5.webp'])
+  it(`referencia no máximo ${LIMITE_REGISTRO} pinturas; as que saíram da página e foram usadas há mais tempo saem primeiro`, async () => {
+    navegador()
+    for (let i = 1; i <= LIMITE_REGISTRO + 2; i++) {
+      await prepararPintura(`r${i}`, `/mapas/r${i}.webp`)
+      if (i !== 2) soltarPintura(`/mapas/r${i}.webp`) // r2 continua na página
+    }
+    const ficaram = pinturasNoRegistro()
+    expect(ficaram).toHaveLength(LIMITE_REGISTRO)
+    expect(ficaram).toContain('/mapas/r2.webp')
+    expect(ficaram).not.toContain('/mapas/r1.webp')
+    expect(ficaram).not.toContain('/mapas/r3.webp')
   })
 
-  it('arquivo que não decodifica não fica no registro e não trava a abertura', async () => {
-    const original = HTMLImageElement.prototype.decode
-    HTMLImageElement.prototype.decode = () => Promise.reject(new Error('quebrada'))
-    try {
-      await expect(prepararPintura('x', '/mapas/quebrada.webp')).rejects.toThrow()
-      expect(pinturasNoRegistro()).toEqual([])
-      await expect(aguardarAbertura([{ regiao: 'x', url: '/mapas/quebrada.webp' }])).resolves.toBeUndefined()
-    } finally {
-      HTMLImageElement.prototype.decode = original
-    }
+  it('arquivo que não carrega não fica no registro e não trava a abertura', async () => {
+    navegador(() => Promise.reject(new Error('quebrada')))
+    await expect(prepararPintura('x', '/mapas/quebrada.webp')).rejects.toThrow()
+    expect(pinturasNoRegistro()).toEqual([])
+    const alvo = [{ regiao: 'x', url: '/mapas/quebrada.webp' }]
+    const p = aguardarAbertura(alvo)
+    await expect(p).resolves.toBeUndefined()
+    // o mapa refeito pelo React recebe a mesma promessa (já cumprida): nada de pedir o arquivo em laço
+    expect(aguardarAbertura(alvo)).toBe(p)
   })
 })
 
 describe('abertura do mapa', () => {
   it('a abertura prepara no máximo três pinturas (a da fase e as vizinhas)', async () => {
-    const original = HTMLImageElement.prototype.decode
-    HTMLImageElement.prototype.decode = () => Promise.resolve()
-    try {
-      await aguardarAbertura([1, 2, 3, 4, 5].map((n) => ({ regiao: `r${n}`, url: `/mapas/r${n}.webp` })))
-      expect(pinturasNoRegistro()).toEqual(['/mapas/r1.webp', '/mapas/r2.webp', '/mapas/r3.webp'])
-    } finally {
-      HTMLImageElement.prototype.decode = original
-    }
+    navegador()
+    await aguardarAbertura([1, 2, 3, 4, 5].map((n) => ({ regiao: `r${n}`, url: `/mapas/r${n}.webp` })))
+    expect(pinturasNoRegistro()).toEqual(['/mapas/r1.webp', '/mapas/r2.webp', '/mapas/r3.webp'])
   })
 
   it('sem região pintada na fase atual, não espera nada', async () => {
@@ -115,25 +132,20 @@ describe('abertura do mapa', () => {
     expect(p.status).toBe('fulfilled')
   })
 
-  it('espera a pintura da fase atual e devolve sempre a mesma promessa; a segunda visita não espera', async () => {
-    const original = HTMLImageElement.prototype.decode
-    HTMLImageElement.prototype.decode = () => Promise.resolve()
-    try {
-      const alvo = [{ regiao: 'diluvio', url: ARTE_DILUVIO.alta }, { regiao: 'eden', url: ARTE_EDEN.alta }]
-      const p = aguardarAbertura(alvo) as Promise<void> & { status?: string }
-      expect(p.status).toBe('pending')
-      expect(aguardarAbertura(alvo)).toBe(p)
-      await p
-      expect(p.status).toBe('fulfilled')
-      expect(pinturaPronta(ARTE_DILUVIO.alta)).toBe(true)
-      expect(pinturaPronta(ARTE_EDEN.alta)).toBe(true)
-      expect((aguardarAbertura(alvo) as Promise<void> & { status?: string }).status).toBe('fulfilled')
-    } finally {
-      HTMLImageElement.prototype.decode = original
-    }
+  it('espera as pinturas da abertura e devolve sempre a mesma promessa; a segunda visita não espera', async () => {
+    navegador()
+    const alvo = [{ regiao: 'diluvio', url: ARTE_DILUVIO.alta }, { regiao: 'eden', url: ARTE_EDEN.alta }]
+    const p = aguardarAbertura(alvo) as Promise<void> & { status?: string }
+    expect(p.status).toBe('pending')
+    expect(aguardarAbertura(alvo)).toBe(p)
+    await p
+    expect(p.status).toBe('fulfilled')
+    expect(pinturaPronta(ARTE_DILUVIO.alta)).toBe(true)
+    expect(pinturaPronta(ARTE_EDEN.alta)).toBe(true)
+    expect((aguardarAbertura(alvo) as Promise<void> & { status?: string }).status).toBe('fulfilled')
   })
 
-  it('sem decode() no navegador, não segura a abertura (prepara em segundo plano)', async () => {
+  it('sem carregamento de imagens (jsdom), não segura a abertura (prepara em segundo plano)', async () => {
     const p = aguardarAbertura([{ regiao: 'eden', url: ARTE_EDEN.alta }]) as Promise<void> & { status?: string }
     expect(p.status).toBe('fulfilled')
     await waitFor(() => expect(pinturaPronta(ARTE_EDEN.alta)).toBe(true))
@@ -141,14 +153,12 @@ describe('abertura do mapa', () => {
 
   it('nunca espera mais que o limite (a miniatura cobre se a pintura atrasar)', async () => {
     vi.useFakeTimers()
-    const original = HTMLImageElement.prototype.decode
-    HTMLImageElement.prototype.decode = () => new Promise(() => {})
     try {
+      navegador(() => new Promise(() => {}))
       const p = aguardarAbertura([{ regiao: 'lenta', url: '/mapas/lenta.webp' }]) as Promise<void> & { status?: string }
       await vi.advanceTimersByTimeAsync(ESPERA_MAXIMA_ABERTURA_MS + 10)
       expect(p.status).toBe('fulfilled')
     } finally {
-      HTMLImageElement.prototype.decode = original
       vi.useRealTimers()
     }
   })
@@ -182,10 +192,11 @@ describe('PinturaRegiao', () => {
     act(() => avaliar())
     await waitFor(() => expect(container.querySelector('img.tr-arte')).toBeNull())
     expect(container.querySelector('img.tr-miniatura')).not.toBeNull()
-    expect(pinturasNoRegistro()).not.toContain(ARTE_EDEN.alta)
+    // fora da página, mas ainda referenciada para a volta reaproveitar a mesma imagem
+    expect(pinturasNoRegistro()).toContain(ARTE_EDEN.alta)
   })
 
-  it('pintura já pronta (volta ao mapa) aparece já na primeira renderização, sem decodificar de novo', async () => {
+  it('pintura já pronta (volta ao mapa) aparece já na primeira renderização, sem baixar de novo', async () => {
     await prepararPintura('eden', ARTE_EDEN.leve)
     const { container } = render(<PinturaRegiao regiao={regiao} leve />)
     expect(container.querySelector('img.tr-arte')?.getAttribute('src')).toBe(ARTE_EDEN.leve)
