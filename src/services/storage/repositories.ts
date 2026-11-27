@@ -25,7 +25,10 @@ export interface SettingsRepository {
   save(settings: Settings): void
 }
 
-export const STORAGE_PREFIX = 'bible-quest:v1:'
+// A prévia de desenvolvimento fica no mesmo domínio do site oficial (theuzxl13-oss.github.io),
+// que divide o armazenamento do navegador: lá os dados usam outro prefixo e nunca tocam o
+// progresso salvo pelo site oficial. No site e no aplicativo, __PREVIA__ é false.
+export const STORAGE_PREFIX = __PREVIA__ ? 'bible-quest-previa:v1:' : 'bible-quest:v1:'
 const KEYS = {
   profile: `${STORAGE_PREFIX}profile`,
   progress: `${STORAGE_PREFIX}progress`,

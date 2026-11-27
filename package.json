@@ -8,6 +8,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:android": "tsc -b && vite build --mode android",
+    "build:previa": "tsc -b && vite build --mode previa",
     "android:sync": "npm run build:android && cap sync android",
     "preview": "vite preview",
     "typecheck": "tsc -b",

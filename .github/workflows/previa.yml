@@ -1,0 +1,106 @@
+name: Prévia de desenvolvimento (site separado do oficial)
+
+# PRÉVIA do Bible Quest, para aprovar mudanças antes de qualquer publicação oficial.
+# Plano completo: docs/relatorios/PREVIA_DESENVOLVIMENTO.md
+#
+# - Roda a cada push na branch de desenvolvimento (e à mão). Não precisa de merge no main.
+# - Gera a versão de prévia (`npm run build:previa`): o mesmo jogo, com título "Bible Quest —
+#   Prévia de desenvolvimento", sem indexação em buscadores e com os dados salvos em outro
+#   prefixo (bible-quest-previa:v1:), para nunca tocar o progresso do site oficial.
+# - Publica no REPOSITÓRIO DA PRÉVIA (variável PREVIA_REPOSITORIO; padrão
+#   theuzxl13-oss/bible-quest-previa), que tem o próprio GitHub Pages:
+#   https://theuzxl13-oss.github.io/bible-quest-previa/
+# - NÃO toca o site oficial: o GitHub Pages DESTE repositório continua sendo publicado só pelo
+#   deploy.yml, a partir do main. Este fluxo não pede a permissão "pages" deste repositório.
+# - A publicação usa a chave de implantação PREVIA_DEPLOY_KEY (segredo), que só dá acesso de
+#   escrita ao repositório da prévia. Sem ela, o fluxo verifica, gera o pacote como artefato e
+#   avisa o que falta, sem falhar.
+
+on:
+  push:
+    branches: ['claude/bible-quest-android']
+    paths-ignore:
+      - 'docs/**'
+      - '**/*.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: previa
+  cancel-in-progress: true
+
+env:
+  PREVIA_REPOSITORIO: ${{ vars.PREVIA_REPOSITORIO || 'theuzxl13-oss/bible-quest-previa' }}
+
+jobs:
+  previa:
+    name: Verificar, gerar e publicar a prévia
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+
+      - name: Gerar a prévia
+        run: npm run build:previa
+
+      - name: Conferir o pacote da prévia
+        run: |
+          set -e
+          test -f dist/index.html
+          test -f dist/previa.json
+          grep -q '<title>Bible Quest — Prévia de desenvolvimento</title>' dist/index.html
+          grep -q 'name="robots" content="noindex, nofollow"' dist/index.html
+          grep -q "name=\"bq-previa\" content=\"${GITHUB_SHA}\"" dist/index.html
+          grep -q 'src="./assets/' dist/index.html
+          ls dist/models/personagem/*.glb dist/mapas/genesis/*.webp > /dev/null
+          # os dados da prévia ficam separados dos do site oficial
+          grep -q 'bible-quest-previa:v1:' dist/assets/*.js
+          if grep -q 'bible-quest:v1:' dist/assets/*.js; then echo "::error::a prévia usaria o mesmo armazenamento do site oficial"; exit 1; fi
+          # GitHub Pages sem Jekyll (arquivos e pastas como estão)
+          touch dist/.nojekyll
+          cat dist/previa.json
+
+      - name: Pacote da prévia como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: bible-quest-previa
+          path: dist
+          include-hidden-files: true
+          retention-days: 7
+
+      - name: Publicar no repositório da prévia
+        env:
+          CHAVE: ${{ secrets.PREVIA_DEPLOY_KEY }}
+        run: |
+          set -e
+          if [ -z "$CHAVE" ]; then
+            echo "::notice::Prévia gerada, mas não publicada: falta o segredo PREVIA_DEPLOY_KEY (ver docs/relatorios/PREVIA_DESENVOLVIMENTO.md). O pacote está no artefato 'bible-quest-previa'."
+            exit 0
+          fi
+          case "$PREVIA_REPOSITORIO" in
+            "$GITHUB_REPOSITORY") echo "::error::o repositório da prévia não pode ser o do site oficial"; exit 1 ;;
+          esac
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$CHAVE" > ~/.ssh/previa && chmod 600 ~/.ssh/previa
+          ssh-keyscan -t ed25519,rsa github.com >> ~/.ssh/known_hosts 2>/dev/null
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/previa -o IdentitiesOnly=yes"
+          cd dist
+          git init -q -b main
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          # um único commit por publicação (histórico substituído): o repositório da prévia não cresce
+          git commit -q -m "Prévia de ${GITHUB_REPOSITORY}@${GITHUB_SHA::7} (branch ${GITHUB_REF_NAME}, execução ${GITHUB_RUN_ID})"
+          git push -q --force "git@github.com:${PREVIA_REPOSITORIO}.git" main
+          rm -f ~/.ssh/previa
+          OWNER="${PREVIA_REPOSITORIO%%/*}"; NOME="${PREVIA_REPOSITORIO#*/}"
+          echo "::notice::Prévia publicada: https://${OWNER,,}.github.io/${NOME}/ (commit ${GITHUB_SHA::7}; o GitHub Pages leva ~1 minuto para atualizar)"

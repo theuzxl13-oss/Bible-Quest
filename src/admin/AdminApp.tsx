@@ -39,7 +39,7 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'estatisticas', label: 'Estatísticas' },
 ]
 
-const ACK_KEY = 'bible-quest:admin-ack'
+const ACK_KEY = __PREVIA__ ? 'bible-quest-previa:admin-ack' : 'bible-quest:admin-ack'
 
 function readAck(): boolean {
   try {
