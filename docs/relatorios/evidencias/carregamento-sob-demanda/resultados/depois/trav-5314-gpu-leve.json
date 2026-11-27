@@ -1,0 +1,101 @@
+{
+ "raster": "gpu",
+ "qualidade": "leve",
+ "passos": [
+  {
+   "passo": "A-mapa-aberto",
+   "pinturas_na_pagina": 4,
+   "regioes": "sim4,sim3,diluvio,eden",
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 6.73,
+   "total_imagens": 11.78,
+   "entradas_pagina": [
+    1.26,
+    1.26,
+    1.26,
+    1.26,
+    0.03
+   ],
+   "entradas_gpu": [
+    1.67,
+    1.67,
+    1.67,
+    1.67,
+    0.03
+   ],
+   "travada_pagina": 0
+  },
+  {
+   "passo": "B-4-regioes-percorridas-ida-e-volta",
+   "pinturas_na_pagina": 4,
+   "regioes": "sim4,sim3,diluvio,eden",
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 6.73,
+   "total_imagens": 11.78,
+   "entradas_pagina": [
+    1.26,
+    1.26,
+    1.26,
+    1.26,
+    0.03
+   ],
+   "entradas_gpu": [
+    1.67,
+    1.67,
+    1.67,
+    1.67,
+    0.03
+   ],
+   "travada_pagina": 0
+  },
+  {
+   "passo": "C-topo-da-pagina",
+   "pinturas_na_pagina": 4,
+   "regioes": "sim4,sim3,diluvio,eden",
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 6.73,
+   "total_imagens": 11.78,
+   "entradas_pagina": [
+    1.26,
+    1.26,
+    1.26,
+    1.26,
+    0.03
+   ],
+   "entradas_gpu": [
+    1.67,
+    1.67,
+    1.67,
+    1.67,
+    0.03
+   ],
+   "travada_pagina": 0
+  },
+  {
+   "passo": "D-apos-pressao-critica",
+   "pinturas_na_pagina": 4,
+   "regioes": "sim4,sim3,diluvio,eden",
+   "renderer_imagens": 5.05,
+   "gpu_transfer": 0,
+   "total_imagens": 5.05,
+   "entradas_pagina": [
+    1.26,
+    1.26,
+    1.26,
+    1.26,
+    0.03
+   ],
+   "entradas_gpu": [],
+   "travada_pagina": 0
+  }
+ ],
+ "pinturas_na_pagina_a_cada_parada": [
+  4,
+  4,
+  4,
+  4,
+  4,
+  4,
+  4
+ ]
+}

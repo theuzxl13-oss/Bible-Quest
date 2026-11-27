@@ -1,0 +1,252 @@
+{
+ "qualidade": "alta",
+ "cpu": 4,
+ "abertura_fria": [
+  {
+   "carregou_ms": 10875,
+   "decodificou_ms": 10930,
+   "primeiro_quadro_ms": 10948,
+   "decodificacoes": {
+    "Decode Image": {
+     "n": 21,
+     "media": 12.8,
+     "mediana": 3.2,
+     "p95": 37.5,
+     "max": 150.4
+    },
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 21,
+     "mediana": 21.5,
+     "p95": 21.5,
+     "max": 21.5
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 21,
+     "mediana": 21.5,
+     "p95": 21.5,
+     "max": 21.5
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 20.6,
+     "mediana": 21.1,
+     "p95": 21.1,
+     "max": 21.1
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 13875,
+   "decodificou_ms": 13948,
+   "primeiro_quadro_ms": 14348,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 16.5,
+     "mediana": 24,
+     "p95": 24.7,
+     "max": 24.7
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 16.5,
+     "mediana": 24,
+     "p95": 24.7,
+     "max": 24.7
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 16.2,
+     "mediana": 23.7,
+     "p95": 24.6,
+     "max": 24.6
+    },
+    "Decode Image": {
+     "n": 1,
+     "media": 0.2,
+     "mediana": 0.2,
+     "p95": 0.2,
+     "max": 0.2
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 13140,
+   "decodificou_ms": 13230,
+   "primeiro_quadro_ms": 13739,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 25.6,
+     "mediana": 32.9,
+     "p95": 39.4,
+     "max": 39.4
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 25.6,
+     "mediana": 32.9,
+     "p95": 39.3,
+     "max": 39.3
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 24,
+     "mediana": 32.6,
+     "p95": 39.3,
+     "max": 39.3
+    },
+    "Decode Image": {
+     "n": 1,
+     "media": 0.2,
+     "mediana": 0.2,
+     "p95": 0.2,
+     "max": 0.2
+    }
+   },
+   "por_url": {}
+  }
+ ],
+ "abertura_quente": [
+  {
+   "carregou_ms": 12642,
+   "decodificou_ms": 12702,
+   "primeiro_quadro_ms": 12733,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 12906,
+   "decodificou_ms": 12936,
+   "primeiro_quadro_ms": 12954,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 12504,
+   "decodificou_ms": 12569,
+   "primeiro_quadro_ms": 12585,
+   "decodificacoes": {},
+   "por_url": {}
+  }
+ ],
+ "rolagem": {
+  "quadros": {
+   "n": 542,
+   "media": 16.7,
+   "mediana": 16.7,
+   "p95": 16.7,
+   "max": 33.3
+  },
+  "acima_33ms": 0,
+  "acima_50ms": 0,
+  "tarefas_longas": {
+   "n": 0,
+   "media": 0,
+   "mediana": null,
+   "p95": null,
+   "max": null
+  },
+  "altura_pagina": 4187,
+  "decodificacoes": {},
+  "por_url": {}
+ },
+ "toques": {
+  "janela": {
+   "n": 8,
+   "media": 188.9,
+   "mediana": 209,
+   "p95": 240,
+   "max": 240
+  },
+  "sem_janela": [
+   "gn-diluvio",
+   "gn-alianca-noe"
+  ],
+  "eventos": {
+   "n": 148,
+   "media": 39.3,
+   "mediana": 24,
+   "p95": 120,
+   "max": 240
+  },
+  "detalhes": [
+   {
+    "id": "gn-corrupcao",
+    "ms_ate_janela": 219,
+    "abriu": true
+   },
+   {
+    "id": "gn-noe",
+    "ms_ate_janela": 136,
+    "abriu": true
+   },
+   {
+    "id": "gn-arca",
+    "ms_ate_janela": 240,
+    "abriu": true
+   },
+   {
+    "id": "gn-diluvio",
+    "ms_ate_janela": 5028,
+    "abriu": false
+   },
+   {
+    "id": "gn-alianca-noe",
+    "ms_ate_janela": 5013,
+    "abriu": false
+   },
+   {
+    "id": "gn-criacao",
+    "ms_ate_janela": 209,
+    "abriu": true
+   },
+   {
+    "id": "gn-homem-mulher",
+    "ms_ate_janela": 213,
+    "abriu": true
+   },
+   {
+    "id": "gn-eden",
+    "ms_ate_janela": 175,
+    "abriu": true
+   },
+   {
+    "id": "gn-queda",
+    "ms_ate_janela": 153,
+    "abriu": true
+   },
+   {
+    "id": "gn-caim-abel",
+    "ms_ate_janela": 166,
+    "abriu": true
+   }
+  ]
+ },
+ "decodificacao_isolada": {
+  "eden": {
+   "mediana_ms": 32.4,
+   "min_ms": 29.5,
+   "max_ms": 40.4
+  },
+  "eden-leve": {
+   "mediana_ms": 15.7,
+   "min_ms": 13.8,
+   "max_ms": 20.1
+  },
+  "diluvio": {
+   "mediana_ms": 62,
+   "min_ms": 46.1,
+   "max_ms": 81.5
+  },
+  "diluvio-leve": {
+   "mediana_ms": 24.6,
+   "min_ms": 15,
+   "max_ms": 43.7
+  }
+ }
+}

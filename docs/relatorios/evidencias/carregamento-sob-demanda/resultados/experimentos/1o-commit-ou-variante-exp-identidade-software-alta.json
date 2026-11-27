@@ -1,0 +1,47 @@
+{
+ "raster": "software",
+ "qualidade": "alta",
+ "passos": [
+  {
+   "passo": "A-mapa-aberto",
+   "pinturas_na_pagina": 3,
+   "regioes": "sim3,diluvio,eden",
+   "renderer_imagens": 35.07,
+   "gpu_transfer": 0,
+   "total_imagens": 35.07
+  },
+  {
+   "passo": "B-4-regioes-percorridas-ida-e-volta",
+   "pinturas_na_pagina": 3,
+   "regioes": "sim3,diluvio,eden",
+   "renderer_imagens": 46.72,
+   "gpu_transfer": 0,
+   "total_imagens": 46.72
+  },
+  {
+   "passo": "C-topo-da-pagina",
+   "pinturas_na_pagina": 3,
+   "regioes": "sim4,sim3,diluvio",
+   "renderer_imagens": 46.72,
+   "gpu_transfer": 0,
+   "total_imagens": 46.72
+  },
+  {
+   "passo": "D-apos-pressao-critica",
+   "pinturas_na_pagina": 3,
+   "regioes": "sim4,sim3,diluvio",
+   "renderer_imagens": 46.72,
+   "gpu_transfer": 0,
+   "total_imagens": 46.72
+  }
+ ],
+ "pinturas_na_pagina_a_cada_parada": [
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3
+ ]
+}

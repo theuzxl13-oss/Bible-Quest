@@ -1,0 +1,231 @@
+{
+ "qualidade": "2d",
+ "cpu": 4,
+ "abertura_fria": [
+  {
+   "carregou_ms": 545,
+   "decodificou_ms": 612,
+   "primeiro_quadro_ms": 945,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 4,
+     "media": 13.7,
+     "mediana": 25.8,
+     "p95": 28.3,
+     "max": 28.3
+    },
+    "ImageDecodeTask": {
+     "n": 4,
+     "media": 13.6,
+     "mediana": 25.7,
+     "p95": 28.3,
+     "max": 28.3
+    },
+    "Decode LazyPixelRef": {
+     "n": 4,
+     "media": 12.8,
+     "mediana": 25.2,
+     "p95": 25.7,
+     "max": 25.7
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 393,
+   "decodificou_ms": 509,
+   "primeiro_quadro_ms": 581,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 28.4,
+     "mediana": 31.7,
+     "p95": 31.7,
+     "max": 31.7
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 28.3,
+     "mediana": 31.7,
+     "p95": 31.7,
+     "max": 31.7
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 27.8,
+     "mediana": 31.4,
+     "p95": 31.4,
+     "max": 31.4
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 406,
+   "decodificou_ms": 507,
+   "primeiro_quadro_ms": 541,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 2,
+     "media": 30.4,
+     "mediana": 38.3,
+     "p95": 38.3,
+     "max": 38.3
+    },
+    "ImageDecodeTask": {
+     "n": 2,
+     "media": 30.3,
+     "mediana": 38.3,
+     "p95": 38.3,
+     "max": 38.3
+    },
+    "Decode LazyPixelRef": {
+     "n": 2,
+     "media": 28.9,
+     "mediana": 36.7,
+     "p95": 36.7,
+     "max": 36.7
+    }
+   },
+   "por_url": {}
+  }
+ ],
+ "abertura_quente": [
+  {
+   "carregou_ms": 197,
+   "decodificou_ms": 200,
+   "primeiro_quadro_ms": 235,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 221,
+   "decodificou_ms": 223,
+   "primeiro_quadro_ms": 249,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 193,
+   "decodificou_ms": 195,
+   "primeiro_quadro_ms": 246,
+   "decodificacoes": {},
+   "por_url": {}
+  }
+ ],
+ "rolagem": {
+  "quadros": {
+   "n": 544,
+   "media": 16.6,
+   "mediana": 16.7,
+   "p95": 16.8,
+   "max": 33.3
+  },
+  "acima_33ms": 0,
+  "acima_50ms": 0,
+  "tarefas_longas": {
+   "n": 0,
+   "media": 0,
+   "mediana": null,
+   "p95": null,
+   "max": null
+  },
+  "altura_pagina": 4187,
+  "decodificacoes": {},
+  "por_url": {}
+ },
+ "toques": {
+  "janela": {
+   "n": 8,
+   "media": 179.6,
+   "mediana": 188,
+   "p95": 223,
+   "max": 223
+  },
+  "sem_janela": [
+   "gn-diluvio",
+   "gn-alianca-noe"
+  ],
+  "eventos": {
+   "n": 128,
+   "media": 37.5,
+   "mediana": 32,
+   "p95": 120,
+   "max": 240
+  },
+  "detalhes": [
+   {
+    "id": "gn-corrupcao",
+    "ms_ate_janela": 209,
+    "abriu": true
+   },
+   {
+    "id": "gn-noe",
+    "ms_ate_janela": 146,
+    "abriu": true
+   },
+   {
+    "id": "gn-arca",
+    "ms_ate_janela": 139,
+    "abriu": true
+   },
+   {
+    "id": "gn-diluvio",
+    "ms_ate_janela": 5027,
+    "abriu": false
+   },
+   {
+    "id": "gn-alianca-noe",
+    "ms_ate_janela": 5011,
+    "abriu": false
+   },
+   {
+    "id": "gn-criacao",
+    "ms_ate_janela": 203,
+    "abriu": true
+   },
+   {
+    "id": "gn-homem-mulher",
+    "ms_ate_janela": 171,
+    "abriu": true
+   },
+   {
+    "id": "gn-eden",
+    "ms_ate_janela": 188,
+    "abriu": true
+   },
+   {
+    "id": "gn-queda",
+    "ms_ate_janela": 223,
+    "abriu": true
+   },
+   {
+    "id": "gn-caim-abel",
+    "ms_ate_janela": 158,
+    "abriu": true
+   }
+  ]
+ },
+ "decodificacao_isolada": {
+  "eden": {
+   "mediana_ms": 66.4,
+   "min_ms": 52.5,
+   "max_ms": 67.1
+  },
+  "eden-leve": {
+   "mediana_ms": 57.3,
+   "min_ms": 36.1,
+   "max_ms": 96.5
+  },
+  "diluvio": {
+   "mediana_ms": 32.9,
+   "min_ms": 29.9,
+   "max_ms": 50.5
+  },
+  "diluvio-leve": {
+   "mediana_ms": 28.8,
+   "min_ms": 27.4,
+   "max_ms": 29.6
+  }
+ }
+}

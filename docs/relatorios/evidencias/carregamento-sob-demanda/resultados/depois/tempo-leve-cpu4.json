@@ -1,0 +1,252 @@
+{
+ "qualidade": "leve",
+ "cpu": 4,
+ "abertura_fria": [
+  {
+   "carregou_ms": 7408,
+   "decodificou_ms": 7492,
+   "primeiro_quadro_ms": 7863,
+   "decodificacoes": {
+    "Decode Image": {
+     "n": 22,
+     "media": 5.1,
+     "mediana": 1.4,
+     "p95": 10.9,
+     "max": 78.4
+    },
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 6.3,
+     "mediana": 8.1,
+     "p95": 9.7,
+     "max": 9.7
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 6.3,
+     "mediana": 8.1,
+     "p95": 9.6,
+     "max": 9.6
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 6,
+     "mediana": 8,
+     "p95": 9.6,
+     "max": 9.6
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 2003,
+   "decodificou_ms": 2038,
+   "primeiro_quadro_ms": 2072,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 6,
+     "mediana": 8.3,
+     "p95": 8.8,
+     "max": 8.8
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 5.9,
+     "mediana": 8.3,
+     "p95": 8.8,
+     "max": 8.8
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 5.8,
+     "mediana": 8.3,
+     "p95": 8.8,
+     "max": 8.8
+    },
+    "Decode Image": {
+     "n": 1,
+     "media": 0.2,
+     "mediana": 0.2,
+     "p95": 0.2,
+     "max": 0.2
+    }
+   },
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 2458,
+   "decodificou_ms": 2503,
+   "primeiro_quadro_ms": 2538,
+   "decodificacoes": {
+    "GpuImageDecodeTaskImpl::RunOnWorkerThread": {
+     "n": 3,
+     "media": 5.7,
+     "mediana": 7.3,
+     "p95": 8.9,
+     "max": 8.9
+    },
+    "ImageDecodeTask": {
+     "n": 3,
+     "media": 5.7,
+     "mediana": 7.3,
+     "p95": 8.9,
+     "max": 8.9
+    },
+    "Decode LazyPixelRef": {
+     "n": 3,
+     "media": 5.5,
+     "mediana": 7.2,
+     "p95": 8.9,
+     "max": 8.9
+    },
+    "Decode Image": {
+     "n": 1,
+     "media": 0.4,
+     "mediana": 0.4,
+     "p95": 0.4,
+     "max": 0.4
+    }
+   },
+   "por_url": {}
+  }
+ ],
+ "abertura_quente": [
+  {
+   "carregou_ms": 7209,
+   "decodificou_ms": 7271,
+   "primeiro_quadro_ms": 7332,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 7033,
+   "decodificou_ms": 7089,
+   "primeiro_quadro_ms": 7105,
+   "decodificacoes": {},
+   "por_url": {}
+  },
+  {
+   "carregou_ms": 4882,
+   "decodificou_ms": 4932,
+   "primeiro_quadro_ms": 4959,
+   "decodificacoes": {},
+   "por_url": {}
+  }
+ ],
+ "rolagem": {
+  "quadros": {
+   "n": 542,
+   "media": 16.7,
+   "mediana": 16.7,
+   "p95": 16.7,
+   "max": 33.3
+  },
+  "acima_33ms": 0,
+  "acima_50ms": 0,
+  "tarefas_longas": {
+   "n": 0,
+   "media": 0,
+   "mediana": null,
+   "p95": null,
+   "max": null
+  },
+  "altura_pagina": 4187,
+  "decodificacoes": {},
+  "por_url": {}
+ },
+ "toques": {
+  "janela": {
+   "n": 8,
+   "media": 181.3,
+   "mediana": 175,
+   "p95": 253,
+   "max": 253
+  },
+  "sem_janela": [
+   "gn-diluvio",
+   "gn-alianca-noe"
+  ],
+  "eventos": {
+   "n": 238,
+   "media": 32.4,
+   "mediana": 16,
+   "p95": 88,
+   "max": 272
+  },
+  "detalhes": [
+   {
+    "id": "gn-corrupcao",
+    "ms_ate_janela": 253,
+    "abriu": true
+   },
+   {
+    "id": "gn-noe",
+    "ms_ate_janela": 143,
+    "abriu": true
+   },
+   {
+    "id": "gn-arca",
+    "ms_ate_janela": 175,
+    "abriu": true
+   },
+   {
+    "id": "gn-diluvio",
+    "ms_ate_janela": 5044,
+    "abriu": false
+   },
+   {
+    "id": "gn-alianca-noe",
+    "ms_ate_janela": 5025,
+    "abriu": false
+   },
+   {
+    "id": "gn-criacao",
+    "ms_ate_janela": 194,
+    "abriu": true
+   },
+   {
+    "id": "gn-homem-mulher",
+    "ms_ate_janela": 171,
+    "abriu": true
+   },
+   {
+    "id": "gn-eden",
+    "ms_ate_janela": 182,
+    "abriu": true
+   },
+   {
+    "id": "gn-queda",
+    "ms_ate_janela": 165,
+    "abriu": true
+   },
+   {
+    "id": "gn-caim-abel",
+    "ms_ate_janela": 167,
+    "abriu": true
+   }
+  ]
+ },
+ "decodificacao_isolada": {
+  "eden": {
+   "mediana_ms": 45.3,
+   "min_ms": 29.1,
+   "max_ms": 61.7
+  },
+  "eden-leve": {
+   "mediana_ms": 10.5,
+   "min_ms": 9.5,
+   "max_ms": 16.7
+  },
+  "diluvio": {
+   "mediana_ms": 27.9,
+   "min_ms": 25.7,
+   "max_ms": 32.8
+  },
+  "diluvio-leve": {
+   "mediana_ms": 22.9,
+   "min_ms": 17.1,
+   "max_ms": 27.9
+  }
+ }
+}

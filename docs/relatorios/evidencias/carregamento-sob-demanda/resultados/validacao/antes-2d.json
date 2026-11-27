@@ -1,0 +1,506 @@
+{
+ "porta": "5310",
+ "qualidade": "2d",
+ "fases": 7,
+ "abertura": {
+  "quadros_do_mapa_observados": 121,
+  "quadros_com_miniatura_na_tela": 0,
+  "quadros_sem_nada_na_tela": 0,
+  "quadros_antes_do_mapa": 2,
+  "quadros_vazios": 0,
+  "ms_ate_mapa": 77,
+  "primeiro_quadro": [
+   {
+    "id": "diluvio",
+    "topo": 2465.265625,
+    "base": 3326.265625,
+    "naTela": false,
+    "arte": true,
+    "arteOk": true,
+    "miniVisivel": false,
+    "miniOk": false
+   },
+   {
+    "id": "eden",
+    "topo": 3326.265625,
+    "base": 4187.265625,
+    "naTela": false,
+    "arte": true,
+    "arteOk": true,
+    "miniVisivel": false,
+    "miniOk": false
+   }
+  ],
+  "quadros": [
+   {
+    "t": 77,
+    "regs": "diluvio:fora:pintura eden:fora:pintura"
+   },
+   {
+    "t": 105,
+    "regs": "diluvio:fora:pintura eden:fora:pintura"
+   },
+   {
+    "t": 118,
+    "regs": "diluvio:fora:pintura eden:fora:pintura"
+   },
+   {
+    "t": 465,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 512,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 520,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 569,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 580,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 606,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 613,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 630,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 647,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 664,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 680,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 697,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 713,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 730,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 747,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 763,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 780,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 797,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 813,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 830,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 847,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 863,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 880,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 897,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 913,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 930,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   },
+   {
+    "t": 946,
+    "regs": "diluvio:tela:pintura eden:tela:pintura"
+   }
+  ]
+ },
+ "marcos": [
+  {
+   "id": "ex-salvo",
+   "x": 259.33,
+   "y": 875.82,
+   "rotulo": "Fase 21: Moisés, salvo das águas. Bloqueada"
+  },
+  {
+   "id": "ex-sarca",
+   "x": 316.42,
+   "y": 768.71,
+   "rotulo": "Fase 22: A sarça ardente. Bloqueada"
+  },
+  {
+   "id": "ex-pragas",
+   "x": 281.13,
+   "y": 661.59,
+   "rotulo": "Fase 23: As pragas e a Páscoa. Bloqueada"
+  },
+  {
+   "id": "ex-mar-sinai",
+   "x": 182.97,
+   "y": 554.48,
+   "rotulo": "Fase 24: O mar e o monte Sinai. Bloqueada"
+  },
+  {
+   "id": "bau-mundo-exodo-4",
+   "x": 104.08,
+   "y": 487.67,
+   "rotulo": "Baú bloqueado: conclua as fases anteriores"
+  },
+  {
+   "id": "gn-babel",
+   "x": 259.33,
+   "y": 2301.34,
+   "rotulo": "Fase 11: A torre de Babel. Bloqueada"
+  },
+  {
+   "id": "gn-chamado-abraao",
+   "x": 316.42,
+   "y": 2194.21,
+   "rotulo": "Fase 12: O chamado de Abraão. Bloqueada"
+  },
+  {
+   "id": "gn-abraao-lo",
+   "x": 281.13,
+   "y": 2087.1,
+   "rotulo": "Fase 13: Abraão e Ló. Bloqueada"
+  },
+  {
+   "id": "gn-promessa",
+   "x": 182.97,
+   "y": 1979.98,
+   "rotulo": "Fase 14: A promessa de Deus. Bloqueada"
+  },
+  {
+   "id": "gn-isaque",
+   "x": 104.08,
+   "y": 1872.85,
+   "rotulo": "Fase 15: Isaque, o filho da promessa. Bloqueada"
+  },
+  {
+   "id": "bau-mundo-genesis-15",
+   "x": 110.44,
+   "y": 1806.06,
+   "rotulo": "Baú bloqueado: conclua as fases anteriores"
+  },
+  {
+   "id": "gn-jaco-esau",
+   "x": 196.75,
+   "y": 1658.62,
+   "rotulo": "Fase 16: Jacó e Esaú. Bloqueada"
+  },
+  {
+   "id": "gn-jaco-familia",
+   "x": 290.78,
+   "y": 1551.51,
+   "rotulo": "Fase 17: Jacó e sua família. Bloqueada"
+  },
+  {
+   "id": "gn-jose-sonhos",
+   "x": 313.88,
+   "y": 1444.38,
+   "rotulo": "Fase 18: José e seus irmãos. Bloqueada"
+  },
+  {
+   "id": "gn-jose-egito",
+   "x": 246.72,
+   "y": 1337.26,
+   "rotulo": "Fase 19: José no Egito. Bloqueada"
+  },
+  {
+   "id": "gn-jose-perdao",
+   "x": 145.47,
+   "y": 1230.15,
+   "rotulo": "Fase 20: José: reencontro e perdão. Bloqueada"
+  },
+  {
+   "id": "bau-mundo-genesis-20",
+   "x": 94.88,
+   "y": 1163.34,
+   "rotulo": "Baú bloqueado: conclua as fases anteriores"
+  },
+  {
+   "id": "gn-corrupcao",
+   "x": 162.19,
+   "y": 3173.99,
+   "rotulo": "Fase 6: A corrupção da humanidade. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "gn-noe",
+   "x": 254.19,
+   "y": 3047.45,
+   "rotulo": "Fase 7: Noé, um homem justo. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "gn-arca",
+   "x": 151.22,
+   "y": 2942.66,
+   "rotulo": "Fase 8: A construção da arca. Fase atual"
+  },
+  {
+   "id": "gn-diluvio",
+   "x": 249.8,
+   "y": 2824.96,
+   "rotulo": "Fase 9: O dilúvio. Bloqueada"
+  },
+  {
+   "id": "gn-alianca-noe",
+   "x": 162.19,
+   "y": 2697.91,
+   "rotulo": "Fase 10: A aliança com Noé. Bloqueada"
+  },
+  {
+   "id": "bau-mundo-genesis-10",
+   "x": 267.33,
+   "y": 2597.22,
+   "rotulo": "Baú bloqueado: conclua as fases anteriores"
+  },
+  {
+   "id": "gn-criacao",
+   "x": 241.05,
+   "y": 4052.54,
+   "rotulo": "Fase 1: A criação do mundo. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "gn-homem-mulher",
+   "x": 131.52,
+   "y": 3919.57,
+   "rotulo": "Fase 2: A criação do homem e da mulher. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "gn-eden",
+   "x": 262.95,
+   "y": 3778.4,
+   "rotulo": "Fase 3: O jardim do Éden. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "gn-queda",
+   "x": 166.56,
+   "y": 3646.9,
+   "rotulo": "Fase 4: A queda. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "gn-caim-abel",
+   "x": 271.7,
+   "y": 3543.38,
+   "rotulo": "Fase 5: Caim e Abel. Concluída, 3 de 3 estrelas"
+  },
+  {
+   "id": "bau-mundo-genesis-5",
+   "x": 140.28,
+   "y": 3489.33,
+   "rotulo": "Baú já aberto"
+  }
+ ],
+ "emenda_px": 0,
+ "altura_pagina": 4187,
+ "rolagem": {
+  "normal": {
+   "quadros": 432,
+   "max_pinturas": 2,
+   "quadros_com_miniatura_na_tela": 0,
+   "quadros_sem_nada": 0,
+   "emenda_na_tela": 114,
+   "emenda_incompleta": 0,
+   "trocas": 1,
+   "p95_ms": 16.8,
+   "max_ms": 16.8,
+   "acima_33": 0
+  },
+  "rapida": {
+   "quadros": 364,
+   "max_pinturas": 2,
+   "quadros_com_miniatura_na_tela": 0,
+   "quadros_sem_nada": 0,
+   "emenda_na_tela": 97,
+   "emenda_incompleta": 0,
+   "trocas": 1,
+   "p95_ms": 16.7,
+   "max_ms": 16.8,
+   "acima_33": 0
+  }
+ },
+ "no_topo": [
+  {
+   "id": "diluvio",
+   "dist_telas": 1.69,
+   "pintura": true
+  },
+  {
+   "id": "eden",
+   "dist_telas": 2.64,
+   "pintura": true
+  }
+ ],
+ "no_fundo": [
+  {
+   "id": "diluvio",
+   "pintura": true
+  },
+  {
+   "id": "eden",
+   "pintura": true
+  }
+ ],
+ "toque": [
+  {
+   "id": "ex-salvo",
+   "livre": true
+  },
+  {
+   "id": "ex-sarca",
+   "livre": true
+  },
+  {
+   "id": "ex-pragas",
+   "livre": true
+  },
+  {
+   "id": "ex-mar-sinai",
+   "livre": true
+  },
+  {
+   "id": "bau-mundo-exodo-4",
+   "livre": true
+  },
+  {
+   "id": "gn-babel",
+   "livre": true
+  },
+  {
+   "id": "gn-chamado-abraao",
+   "livre": true
+  },
+  {
+   "id": "gn-abraao-lo",
+   "livre": true
+  },
+  {
+   "id": "gn-promessa",
+   "livre": true
+  },
+  {
+   "id": "gn-isaque",
+   "livre": true
+  },
+  {
+   "id": "bau-mundo-genesis-15",
+   "livre": true
+  },
+  {
+   "id": "gn-jaco-esau",
+   "livre": true
+  },
+  {
+   "id": "gn-jaco-familia",
+   "livre": true
+  },
+  {
+   "id": "gn-jose-sonhos",
+   "livre": true
+  },
+  {
+   "id": "gn-jose-egito",
+   "livre": true
+  },
+  {
+   "id": "gn-jose-perdao",
+   "livre": true
+  },
+  {
+   "id": "bau-mundo-genesis-20",
+   "livre": true
+  },
+  {
+   "id": "gn-corrupcao",
+   "livre": true
+  },
+  {
+   "id": "gn-noe",
+   "livre": true
+  },
+  {
+   "id": "gn-arca",
+   "livre": true
+  },
+  {
+   "id": "gn-diluvio",
+   "livre": true
+  },
+  {
+   "id": "gn-alianca-noe",
+   "livre": true
+  },
+  {
+   "id": "bau-mundo-genesis-10",
+   "livre": true
+  },
+  {
+   "id": "gn-criacao",
+   "livre": true
+  },
+  {
+   "id": "gn-homem-mulher",
+   "livre": true
+  },
+  {
+   "id": "gn-eden",
+   "livre": true
+  },
+  {
+   "id": "gn-queda",
+   "livre": true
+  },
+  {
+   "id": "gn-caim-abel",
+   "livre": true
+  },
+  {
+   "id": "bau-mundo-genesis-5",
+   "livre": true
+  }
+ ],
+ "arquivo_bloqueado": {
+  "pintura_na_pagina": true,
+  "pintura_quebrada": true,
+  "miniatura_visivel": false
+ }
+}
