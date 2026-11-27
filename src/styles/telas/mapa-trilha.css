@@ -1,0 +1,99 @@
+/*
+ * MAPA: MOTOR DA TRILHA (reformulação visual, entrega 2: protótipo do Éden)
+ * Região pintada (imagem) ou vetorial, estandartes das fases nos 4 estados, baú na clareira.
+ * Os mesmos estilos servem ao Modo História e ao Modo Quiz; o Quiz só troca as cores (.tr-quiz).
+ */
+
+/* ---------- regiões ---------- */
+.tr-regiao { overflow: visible; }
+.tr-pintada { background: var(--mapa-mata); }
+.tr-arte {
+  position: absolute; inset: 0; width: 100%; height: 100%; display: block;
+  object-fit: cover; pointer-events: none; user-select: none; -webkit-user-drag: none;
+  /* emenda com a região de cima: a pintura nasce da mata, sem corte reto */
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 7%);
+  mask-image: linear-gradient(to bottom, transparent 0, black 7%);
+}
+.tr-emenda .av-cena { -webkit-mask-image: linear-gradient(to top, transparent 0, black 70px); mask-image: linear-gradient(to top, transparent 0, black 70px); }
+.av-trecho:has(.tr-pintada) { background: var(--mapa-mata); }
+
+/* ---------- marco de fase: o ponto do caminho fica no pé do mastro ---------- */
+.av-no.tr-no { transform: translate(-50%, -86%); }
+.tr-botao.av-medalhao { width: 76px; height: 112px; padding: 0; border-radius: 14px; }
+.tr-estandarte {
+  --pano: var(--mapa-pano-azul); --pano-esc: var(--mapa-pano-azul-esc); --barra: var(--mapa-barra-ouro); --num: var(--mapa-marfim); --contorno: var(--mapa-contorno);
+  position: relative; display: block; width: 64px; height: 104px; margin: 0 auto;
+  transition: transform var(--speed, 0.2s);
+  filter: drop-shadow(0 3px 2px rgba(30, 18, 6, 0.45));
+}
+.tr-botao:hover .tr-estandarte { transform: translateY(-3px); }
+.tr-botao:active .tr-estandarte { transform: translateY(2px); }
+.tr-mastro { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.tr-madeira { fill: var(--mapa-madeira); stroke: var(--mapa-madeira-esc); stroke-width: 1; }
+.tr-ponta { fill: var(--mapa-ponta); stroke: var(--mapa-ouro-esc); stroke-width: 1.2; }
+.tr-pedra { fill: var(--mapa-pedra); stroke: var(--mapa-pedra-esc); stroke-width: 1.2; }
+.tr-pano { fill: var(--pano); }
+.tr-barra { fill: var(--barra); }
+.tr-costura { stroke: var(--barra); stroke-width: 1.6; stroke-dasharray: 3 2.5; opacity: 0.85; }
+.tr-contorno { stroke: var(--contorno); stroke-width: 2; stroke-linejoin: round; }
+.tr-num {
+  position: absolute; left: 0; right: 0; top: 22px; display: grid; place-items: center; height: 32px;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; line-height: 1; color: var(--num);
+  -webkit-text-stroke: 1.5px var(--contorno); paint-order: stroke fill; text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+.tr-num .icon { width: 22px; height: 22px; color: var(--mapa-cinza-claro); }
+.tr-selo {
+  position: absolute; top: 4px; right: -4px; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, var(--mapa-pano-fogo), var(--mapa-pano-fogo-esc)); color: var(--mapa-estrela); border: 2px solid var(--mapa-ouro-esc); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+.tr-selo .icon { width: 13px; height: 13px; stroke-width: 3.2; }
+.tr-tipo {
+  position: absolute; top: 2px; left: -8px; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--mapa-pergaminho); border: 2px solid var(--mapa-pergaminho-borda); box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+.tr-tipo .game-icon { width: 17px; height: 17px; }
+.tr-estrelas {
+  position: absolute; left: 50%; top: 68px; transform: translateX(-50%); display: flex; align-items: flex-end;
+  padding: 1px 4px 2px; border-radius: 9px; background: rgba(43, 29, 16, 0.86); box-shadow: 0 2px 3px rgba(0, 0, 0, 0.35);
+}
+.tr-estrelas svg { width: 15px; height: 15px; stroke-width: 1.6; stroke-linejoin: round; }
+.tr-estrelas svg:nth-child(2) { width: 18px; height: 18px; margin-bottom: 1px; }
+.tr-estrelas .on { fill: var(--mapa-estrela); stroke: var(--mapa-ouro-esc); }
+.tr-estrelas .off { fill: var(--mapa-estrela-vazia); stroke: var(--mapa-estrela-vazia-borda); }
+
+/* estados (forma + cor: o cadeado, o selo e o tamanho distinguem sem depender só da cor) */
+.tr-estandarte.is-concluida { --pano: var(--mapa-pano-ouro); --pano-esc: var(--mapa-pano-ouro-esc); --barra: var(--mapa-barra-clara); --num: var(--mapa-marfim); }
+.tr-estandarte.is-atual { --pano: var(--mapa-pano-fogo); --pano-esc: var(--mapa-pano-fogo-esc); --barra: var(--mapa-estrela); transform: scale(1.14); }
+.tr-botao:hover .tr-estandarte.is-atual { transform: scale(1.14) translateY(-3px); }
+.tr-estandarte.is-disponivel { --pano: var(--mapa-pano-azul); --barra: var(--mapa-barra-ouro); }
+.tr-estandarte.is-bloqueada { --pano: var(--mapa-pano-pedra); --barra: var(--mapa-barra-pedra); --num: var(--mapa-cinza-claro); filter: saturate(0.4) drop-shadow(0 3px 2px rgba(30, 18, 6, 0.4)); }
+.tr-estandarte.is-bloqueada .tr-estrelas { opacity: 0.8; }
+.tr-brilho {
+  position: absolute; left: 50%; top: 40px; width: 120px; height: 120px; transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 226, 120, 0.85), rgba(255, 200, 80, 0.35) 40%, rgba(255, 200, 80, 0) 70%);
+  animation: tr-pulso 1.8s ease-in-out infinite; pointer-events: none;
+}
+@keyframes tr-pulso { 0%, 100% { opacity: 0.65; transform: translate(-50%, -50%) scale(0.92); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); } }
+.av-no.tr-no.just-unlocked .tr-estandarte { animation: unlock-pop 0.9s ease-out; }
+
+/* identidade do Quiz: estandartes de pergaminho verde e caminho de pedra */
+.tr-quiz .tr-estandarte.is-atual { --pano: var(--mapa-quiz-atual); --pano-esc: var(--mapa-quiz-atual-esc); --barra: var(--mapa-estrela); }
+.tr-quiz .tr-estandarte.is-disponivel { --pano: var(--mapa-quiz-verde); --barra: var(--mapa-barra-ouro); }
+.tr-quiz .tr-estandarte.is-concluida { --pano: var(--mapa-quiz-ouro); }
+
+/* ---------- baú: clareira de pedra no caminho ---------- */
+.tr-bau { display: grid; place-items: center; }
+.tr-clareira {
+  position: absolute; left: 50%; top: 58%; width: 86px; height: 34px; transform: translate(-50%, -50%); border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(214, 196, 150, 0.9), rgba(150, 128, 88, 0.55) 60%, rgba(150, 128, 88, 0) 72%);
+  pointer-events: none;
+}
+.tr-bau .chest-btn { position: relative; min-width: 64px; min-height: 64px; }
+.tr-bau.is-disponivel .tr-clareira { background: radial-gradient(ellipse, rgba(255, 232, 150, 0.95), rgba(255, 200, 90, 0.5) 55%, rgba(255, 200, 90, 0) 74%); }
+
+/* ---------- alto contraste e movimento reduzido ---------- */
+:root[data-contrast='alto'] .tr-contorno { stroke: var(--tinta); stroke-width: 3; }
+:root[data-contrast='alto'] .tr-estrelas { background: var(--terra-900); }
+:root[data-motion='reduzido'] .tr-brilho, :root[data-motion='reduzido'] .av-no.tr-no.just-unlocked .tr-estandarte { animation: none; }
+@media (prefers-reduced-motion: reduce) { .tr-brilho, .av-no.tr-no.just-unlocked .tr-estandarte { animation: none; } }
+.tr-botao:focus-visible { outline: 4px solid var(--mapa-foco); outline-offset: 2px; }

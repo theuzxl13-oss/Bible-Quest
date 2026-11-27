@@ -11,6 +11,7 @@ import { WORLDS } from '../../data/worlds'
 import { avatarPhaseId, allChests, chestState, phaseState, worldSections, type PhaseNode } from '../../services/game/journeyMap'
 import { useGame } from '../../state/GameContext'
 import { usePrenderFoco } from '../../components/usePrenderFoco'
+import { resolveQuality } from '../../character3d/quality'
 
 const STEP_MS = 700
 
@@ -35,6 +36,7 @@ export default function StoryMap() {
   usePrenderFoco(caixaMundo, Boolean(worldIntro))
   const reduceMotion = settings.reduceMotion || (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches)
   const contentWorlds = new Set(sections.map((s) => s.world.id))
+  const leve = resolveQuality(settings.graphics) !== 'alta' // imagens do mapa mais leves em aparelhos modestos
 
   const scrollTo = (id: string, smooth = true) => {
     const el = document.querySelector(`[data-node="${id}"]`) ?? document.getElementById(id)
@@ -138,6 +140,8 @@ export default function StoryMap() {
             progress={progress}
             topoDoMapa={i === 0}
             avatarAt={s.phases.some((p) => p.id === avatarAt) ? avatarAt : null}
+            alvo={target}
+            leve={leve}
             walking={walking}
             justUnlocked={justUnlocked}
             onFase={abrirFase}

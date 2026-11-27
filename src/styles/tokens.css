@@ -351,3 +351,39 @@ html[data-contrast='alto'] {
   --legado-ok: var(--verde-200);
   --legado-err: var(--vermelho-200);
 }
+
+/* ---------- Mapa: motor da trilha (entrega 2, protótipo do Éden) ----------
+   Cores dos estandartes, do baú e da emenda das regiões pintadas (src/styles/telas/mapa-trilha.css). */
+:root {
+  --mapa-mata: #4f6f33;
+  --mapa-pano-azul: #3a78b8;
+  --mapa-pano-azul-esc: #24507f;
+  --mapa-barra-ouro: #e9c46a;
+  --mapa-marfim: #fffaf0;
+  --mapa-contorno: #2b1d10;
+  --mapa-madeira: #8a5a2b;
+  --mapa-madeira-esc: #4a2e12;
+  --mapa-ponta: #f0c550;
+  --mapa-ouro-esc: #6a4206;
+  --mapa-pedra: #b8ad98;
+  --mapa-pedra-esc: #5d5446;
+  --mapa-cinza-claro: #f3efe6;
+  --mapa-pergaminho: #fbefcf;
+  --mapa-pergaminho-borda: #8a5a2a;
+  --mapa-estrela: #ffd23a;
+  --mapa-estrela-vazia: #7d7a74;
+  --mapa-estrela-vazia-borda: #3f3b35;
+  --mapa-pano-ouro: #d9a63a;
+  --mapa-pano-ouro-esc: #8f6412;
+  --mapa-barra-clara: #fff1b8;
+  --mapa-pano-fogo: #c8452a;
+  --mapa-pano-fogo-esc: #7e2414;
+  --mapa-pano-pedra: #8d8a83;
+  --mapa-barra-pedra: #b6b1a6;
+  --mapa-quiz-atual: #1f8f80;
+  --mapa-quiz-atual-esc: #0b4d48;
+  --mapa-quiz-verde: #3f8f55;
+  --mapa-quiz-ouro: #c99a32;
+  --mapa-foco: #2a7fd8;
+  --mapa-branco: #fff;
+}

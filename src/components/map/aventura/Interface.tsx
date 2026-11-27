@@ -6,8 +6,9 @@ import { usePrenderFoco } from '../../usePrenderFoco'
 
 /*
  * Peças de interface dos mapas de aventura: cabeçalho em pergaminho, botões
- * redondos, placa da região, contador de estrelas, medalhões das fases e a
- * janela de apresentação de uma fase. Todos os números vêm do progresso real.
+ * redondos, placa da região, contador de estrelas e a janela de apresentação
+ * de uma fase. Os marcos das fases ficam no motor da trilha (map/trilha).
+ * Todos os números vêm do progresso real.
  */
 
 export function CabecalhoMapa({ titulo, subtitulo, icone, onAjuda, children }: { titulo: string; subtitulo: string; icone: IconName; onAjuda: () => void; children?: ReactNode }) {
@@ -48,26 +49,6 @@ export function ContadorEstrelas({ estrelas, max, baus, onBau }: { estrelas: num
         {baus > 0 && <span className="av-bau-num" aria-hidden="true">{baus}</span>}
       </button>
     </div>
-  )
-}
-
-export type EstadoNo = 'concluida' | 'atual' | 'bloqueada'
-
-/** Conteúdo do medalhão: número (ou cadeado) e três estrelas na plaquinha. */
-export function Medalhao({ numero, estado, estrelas, icone }: { numero: number; estado: EstadoNo; estrelas: number; icone?: IconName }) {
-  return (
-    <>
-      {estado === 'atual' && <span className="av-raios" aria-hidden="true" />}
-      <span className="av-moeda" aria-hidden="true">
-        <span className="av-num">{estado === 'bloqueada' ? <Icon name="lock" size={22} /> : numero}</span>
-      </span>
-      {icone && estado !== 'bloqueada' && <span className="av-tipo" aria-hidden="true"><GameIcon name={icone} size={20} /></span>}
-      <span className="av-plaquinha" aria-hidden="true">
-        {[0, 1, 2].map((i) => (
-          <svg key={i} viewBox="0 0 24 24" className={i < estrelas ? 'on' : 'off'}><path d="M12 2.5l2.9 6 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.5l1.3-6.6L2.5 9.3l6.6-.8z" /></svg>
-        ))}
-      </span>
-    </>
   )
 }
 

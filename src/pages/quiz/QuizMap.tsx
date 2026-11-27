@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { PlayerCharacter } from '../../components/character/PlayerCharacter'
 import { GameIcon } from '../../components/GameIcon'
 import { CAMINHO_PEDRA, CenaMapa, caminhoSuave, type Ponto } from '../../components/map/aventura/Cena'
-import { AjudaMapa, CabecalhoMapa, ContadorEstrelas, Medalhao } from '../../components/map/aventura/Interface'
+import { AjudaMapa, CabecalhoMapa, ContadorEstrelas } from '../../components/map/aventura/Interface'
+import { RegiaoTrilha, type Marco } from '../../components/map/trilha/Trilha'
+import { estadoDoMarco, rotuloDoEstado } from '../../services/game/marcos'
 import { JanelaFaseQuiz } from '../../components/map/aventura/JanelaFaseQuiz'
 import { CENARIO_QUIZ, zonasPorNo } from '../../data/mapas/cenarios'
 import { QUIZ_REGIONS, type QuizNode, type QuizRegion } from '../../data/quiz/regions'
@@ -15,6 +16,8 @@ import { useGame } from '../../state/GameContext'
  * MAPA DO MODO QUIZ — trilha própria de desafios (independente do Modo
  * História), com cenário de templos, bibliotecas, pergaminhos e enigmas.
  * Cada dificuldade é uma região; o seletor troca a região mostrada.
+ * Usa o mesmo motor de trilha do Modo História (marcos, estados, acessibilidade);
+ * muda só a identidade visual (caminho de pedra, estandartes verdes) e o conteúdo.
  */
 
 const W = 400
@@ -29,8 +32,6 @@ function layout(region: QuizRegion) {
   const pts: Ponto[] = region.nodes.map((n, i) => ({ id: n.id, x: W / 2 + (i % 2 === 0 ? -1 : 1) * (78 + (i % 3) * 18), y: H - BASE - i * PASSO }))
   return { H, pts, d: caminhoSuave(pts, H + 10, -10) }
 }
-
-const pct = (v: number, t: number) => `${(v / t) * 100}%`
 
 const ATALHOS = [
   { to: '/quiz/treino/contra-o-tempo', label: 'Desafio por tempo', icone: 'clock' },
@@ -51,10 +52,17 @@ export default function QuizMap() {
   const ri = QUIZ_REGIONS.indexOf(regiao)
   const open = isQuizRegionUnlocked(regiao.id, progress)
   const { H, pts, d } = layout(regiao)
-  const pos = new Map(pts.map((p) => [p.id, p]))
-  const av = pos.get(avatar.id)
   const zonas = zonasPorNo(CENARIO_QUIZ[regiao.id] ?? CENARIO_QUIZ.vale, regiao.nodes.map((_, i) => i + 1))
   const feitos = regiao.nodes.filter((n) => quizNodeState(n.id, progress) === 'concluido').length
+  const marcos: Marco[] = regiao.nodes.map((n, i) => {
+    const estrelas = progress.quiz.nodes[n.id]?.bestStars ?? 0
+    const estado = estadoDoMarco(quizNodeState(n.id, progress), n.id === avatar.id)
+    return {
+      tipo: 'fase', id: n.id, numero: i + 1, estado, estrelas, icone: getFreeMode(n.mode)?.icon,
+      rotulo: `${regiao.title}, desafio ${i + 1}: ${n.title}. ${rotuloDoEstado(estado, estrelas, 'quiz')}`,
+      onClick: () => setAberto(n),
+    }
+  })
 
   useEffect(() => {
     window.setTimeout(() => document.querySelector(`[data-qnode="${regiao.id === avatar.regionId ? avatar.id : regiao.nodes[0].id}"]`)?.scrollIntoView({ block: 'center' }), 60)
@@ -82,35 +90,23 @@ export default function QuizMap() {
 
       <div className="av-coluna" role="region" aria-label="Mapa de desafios">
         <section id={regiao.id} className={`av-trecho ${open ? '' : 'is-locked'}`} aria-labelledby={`${regiao.id}-t`}>
-          <div className="av-canvas" style={{ aspectRatio: `${W} / ${H}` }}>
-            <CenaMapa W={W} H={H} pts={pts} d={d} zonas={zonas} passo={PASSO} caminho={CAMINHO_PEDRA} semente={`quiz-${regiao.id}`} horizonte={{ ceu: ['#86bdea', '#f3ead2'], montanhas: '#a49ab8' }} />
+          <RegiaoTrilha
+            W={W}
+            H={H}
+            atributo="data-qnode"
+            pontos={pts}
+            marcos={marcos}
+            avatar={regiao.nodes.some((n) => n.id === avatar.id) ? { id: avatar.id } : null}
+            classe="tr-quiz"
+            fundo={<CenaMapa W={W} H={H} pts={pts} d={d} zonas={zonas} passo={PASSO} caminho={CAMINHO_PEDRA} semente={`quiz-${regiao.id}`} horizonte={{ ceu: ['#86bdea', '#f3ead2'], montanhas: '#a49ab8' }} />}
+          >
             <h2 id={`${regiao.id}-t`} className="av-fita-regiao"><span>{regiao.title}</span></h2>
             {!open && (
               <p className="av-aviso-bloqueio">
                 <GameIcon name="lock" size={26} /> Conclua todos os desafios de {QUIZ_REGIONS[ri - 1]?.title} para abrir esta região.
               </p>
             )}
-            {regiao.nodes.map((n, i) => {
-              const p = pos.get(n.id)!
-              const st = quizNodeState(n.id, progress)
-              const np = progress.quiz.nodes[n.id]
-              const mode = getFreeMode(n.mode)
-              const estado = st === 'concluido' ? 'concluida' : st === 'atual' ? 'atual' : 'bloqueada'
-              const label = `${regiao.title}, desafio ${i + 1}: ${n.title}. ${st === 'concluido' ? `Concluído, ${np?.bestStars ?? 0} de 3 estrelas` : st === 'atual' ? 'Disponível' : 'Bloqueado'}`
-              return (
-                <div key={n.id} data-qnode={n.id} className={`av-no av-no-quiz is-${estado}`} style={{ left: pct(p.x, W), top: pct(p.y, H) }}>
-                  <button type="button" className="av-medalhao" aria-label={label} onClick={() => setAberto(n)}>
-                    <Medalhao numero={i + 1} estado={estado} estrelas={np?.bestStars ?? 0} icone={mode?.icon} />
-                  </button>
-                </div>
-              )
-            })}
-            {av && (
-              <div className={`av-avatar ${av.x > W / 2 ? 'lado-esq' : 'lado-dir'}`} style={{ left: pct(av.x, W), top: pct(av.y, H) }} aria-hidden="true">
-                <PlayerCharacter size={78} pose="idle" />
-              </div>
-            )}
-          </div>
+          </RegiaoTrilha>
         </section>
       </div>
 
