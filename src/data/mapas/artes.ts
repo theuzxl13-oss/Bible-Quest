@@ -5,9 +5,10 @@
  * exportados pela própria cena, em frações da imagem (x da esquerda, y do topo).
  * Origem e licença: public/mapas/LICENCAS.md.
  *
- * `marcos` diz, na ordem, quais nós do trecho ocupam os pontos: as 5 primeiras fases
- * de Gênesis e o baú que vem depois delas. O motor não inventa nós: se um id não existir
- * no trecho, o ponto fica vazio.
+ * Cada região recebe, na ordem, os nós seguintes do trecho (5 fases e o baú depois delas):
+ * Éden = fases 1 a 5 e o baú da fase 5; Terras do Dilúvio = fases 6 a 10 e o baú da fase 10.
+ * As duas vêm de um mundo contínuo (tools/mapa/diluvio.py contém o Éden e o continua ao norte):
+ * a imagem do Dilúvio fica logo acima da do Éden, e a emenda não aparece.
  */
 
 export interface ArteRegiao {
@@ -40,7 +41,24 @@ export const ARTE_EDEN: ArteRegiao = {
   ],
 }
 
+export const ARTE_DILUVIO: ArteRegiao = {
+  id: 'diluvio',
+  nome: 'Terras do Dilúvio',
+  alta: `${base}mapas/genesis/diluvio.webp`,
+  leve: `${base}mapas/genesis/diluvio-leve.webp`,
+  largura: 1080,
+  altura: 2257,
+  pontos: [
+    { x: 0.39366, y: 0.86998 },
+    { x: 0.61698, y: 0.723 },
+    { x: 0.36707, y: 0.6013 },
+    { x: 0.60634, y: 0.46461 },
+    { x: 0.39366, y: 0.31704 },
+    { x: 0.64888, y: 0.15326 },
+  ],
+}
+
 /** Regiões pintadas por mundo: quantos nós do começo do trecho cada uma recebe. */
 export const ARTES_DO_MUNDO: Record<string, ArteRegiao[]> = {
-  'mundo-genesis': [ARTE_EDEN],
+  'mundo-genesis': [ARTE_EDEN, ARTE_DILUVIO],
 }

@@ -3,7 +3,7 @@ import { existsSync, statSync } from 'node:fs'
 import { join } from 'node:path'
 import { render, screen } from '@testing-library/react'
 import { estadoDoMarco, rotuloDoEstado } from '../services/game/marcos'
-import { ARTE_EDEN, ARTES_DO_MUNDO } from '../data/mapas/artes'
+import { ARTE_DILUVIO, ARTE_EDEN, ARTES_DO_MUNDO } from '../data/mapas/artes'
 import { dividirTrecho } from '../components/map/JourneyMap'
 import { worldSections } from '../services/game/journeyMap'
 import { RegiaoTrilha, type Marco } from '../components/map/trilha/Trilha'
@@ -43,11 +43,12 @@ describe('região pintada do Éden', () => {
 
   it('recebe as fases 1 a 5 e o primeiro baú; nenhum nó some nem se repete', () => {
     const { pintadas, resto } = dividirTrecho(genesis)
-    expect(pintadas).toHaveLength(1)
+    expect(pintadas).toHaveLength(2) // Éden e, acima dele, Terras do Dilúvio (região 2)
+    expect(pintadas[0].arte).toBe(ARTE_EDEN)
     const ids = pintadas[0].nos.map((n) => n.id)
     expect(pintadas[0].nos.map((n) => (n.kind === 'phase' ? n.number : 'bau'))).toEqual([1, 2, 3, 4, 5, 'bau'])
     expect(ids[5]).toBe('bau-mundo-genesis-5')
-    expect([...ids, ...resto.map((n) => n.id)]).toEqual(genesis.nodes.map((n) => n.id))
+    expect([...pintadas.flatMap((p) => p.nos.map((n) => n.id)), ...resto.map((n) => n.id)]).toEqual(genesis.nodes.map((n) => n.id))
   })
 
   it('os pontos ficam dentro da imagem, sobem pelo mapa e não se sobrepõem', () => {
@@ -117,5 +118,47 @@ describe('RegiaoTrilha', () => {
     const baus: Marco[] = (['fechado', 'disponivel', 'aberto'] as const).map((estado, i) => ({ tipo: 'bau', id: `b${i}`, estado, final: false, rotulo: `baú ${estado}`, onClick: () => {} }))
     const { container } = render(<RegiaoTrilha W={400} H={500} atributo="data-node" marcos={baus} pontos={baus.map((b, i) => ({ id: b.id, x: 200, y: 100 + i * 120 }))} />)
     for (const e of ['fechado', 'disponivel', 'aberto']) expect(container.querySelector(`.tr-bau.is-${e} button`)).not.toBeNull()
+  })
+})
+
+describe('região pintada das Terras do Dilúvio (região 2)', () => {
+  const genesis = worldSections().find((s) => s.world.id === 'mundo-genesis')!
+
+  it('recebe as fases 6 a 10 e o baú da fase 10; o restante de Gênesis continua no cenário vetorial', () => {
+    const { pintadas, resto } = dividirTrecho(genesis)
+    expect(pintadas[1].arte).toBe(ARTE_DILUVIO)
+    expect(pintadas[1].nos.map((n) => (n.kind === 'phase' ? n.number : 'bau'))).toEqual([6, 7, 8, 9, 10, 'bau'])
+    expect(pintadas[1].nos[5].id).toBe('bau-mundo-genesis-10')
+    expect(resto[0].kind === 'phase' && resto[0].number).toBe(11)
+  })
+
+  it('os pontos ficam dentro da imagem, sobem pelo mapa e não se sobrepõem', () => {
+    const { pontos, largura, altura } = ARTE_DILUVIO
+    expect(pontos).toHaveLength(6)
+    for (const p of pontos) {
+      expect(p.x).toBeGreaterThan(0.12)
+      expect(p.x).toBeLessThan(0.88)
+      expect(p.y).toBeGreaterThan(0.1)
+      expect(p.y).toBeLessThan(0.95)
+    }
+    for (let i = 1; i < pontos.length; i++) expect(pontos[i].y).toBeLessThan(pontos[i - 1].y)
+    const escala = 400 / largura
+    for (let i = 0; i < pontos.length; i++)
+      for (let j = i + 1; j < pontos.length; j++)
+        expect(Math.hypot((pontos[i].x - pontos[j].x) * largura * escala, (pontos[i].y - pontos[j].y) * altura * escala)).toBeGreaterThan(90)
+  })
+
+  it('tem o mesmo tamanho do Éden (as duas imagens se encaixam sem emenda) e é leve', () => {
+    expect([ARTE_DILUVIO.largura, ARTE_DILUVIO.altura]).toEqual([ARTE_EDEN.largura, ARTE_EDEN.altura])
+    const pub = (u: string) => join(process.cwd(), 'public', u.replace(/^.*?mapas\//, 'mapas/'))
+    expect(statSync(pub(ARTE_DILUVIO.alta)).size).toBeLessThan(450 * 1024)
+    expect(statSync(pub(ARTE_DILUVIO.leve)).size).toBeLessThan(160 * 1024)
+  })
+
+  it('o Éden aprovado não mudou (mesmos pontos)', () => {
+    expect(ARTE_EDEN.pontos).toEqual([
+      { x: 0.58507, y: 0.89037 }, { x: 0.31922, y: 0.73593 }, { x: 0.63824, y: 0.57197 },
+      { x: 0.40429, y: 0.41923 }, { x: 0.65951, y: 0.29901 }, { x: 0.34049, y: 0.1894 },
+    ])
   })
 })

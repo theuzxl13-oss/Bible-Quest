@@ -14,6 +14,9 @@
   -webkit-mask-image: linear-gradient(to bottom, transparent 0, black 7%);
   mask-image: linear-gradient(to bottom, transparent 0, black 7%);
 }
+/* regiões pintadas vizinhas são um mundo contínuo (renderizadas lado a lado da mesma cena):
+   a de baixo não se dissolve; só a pintura mais alta se funde com o cenário vetorial acima dela */
+.tr-pintada + .tr-pintada .tr-arte { -webkit-mask-image: none; mask-image: none; }
 .tr-emenda .av-cena { -webkit-mask-image: linear-gradient(to top, transparent 0, black 70px); mask-image: linear-gradient(to top, transparent 0, black 70px); }
 .av-trecho:has(.tr-pintada) { background: var(--mapa-mata); }
 
