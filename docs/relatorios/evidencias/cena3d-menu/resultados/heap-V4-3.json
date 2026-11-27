@@ -1,0 +1,60 @@
+{
+ "qualidade": "alta",
+ "visitas": 3,
+ "contagem": {
+  "Mesh": 230,
+  "MeshStandardMaterial": 130,
+  "WebGLRenderer": 2,
+  "BufferGeometry": 62,
+  "WebGLProgram": 44,
+  "InstancedMesh": 5,
+  "Scene": 3,
+  "MeshBasicMaterial": 8,
+  "CanvasTexture": 9,
+  "DirectionalLight": 4,
+  "Texture": 68,
+  "WebGLRenderTarget": 3,
+  "Skeleton": 75,
+  "Bone": 78,
+  "SkinnedMesh": 111,
+  "AnimationMixer": 2,
+  "PerspectiveCamera": 8,
+  "WebGL2RenderingContext": 1,
+  "HTMLCanvasElement": 1
+ },
+ "renderers": 2,
+ "caminhos": [
+  [
+   "synthetic: -[element:[1]]->",
+   "synthetic:(GC roots) -[element:[29]]->",
+   "synthetic:C++ Persistent roots -[internal:blink::ScriptState::ScriptState(v8::Loca]->",
+   "native:blink::ScriptStateImpl -[element:[1]]->",
+   "native:blink::V8PerContextData -[element:[3]]->",
+   "native:blink::HeapHashTableBacking<blink::HashTable<const -[element:[1]]->",
+   "native:Modulator -[element:[4]]->",
+   "native:blink::ModuleRecordResolverImpl -[element:[2]]->",
+   "native:blink::HeapHashTableBacking<blink::HashTable<cppgc -[element:[3]]->",
+   "native:blink::BoxedV8Module -[element:[1]]->",
+   "native:system / SourceTextModule -[hidden:[5]]->",
+   "object:Generator -[internal:context]->",
+   "object:system / Context / scope @66403 -[context:shared]->",
+   "object:Object -[property:renderer]->",
+   "object:WebGLRenderer"
+  ],
+  [
+   "synthetic: -[element:[1]]->",
+   "synthetic:(GC roots) -[element:[10]]->",
+   "synthetic:(Global handles) -[internal:7 / DevTools console]->",
+   "object:InjectedScript -[property:document]->",
+   "native:HTMLDocument -[element:[72]]->",
+   "native:blink::EventTargetData -[element:[2]]->",
+   "native:blink::BasicHeapVector<blink::internal::HeapCollec -[element:[1]]->",
+   "native:blink::RegisteredEventListener -[element:[1]]->",
+   "native:EventListener -[element:[1]]->",
+   "native:V8EventListener -[element:[1]]->",
+   "closure:onVis -[internal:context]->",
+   "object:system / Context / scope @64317 -[context:renderer]->",
+   "object:WebGLRenderer"
+  ]
+ ]
+}

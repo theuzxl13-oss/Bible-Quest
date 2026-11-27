@@ -1,0 +1,44 @@
+{
+ "qualidade": "alta",
+ "visitas": 3,
+ "contagem": {
+  "MeshStandardMaterial": 47,
+  "Bone": 52,
+  "SkinnedMesh": 74,
+  "HTMLCanvasElement": 1,
+  "BufferGeometry": 56,
+  "Skeleton": 38,
+  "Mesh": 16,
+  "Texture": 67,
+  "WebGLProgram": 16,
+  "WebGLRenderer": 1,
+  "WebGL2RenderingContext": 1,
+  "WebGLRenderTarget": 2,
+  "DirectionalLight": 2,
+  "CanvasTexture": 1,
+  "PerspectiveCamera": 4,
+  "Scene": 2,
+  "MeshBasicMaterial": 2,
+  "AnimationMixer": 1
+ },
+ "renderers": 1,
+ "caminhos": [
+  [
+   "synthetic: -[element:[1]]->",
+   "synthetic:(GC roots) -[element:[29]]->",
+   "synthetic:C++ Persistent roots -[internal:blink::ScriptState::ScriptState(v8::Loca]->",
+   "native:blink::ScriptStateImpl -[element:[1]]->",
+   "native:blink::V8PerContextData -[element:[3]]->",
+   "native:blink::HeapHashTableBacking<blink::HashTable<const -[element:[1]]->",
+   "native:Modulator -[element:[4]]->",
+   "native:blink::ModuleRecordResolverImpl -[element:[2]]->",
+   "native:blink::HeapHashTableBacking<blink::HashTable<cppgc -[element:[1]]->",
+   "native:blink::BoxedV8Module -[element:[1]]->",
+   "native:system / SourceTextModule -[hidden:[5]]->",
+   "object:Generator -[internal:context]->",
+   "object:system / Context / scope @73149 -[context:shared]->",
+   "object:Object -[property:renderer]->",
+   "object:WebGLRenderer"
+  ]
+ ]
+}

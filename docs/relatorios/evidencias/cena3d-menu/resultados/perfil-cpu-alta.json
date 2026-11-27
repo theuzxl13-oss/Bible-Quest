@@ -1,0 +1,576 @@
+{
+ "entrada": {
+  "total_ms": 3752,
+  "proprio": [
+   [
+    "(idle) :0",
+    2313
+   ],
+   [
+    "getProgramInfoLog :0",
+    838
+   ],
+   [
+    "(program) :0",
+    198
+   ],
+   [
+    "texSubImage2D :0",
+    44
+   ],
+   [
+    "WebGLRenderer.setSize runtime-D7CzgTSR.js:40626",
+    32
+   ],
+   [
+    "(garbage collector) :0",
+    26
+   ],
+   [
+    "getShaderInfoLog :0",
+    25
+   ],
+   [
+    "posicionarRotulos acampamento-DwjYDglO.js:1638",
+    21
+   ],
+   [
+    "getContext :0",
+    12
+   ],
+   [
+    "bufferData :0",
+    11
+   ],
+   [
+    "shaderSource :0",
+    8
+   ],
+   [
+    "subdivideFace runtime-D7CzgTSR.js:19099",
+    8
+   ],
+   [
+    "uniformMatrix4fv :0",
+    8
+   ],
+   [
+    "resize acampamento-DwjYDglO.js:1593",
+    8
+   ],
+   [
+    "getProgramParameter :0",
+    8
+   ],
+   [
+    "replaceLightNums runtime-D7CzgTSR.js:34734",
+    6
+   ],
+   [
+    "normalizeNormals runtime-D7CzgTSR.js:13098",
+    5
+   ],
+   [
+    "fill :0",
+    5
+   ],
+   [
+    "renderObject runtime-D7CzgTSR.js:36553",
+    5
+   ],
+   [
+    "getExtension :0",
+    5
+   ],
+   [
+    "arrayNeedsUint32 runtime-D7CzgTSR.js:734",
+    5
+   ],
+   [
+    "construirChao acampamento-DwjYDglO.js:191",
+    4
+   ],
+   [
+    "needsUpdate runtime-D7CzgTSR.js:32299",
+    4
+   ],
+   [
+    "WebGLRenderer.renderBufferDirect runtime-D7CzgTSR.js:40958",
+    4
+   ],
+   [
+    "fillRect :0",
+    4
+   ]
+  ],
+  "inclusivo": [
+   [
+    "(root) :0",
+    3752
+   ],
+   [
+    "(idle) :0",
+    2313
+   ],
+   [
+    "WebGLRenderer.render runtime-D7CzgTSR.js:41168",
+    1047
+   ],
+   [
+    "WebGLRenderer.renderBufferDirect runtime-D7CzgTSR.js:40958",
+    1011
+   ],
+   [
+    "setProgram runtime-D7CzgTSR.js:41513",
+    984
+   ],
+   [
+    "onFirstUse runtime-D7CzgTSR.js:35091",
+    874
+   ],
+   [
+    "WebGLProgram.getUniforms runtime-D7CzgTSR.js:35130",
+    874
+   ],
+   [
+    "getProgramInfoLog :0",
+    838
+   ],
+   [
+    "renderScene runtime-D7CzgTSR.js:41299",
+    816
+   ],
+   [
+    "renderObjects runtime-D7CzgTSR.js:41374",
+    815
+   ],
+   [
+    "renderObject runtime-D7CzgTSR.js:41384",
+    815
+   ],
+   [
+    "createCamp acampamento-DwjYDglO.js:1282",
+    625
+   ],
+   [
+    "(anônima) index-B8QBDwzk.js:26458",
+    625
+   ],
+   [
+    "onAnimationFrame runtime-D7CzgTSR.js:31346",
+    563
+   ],
+   [
+    "tick acampamento-DwjYDglO.js:1711",
+    562
+   ],
+   [
+    "onAnimationFrame runtime-D7CzgTSR.js:41128",
+    562
+   ],
+   [
+    "WebGLShadowMap.render runtime-D7CzgTSR.js:36338",
+    205
+   ],
+   [
+    "renderObject runtime-D7CzgTSR.js:36553",
+    203
+   ],
+   [
+    "(program) :0",
+    198
+   ],
+   [
+    "upload runtime-D7CzgTSR.js:34610",
+    51
+   ],
+   [
+    "setValueT1 runtime-D7CzgTSR.js:34311",
+    48
+   ],
+   [
+    "setTexture2D runtime-D7CzgTSR.js:37603",
+    48
+   ],
+   [
+    "uploadTexture runtime-D7CzgTSR.js:37765",
+    47
+   ],
+   [
+    "texSubImage2D :0",
+    44
+   ],
+   [
+    "texSubImage2D runtime-D7CzgTSR.js:37114",
+    44
+   ],
+   [
+    "resize acampamento-DwjYDglO.js:1593",
+    40
+   ],
+   [
+    "getProgram runtime-D7CzgTSR.js:41406",
+    33
+   ],
+   [
+    "WebGLRenderer.setSize runtime-D7CzgTSR.js:40626",
+    32
+   ],
+   [
+    "construirChao acampamento-DwjYDglO.js:191",
+    27
+   ],
+   [
+    "(garbage collector) :0",
+    26
+   ],
+   [
+    "getShaderInfoLog :0",
+    25
+   ],
+   [
+    "acquireProgram runtime-D7CzgTSR.js:35621",
+    23
+   ],
+   [
+    "WebGLProgram runtime-D7CzgTSR.js:34804",
+    23
+   ],
+   [
+    "projectObject runtime-D7CzgTSR.js:41253",
+    23
+   ],
+   [
+    "posicionarRotulos acampamento-DwjYDglO.js:1638",
+    21
+   ],
+   [
+    "setup runtime-D7CzgTSR.js:32228",
+    19
+   ],
+   [
+    "setValue runtime-D7CzgTSR.js:34602",
+    16
+   ],
+   [
+    "WebGLRenderer runtime-D7CzgTSR.js:40206",
+    15
+   ],
+   [
+    "createRenderer runtime-D7CzgTSR.js:49056",
+    15
+   ],
+   [
+    "performWorkOnRoot index-B8QBDwzk.js:7792",
+    14
+   ],
+   [
+    "performWorkOnRootViaSchedulerTask index-B8QBDwzk.js:8610",
+    14
+   ],
+   [
+    "performWorkUntilDeadline index-B8QBDwzk.js:533",
+    14
+   ],
+   [
+    "update runtime-D7CzgTSR.js:31439",
+    13
+   ],
+   [
+    "update runtime-D7CzgTSR.js:33766",
+    13
+   ],
+   [
+    "texturaChao acampamento-DwjYDglO.js:226",
+    12
+   ]
+  ]
+ },
+ "saida": {
+  "total_ms": 22132,
+  "proprio": [
+   [
+    "(idle) :0",
+    11959
+   ],
+   [
+    "loseContext :0",
+    10050
+   ],
+   [
+    "(program) :0",
+    67
+   ],
+   [
+    "(garbage collector) :0",
+    38
+   ],
+   [
+    "setProp index-B8QBDwzk.js:9055",
+    5
+   ],
+   [
+    "deleteVertexArray :0",
+    2
+   ],
+   [
+    "(anônima) acampamento-DwjYDglO.js:1760",
+    2
+   ],
+   [
+    "releaseStatesOfProgram runtime-D7CzgTSR.js:32467",
+    1
+   ],
+   [
+    "WebGLProgram.destroy runtime-D7CzgTSR.js:35144",
+    1
+   ],
+   [
+    "safelyDetachRef index-B8QBDwzk.js:6266",
+    1
+   ],
+   [
+    "deleteBuffer :0",
+    1
+   ],
+   [
+    "deallocateMaterial runtime-D7CzgTSR.js:40945",
+    1
+   ],
+   [
+    "removeEventListener runtime-D7CzgTSR.js:973",
+    1
+   ],
+   [
+    "deleteProgram :0",
+    1
+   ],
+   [
+    "getEventTarget index-B8QBDwzk.js:1961",
+    0
+   ],
+   [
+    "removeChild :0",
+    0
+   ],
+   [
+    "addEventListener :0",
+    0
+   ],
+   [
+    "recursivelyTraverseMutationEffects index-B8QBDwzk.js:6971",
+    0
+   ],
+   [
+    "commitPassiveMountOnFiber index-B8QBDwzk.js:7477",
+    0
+   ],
+   [
+    "isCustomElement index-B8QBDwzk.js:1860",
+    0
+   ],
+   [
+    "NavLinkWithRef index-B8QBDwzk.js:13159",
+    0
+   ],
+   [
+    "useMemo index-B8QBDwzk.js:4672",
+    0
+   ],
+   [
+    "evaluate :305",
+    0
+   ],
+   [
+    "parseToInfo index-B8QBDwzk.js:11961",
+    0
+   ],
+   [
+    "URL :0",
+    0
+   ]
+  ],
+  "inclusivo": [
+   [
+    "(root) :0",
+    22132
+   ],
+   [
+    "(idle) :0",
+    11959
+   ],
+   [
+    "performWorkUntilDeadline index-B8QBDwzk.js:533",
+    10067
+   ],
+   [
+    "flushPassiveEffects index-B8QBDwzk.js:8415",
+    10059
+   ],
+   [
+    "(anônima) index-B8QBDwzk.js:8255",
+    10059
+   ],
+   [
+    "commitPassiveUnmountEffectsInsideOfDeletedTree_begin index-B8QBDwzk.js:7681",
+    10058
+   ],
+   [
+    "recursivelyTraversePassiveUnmountEffects index-B8QBDwzk.js:7620",
+    10058
+   ],
+   [
+    "commitPassiveUnmountOnFiber index-B8QBDwzk.js:7632",
+    10058
+   ],
+   [
+    "dispose acampamento-DwjYDglO.js:1746",
+    10058
+   ],
+   [
+    "(anônima) index-B8QBDwzk.js:26473",
+    10058
+   ],
+   [
+    "commitHookEffectListUnmount index-B8QBDwzk.js:6188",
+    10058
+   ],
+   [
+    "loseContext :0",
+    10050
+   ],
+   [
+    "WebGLRenderer.forceContextLoss runtime-D7CzgTSR.js:40579",
+    10050
+   ],
+   [
+    "(program) :0",
+    67
+   ],
+   [
+    "(garbage collector) :0",
+    38
+   ],
+   [
+    "performWorkOnRoot index-B8QBDwzk.js:7792",
+    8
+   ],
+   [
+    "performWorkOnRootViaSchedulerTask index-B8QBDwzk.js:8610",
+    8
+   ],
+   [
+    "traverse runtime-D7CzgTSR.js:9008",
+    7
+   ],
+   [
+    "workLoopConcurrentByScheduler index-B8QBDwzk.js:8135",
+    6
+   ],
+   [
+    "renderRootConcurrent index-B8QBDwzk.js:8045",
+    6
+   ],
+   [
+    "dispatchEvent runtime-D7CzgTSR.js:987",
+    6
+   ],
+   [
+    "completeWork index-B8QBDwzk.js:5830",
+    5
+   ],
+   [
+    "completeUnitOfWork index-B8QBDwzk.js:8190",
+    5
+   ],
+   [
+    "(anônima) acampamento-DwjYDglO.js:1760",
+    5
+   ],
+   [
+    "setInitialProperties index-B8QBDwzk.js:9289",
+    5
+   ],
+   [
+    "setProp index-B8QBDwzk.js:9055",
+    5
+   ],
+   [
+    "deallocateMaterial runtime-D7CzgTSR.js:40945",
+    4
+   ],
+   [
+    "onMaterialDispose runtime-D7CzgTSR.js:40940",
+    4
+   ],
+   [
+    "dispose runtime-D7CzgTSR.js:15052",
+    4
+   ],
+   [
+    "WebGLProgram.destroy runtime-D7CzgTSR.js:35144",
+    3
+   ],
+   [
+    "releaseProgram runtime-D7CzgTSR.js:35631",
+    3
+   ],
+   [
+    "(anônima) runtime-D7CzgTSR.js:40952",
+    3
+   ],
+   [
+    "releaseMaterialProgramReferences runtime-D7CzgTSR.js:40949",
+    3
+   ],
+   [
+    "destroyGeometry runtime-D7CzgTSR.js:33506",
+    3
+   ],
+   [
+    "(anônima) runtime-D7CzgTSR.js:48892",
+    2
+   ],
+   [
+    "(anônima) runtime-D7CzgTSR.js:48890",
+    2
+   ],
+   [
+    "dispose runtime-D7CzgTSR.js:48888",
+    2
+   ],
+   [
+    "deleteVertexArray :0",
+    2
+   ],
+   [
+    "deleteVertexArrayObject runtime-D7CzgTSR.js:32250",
+    2
+   ],
+   [
+    "onGeometryDispose runtime-D7CzgTSR.js:33503",
+    2
+   ],
+   [
+    "dispose runtime-D7CzgTSR.js:13271",
+    2
+   ],
+   [
+    "releaseStatesOfProgram runtime-D7CzgTSR.js:32467",
+    2
+   ],
+   [
+    "releaseStatesOfGeometry runtime-D7CzgTSR.js:32451",
+    2
+   ],
+   [
+    "commitMutationEffectsOnFiber index-B8QBDwzk.js:7007",
+    2
+   ],
+   [
+    "recursivelyTraverseMutationEffects index-B8QBDwzk.js:6971",
+    2
+   ]
+  ]
+ }
+}

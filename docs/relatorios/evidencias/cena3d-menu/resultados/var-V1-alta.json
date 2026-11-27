@@ -1,0 +1,1376 @@
+{
+ "url": "http://localhost:5500/dist-V1/",
+ "qualidade": "alta",
+ "destino": "configuracoes",
+ "visitas": [
+  {
+   "visita": 1,
+   "entrada": {
+    "ms": 2379,
+    "quadros": 23,
+    "quadros_acima_50ms": 15,
+    "pior_quadro_ms": 1483,
+    "tarefas_longas": [
+     [
+      35,
+      849
+     ],
+     [
+      889,
+      747
+     ],
+     [
+      1637,
+      747
+     ],
+     [
+      2386,
+      93
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 126,
+    "quadros": 14,
+    "quadros_acima_50ms": 2,
+    "pior_quadro_ms": 417,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 2,
+   "entrada": {
+    "ms": 846,
+    "quadros": 18,
+    "quadros_acima_50ms": 11,
+    "pior_quadro_ms": 833,
+    "tarefas_longas": [
+     [
+      12,
+      501
+     ],
+     [
+      514,
+      344
+     ],
+     [
+      861,
+      58
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 110,
+    "quadros": 4,
+    "quadros_acima_50ms": 3,
+    "pior_quadro_ms": 833,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 3,
+   "entrada": {
+    "ms": 853,
+    "quadros": 16,
+    "quadros_acima_50ms": 8,
+    "pior_quadro_ms": 833,
+    "tarefas_longas": [
+     [
+      13,
+      485
+     ],
+     [
+      499,
+      358
+     ],
+     [
+      859,
+      56
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 335,
+    "quadros": 35,
+    "quadros_acima_50ms": 1,
+    "pior_quadro_ms": 433,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 4,
+   "entrada": {
+    "ms": 3229,
+    "quadros": 8,
+    "quadros_acima_50ms": 7,
+    "pior_quadro_ms": 3217,
+    "tarefas_longas": [
+     [
+      10,
+      2392
+     ],
+     [
+      2402,
+      844
+     ],
+     [
+      3256,
+      96
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 46,
+    "quadros": 1,
+    "quadros_acima_50ms": 1,
+    "pior_quadro_ms": 1433,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 5,
+   "entrada": {
+    "ms": 6720,
+    "quadros": 20,
+    "quadros_acima_50ms": 15,
+    "pior_quadro_ms": 6700,
+    "tarefas_longas": [
+     [
+      19,
+      5924
+     ],
+     [
+      5944,
+      780
+     ],
+     [
+      6731,
+      56
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 62,
+    "quadros": 7,
+    "quadros_acima_50ms": 4,
+    "pior_quadro_ms": 400,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 6,
+   "entrada": {
+    "ms": 3569,
+    "quadros": 26,
+    "quadros_acima_50ms": 13,
+    "pior_quadro_ms": 3550,
+    "tarefas_longas": [
+     [
+      18,
+      2663
+     ],
+     [
+      2682,
+      894
+     ],
+     [
+      3580,
+      69
+     ]
+    ]
+   },
+   "saida": {
+    "ms": -7,
+    "quadros": 3,
+    "quadros_acima_50ms": 3,
+    "pior_quadro_ms": 417,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 7,
+   "entrada": {
+    "ms": 3895,
+    "quadros": 7,
+    "quadros_acima_50ms": 5,
+    "pior_quadro_ms": 3883,
+    "tarefas_longas": [
+     [
+      12,
+      2749
+     ],
+     [
+      2761,
+      1135
+     ],
+     [
+      3900,
+      1037
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 367,
+    "quadros": 45,
+    "quadros_acima_50ms": 3,
+    "pior_quadro_ms": 167,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 8,
+   "entrada": {
+    "ms": 7445,
+    "quadros": 22,
+    "quadros_acima_50ms": 12,
+    "pior_quadro_ms": 7416,
+    "tarefas_longas": [
+     [
+      29,
+      6473
+     ],
+     [
+      6502,
+      957
+     ],
+     [
+      7464,
+      52
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 131,
+    "quadros": 14,
+    "quadros_acima_50ms": 2,
+    "pior_quadro_ms": 417,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 9,
+   "entrada": {
+    "ms": 2952,
+    "quadros": 7,
+    "quadros_acima_50ms": 5,
+    "pior_quadro_ms": 2933,
+    "tarefas_longas": [
+     [
+      11,
+      2139
+     ],
+     [
+      2151,
+      808
+     ],
+     [
+      2980,
+      477
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 85,
+    "quadros": 44,
+    "quadros_acima_50ms": 1,
+    "pior_quadro_ms": 250,
+    "tarefas_longas": []
+   }
+  },
+  {
+   "visita": 10,
+   "entrada": {
+    "ms": 6709,
+    "quadros": 21,
+    "quadros_acima_50ms": 15,
+    "pior_quadro_ms": 6683,
+    "tarefas_longas": [
+     [
+      13,
+      5967
+     ],
+     [
+      5981,
+      745
+     ],
+     [
+      6728,
+      78
+     ]
+    ]
+   },
+   "saida": {
+    "ms": 533,
+    "quadros": 14,
+    "quadros_acima_50ms": 4,
+    "pior_quadro_ms": 250,
+    "tarefas_longas": []
+   }
+  }
+ ],
+ "marcas": [
+  {
+   "visita": 0,
+   "onde": "fora-da-cena",
+   "pegada": {
+    "total": 273.1,
+    "renderer": 88.8,
+    "gpu": 143.9,
+    "browser": 14.6
+   },
+   "renderer": {
+    "v8": 10.1,
+    "blink_gc": 1.1,
+    "partition_alloc": 16,
+    "malloc": 51.7,
+    "gpu_cliente": 20.2,
+    "canvas": 0.1,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 5.9,
+    "gl": 0,
+    "skia": 0.4,
+    "malloc": 223.4,
+    "transfer": 0,
+    "outros_gpu": 0.8
+   },
+   "heap_js": 7.4,
+   "dom": {
+    "nos": 356,
+    "documentos": 2,
+    "ouvintes": 205
+   },
+   "gl": {
+    "contextos_criados": 2,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 1,
+    "contextos_coletados": 1,
+    "contextos_ativos": 1,
+    "objetos_gl_nos_ativos": {
+     "Texture": 28,
+     "Buffer": 71,
+     "Framebuffer": 40,
+     "Renderbuffer": 0,
+     "Program": 12,
+     "Shader": 0,
+     "VertexArray": 23
+    },
+    "compilacoes_de_shader": 36,
+    "criados_total": {
+     "Texture": 29,
+     "Framebuffer": 46,
+     "Renderbuffer": 6,
+     "Buffer": 78,
+     "Program": 18,
+     "Shader": 36,
+     "VertexArray": 29
+    },
+    "apagados_total": {
+     "Shader": 36,
+     "Framebuffer": 6,
+     "Renderbuffer": 6,
+     "Texture": 1,
+     "VertexArray": 6,
+     "Program": 6,
+     "Buffer": 7
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 12,
+      "mpix": 8.03
+     }
+    ]
+   }
+  },
+  {
+   "visita": 1,
+   "onde": "na-cena",
+   "pegada": {
+    "total": 442.8,
+    "renderer": 100.1,
+    "gpu": 299.5,
+    "browser": 16.7
+   },
+   "renderer": {
+    "v8": 13.4,
+    "blink_gc": 1.5,
+    "partition_alloc": 19.8,
+    "malloc": 57.3,
+    "gpu_cliente": 38.1,
+    "canvas": 0.8,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 11.2,
+    "gl": 0,
+    "skia": 4.4,
+    "malloc": 389.4,
+    "transfer": 0,
+    "outros_gpu": 12.4
+   },
+   "heap_js": 10.9,
+   "dom": {
+    "nos": 516,
+    "documentos": 2,
+    "ouvintes": 204
+   },
+   "gl": {
+    "contextos_criados": 3,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 2,
+    "contextos_coletados": 1,
+    "contextos_ativos": 2,
+    "objetos_gl_nos_ativos": {
+     "Texture": 63,
+     "Buffer": 601,
+     "Framebuffer": 44,
+     "Renderbuffer": 0,
+     "Program": 43,
+     "Shader": 0,
+     "VertexArray": 302
+    },
+    "compilacoes_de_shader": 98,
+    "criados_total": {
+     "Texture": 64,
+     "Framebuffer": 50,
+     "Renderbuffer": 6,
+     "Buffer": 608,
+     "Program": 49,
+     "Shader": 98,
+     "VertexArray": 308
+    },
+    "apagados_total": {
+     "Shader": 98,
+     "Framebuffer": 6,
+     "Renderbuffer": 6,
+     "Texture": 1,
+     "VertexArray": 6,
+     "Program": 6,
+     "Buffer": 7
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 35,
+      "buffers": 530,
+      "programas": 28,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 1,
+   "onde": "fora-da-cena",
+   "pegada": {
+    "total": 435.7,
+    "renderer": 96,
+    "gpu": 295.4,
+    "browser": 17.4
+   },
+   "renderer": {
+    "v8": 11.5,
+    "blink_gc": 1.4,
+    "partition_alloc": 17.6,
+    "malloc": 56.6,
+    "gpu_cliente": 38.1,
+    "canvas": 0.1,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 8.2,
+    "gl": 0,
+    "skia": 0.4,
+    "malloc": 382.6,
+    "transfer": 0,
+    "outros_gpu": 9.4
+   },
+   "heap_js": 8.8,
+   "dom": {
+    "nos": 359,
+    "documentos": 2,
+    "ouvintes": 206
+   },
+   "gl": {
+    "contextos_criados": 3,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 2,
+    "contextos_coletados": 1,
+    "contextos_ativos": 2,
+    "objetos_gl_nos_ativos": {
+     "Texture": 32,
+     "Buffer": 76,
+     "Framebuffer": 43,
+     "Renderbuffer": 0,
+     "Program": 20,
+     "Shader": 0,
+     "VertexArray": 32
+    },
+    "compilacoes_de_shader": 98,
+    "criados_total": {
+     "Texture": 64,
+     "Framebuffer": 50,
+     "Renderbuffer": 6,
+     "Buffer": 608,
+     "Program": 49,
+     "Shader": 98,
+     "VertexArray": 308
+    },
+    "apagados_total": {
+     "Shader": 98,
+     "Framebuffer": 7,
+     "Renderbuffer": 6,
+     "Texture": 32,
+     "VertexArray": 276,
+     "Program": 29,
+     "Buffer": 532
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 2,
+   "onde": "na-cena",
+   "pegada": {
+    "total": 553.5,
+    "renderer": 103.5,
+    "gpu": 404.8,
+    "browser": 17.9
+   },
+   "renderer": {
+    "v8": 14.1,
+    "blink_gc": 1.7,
+    "partition_alloc": 20.3,
+    "malloc": 59,
+    "gpu_cliente": 55.1,
+    "canvas": 0.8,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 10.3,
+    "gl": 0,
+    "skia": 4.4,
+    "malloc": 513.6,
+    "transfer": 0,
+    "outros_gpu": 11.6
+   },
+   "heap_js": 11.5,
+   "dom": {
+    "nos": 517,
+    "documentos": 2,
+    "ouvintes": 205
+   },
+   "gl": {
+    "contextos_criados": 4,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 3,
+    "contextos_coletados": 1,
+    "contextos_ativos": 3,
+    "objetos_gl_nos_ativos": {
+     "Texture": 67,
+     "Buffer": 606,
+     "Framebuffer": 47,
+     "Renderbuffer": 0,
+     "Program": 48,
+     "Shader": 0,
+     "VertexArray": 302
+    },
+    "compilacoes_de_shader": 154,
+    "criados_total": {
+     "Texture": 99,
+     "Framebuffer": 54,
+     "Renderbuffer": 6,
+     "Buffer": 1138,
+     "Program": 77,
+     "Shader": 154,
+     "VertexArray": 578
+    },
+    "apagados_total": {
+     "Shader": 154,
+     "Framebuffer": 7,
+     "Renderbuffer": 6,
+     "Texture": 32,
+     "VertexArray": 276,
+     "Program": 29,
+     "Buffer": 532
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 3,
+      "perdido": false,
+      "texturas": 35,
+      "buffers": 530,
+      "programas": 28,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 2,
+   "onde": "fora-da-cena",
+   "pegada": {
+    "total": 547.9,
+    "renderer": 99.6,
+    "gpu": 402.4,
+    "browser": 17.9
+   },
+   "renderer": {
+    "v8": 12.1,
+    "blink_gc": 1.7,
+    "partition_alloc": 18.9,
+    "malloc": 58.1,
+    "gpu_cliente": 55.1,
+    "canvas": 0.1,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 18.9,
+    "gl": 0,
+    "skia": 0.4,
+    "malloc": 508.6,
+    "transfer": 0,
+    "outros_gpu": 20.1
+   },
+   "heap_js": 9.3,
+   "dom": {
+    "nos": 360,
+    "documentos": 2,
+    "ouvintes": 207
+   },
+   "gl": {
+    "contextos_criados": 4,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 3,
+    "contextos_coletados": 1,
+    "contextos_ativos": 3,
+    "objetos_gl_nos_ativos": {
+     "Texture": 36,
+     "Buffer": 81,
+     "Framebuffer": 46,
+     "Renderbuffer": 0,
+     "Program": 25,
+     "Shader": 0,
+     "VertexArray": 32
+    },
+    "compilacoes_de_shader": 154,
+    "criados_total": {
+     "Texture": 99,
+     "Framebuffer": 54,
+     "Renderbuffer": 6,
+     "Buffer": 1138,
+     "Program": 77,
+     "Shader": 154,
+     "VertexArray": 578
+    },
+    "apagados_total": {
+     "Shader": 154,
+     "Framebuffer": 8,
+     "Renderbuffer": 6,
+     "Texture": 63,
+     "VertexArray": 546,
+     "Program": 52,
+     "Buffer": 1057
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 3,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 5,
+   "onde": "na-cena",
+   "pegada": {
+    "total": 851,
+    "renderer": 106.6,
+    "gpu": 701.8,
+    "browser": 16
+   },
+   "renderer": {
+    "v8": 15.3,
+    "blink_gc": 2.3,
+    "partition_alloc": 24.2,
+    "malloc": 52.2,
+    "gpu_cliente": 106.1,
+    "canvas": 0.8,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 35.3,
+    "gl": 0,
+    "skia": 4.4,
+    "malloc": 870.2,
+    "transfer": 0,
+    "outros_gpu": 36.5
+   },
+   "heap_js": 12.7,
+   "dom": {
+    "nos": 520,
+    "documentos": 2,
+    "ouvintes": 208
+   },
+   "gl": {
+    "contextos_criados": 7,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 6,
+    "contextos_coletados": 1,
+    "contextos_ativos": 6,
+    "objetos_gl_nos_ativos": {
+     "Texture": 79,
+     "Buffer": 621,
+     "Framebuffer": 56,
+     "Renderbuffer": 0,
+     "Program": 63,
+     "Shader": 0,
+     "VertexArray": 302
+    },
+    "compilacoes_de_shader": 322,
+    "criados_total": {
+     "Texture": 204,
+     "Framebuffer": 66,
+     "Renderbuffer": 6,
+     "Buffer": 2728,
+     "Program": 161,
+     "Shader": 322,
+     "VertexArray": 1388
+    },
+    "apagados_total": {
+     "Shader": 322,
+     "Framebuffer": 10,
+     "Renderbuffer": 6,
+     "Texture": 125,
+     "VertexArray": 1086,
+     "Program": 98,
+     "Buffer": 2107
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 3,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 4,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 5,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 6,
+      "perdido": false,
+      "texturas": 35,
+      "buffers": 530,
+      "programas": 28,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 5,
+   "onde": "fora-da-cena",
+   "pegada": {
+    "total": 846.9,
+    "renderer": 101.5,
+    "gpu": 701.3,
+    "browser": 16.7
+   },
+   "renderer": {
+    "v8": 12.9,
+    "blink_gc": 2.3,
+    "partition_alloc": 22.4,
+    "malloc": 50.5,
+    "gpu_cliente": 106.1,
+    "canvas": 0.1,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 41,
+    "gl": 0,
+    "skia": 0.4,
+    "malloc": 864.8,
+    "transfer": 0,
+    "outros_gpu": 42.2
+   },
+   "heap_js": 10.1,
+   "dom": {
+    "nos": 363,
+    "documentos": 2,
+    "ouvintes": 210
+   },
+   "gl": {
+    "contextos_criados": 7,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 6,
+    "contextos_coletados": 1,
+    "contextos_ativos": 6,
+    "objetos_gl_nos_ativos": {
+     "Texture": 48,
+     "Buffer": 96,
+     "Framebuffer": 55,
+     "Renderbuffer": 0,
+     "Program": 40,
+     "Shader": 0,
+     "VertexArray": 32
+    },
+    "compilacoes_de_shader": 322,
+    "criados_total": {
+     "Texture": 204,
+     "Framebuffer": 66,
+     "Renderbuffer": 6,
+     "Buffer": 2728,
+     "Program": 161,
+     "Shader": 322,
+     "VertexArray": 1388
+    },
+    "apagados_total": {
+     "Shader": 322,
+     "Framebuffer": 11,
+     "Renderbuffer": 6,
+     "Texture": 156,
+     "VertexArray": 1356,
+     "Program": 121,
+     "Buffer": 2632
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 3,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 4,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 5,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 6,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 10,
+   "onde": "na-cena",
+   "pegada": {
+    "total": 1252.1,
+    "renderer": 116.8,
+    "gpu": 1092.2,
+    "browser": 15.8
+   },
+   "renderer": {
+    "v8": 16.6,
+    "blink_gc": 3,
+    "partition_alloc": 30.2,
+    "malloc": 51.3,
+    "gpu_cliente": 192.1,
+    "canvas": 0.8,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 63.7,
+    "gl": 0,
+    "skia": 4.5,
+    "malloc": 1379.2,
+    "transfer": 0,
+    "outros_gpu": 64.9
+   },
+   "heap_js": 14,
+   "dom": {
+    "nos": 525,
+    "documentos": 2,
+    "ouvintes": 213
+   },
+   "gl": {
+    "contextos_criados": 12,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 11,
+    "contextos_coletados": 1,
+    "contextos_ativos": 11,
+    "objetos_gl_nos_ativos": {
+     "Texture": 99,
+     "Buffer": 646,
+     "Framebuffer": 71,
+     "Renderbuffer": 0,
+     "Program": 88,
+     "Shader": 0,
+     "VertexArray": 302
+    },
+    "compilacoes_de_shader": 602,
+    "criados_total": {
+     "Texture": 379,
+     "Framebuffer": 86,
+     "Renderbuffer": 6,
+     "Buffer": 5378,
+     "Program": 301,
+     "Shader": 602,
+     "VertexArray": 2738
+    },
+    "apagados_total": {
+     "Shader": 602,
+     "Framebuffer": 15,
+     "Renderbuffer": 6,
+     "Texture": 280,
+     "VertexArray": 2436,
+     "Program": 213,
+     "Buffer": 4732
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 3,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 4,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 5,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 6,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 7,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 8,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 9,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 10,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 11,
+      "perdido": false,
+      "texturas": 35,
+      "buffers": 530,
+      "programas": 28,
+      "mpix": 7.28
+     }
+    ]
+   }
+  },
+  {
+   "visita": 10,
+   "onde": "fora-da-cena",
+   "pegada": {
+    "total": 1246.2,
+    "renderer": 110.1,
+    "gpu": 1092.3,
+    "browser": 16.4
+   },
+   "renderer": {
+    "v8": 14,
+    "blink_gc": 3,
+    "partition_alloc": 29,
+    "malloc": 49.2,
+    "gpu_cliente": 192.1,
+    "canvas": 0.1,
+    "cc_imagens": 0
+   },
+   "gpu": {
+    "shared_images": 69.6,
+    "gl": 0,
+    "skia": 0.4,
+    "malloc": 1374.5,
+    "transfer": 0,
+    "outros_gpu": 70.8
+   },
+   "heap_js": 11.1,
+   "dom": {
+    "nos": 368,
+    "documentos": 2,
+    "ouvintes": 215
+   },
+   "gl": {
+    "contextos_criados": 12,
+    "contextos_perdidos": 1,
+    "contextos_ainda_na_memoria_js": 11,
+    "contextos_coletados": 1,
+    "contextos_ativos": 11,
+    "objetos_gl_nos_ativos": {
+     "Texture": 68,
+     "Buffer": 121,
+     "Framebuffer": 70,
+     "Renderbuffer": 0,
+     "Program": 65,
+     "Shader": 0,
+     "VertexArray": 32
+    },
+    "compilacoes_de_shader": 602,
+    "criados_total": {
+     "Texture": 379,
+     "Framebuffer": 86,
+     "Renderbuffer": 6,
+     "Buffer": 5378,
+     "Program": 301,
+     "Shader": 602,
+     "VertexArray": 2738
+    },
+    "apagados_total": {
+     "Shader": 602,
+     "Framebuffer": 16,
+     "Renderbuffer": 6,
+     "Texture": 311,
+     "VertexArray": 2706,
+     "Program": 236,
+     "Buffer": 5257
+    },
+    "por_contexto": [
+     {
+      "id": 0,
+      "perdido": true,
+      "texturas": 0,
+      "buffers": 0,
+      "programas": 0,
+      "mpix": 0
+     },
+     {
+      "id": 1,
+      "perdido": false,
+      "texturas": 28,
+      "buffers": 71,
+      "programas": 15,
+      "mpix": 8.03
+     },
+     {
+      "id": 2,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 3,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 4,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 5,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 6,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 7,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 8,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 9,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 10,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     },
+     {
+      "id": 11,
+      "perdido": false,
+      "texturas": 4,
+      "buffers": 5,
+      "programas": 5,
+      "mpix": 7.28
+     }
+    ]
+   }
+  }
+ ],
+ "erros_console": []
+}

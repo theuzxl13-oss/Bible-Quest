@@ -1,0 +1,400 @@
+{
+ "entrada": {
+  "total_ms": 2673,
+  "proprio": [
+   [
+    "(idle) :0",
+    2331
+   ],
+   [
+    "(program) :0",
+    169
+   ],
+   [
+    "(garbage collector) :0",
+    20
+   ],
+   [
+    "posicionarRotulos acampamento-CPzP-pU-.js:1640",
+    18
+   ],
+   [
+    "copyArray runtime-BLwr9P0S.js:34090",
+    12
+   ],
+   [
+    "drawElements :0",
+    10
+   ],
+   [
+    "renderObject runtime-BLwr9P0S.js:36553",
+    7
+   ],
+   [
+    "WebGLRenderer.renderBufferDirect runtime-BLwr9P0S.js:40958",
+    6
+   ],
+   [
+    "bindTexture :0",
+    6
+   ],
+   [
+    "setProgram runtime-BLwr9P0S.js:41513",
+    6
+   ],
+   [
+    "bindVertexArray :0",
+    5
+   ],
+   [
+    "uniformMatrix4fv :0",
+    4
+   ],
+   [
+    "resize acampamento-CPzP-pU-.js:1594",
+    4
+   ],
+   [
+    "performWorkUntilDeadline index-DocDu0vM.js:533",
+    3
+   ],
+   [
+    "uniformMatrix3fv :0",
+    3
+   ],
+   [
+    "needsUpdate runtime-BLwr9P0S.js:32299",
+    3
+   ],
+   [
+    "projectObject runtime-BLwr9P0S.js:41253",
+    3
+   ],
+   [
+    "onAnimationFrame runtime-BLwr9P0S.js:31346",
+    3
+   ],
+   [
+    "setValueM4 runtime-BLwr9P0S.js:34188",
+    2
+   ],
+   [
+    "multiplyMatrices runtime-BLwr9P0S.js:7272",
+    2
+   ],
+   [
+    "topicStats index-DocDu0vM.js:21395",
+    2
+   ],
+   [
+    "setValueV3f runtime-BLwr9P0S.js:34122",
+    2
+   ],
+   [
+    "update runtime-BLwr9P0S.js:31439",
+    1
+   ],
+   [
+    "setFromRotationMatrix runtime-BLwr9P0S.js:2757",
+    1
+   ],
+   [
+    "updateMatrixWorld runtime-BLwr9P0S.js:9068",
+    1
+   ]
+  ],
+  "inclusivo": [
+   [
+    "(root) :0",
+    2673
+   ],
+   [
+    "(idle) :0",
+    2331
+   ],
+   [
+    "(program) :0",
+    169
+   ],
+   [
+    "onAnimationFrame runtime-BLwr9P0S.js:31346",
+    121
+   ],
+   [
+    "tick acampamento-CPzP-pU-.js:1713",
+    117
+   ],
+   [
+    "onAnimationFrame runtime-BLwr9P0S.js:41128",
+    117
+   ],
+   [
+    "WebGLRenderer.render runtime-BLwr9P0S.js:41168",
+    105
+   ],
+   [
+    "WebGLRenderer.renderBufferDirect runtime-BLwr9P0S.js:40958",
+    81
+   ],
+   [
+    "setProgram runtime-BLwr9P0S.js:41513",
+    54
+   ],
+   [
+    "renderScene runtime-BLwr9P0S.js:41299",
+    48
+   ],
+   [
+    "renderObjects runtime-BLwr9P0S.js:41374",
+    48
+   ],
+   [
+    "renderObject runtime-BLwr9P0S.js:41384",
+    47
+   ],
+   [
+    "WebGLShadowMap.render runtime-BLwr9P0S.js:36338",
+    46
+   ],
+   [
+    "renderObject runtime-BLwr9P0S.js:36553",
+    44
+   ],
+   [
+    "performWorkUntilDeadline index-DocDu0vM.js:533",
+    28
+   ],
+   [
+    "setValue runtime-BLwr9P0S.js:34602",
+    27
+   ],
+   [
+    "(garbage collector) :0",
+    20
+   ],
+   [
+    "posicionarRotulos acampamento-CPzP-pU-.js:1640",
+    18
+   ],
+   [
+    "upload runtime-BLwr9P0S.js:34610",
+    14
+   ],
+   [
+    "flushPassiveEffects index-DocDu0vM.js:8415",
+    13
+   ],
+   [
+    "(anônima) index-DocDu0vM.js:8255",
+    13
+   ],
+   [
+    "(anônima) index-DocDu0vM.js:26452",
+    13
+   ],
+   [
+    "commitHookEffectListMount index-DocDu0vM.js:6168",
+    13
+   ],
+   [
+    "commitPassiveMountOnFiber index-DocDu0vM.js:7477",
+    13
+   ],
+   [
+    "recursivelyTraversePassiveMountEffects index-DocDu0vM.js:7472",
+    13
+   ],
+   [
+    "reanexar acampamento-CPzP-pU-.js:1756",
+    13
+   ],
+   [
+    "setValueM4 runtime-BLwr9P0S.js:34188",
+    12
+   ],
+   [
+    "setValueT1 runtime-BLwr9P0S.js:34311",
+    12
+   ],
+   [
+    "copyArray runtime-BLwr9P0S.js:34090",
+    12
+   ],
+   [
+    "setTexture2D runtime-BLwr9P0S.js:37603",
+    12
+   ],
+   [
+    "performWorkOnRoot index-DocDu0vM.js:7792",
+    11
+   ],
+   [
+    "performWorkOnRootViaSchedulerTask index-DocDu0vM.js:8610",
+    11
+   ],
+   [
+    "drawElements :0",
+    10
+   ],
+   [
+    "render runtime-BLwr9P0S.js:33607",
+    10
+   ],
+   [
+    "setup runtime-BLwr9P0S.js:32228",
+    10
+   ],
+   [
+    "workLoopConcurrentByScheduler index-DocDu0vM.js:8135",
+    8
+   ],
+   [
+    "renderRootConcurrent index-DocDu0vM.js:8045",
+    8
+   ],
+   [
+    "setValueM3 runtime-BLwr9P0S.js:34174",
+    8
+   ],
+   [
+    "bindTexture runtime-BLwr9P0S.js:37069",
+    7
+   ],
+   [
+    "beginWork index-DocDu0vM.js:5641",
+    7
+   ],
+   [
+    "bindTexture :0",
+    6
+   ],
+   [
+    "renderWithHooks index-DocDu0vM.js:3820",
+    6
+   ],
+   [
+    "projectObject runtime-BLwr9P0S.js:41253",
+    6
+   ],
+   [
+    "updateFunctionComponent index-DocDu0vM.js:5219",
+    5
+   ],
+   [
+    "bindVertexArray :0",
+    5
+   ]
+  ]
+ },
+ "saida": {
+  "total_ms": 12058,
+  "proprio": [
+   [
+    "(idle) :0",
+    11961
+   ],
+   [
+    "(garbage collector) :0",
+    47
+   ],
+   [
+    "(program) :0",
+    45
+   ],
+   [
+    "removeChild :0",
+    4
+   ],
+   [
+    "commitMutationEffectsOnFiber index-DocDu0vM.js:7007",
+    0
+   ],
+   [
+    "recursivelyTraversePassiveMountEffects index-DocDu0vM.js:7472",
+    0
+   ],
+   [
+    "(anônima) index-DocDu0vM.js:8255",
+    0
+   ]
+  ],
+  "inclusivo": [
+   [
+    "(root) :0",
+    12058
+   ],
+   [
+    "(idle) :0",
+    11961
+   ],
+   [
+    "(garbage collector) :0",
+    47
+   ],
+   [
+    "(program) :0",
+    45
+   ],
+   [
+    "performWorkUntilDeadline index-DocDu0vM.js:533",
+    5
+   ],
+   [
+    "recursivelyTraverseMutationEffects index-DocDu0vM.js:6971",
+    5
+   ],
+   [
+    "commitMutationEffectsOnFiber index-DocDu0vM.js:7007",
+    5
+   ],
+   [
+    "flushMutationEffects index-DocDu0vM.js:8286",
+    5
+   ],
+   [
+    "commitRoot index-DocDu0vM.js:8248",
+    5
+   ],
+   [
+    "completeRoot index-DocDu0vM.js:8231",
+    5
+   ],
+   [
+    "completeRootWhenReady index-DocDu0vM.js:7871",
+    5
+   ],
+   [
+    "performWorkOnRoot index-DocDu0vM.js:7792",
+    5
+   ],
+   [
+    "performWorkOnRootViaSchedulerTask index-DocDu0vM.js:8610",
+    5
+   ],
+   [
+    "removeChild :0",
+    4
+   ],
+   [
+    "commitDeletionEffectsOnFiber index-DocDu0vM.js:6849",
+    4
+   ],
+   [
+    "(anônima) index-DocDu0vM.js:8255",
+    1
+   ],
+   [
+    "recursivelyTraversePassiveMountEffects index-DocDu0vM.js:7472",
+    0
+   ],
+   [
+    "commitPassiveMountOnFiber index-DocDu0vM.js:7477",
+    0
+   ],
+   [
+    "flushPassiveEffects index-DocDu0vM.js:8415",
+    0
+   ]
+  ]
+ }
+}

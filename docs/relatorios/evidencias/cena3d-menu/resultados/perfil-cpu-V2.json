@@ -1,0 +1,576 @@
+{
+ "entrada": {
+  "total_ms": 4000,
+  "proprio": [
+   [
+    "(idle) :0",
+    2342
+   ],
+   [
+    "getProgramInfoLog :0",
+    759
+   ],
+   [
+    "getShaderInfoLog :0",
+    311
+   ],
+   [
+    "(program) :0",
+    133
+   ],
+   [
+    "getProgramParameter :0",
+    88
+   ],
+   [
+    "WebGLRenderer.setSize runtime-DzKLwqEW.js:40626",
+    46
+   ],
+   [
+    "texSubImage2D :0",
+    39
+   ],
+   [
+    "getContext :0",
+    29
+   ],
+   [
+    "(garbage collector) :0",
+    23
+   ],
+   [
+    "shaderSource :0",
+    13
+   ],
+   [
+    "setProgram runtime-DzKLwqEW.js:41513",
+    10
+   ],
+   [
+    "createCamp acampamento-DUVcFoAn.js:1282",
+    10
+   ],
+   [
+    "posicionarRotulos acampamento-DUVcFoAn.js:1638",
+    10
+   ],
+   [
+    "replaceLightNums runtime-DzKLwqEW.js:34734",
+    9
+   ],
+   [
+    "getExtension :0",
+    9
+   ],
+   [
+    "setValueV3f runtime-DzKLwqEW.js:34122",
+    5
+   ],
+   [
+    "getBindingState runtime-DzKLwqEW.js:32253",
+    5
+   ],
+   [
+    "onFirstUse runtime-DzKLwqEW.js:35091",
+    4
+   ],
+   [
+    "bindVertexArray :0",
+    4
+   ],
+   [
+    "includeReplacer runtime-DzKLwqEW.js:34745",
+    4
+   ],
+   [
+    "WebGLRenderer.renderBufferDirect runtime-DzKLwqEW.js:40958",
+    3
+   ],
+   [
+    "generateTorso runtime-DzKLwqEW.js:18892",
+    3
+   ],
+   [
+    "onAnimationFrame runtime-DzKLwqEW.js:31346",
+    3
+   ],
+   [
+    "setup runtime-DzKLwqEW.js:32228",
+    3
+   ],
+   [
+    "bufferData :0",
+    3
+   ]
+  ],
+  "inclusivo": [
+   [
+    "(root) :0",
+    4000
+   ],
+   [
+    "(idle) :0",
+    2342
+   ],
+   [
+    "WebGLRenderer.render runtime-DzKLwqEW.js:41168",
+    1351
+   ],
+   [
+    "WebGLRenderer.renderBufferDirect runtime-DzKLwqEW.js:40958",
+    1312
+   ],
+   [
+    "setProgram runtime-DzKLwqEW.js:41513",
+    1288
+   ],
+   [
+    "WebGLProgram.getUniforms runtime-DzKLwqEW.js:35130",
+    1167
+   ],
+   [
+    "onFirstUse runtime-DzKLwqEW.js:35091",
+    1166
+   ],
+   [
+    "renderObjects runtime-DzKLwqEW.js:41374",
+    1081
+   ],
+   [
+    "renderScene runtime-DzKLwqEW.js:41299",
+    1081
+   ],
+   [
+    "renderObject runtime-DzKLwqEW.js:41384",
+    1080
+   ],
+   [
+    "onAnimationFrame runtime-DzKLwqEW.js:31346",
+    977
+   ],
+   [
+    "tick acampamento-DUVcFoAn.js:1711",
+    974
+   ],
+   [
+    "onAnimationFrame runtime-DzKLwqEW.js:41128",
+    974
+   ],
+   [
+    "getProgramInfoLog :0",
+    759
+   ],
+   [
+    "(anônima) index-BUCC3mwr.js:26458",
+    507
+   ],
+   [
+    "createCamp acampamento-DUVcFoAn.js:1282",
+    507
+   ],
+   [
+    "getShaderInfoLog :0",
+    311
+   ],
+   [
+    "WebGLShadowMap.render runtime-DzKLwqEW.js:36338",
+    244
+   ],
+   [
+    "renderObject runtime-DzKLwqEW.js:36553",
+    240
+   ],
+   [
+    "(program) :0",
+    133
+   ],
+   [
+    "getProgramParameter :0",
+    88
+   ],
+   [
+    "upload runtime-DzKLwqEW.js:34610",
+    52
+   ],
+   [
+    "resize acampamento-DUVcFoAn.js:1593",
+    47
+   ],
+   [
+    "WebGLRenderer.setSize runtime-DzKLwqEW.js:40626",
+    46
+   ],
+   [
+    "setTexture2D runtime-DzKLwqEW.js:37603",
+    46
+   ],
+   [
+    "setValueT1 runtime-DzKLwqEW.js:34311",
+    46
+   ],
+   [
+    "uploadTexture runtime-DzKLwqEW.js:37765",
+    43
+   ],
+   [
+    "getProgram runtime-DzKLwqEW.js:41406",
+    40
+   ],
+   [
+    "texSubImage2D runtime-DzKLwqEW.js:37114",
+    39
+   ],
+   [
+    "texSubImage2D :0",
+    39
+   ],
+   [
+    "acquireProgram runtime-DzKLwqEW.js:35621",
+    32
+   ],
+   [
+    "WebGLProgram runtime-DzKLwqEW.js:34804",
+    31
+   ],
+   [
+    "createRenderer runtime-DzKLwqEW.js:49056",
+    30
+   ],
+   [
+    "getContext :0",
+    29
+   ],
+   [
+    "WebGLRenderer runtime-DzKLwqEW.js:40206",
+    29
+   ],
+   [
+    "(garbage collector) :0",
+    23
+   ],
+   [
+    "getContext runtime-DzKLwqEW.js:40416",
+    22
+   ],
+   [
+    "setup runtime-DzKLwqEW.js:32228",
+    17
+   ],
+   [
+    "projectObject runtime-DzKLwqEW.js:41253",
+    15
+   ],
+   [
+    "WebGLShader runtime-DzKLwqEW.js:34625",
+    14
+   ],
+   [
+    "shaderSource :0",
+    13
+   ],
+   [
+    "setValue runtime-DzKLwqEW.js:34602",
+    12
+   ],
+   [
+    "posicionarRotulos acampamento-DUVcFoAn.js:1638",
+    10
+   ],
+   [
+    "performWorkUntilDeadline index-BUCC3mwr.js:533",
+    10
+   ],
+   [
+    "performWorkOnRootViaSchedulerTask index-BUCC3mwr.js:8610",
+    9
+   ]
+  ]
+ },
+ "saida": {
+  "total_ms": 12261,
+  "proprio": [
+   [
+    "(idle) :0",
+    9255
+   ],
+   [
+    "(program) :0",
+    2947
+   ],
+   [
+    "(garbage collector) :0",
+    41
+   ],
+   [
+    "traverse runtime-DzKLwqEW.js:9008",
+    2
+   ],
+   [
+    "deleteVertexArray :0",
+    1
+   ],
+   [
+    "(anônima) :1",
+    1
+   ],
+   [
+    "LinkWithRef index-BUCC3mwr.js:13117",
+    1
+   ],
+   [
+    "recursivelyTraverseMutationEffects index-BUCC3mwr.js:6971",
+    1
+   ],
+   [
+    "WebGLProgram.destroy runtime-DzKLwqEW.js:35144",
+    1
+   ],
+   [
+    "matchPathImpl index-BUCC3mwr.js:11809",
+    1
+   ],
+   [
+    "recursivelyTraverseDeletionEffects index-BUCC3mwr.js:6846",
+    1
+   ],
+   [
+    "releaseStatesOfProgram runtime-DzKLwqEW.js:32467",
+    1
+   ],
+   [
+    "deleteBuffer :0",
+    1
+   ],
+   [
+    "parseEvaluationResultValue :106",
+    1
+   ],
+   [
+    "setAttribute :0",
+    1
+   ],
+   [
+    "remove runtime-DzKLwqEW.js:31431",
+    1
+   ],
+   [
+    "createBrowserURLImpl index-BUCC3mwr.js:11658",
+    1
+   ],
+   [
+    "removeChild :0",
+    1
+   ],
+   [
+    "(anônima) acampamento-DUVcFoAn.js:1766",
+    1
+   ],
+   [
+    "deleteProgram :0",
+    1
+   ],
+   [
+    "Router index-BUCC3mwr.js:12517",
+    0
+   ],
+   [
+    "URL :0",
+    0
+   ],
+   [
+    "(anônima) :0",
+    0
+   ],
+   [
+    "SyntheticBaseEvent index-BUCC3mwr.js:2072",
+    0
+   ],
+   [
+    "completeRoot index-BUCC3mwr.js:8231",
+    0
+   ]
+  ],
+  "inclusivo": [
+   [
+    "(root) :0",
+    12261
+   ],
+   [
+    "(idle) :0",
+    9255
+   ],
+   [
+    "(program) :0",
+    2947
+   ],
+   [
+    "(garbage collector) :0",
+    41
+   ],
+   [
+    "performWorkUntilDeadline index-BUCC3mwr.js:533",
+    16
+   ],
+   [
+    "performWorkOnRoot index-BUCC3mwr.js:7792",
+    8
+   ],
+   [
+    "performWorkOnRootViaSchedulerTask index-BUCC3mwr.js:8610",
+    8
+   ],
+   [
+    "recursivelyTraversePassiveUnmountEffects index-BUCC3mwr.js:7620",
+    7
+   ],
+   [
+    "commitPassiveUnmountOnFiber index-BUCC3mwr.js:7632",
+    7
+   ],
+   [
+    "flushPassiveEffects index-BUCC3mwr.js:8415",
+    7
+   ],
+   [
+    "(anônima) index-BUCC3mwr.js:8255",
+    7
+   ],
+   [
+    "dispose acampamento-DUVcFoAn.js:1746",
+    7
+   ],
+   [
+    "(anônima) index-BUCC3mwr.js:26473",
+    7
+   ],
+   [
+    "commitHookEffectListUnmount index-BUCC3mwr.js:6188",
+    7
+   ],
+   [
+    "commitPassiveUnmountEffectsInsideOfDeletedTree_begin index-BUCC3mwr.js:7681",
+    7
+   ],
+   [
+    "traverse runtime-DzKLwqEW.js:9008",
+    7
+   ],
+   [
+    "workLoopConcurrentByScheduler index-BUCC3mwr.js:8135",
+    6
+   ],
+   [
+    "renderRootConcurrent index-BUCC3mwr.js:8045",
+    6
+   ],
+   [
+    "beginWork index-BUCC3mwr.js:5641",
+    5
+   ],
+   [
+    "renderWithHooks index-BUCC3mwr.js:3820",
+    4
+   ],
+   [
+    "dispatchEvent runtime-DzKLwqEW.js:987",
+    4
+   ],
+   [
+    "(anônima) acampamento-DUVcFoAn.js:1766",
+    3
+   ],
+   [
+    "updateFunctionComponent index-BUCC3mwr.js:5219",
+    3
+   ],
+   [
+    "destroyGeometry runtime-DzKLwqEW.js:33506",
+    3
+   ],
+   [
+    "onGeometryDispose runtime-DzKLwqEW.js:33503",
+    3
+   ],
+   [
+    "dispose runtime-DzKLwqEW.js:13271",
+    3
+   ],
+   [
+    "completeRoot index-BUCC3mwr.js:8231",
+    2
+   ],
+   [
+    "completeRootWhenReady index-BUCC3mwr.js:7871",
+    2
+   ],
+   [
+    "Routes index-BUCC3mwr.js:12565",
+    2
+   ],
+   [
+    "recursivelyTraverseMutationEffects index-BUCC3mwr.js:6971",
+    2
+   ],
+   [
+    "commitMutationEffectsOnFiber index-BUCC3mwr.js:7007",
+    2
+   ],
+   [
+    "flushMutationEffects index-BUCC3mwr.js:8286",
+    2
+   ],
+   [
+    "commitRoot index-BUCC3mwr.js:8248",
+    2
+   ],
+   [
+    "useRoutesImpl index-BUCC3mwr.js:12167",
+    2
+   ],
+   [
+    "useRoutes index-BUCC3mwr.js:12164",
+    2
+   ],
+   [
+    "WebGLProgram.destroy runtime-DzKLwqEW.js:35144",
+    2
+   ],
+   [
+    "releaseProgram runtime-DzKLwqEW.js:35631",
+    2
+   ],
+   [
+    "(anônima) runtime-DzKLwqEW.js:40952",
+    2
+   ],
+   [
+    "releaseMaterialProgramReferences runtime-DzKLwqEW.js:40949",
+    2
+   ],
+   [
+    "deallocateMaterial runtime-DzKLwqEW.js:40945",
+    2
+   ],
+   [
+    "onMaterialDispose runtime-DzKLwqEW.js:40940",
+    2
+   ],
+   [
+    "dispose runtime-DzKLwqEW.js:15052",
+    2
+   ],
+   [
+    "updateForwardRef index-BUCC3mwr.js:5043",
+    2
+   ],
+   [
+    "dispose runtime-DzKLwqEW.js:48888",
+    2
+   ],
+   [
+    "(anônima) :1",
+    2
+   ]
+  ]
+ }
+}
